@@ -1,0 +1,241 @@
+livecd-rootfs (0.30) gutsy; urgency=low
+
+  * Relicense livecd.sh under the terms of the GPLv2, in preparation
+    for our first public release of this hideous mess of shell.
+  * Merge in Colin Watson's subarch hacks from the production buildds.
+  * Update copyright again, this time only seven months late!
+  * Change the maintainer in debian/control to me; so long, LaMont.
+  * Install the BuildLiveCD script to doc/examples, so we have a handy
+    place to yank it from, and to provide an example of our SSH trigger.
+  * Remove duplicate debconf cruft from the chroot before building.
+
+ -- Adam Conrad <adconrad@ubuntu.com>  Tue, 10 Jul 2007 10:48:04 +0100
+
+livecd-rootfs (0.29) UNRELEASED; urgency=low
+
+  * Update copyright to 2006, 9 months late is better than never, right?
+  * Update kernels for i386 and amd64 to reflect recent renaming.
+  * Remove all cloop-related code, we're now squashfs-only on all arches.
+  * Add mirror information to make things work faster on my network.
+  * Swap out more metapackages for tasks (ubuntu-minimal/ubuntu-standard)
+
+ -- Adam Conrad <adconrad@ubuntu.com>  Thu, 21 Sep 2006 10:37:09 +1000
+
+livecd-rootfs (0.28) UNRELEASED; urgency=low
+
+  * Welcome to Edgy... Switch the default i386 kernel to -686, yay!
+  * And when I say "edgy", I really mean it (ie: change the suite too)
+  * Add the use of a sortfile from Tollef to the squashfs invocation.
+  * s/libgoffice-gtk-1-2/libgoffice-gtk-0-3/ for the xubuntu hint.
+  * s/ubuntu-base/ubuntu-minimal ubuntu-standard/g for seed changes.
+
+ -- Adam Conrad <adconrad@ubuntu.com>  Mon, 28 Aug 2006 03:40:28 +1000
+
+livecd-rootfs (0.27) UNRELEASED; urgency=low
+
+  [ Adam Conrad ]
+  * Copy the kernel out of the livefs as well, so we have one that matches.
+  * Enable rudimentary support for squashfs filesystems, initially enabling
+    it on the primary architectures only (powerpc, i386, amd64)
+  * Split the package LIST into LIST and LIVELIST, and generate a manifest
+    before installing LIVELIST, so espresso can calculate the difference.
+  * Use --print-installation-architecture instead of --print-architecture
+  * Special-case kubuntu cloops to be slightly larger, so we don't overflow.
+  * Make sparc use archive.ubuntu.com, it's no longer a ports arch.
+  * Add xubuntu support to livecd.sh, including hackish workarounds.
+  * Reset the debconf frontend after we're all done with the chroot.
+
+  [ LaMont Jones ]
+  * umount /var/{run,lock}
+  * changes for launchpad archive (ftpmaster.internal instead of jackass)
+
+ -- LaMont Jones <lamont@debian.org>  Wed,  8 Feb 2006 10:49:27 -0700
+
+livecd-rootfs (0.26) hoary-cat; urgency=low
+
+  [ Adam Conrad ]
+  * Copy the initrd out of the livefs for us in the SimplifiedLiveCD setup
+
+  [ LaMont Jones ]
+  * linux-image-power{3,4} -> powerpc64-smp
+  * casper needs to be in the livecd image (change base).
+
+ -- LaMont Jones <lamont@ubuntu.com>  Fri, 23 Dec 2005 09:37:57 -0700
+
+livecd-rootfs (0.25) hoary-cat; urgency=low
+
+  [ LaMont Jones ]
+  * Really use e2fs-zero.py: it needs -w.  Comment out partimage.
+  * edubuntu/kubuntu need to use ubuntu-base
+
+  [ Adam Conrad ]
+  * Make livecd.sh umount the lrm tmpfs during the cleanup process.
+  * Make our sources.list use SECSRCMIRROR instead of SRCMIRROR for security
+    sources, defaulting to SECMIRROR for release arches and SRCMIRROR for
+    ports (since ports don't have security binaries and sources in one place)
+
+ -- LaMont Jones <lamont@ubuntu.com>  Thu, 24 Nov 2005 10:13:33 -0700
+
+livecd-rootfs (0.24) hoary-cat; urgency=low
+
+  [ LaMont Jones ]
+  * Incorporate e2fs-zero.py from Paul Sladen:
+    http://www.paul.sladen.org/ubuntu/e2fszero/e2fs-zero.py
+    And use it instead of partimage.  Suggest: partimage instead of
+    Recommends.
+  * Print package version during script run.
+  * some HPPA fixes, allow architectures to have more than just main.
+  * add debian/compat
+  * Add --resolve-deps to debootstrap command.
+
+  [ Adam Conrad ]
+  * Incorporate 'tocd' target, including hideous hack to get the
+    germinate output from Colin's lists at people.ubuntu.com
+
+ -- LaMont Jones <lamont@canonical.com>  Tue, 25 Oct 2005 12:00:45 -0600
+
+livecd-rootfs (0.23) hoary-cat; urgency=low
+
+  * use kubuntu-live in the kubuntu case, per cjwatson.
+
+ -- LaMont Jones <lamont@ubuntu.com>  Thu,  8 Sep 2005 09:48:12 -0600
+
+livecd-rootfs (0.22) hoary-cat; urgency=low
+
+  * rm -f etc/X11/xorg.conf, per #13788
+
+ -- LaMont Jones <lamont@ubuntu.com>  Mon, 22 Aug 2005 22:07:10 -0600
+
+livecd-rootfs (0.21) hoary-cat; urgency=low
+
+  * a bit more ports.ubuntu.com cleanup: deb-src still needs to point at
+    archive.ubuntu.com.
+  * postfix isn't there anymore, make the postfix stripping stuff conditional.
+  * nuke the update-notifier messages
+
+ -- LaMont Jones <lamont@ubuntu.com>  Thu, 18 Aug 2005 12:09:49 -0600
+
+livecd-rootfs (0.20) hoary-cat; urgency=low
+
+  * incorporate ports.ubuntu.com repositories
+  * make distro name a parameter.
+
+ -- LaMont Jones <lamont@ubuntu.com>  Tue, 17 May 2005 21:39:24 -0600
+
+livecd-rootfs (0.19) hoary; urgency=low
+
+  * Add 'base' target
+
+ -- LaMont Jones <lamont@ubuntu.com>  Wed, 13 Apr 2005 18:43:04 -0600
+
+livecd-rootfs (0.18) hoary; urgency=low
+
+  * set +e affects callers.
+
+ -- LaMont Jones <lamont@ubuntu.com>  Tue,  5 Apr 2005 16:20:32 -0600
+
+livecd-rootfs (0.17) hoary; urgency=low
+
+  * locales cleanup.
+
+ -- LaMont Jones <lamont@ubuntu.com>  Mon,  7 Mar 2005 09:53:54 -0700
+
+livecd-rootfs (0.16) hoary; urgency=low
+
+  * Bunch of cleanup for kubunut-live.
+
+ -- LaMont Jones <lamont@ubuntu.com>  Thu,  3 Mar 2005 16:02:21 -0700
+
+livecd-rootfs (0.15) hoary; urgency=low
+
+  * Can't have arch-specific Depends.  Poor partimage.
+
+ -- LaMont Jones <lamont@debian.org>  Sun, 27 Feb 2005 14:31:27 -0700
+
+livecd-rootfs (0.14) hoary; urgency=low
+
+  * Remove /etc/resolv.conf from the chroot.  Closes: #6954
+
+ -- LaMont Jones <lamont@ubuntu.com>  Sat, 26 Feb 2005 18:39:22 -0700
+
+livecd-rootfs (0.13) hoary; urgency=low
+
+  * Add ubuntu-live
+
+ -- LaMont Jones <lamont@canonical.com>  Fri, 11 Feb 2005 18:25:24 -0700
+
+livecd-rootfs (0.12) hoary; urgency=low
+
+  * partimage likes having TERM=vt100, better than a nonexistant one.
+
+ -- LaMont Jones <lamont@debian.org>  Fri, 21 Jan 2005 23:36:41 -0700
+
+livecd-rootfs (0.11) hoary; urgency=low
+
+  * apt-get update in the final chroot
+  * Change partimage depend to be [ !64-bit ], use partimage conditionally
+
+ -- LaMont Jones <lamont@debian.org>  Fri, 21 Jan 2005 22:47:46 -0700
+
+livecd-rootfs (0.10) hoary; urgency=low
+
+  * Actually run /usr/sbin/locale-gen to generate the locales.
+  * Try zero-filling the fsimage file
+
+ -- LaMont Jones <lamont@debian.org>  Thu, 20 Jan 2005 19:14:45 -0700
+
+livecd-rootfs (0.9) hoary; urgency=low
+
+  * Can't divert conffiles, nor do we need to anymore.
+
+ -- LaMont Jones <lamont@debian.org>  Wed, 19 Jan 2005 16:54:45 -0700
+
+livecd-rootfs (0.8) hoary; urgency=low
+
+  * Pre-generate some locales (en_{US,GB,ZA}.UTF-8)
+
+ -- LaMont Jones <lamont@debian.org>  Sat, 15 Jan 2005 07:55:12 -0700
+
+livecd-rootfs (0.7) hoary; urgency=low
+
+  * rsync does not love what we do in cloop.  :(
+
+ -- LaMont Jones <lamont@debian.org>  Fri, 14 Jan 2005 22:13:03 -0700
+
+livecd-rootfs (0.6) hoary; urgency=low
+
+  * fix typos in livecd.sh.  sigh.
+
+ -- LaMont Jones <lamont@debian.org>  Fri, 14 Jan 2005 21:18:57 -0700
+
+livecd-rootfs (0.5) hoary; urgency=low
+
+  * Buildd various .cloop filesystems, to see if rsync loves us
+
+ -- LaMont Jones <lamont@debian.org>  Thu, 13 Jan 2005 12:34:30 -0700
+
+livecd-rootfs (0.4) hoary; urgency=low
+
+  * Need to actually umount the fsimg before compressing it.
+
+ -- LaMont Jones <lamont@debian.org>  Tue, 11 Jan 2005 15:21:32 -0700
+
+livecd-rootfs (0.3) hoary; urgency=low
+
+  * add manifest file
+
+ -- LaMont Jones <lamont@debian.org>  Sun,  9 Jan 2005 13:27:07 -0700
+
+livecd-rootfs (0.2) hoary; urgency=low
+
+  * Better divertion setup, fix sources.list
+  * copyright in file.
+  * Flush postfix's queue of the install mail
+
+ -- LaMont Jones <lamont@debian.org>  Fri,  7 Jan 2005 13:00:37 -0700
+
+livecd-rootfs (0.1) hoary; urgency=low
+
+  * Initial revision
+
+ -- LaMont Jones <lamont@canonical.com>  Thu,  6 Jan 2005 21:24:08 -0700
