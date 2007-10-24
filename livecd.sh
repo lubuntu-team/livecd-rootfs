@@ -264,6 +264,11 @@ link_in_boot = $link_in_boot
     mkdir -p ${ROOT}proc
     mount -tproc none ${ROOT}proc
 
+    case $ARCH+$SUBARCH in
+	powerpc+ps3)
+	    mkdir -p ${ROOT}spu;;
+    esac
+
     # In addition to the ones we got from apt, trust whatever the local system
     # believes in, but put things back afterwards.
     cp ${ROOT}etc/apt/trusted.gpg ${ROOT}etc/apt/trusted.gpg.$$
@@ -375,6 +380,10 @@ deb-src ${SECSRCMIRROR} ${STE}-security ${COMP}
 	ln -s livecd.${FSS}.initrd-"${SUBARCH}" livecd.${FSS}.initrd
 	ln -s livecd.${FSS}.kernel-"${SUBARCH}" livecd.${FSS}.kernel
     fi
+    case $ARCH+$SUBARCH in
+	powerpc+ps3)
+	    chroot ${ROOT} addgroup --system spu;;
+    esac
     # all done with the chroot; reset the debconf frontend, so Colin doesn't cry
     echo RESET debconf/frontend | chroot $ROOT debconf-communicate
     echo FSET debconf/frontend seen true | chroot $ROOT debconf-communicate
