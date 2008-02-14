@@ -1,3 +1,13 @@
+livecd-rootfs (0.51) hardy; urgency=low
+
+  [ Jonathan Riddell ]
+  * Add kubuntu-kde4
+
+  [ Steve Langasek ]
+  * Add new targets for {k,ed,}ubuntu-dvd
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Thu, 14 Feb 2008 10:15:33 -0800
+
 livecd-rootfs (0.50) hardy; urgency=low
 
   * Switch Xubuntu to libgoffice-gtk-0-6.
