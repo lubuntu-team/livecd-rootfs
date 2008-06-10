@@ -1,3 +1,19 @@
+livecd-rootfs (0.59) intrepid; urgency=low
+
+  [ Colin Watson ]
+  * Remove /boot/initrd.img-*.bak (LP: #64887).
+
+  [ Adam Conrad ]
+  * Resurrect the proposed option for livecd.sh/BuildLiveCD, so
+    we can build test images that include packages from proposed.
+  * Build with updates and security by default, which is a no-op
+    on development releases (where these suites are empty), but
+    a necessity for point-release image building.
+  * Copy bin/true from the chroot, not from the real root, so
+    image builds for i386/lpia work on amd64, as intended.
+
+ -- Adam Conrad <adconrad@ubuntu.com>  Tue, 10 Jun 2008 13:23:18 -0600
+
 livecd-rootfs (0.58) intrepid; urgency=low
 
   * Fix up BuildLiveCD to only pass -a$ARCH when building for intrepid,
