@@ -1,3 +1,11 @@
+livecd-rootfs (0.73) jaunty; urgency=low
+
+  * Add ubuntu-umpc support (equivalent to previous ubuntu-mobile).
+  * Add Mythbuntu support.
+  * BuildLiveCD: default to jaunty.
+
+ -- Mario Limonciello <superm1@ubuntu.com>  Tue, 04 Nov 2008 19:28:35 -0600
+
 livecd-rootfs (0.72) intrepid; urgency=low
 
   * Fix source mirror for -updates in generated sources.list (it was
