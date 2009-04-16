@@ -1,3 +1,11 @@
+livecd-rootfs (0.80) jaunty; urgency=low
+
+  * Add standard^ to UNR.
+  * Add mobile-live^ to LIVELIST for MID and UNR. (LP: #358095)
+  * Only build UNR from main, restricted and universe.
+
+ -- Steve Kowalik <stevenk@ubuntu.com>  Thu, 16 Apr 2009 20:46:30 +1000
+
 livecd-rootfs (0.79) jaunty; urgency=low
 
   * Use the --purge option to 'apt-get install', to ensure that any packages
