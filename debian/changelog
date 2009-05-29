@@ -1,3 +1,10 @@
+livecd-rootfs (0.83) karmic; urgency=low
+
+  * Don't fail if livecd.${FSS}.{kernel,initrd} already exist for some
+    reason.
+
+ -- Colin Watson <cjwatson@ubuntu.com>  Fri, 29 May 2009 11:38:18 +0200
+
 livecd-rootfs (0.82) karmic; urgency=low
 
   [ Loic Minier ]
