@@ -68,7 +68,7 @@ export DEBIAN_FRONTEND=noninteractive
 export LANG=C
 export CASPER_GENERATE_UUID=1
 SRCMIRROR=http://archive.ubuntu.com/ubuntu
-ARCH=$(dpkg --print-installation-architecture)
+ARCH=$(dpkg --print-architecture)
 OPTMIRROR=
 
 select_mirror () {
@@ -111,7 +111,7 @@ select_mirror () {
     fi
 }
 
-STE=gutsy
+STE=$(lsb_release -cs)
 EXCLUDE=""
 LIST=""
 SUBARCH=""
@@ -323,7 +323,7 @@ link_in_boot = $link_in_boot
 	hppa)		LIST="$LIST linux-hppa32 linux-hppa64";;
 	powerpc)	LIST="$LIST linux-powerpc linux-powerpc64-smp";;
 	sparc*)		LIST="$LIST linux-sparc64";;
-	armel)		LIST="$LIST linux-imx51 linux-headers-imx51";;
+	armel)		LIST="$LIST linux-imx51";;
 	*)		echo "Unknown architecture: no kernel."; exit 1;;
     esac
 
@@ -554,7 +554,7 @@ ${COMMENT}deb-src ${SECSRCMIRROR} ${STE}-security multiverse
       : > livecd.${FSS}.sort
     fi
 
-    mksquashfs ${ROOT} livecd.${FSS}.squashfs -nolzma -sort livecd.${FSS}.sort
+    mksquashfs ${ROOT} livecd.${FSS}.squashfs -sort livecd.${FSS}.sort
     chmod 644 livecd.${FSS}.squashfs
   }
 
