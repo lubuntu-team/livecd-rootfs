@@ -1,3 +1,15 @@
+livecd-rootfs (0.87) karmic; urgency=low
+
+  [ Timo Aaltonen ]
+  * livecd.sh: Don't mess with xorg.conf anymore, we don't install one
+    by default.
+
+  [ Colin Watson ]
+  * Clean up the chroot tree before trying to remove it, just in case
+    there's some leftover junk from a previous failed build.
+
+ -- Colin Watson <cjwatson@ubuntu.com>  Tue, 07 Jul 2009 13:07:47 +0100
+
 livecd-rootfs (0.86) karmic; urgency=low
 
   [ Scott Kitterman ]

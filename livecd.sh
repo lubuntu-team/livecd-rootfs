@@ -160,6 +160,9 @@ for FS in "$@"; do
 
     select_mirror
 
+    # Just in case there's some leftover junk here:
+    cleanup 2>/dev/null || true
+
     rm -rf ${ROOT}
 
     mkdir -p ${ROOT}var/cache/debconf
@@ -472,9 +475,6 @@ ${COMMENT}deb-src ${SECSRCMIRROR} ${STE}-security multiverse
 
     # get rid of the .debs - we don't need them.
     chroot ${ROOT} apt-get clean
-    rm -f ${ROOT}etc/X11/xorg.conf
-    # Restore an empty xorg.conf, else xserver-xorg postinst will be confused
-    touch ${ROOT}etc/X11/xorg.conf
     rm -f ${ROOT}var/lib/apt/lists/*_*
     rm -f ${ROOT}var/spool/postfix/maildrop/*
     # Removing update-notifier notes is now considered harmful:
