@@ -210,7 +210,6 @@ Flags: seen
 	ubuntu-netbook-remix)
 	    LIST="$LIST minimal^ standard^ ubuntu-netbook-remix^"
 	    LIVELIST="unr-live^ casper ubiquity"
-	    COMP="main restricted universe"
 	    ;;
 	mythbuntu)
 	    LIST="$LIST minimal^ standard^ mythbuntu-desktop^ mythbuntu-desktop"
@@ -326,7 +325,12 @@ link_in_boot = $link_in_boot
 	hppa)		LIST="$LIST linux-hppa32 linux-hppa64";;
 	powerpc)	LIST="$LIST linux-powerpc linux-powerpc64-smp";;
 	sparc*)		LIST="$LIST linux-sparc64";;
-	armel)		LIST="$LIST linux-imx51";;
+	armel)	
+			case "$SUBARCH" in 
+				imx51)	LIST="$LIST linux-imx51";;
+				dove)	LIST="$LIST linux-dove";;
+				*)	LIST="$LIST linux-imx51";;
+			esac;;
 	*)		echo "Unknown architecture: no kernel."; exit 1;;
     esac
 
