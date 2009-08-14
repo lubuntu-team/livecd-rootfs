@@ -212,7 +212,7 @@ Flags: seen
 	    LIVELIST="unr-live^ casper ubiquity"
 	    ;;
 	mythbuntu)
-	    LIST="$LIST minimal^ standard^ mythbuntu-desktop^ mythbuntu-desktop"
+	    LIST="$LIST minimal^ standard^ mythbuntu-desktop^"
 	    LIVELIST="mythbuntu-live^ laptop-detect casper lupin-casper"
 	    COMP="main restricted universe multiverse"
 	    ;;
@@ -337,19 +337,6 @@ link_in_boot = $link_in_boot
 			esac;;
 	*)		echo "Unknown architecture: no kernel."; exit 1;;
     esac
-
-    if [ $FS = "ubuntu-mid" ]; then
-      case "$SUBARCH" in
-        *proprietary*)
-          case "$SUBARCH" in
-            menlow*)
-              LIST="$LIST marvell-8686-firmware-9 psb-video libgl1-mesa-dri-psb xorg-modules-xpsb"
-              ;;
-          esac
-          LIST="$LIST mobile-usb-client-utils mobile-usb-host-utils"
-          ;;
-      esac
-    fi
 
     for x in $EXCLUDE; do
 	LIST="$(without_package "$x" "$LIST")"
