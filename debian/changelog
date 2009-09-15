@@ -1,3 +1,13 @@
+livecd-rootfs (0.96) karmic; urgency=low
+
+  [ Loïc Minier ]
+  * Append ${SUBARCH:+-$SUBARCH} to LOG filename for consistency.
+
+  [ Colin Watson ]
+  * Edubuntu's desktop task is edubuntu-desktop-gnome, not edubuntu-desktop.
+
+ -- Colin Watson <cjwatson@ubuntu.com>  Tue, 15 Sep 2009 13:13:10 +0100
+
 livecd-rootfs (0.95) karmic; urgency=low
 
   * Add the EXTRASOURCE apt source to the "pristine" /etc/apt/sources.list.
