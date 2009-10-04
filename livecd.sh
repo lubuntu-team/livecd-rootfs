@@ -68,6 +68,7 @@ export DEBIAN_FRONTEND=noninteractive
 export LANG=C
 export CASPER_GENERATE_UUID=1
 SRCMIRROR=http://archive.ubuntu.com/ubuntu
+PPAMIRROR=ppa.launchpad.net
 ARCH=$(dpkg --print-architecture)
 OPTMIRROR=
 INITRD_COMPRESSOR=lzma
@@ -117,7 +118,9 @@ EXCLUDE=""
 LIST=""
 SUBARCH=""
 PROPOSED=""
-EXTRASOURCE=""
+# must be in the "team / PPA name" form; e.g. "moblin/ppa"; the default PPA
+# name is "ppa", don't omit it
+PPA=""
 
 while getopts :d:e:i:I:m:S:s:a:p name; do case $name in
     d)  STE=$OPTARG;;
@@ -221,7 +224,7 @@ Flags: seen
 	    LIST="$LIST minimal^ ubuntu-moblin-remix"
 	    LIVELIST="ubuntu-moblin-live"
 	    COMP="main restricted universe"
-	    EXTRASOURCE="http://ppa.launchpad.net/moblin/ppa/ubuntu/"
+	    PPA="moblin/ppa"
 	    ;;
 	base)
 	    LIST="$LIST minimal^ standard^"
@@ -317,11 +320,6 @@ link_in_boot = $link_in_boot
 	    mkdir -p ${ROOT}spu;;
     esac
 
-    # In addition to the ones we got from apt, trust whatever the local system
-    # believes in, but put things back afterwards.
-    cp ${ROOT}etc/apt/trusted.gpg ${ROOT}etc/apt/trusted.gpg.$$
-    cat /etc/apt/trusted.gpg >> ${ROOT}etc/apt/trusted.gpg
-
     case $TARGETARCH in
 	amd64)		LIST="$LIST linux-generic";;
 	i386)		LIST="$LIST linux-generic";;
@@ -379,14 +377,36 @@ Pin-Priority: 900
     if [ "$PROPOSED" = "yes" ]; then
         echo deb $MIRROR ${STE}-proposed ${COMP} >> ${ROOT}etc/apt/sources.list
     fi
-    if [ -n "$EXTRASOURCE" ]; then
-	echo deb $EXTRASOURCE $STE ${COMP} >> ${ROOT}etc/apt/sources.list
+    if [ -n "$PPA" ]; then
+        echo deb http://$PPAMIRROR/$PPA/ubuntu ${STE} main >> ${ROOT}etc/apt/sources.list
+
+        # handle PPAs named "ppa" specially; their Origin field in the Release
+        # file does not end with "-ppa" for backwards compatibility
+        origin="${PPA%/ppa}"
+        origin="${origin/\//-}"
+        touch ${ROOT}etc/apt/preferences
+        cat << @@EOF >> ${ROOT}etc/apt/preferences
+Package: *
+Pin: release o=LP-PPA-$origin
+Pin-Priority: 550
+@@EOF
     fi
-    chroot $ROOT apt-get update
+
     if [ "$FS" = "ubuntu-moblin-remix" ]; then
-	chroot $ROOT apt-get -y --force-yes install ubuntu-moblin-ppa-keyring
 	chroot $ROOT apt-get update
+	chroot $ROOT apt-get -y --force-yes install ubuntu-moblin-ppa-keyring
+	# promote Release.gpg from APT's lists/partial/ to lists/
+	chroot $ROOT apt-get update
+	# workaround LP #442082
+	rm -f ${ROOT}var/cache/apt/{,src}pkgcache.bin
     fi
+
+    # In addition to the ones we got from apt, trust whatever the local system
+    # believes in, but put things back afterwards.
+    cp ${ROOT}etc/apt/trusted.gpg ${ROOT}etc/apt/trusted.gpg.$$
+    cat /etc/apt/trusted.gpg >> ${ROOT}etc/apt/trusted.gpg
+
+    chroot $ROOT apt-get update
     chroot $ROOT apt-get -y --purge dist-upgrade </dev/null
     chroot $ROOT apt-get -y --purge install $LIST </dev/null
 
@@ -491,8 +511,26 @@ ${COMMENT}deb-src ${SRCMIRROR} ${STE}-updates multiverse
 ${COMMENT}deb ${SECMIRROR} ${STE}-security multiverse
 ${COMMENT}deb-src ${SECSRCMIRROR} ${STE}-security multiverse
 @@EOF
-    if [ -n "$EXTRASOURCE" ]; then
-	echo deb $EXTRASOURCE $STE ${COMP} >> ${ROOT}etc/apt/sources.list
+    if [ -n "$PPA" ]; then
+    cat << @@EOF >> ${ROOT}etc/apt/sources.list
+
+## The following unsupported and untrusted Personal Archives (PPAs) were used
+## to create the base image of this system
+deb http://$PPAMIRROR/$PPA/ubuntu ${STE} main
+deb-src http://$PPAMIRROR/$PPA/ubuntu ${STE} main
+@@EOF
+
+        # handle PPAs named "ppa" specially; their Origin field in the Release
+        # file does not end with "-ppa" for backwards compatibility
+        origin="${PPA%/ppa}"
+        origin="${origin/\//-}"
+        touch ${ROOT}etc/apt/preferences
+        cat << @@EOF >> ${ROOT}etc/apt/preferences
+Explanation: This prefers the Personal Archive $PPA over the other sources
+Package: *
+Pin: release o=LP-PPA-$origin
+Pin-Priority: 550
+@@EOF
     fi
     mv ${ROOT}etc/apt/trusted.gpg.$$ ${ROOT}etc/apt/trusted.gpg
 

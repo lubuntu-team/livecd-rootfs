@@ -1,3 +1,44 @@
+livecd-rootfs (0.99) karmic; urgency=low
+
+  * Revert 0.98 change; it's actually much more wide-ranging than I thought as
+    it would cause each livefs build on a subarch to rotate the timestamped
+    dir and hence would mask the previous builds; and even if that would be
+    fixed, arch-indepedent filenames such as manifest/kernel/initrd/etc.
+    symlinks would clash.
+  * Rename EXTRASOURCE to PPA and also define PPAMIRROR near top, set to
+    ppa.launchpad.net.  Changing to PPA avoids listing non-main components in
+    deb lines and having an useful comment in sources.list.
+  * Create an etc/apt/preferences file Pin-ing the PPA at 550 when there's
+    one.
+  * Gross hack to reinstall the moblin-ppa-keyring package after the trusted
+    db is put back in place since otherwise we miss the GPG key we wanted.
+  * Fix computation of Origin fields for PPAs named "ppa" and document the
+    exception along with the expected format for the PPA var in comments.
+    LP: #434243
+  * Move the code taking a backup of the APT trusted keyring to just after
+    sources.list generation (this is safe since there's no apt call inbetween)
+    and move the installation of the moblin-archive-keyring just before the
+    backup is taken; this allows dropping the hack of reinstalling the keyring
+    package at the end of the build.  It might break apt-get update for UMR
+    before the host keys are appended to the trusted keyring though.
+  * Remove ${ROOT}var/cache/apt/{,src}pkgcache.bin after installing the moblin
+    keyring package, workaround for LP #442082.
+  * Run apt-get update one more time after installing the moblin keyring
+    package, to promote Release.gpg from APT's lists/partial/ to lists/.
+    Ideally APT would do that for us on apt-key updates.
+  * Also change computation of Origin field for PPAs when generating the final
+    APT config; ideally we wouldn't have to duplicate this code though;
+    perhaps the removal of APT preferences file can be limited to hardy too.
+    Also add an Explanation: header in the final preferences.
+
+ -- Loïc Minier <loic.minier@ubuntu.com>  Sun, 04 Oct 2009 13:53:40 +0200
+
+livecd-rootfs (0.98) karmic; urgency=low
+
+  * Put livecd logs into project/ not project-subarch/.
+
+ -- Loïc Minier <loic.minier@ubuntu.com>  Wed, 23 Sep 2009 09:46:43 +0200
+
 livecd-rootfs (0.97) karmic; urgency=low
 
   [ Colin Watson ]
