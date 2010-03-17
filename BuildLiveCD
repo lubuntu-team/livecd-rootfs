@@ -27,7 +27,7 @@ fi
 ARCH=$(dpkg --print-architecture)
 SUBARCH=""
 SUBARCHARG=""
-DEFAULTSUITE="karmic"
+DEFAULTSUITE="lucid"
 NEWSUITE=""
 SUITES=""
 PROPOSED=""
@@ -39,6 +39,11 @@ if [ "$1" = '-s' ]; then
 fi
 if [ "$1" = '-p' ]; then
     PROPOSED='-p'
+    shift
+fi
+if [ "$1" = '--archive' ]; then
+    shift
+    PROPOSED="$PROPOSED -m $1"
     shift
 fi
 if [ "$1" = '-d' ]; then

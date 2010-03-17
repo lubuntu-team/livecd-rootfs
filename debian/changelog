@@ -1,3 +1,11 @@
+livecd-rootfs (1.107) lucid; urgency=low
+
+  * Deliver edubuntu/i386 ltsp sqaushfs image. LP: #531546
+  * fix typo in deciding to remove /usr/share/icons/*/icon-theme.cache
+    on kubuntu-ish images.
+
+ -- LaMont Jones <lamont@ubuntu.com>  Wed, 17 Mar 2010 15:07:12 -0600
+
 livecd-rootfs (1.106) lucid; urgency=low
 
   * Delete Gnome icon cache for Kubuntu images
