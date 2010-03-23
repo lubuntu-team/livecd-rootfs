@@ -1,3 +1,11 @@
+livecd-rootfs (1.108) lucid; urgency=low
+
+  * Deliver edubuntu-dvd/i386 ltsp squashfs image, since that's what
+    actually gets built these days.
+  * Update maintainer field.
+
+ -- LaMont Jones <lamont@ubuntu.com>  Mon, 22 Mar 2010 21:40:59 -0600
+
 livecd-rootfs (1.107) lucid; urgency=low
 
   * Deliver edubuntu/i386 ltsp sqaushfs image. LP: #531546

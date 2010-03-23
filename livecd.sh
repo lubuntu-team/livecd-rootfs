@@ -649,7 +649,7 @@ Pin-Priority: 550
 
     # LTSP chroot building (only in 32bit and for Edubuntu (DVD))
     case $FS in
-        edubuntu)
+        edubuntu-dvd)
             if [ "$TARGETARCH" = "i386" ]; then
                 # Make sure we don't make everything fail here
                 ltsp-build-client --base $(pwd) --mirror $MIRROR --arch $TARGETARCH --dist $STE --chroot ltsp-live --purge-chroot --skipimage || true
