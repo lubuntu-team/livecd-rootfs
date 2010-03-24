@@ -1,3 +1,10 @@
+livecd-rootfs (1.109) lucid; urgency=low
+
+  * if the ltsp squashfs image build fails, fail the build.
+  * use mksquashfs directly, instead of ltsp-update-image
+
+ -- LaMont Jones <lamont@ubuntu.com>  Wed, 24 Mar 2010 05:15:39 -0600
+
 livecd-rootfs (1.108) lucid; urgency=low
 
   * Deliver edubuntu-dvd/i386 ltsp squashfs image, since that's what

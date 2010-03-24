@@ -651,9 +651,8 @@ Pin-Priority: 550
     case $FS in
         edubuntu-dvd)
             if [ "$TARGETARCH" = "i386" ]; then
-                # Make sure we don't make everything fail here
-                ltsp-build-client --base $(pwd) --mirror $MIRROR --arch $TARGETARCH --dist $STE --chroot ltsp-live --purge-chroot --skipimage || true
-                ltsp-update-image --base $(pwd) --arch ltsp-live || true
+                ltsp-build-client --base $(pwd) --mirror $MIRROR --arch $TARGETARCH --dist $STE --chroot ltsp-live --purge-chroot --skipimage
+                mksquashfs $(pwd)/ltsp-live $(pwd)/images/ltsp-live.img -noF -noD -noI -no-exports -e cdrom
                 rm -Rf $(pwd)/ltsp-live
                 if [ -f $(pwd)/images/ltsp-live.img ]; then
                     mv $(pwd)/images/ltsp-live.img livecd.$FS-ltsp.squashfs
