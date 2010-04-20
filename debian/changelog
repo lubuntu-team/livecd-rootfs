@@ -1,3 +1,18 @@
+livecd-rootfs (1.114) lucid; urgency=low
+
+  * make sure STRIP_VMLINUZ=no is set for omap, also change the code to only
+    use the case statement for matching subarches instead of adding an extra
+    check.
+  * fix the comment for STRIP_VMLINUZ to reflect reality.
+
+ -- Oliver Grawert <ogra@ubuntu.com>  Tue, 20 Apr 2010 13:20:10 +0200
+
+livecd-rootfs (1.113) lucid; urgency=low
+
+  * fix typo
+
+ -- LaMont Jones <lamont@ubuntu.com>  Sat, 27 Mar 2010 21:10:16 -0600
+
 livecd-rootfs (1.112) lucid; urgency=low
 
   * ltsp image needs to be readable
