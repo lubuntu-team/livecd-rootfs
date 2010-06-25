@@ -1,3 +1,16 @@
+livecd-rootfs (1.121) maverick; urgency=low
+
+  [ LaMont Jones ]
+  * BuildLiveCD: only pass -f if we were told it, since older chroots don't
+    support it.
+
+  [ Oliver Grawert ]
+  * instead of special casing for only one arch, base jasper vs casper
+    inclusion on the IMAGETYPE variable
+  * depend on genext2fs
+
+ -- Oliver Grawert <ogra@ubuntu.com>  Fri, 25 Jun 2010 17:30:28 +0200
+
 livecd-rootfs (1.120) maverick; urgency=low
 
   * add special case to ubuntu-netbook on omap3 and 4, we want jasper instead of
