@@ -693,8 +693,14 @@ Pin-Priority: 550
     # No point keeping Gnome icon cache around for Kubuntu
     if [ "$FS" = "kubuntu" ] || \
        [ "$FS" = "kubuntu-netbook" ] || \
-       [ "$FS" = "kubuntu-mobile"] ; then
+       [ "$FS" = "kubuntu-mobile" ]; then
         rm -f ${ROOT}/usr/share/icons/*/icon-theme.cache
+    fi
+
+    if [ "$FS" = ubuntu-netbook ] && \
+       [ "$TARGETARCH+$SUBARCH" = armel+dove ] && \
+       [ -e "$ROOT/usr/share/xsessions/une-efl.desktop" ]; then
+        chroot $ROOT /usr/lib/gdm/gdm-set-default-session une-efl
     fi
 
     # all done with the chroot; reset the debconf frontend, so Colin doesn't cry
