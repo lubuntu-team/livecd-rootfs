@@ -50,7 +50,7 @@ BINARY_REMOVE_LINUX=:
 
 case $IMAGEFORMAT in
 	ext2|ext3)
-		OPTS="${OPTS:+$OPTS }--initramfs none"
+		OPTS="${OPTS:+$OPTS }--initramfs none --chroot-filesystem $IMAGEFORMAT"
 		add_package live jasper
 		;;
 
@@ -97,6 +97,12 @@ case $PROJECT in
 	mythbuntu)
 		add_task install minimal standard mythbuntu-desktop
 		add_task live mythbuntu-live
+		COMPONENTS='main restricted universe multiverse'
+		;;
+
+	lubuntu)
+		add_task install minimal standard lubuntu-desktop
+		add_task live lubuntu-live
 		COMPONENTS='main restricted universe multiverse'
 		;;
 
