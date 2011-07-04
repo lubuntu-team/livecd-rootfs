@@ -1,3 +1,9 @@
+livecd-rootfs (2.10) oneiric; urgency=low
+
+  * Initial Wubi support.
+
+ -- Evan Dandrea <ev@ubuntu.com>  Mon, 04 Jul 2011 10:54:07 +0100
+
 livecd-rootfs (2.9) oneiric; urgency=low
 
   * Rename the ARM headless image to ubuntu-server for oneiric
