@@ -1,3 +1,10 @@
+livecd-rootfs (2.12) oneiric; urgency=low
+
+  [ Colin Watson ]
+  * Re-enable deb-src lines for Edubuntu (LP: #806428).
+
+ -- Evan Dandrea <ev@ubuntu.com>  Wed, 06 Jul 2011 16:57:39 +0100
+
 livecd-rootfs (2.11) oneiric; urgency=low
 
   * Pass SUBPROJECT to live-build.
