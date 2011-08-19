@@ -1,3 +1,9 @@
+livecd-rootfs (2.28) oneiric; urgency=low
+
+  * Switch ubuntu-dvd to ubuntu-usb and ubuntu-usb-live tasks.
+
+ -- Colin Watson <cjwatson@ubuntu.com>  Fri, 19 Aug 2011 10:56:49 +0100
+
 livecd-rootfs (2.27) oneiric; urgency=low
 
   * fix typo in abootimg call
