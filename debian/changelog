@@ -1,3 +1,11 @@
+livecd-rootfs (2.43) oneiric; urgency=low
+
+  * BuildLiveCD: Stop building ubuntu-defaults-image images with universe.
+    ubuntu-defaults-zh-cn is in main now, and it causes images to overflow
+    due to the extra /var/lib/apt/lists indexes.
+
+ -- Martin Pitt <martin.pitt@ubuntu.com>  Fri, 07 Oct 2011 18:29:59 +0200
+
 livecd-rootfs (2.42) oneiric; urgency=low
 
   * Explicitly select ubuquity frontend as well, to match the
@@ -21,7 +29,7 @@ livecd-rootfs (2.40) oneiric; urgency=low
 
 livecd-rootfs (2.39) oneiric; urgency=low
 
-  * Explicitely select the oem-config frontend to install on a
+  * Explicitly select the oem-config frontend to install on a
     per-project basis, to match the ubiquity in use (LP: #820514)
 
  -- Adam Conrad <adconrad@ubuntu.com>  Mon, 26 Sep 2011 19:14:56 -0600
