@@ -1,3 +1,10 @@
+livecd-rootfs (2.46) precise; urgency=low
+
+  * Guard legacy cloop code in a [ -f ], so it stops failing.
+  * Don't add the LIVE_TASK for any PREINSTALLED images.
+
+ -- Adam Conrad <adconrad@ubuntu.com>  Mon, 09 Jan 2012 03:23:26 -0700
+
 livecd-rootfs (2.45) precise; urgency=low
 
   * Change default suite to precise (better late than never?)
