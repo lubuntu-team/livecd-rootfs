@@ -1,3 +1,14 @@
+livecd-rootfs (2.56) precise; urgency=low
+
+  [ Ante Karamatić ]
+  * Add cloud-live project to livecd.sh and BuildLiveCD.
+
+  [ Jonathan Riddell ]
+  * Replace kubuntu-mobile with kubuntu-active
+  * Remove kubuntu-netbook, now just part of kubuntu-desktop
+
+ -- Jonathan Riddell <jriddell@ubuntu.com>  Wed, 22 Feb 2012 11:58:20 +0000
+
 livecd-rootfs (2.55) precise; urgency=low
 
   * Build Lubuntu with --no-install-recommends, to match its seed structure
