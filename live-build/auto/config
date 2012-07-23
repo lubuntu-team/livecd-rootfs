@@ -199,6 +199,7 @@ case $PROJECT in
 		add_task install minimal standard server
 		COMPONENTS='main'
 		PREINSTALL_POOL_SEEDS='server-ship'
+		OPTS="${OPTS:+$OPTS }--debian-installer=live"
 		;;
 
 	ubuntu-core)
@@ -284,7 +285,9 @@ boot/initrd.img-*
 EOF
 fi
 
-ln -s /usr/share/live/build/examples/hooks/all_chroot_pyc-purge.sh config/chroot_local-hooks/
+if [ "$PROJECT" != ubuntu-server ]; then
+	ln -s /usr/share/live/build/examples/hooks/all_chroot_pyc-purge.sh config/chroot_local-hooks/
+fi
 
 case $PROJECT in
 	kubuntu|kubuntu-active)
