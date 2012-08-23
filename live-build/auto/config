@@ -39,8 +39,26 @@ add_task ()
 	shift
 	local task
 
+	# The removal of direct task installation support from live-build
+	# poses some problems.  If the chroot has multiarch configured - for
+	# example, if we're building for amd64 - then dumpavail will show
+	# foreign-architecture packages which will have their own Task
+	# lines, but which we don't want to install.  (Compare
+	# PackageContainerInterface::FromTask in apt, which restricts task
+	# expansion to the native architecture.)  We therefore restrict our
+	# search to stanzas with Architecture: $ARCH or all.
+	#
+	# However, even this may not be accurate enough.  At the moment I
+	# have no idea what happens if an Architecture: all package has
+	# different Task fields on different architectures.  This is
+	# probably a lurking timebomb that we need to fix.  In the meantime,
+	# the Architecture restriction at least saves us from abject
+	# failure.
+
 	for task; do
-		echo "!chroot chroot apt-cache dumpavail | grep-dctrl -nsPackage -wFTask $task" >> "config/package-lists/livecd-rootfs.list.chroot_$pass"
+		# We need a ridiculous number of backslashes to protect
+		# parentheses from eval.
+		echo "!chroot chroot apt-cache dumpavail | grep-dctrl -nsPackage \\\\\\( -XFArchitecture $ARCH -o -XFArchitecture all \\\\\\) -a -wFTask $task" >> "config/package-lists/livecd-rootfs.list.chroot_$pass"
 	done
 }
 
@@ -229,7 +247,7 @@ case $PROJECT in
 		;;
 esac
 
-if [ "$PREINSTALLED" != "true" ]; then
+if [ "$PREINSTALLED" != "true" ] && [ "$LIVE_TASK" ]; then
 	add_task live "$LIVE_TASK"
 fi
 
@@ -291,15 +309,6 @@ case $PROJECT in
 		;;
 esac
 
-case $PROJECT in
-	ubuntu-server)
-		cat > config/hooks/100-remove-fstab.chroot <<EOF
-#! /bin/sh
-rm -f /etc/fstab
-EOF
-		;;
-esac
-
 case $SUBPROJECT in
 	wubi)
 		add_binary_hook build-wubildr
@@ -309,6 +318,7 @@ esac
 lb config noauto \
 	--mode ubuntu \
 	--distribution "$SUITE" \
+	--architectures "$ARCH" \
 	--bootstrap-keyring ubuntu-keyring \
 	--binary-images "$BINARY_IMAGES" \
 	--memtest "$MEMTEST" \
@@ -325,6 +335,15 @@ lb config noauto \
 
 echo "LB_CHROOT_HOOKS=\"$CHROOT_HOOKS\"" >> config/chroot
 echo "LB_BINARY_HOOKS=\"$BINARY_HOOKS\"" >> config/binary
+
+case $PROJECT in
+	ubuntu-server)
+		cat > config/hooks/100-remove-fstab.chroot <<EOF
+#! /bin/sh
+rm -f /etc/fstab
+EOF
+		;;
+esac
 
 if $BINARY_REMOVE_LINUX; then
 	cat > config/binary_rootfs/excludes << EOF
