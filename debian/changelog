@@ -1,3 +1,9 @@
+livecd-rootfs (2.81) quantal; urgency=low
+
+  * live-build/auto/config: Disable zsync for BINARYFORMAT=iso*|usb* builds.
+
+ -- Colin Watson <cjwatson@ubuntu.com>  Thu, 30 Aug 2012 23:44:33 +0100
+
 livecd-rootfs (2.80) quantal; urgency=low
 
   * add pvr-omap4 driver to omap4 image builds for everything but
