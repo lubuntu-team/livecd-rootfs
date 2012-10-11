@@ -1,3 +1,11 @@
+livecd-rootfs (2.90) quantal; urgency=low
+
+  * live-build/auto/build: If they exist, link *.efi.signed versions of the
+    kernel to binary/$INITFS/kernel-$FLAVOUR rather than the unsigned
+    versions.
+
+ -- Colin Watson <cjwatson@ubuntu.com>  Thu, 11 Oct 2012 02:22:34 +0100
+
 livecd-rootfs (2.89) quantal; urgency=low
 
   * fix lubuntu and xubuntu preinstalled handling so we end up with the
