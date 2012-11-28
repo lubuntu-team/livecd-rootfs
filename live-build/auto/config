@@ -127,6 +127,13 @@ case $PROJECT in
 	ubuntu|ubuntu-dvd)
 		add_task install minimal standard ubuntu-desktop
 		LIVE_TASK='ubuntu-live'
+		# This should be done automatically, but nothing updates
+		# tasks post-release at the moment.
+		case $ARCH in
+			amd64)
+				add_package live linux-signed-generic-lts-quantal
+				;;
+		esac
 		;;
 
 	kubuntu|kubuntu-dvd)
@@ -143,6 +150,13 @@ case $PROJECT in
 	edubuntu|edubuntu-dvd)
 		add_task install minimal standard edubuntu-desktop-gnome
 		LIVE_TASK='edubuntu-live'
+		# This should be done automatically, but nothing updates
+		# tasks post-release at the moment.
+		case $ARCH in
+			amd64)
+				add_package live linux-signed-generic-lts-quantal
+				;;
+		esac
 		COMPONENTS='main restricted universe'
 		;;
 
