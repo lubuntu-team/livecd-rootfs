@@ -134,6 +134,11 @@ case $PROJECT in
 				add_package live linux-signed-generic-lts-quantal
 				;;
 		esac
+		case $ARCH in
+			amd64|i386)
+				KERNEL_FLAVOURS=generic-lts-quantal
+				;;
+		esac
 		;;
 
 	kubuntu|kubuntu-dvd)
@@ -158,6 +163,11 @@ case $PROJECT in
 				;;
 		esac
 		COMPONENTS='main restricted universe'
+		case $ARCH in
+			amd64|i386)
+				KERNEL_FLAVOURS=generic-lts-quantal
+				;;
+		esac
 		;;
 
 	xubuntu)
@@ -288,6 +298,24 @@ lb config noauto \
 	--bootloader "$BOOTLOADER" \
 	--initramfs-compression lzma \
 	$OPTS
+
+# On some projects/architectures, we want to use backported kernels with
+# improved hardware enablement.  Unfortunately, live-build doesn't have very
+# good support for the way these are laid out: the metapackages are
+# *-generic-lts-*, but the files on disk are *-generic.  We need some
+# contortions to persuade it to do the right thing.
+case $KERNEL_FLAVOURS in
+	*-lts-*)
+		cat >> config/binary << EOF
+
+case \${0##*/} in
+	lb_binary*|build)
+		LB_LINUX_FLAVOURS="$(echo "$KERNEL_FLAVOURS" | sed 's/-lts-[^ ]*//')"
+		;;
+esac
+EOF
+		;;
+esac
 
 if $BINARY_REMOVE_LINUX; then
 	cat > config/binary_rootfs/excludes << EOF
