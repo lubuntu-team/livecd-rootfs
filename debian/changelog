@@ -1,3 +1,11 @@
+livecd-rootfs (2.65.6) UNRELEASED; urgency=low
+
+  * live-build/auto/build: Use safer code for kernel handling that doesn't
+    cause failures under 'set -o pipefail' in ubuntu-defaults-image
+    (LP: #1097039).
+
+ -- Colin Watson <cjwatson@ubuntu.com>  Mon, 07 Jan 2013 21:26:46 +0000
+
 livecd-rootfs (2.65.5) precise-proposed; urgency=low
 
   * Make sure the $PREFIX.kernel-$FLAVOUR.efi.signed output is
