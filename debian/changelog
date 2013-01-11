@@ -1,3 +1,12 @@
+livecd-rootfs (2.65.7) UNRELEASED; urgency=low
+
+  * live-build/auto/config: Build Ubuntu and Edubuntu images with X
+    enablement stack on amd64 and i386 (LP: #1098512).  Note that this
+    requires switching those images to be built largely using metapackages
+    rather than tasks.
+
+ -- Colin Watson <cjwatson@ubuntu.com>  Fri, 11 Jan 2013 10:36:20 +0000
+
 livecd-rootfs (2.65.6) precise; urgency=low
 
   * live-build/auto/build: Use safer code for kernel handling that doesn't

@@ -125,7 +125,18 @@ esac
 
 case $PROJECT in
 	ubuntu|ubuntu-dvd)
-		add_task install minimal standard ubuntu-desktop
+		case $ARCH in
+			amd64|i386)
+				# We have to use metapackages rather than
+				# tasks, so that the X enablement stack can
+				# be used rather than the normal stack.
+				add_package install ubuntu-minimal ubuntu-standard ubuntu-desktop
+				add_package install xserver-xorg-lts-quantal
+				;;
+			*)
+				add_task install minimal standard ubuntu-desktop
+				;;
+		esac
 		LIVE_TASK='ubuntu-live'
 		# This should be done automatically, but nothing updates
 		# tasks post-release at the moment.
@@ -153,7 +164,18 @@ case $PROJECT in
 		;;
 
 	edubuntu|edubuntu-dvd)
-		add_task install minimal standard edubuntu-desktop-gnome
+		case $ARCH in
+			amd64|i386)
+				# We have to use metapackages rather than
+				# tasks, so that the X enablement stack can
+				# be used rather than the normal stack.
+				add_package install ubuntu-minimal ubuntu-standard edubuntu-desktop
+				add_package install xserver-xorg-lts-quantal
+				;;
+			*)
+				add_task install minimal standard edubuntu-desktop-gnome
+				;;
+		esac
 		LIVE_TASK='edubuntu-live'
 		# This should be done automatically, but nothing updates
 		# tasks post-release at the moment.
