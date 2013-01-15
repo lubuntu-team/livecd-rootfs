@@ -130,7 +130,10 @@ case $PROJECT in
 				# We have to use metapackages rather than
 				# tasks, so that the X enablement stack can
 				# be used rather than the normal stack.
-				add_package install ubuntu-minimal ubuntu-standard ubuntu-desktop
+				# This changes dependency resolution
+				# sufficiently that some manual hints are
+				# needed.
+				add_package install ubuntu-minimal ubuntu-standard ubuntu-desktop libqt4-sql-sqlite notify-osd
 				add_package install xserver-xorg-lts-quantal
 				;;
 			*)
@@ -169,7 +172,10 @@ case $PROJECT in
 				# We have to use metapackages rather than
 				# tasks, so that the X enablement stack can
 				# be used rather than the normal stack.
-				add_package install ubuntu-minimal ubuntu-standard edubuntu-desktop
+				# This changes dependency resolution
+				# sufficiently that some manual hints are
+				# needed.
+				add_package install ubuntu-minimal ubuntu-standard edubuntu-desktop libqt4-sql-sqlite notify-osd
 				add_package install xserver-xorg-lts-quantal
 				;;
 			*)
