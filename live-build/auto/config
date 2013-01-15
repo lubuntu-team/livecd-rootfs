@@ -214,9 +214,27 @@ case $PROJECT in
 		;;
 
 	mythbuntu)
-		add_task install minimal standard mythbuntu-desktop
+		case $ARCH in
+			amd64|i386)
+				# We have to use metapackages rather than
+				# tasks, so that the X enablement stack can
+				# be used rather than the normal stack.
+				# This changes dependency resolution
+				# sufficiently that some manual hints are
+				# needed.
+				add_package install ubuntu-minimal ubuntu-standard mythbuntu-desktop notify-osd
+				;;
+			*)
+				add_task install minimal standard mythbuntu-desktop
+				;;
+		esac
 		LIVE_TASK='mythbuntu-live'
 		COMPONENTS='main restricted universe multiverse'
+		case $ARCH in
+			amd64|i386)
+				KERNEL_FLAVOURS=generic-lts-quantal
+				;;
+		esac
 		;;
 
 	lubuntu)
