@@ -223,6 +223,7 @@ case $PROJECT in
 				# sufficiently that some manual hints are
 				# needed.
 				add_package install ubuntu-minimal ubuntu-standard mythbuntu-desktop notify-osd
+				add_package install xserver-xorg-lts-quantal
 				;;
 			*)
 				add_task install minimal standard mythbuntu-desktop

@@ -1,3 +1,9 @@
+livecd-rootfs (2.65.9) UNRELEASED; urgency=low
+
+  * Add xserver-xorg-lts-quantal to Mythbuntu amd64/i386 as well.
+
+ -- Colin Watson <cjwatson@ubuntu.com>  Tue, 15 Jan 2013 17:49:54 +0000
+
 livecd-rootfs (2.65.8) precise; urgency=low
 
   * live-build/auto/config:
