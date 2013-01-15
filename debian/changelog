@@ -1,11 +1,11 @@
-livecd-rootfs (2.65.8) UNRELEASED; urgency=low
+livecd-rootfs (2.65.8) precise; urgency=low
 
   * live-build/auto/config:
     - Add some manual hints to work around slightly different dependency
       resolution for metapackages vs. tasks.
     - Use kernel and X enablement stacks for Mythbuntu amd64/i386 too.
 
- -- Colin Watson <cjwatson@ubuntu.com>  Tue, 15 Jan 2013 17:27:59 +0000
+ -- Colin Watson <cjwatson@ubuntu.com>  Tue, 15 Jan 2013 17:31:16 +0000
 
 livecd-rootfs (2.65.7) precise; urgency=low
 
