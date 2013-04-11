@@ -1,3 +1,17 @@
+livecd-rootfs (2.119) raring; urgency=low
+
+  [ Colin Watson ]
+  * BuildLiveCD: Link livecd-${NOW}-${ARCH}.out to livecd-${ARCH}.out, to
+    make it easier for cdimage to fetch the latest build log for failure
+    notification mails.
+
+  [ Oliver Grawert ]
+  * the android build system is sadly full of bashisms (even though it has
+    generic .sh suffixes and no shebang line) until this is fixed use a
+    /bin/bash shebang
+
+ -- Oliver Grawert <ogra@ubuntu.com>  Thu, 11 Apr 2013 11:28:08 +0200
+
 livecd-rootfs (2.118) raring; urgency=low
 
   * normalize the naming scheme for ubuntu-touch-android.sh output
