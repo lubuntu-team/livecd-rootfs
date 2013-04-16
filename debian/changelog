@@ -1,3 +1,22 @@
+livecd-rootfs (2.123) raring; urgency=low
+
+  * fix typos in debootstrap line of ubuntu-touch-android.sh
+
+ -- Oliver Grawert <ogra@ubuntu.com>  Tue, 16 Apr 2013 11:07:44 +0200
+
+livecd-rootfs (2.122) raring; urgency=low
+
+  * redo ubuntu-touch-android.sh to use its own build chroot since we can not
+    add universe support to the livefs builder chroot
+
+ -- Oliver Grawert <ogra@ubuntu.com>  Mon, 15 Apr 2013 20:18:32 +0200
+
+livecd-rootfs (2.121) raring; urgency=low
+
+  * ubuntu-touch-android.sh: enable universe in the build chroot
+
+ -- Oliver Grawert <ogra@ubuntu.com>  Mon, 15 Apr 2013 18:40:55 +0200
+
 livecd-rootfs (2.120) raring; urgency=low
 
   * fix typo in shebang of ubuntu-touch-android.sh
