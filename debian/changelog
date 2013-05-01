@@ -1,3 +1,15 @@
+livecd-rootfs (2.125) saucy; urgency=low
+
+  * live-build/auto/config: Add basic ubuntu-touch enablement (based on
+    patch from Oliver Grawert, for which thanks).
+  * live-build/auto/config, live-build/ubuntu-touch: Copy a huge pile of
+    customisation by Ricardo Salveti from
+    lp:~phablet-team/touch-preview-images/ubuntu-build-phablet, which should
+    be close to enough for the architecture-independent parts of
+    ubuntu-touch builds.
+
+ -- Colin Watson <cjwatson@ubuntu.com>  Wed, 01 May 2013 12:05:41 -0700
+
 livecd-rootfs (2.124) raring; urgency=low
 
   * drop the namespace in mount options of ubuntu-touch-android.sh,
