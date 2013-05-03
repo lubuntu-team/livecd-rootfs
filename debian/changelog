@@ -1,3 +1,10 @@
+livecd-rootfs (2.128) saucy; urgency=low
+
+  * Don't include lupin-casper in ubuntu-touch images.
+  * Use gzip compression for ubuntu-touch tarballs.
+
+ -- Colin Watson <cjwatson@ubuntu.com>  Fri, 03 May 2013 08:51:24 -0700
+
 livecd-rootfs (2.127) saucy; urgency=low
 
   * Install metapackages rather than tasks for ubuntu-touch, since it still
