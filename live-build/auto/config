@@ -134,7 +134,7 @@ case $PROJECT in
 				# sufficiently that some manual hints are
 				# needed.
 				add_package install ubuntu-minimal ubuntu-standard ubuntu-desktop libqt4-sql-sqlite notify-osd
-				add_package install xserver-xorg-lts-quantal
+				add_package install xserver-xorg-lts-raring
 				;;
 			*)
 				add_task install minimal standard ubuntu-desktop
@@ -145,12 +145,12 @@ case $PROJECT in
 		# tasks post-release at the moment.
 		case $ARCH in
 			amd64)
-				add_package live linux-signed-generic-lts-quantal
+				add_package live linux-signed-generic-lts-raring
 				;;
 		esac
 		case $ARCH in
 			amd64|i386)
-				KERNEL_FLAVOURS=generic-lts-quantal
+				KERNEL_FLAVOURS=generic-lts-raring
 				;;
 		esac
 		;;
@@ -176,7 +176,7 @@ case $PROJECT in
 				# sufficiently that some manual hints are
 				# needed.
 				add_package install ubuntu-minimal ubuntu-standard edubuntu-desktop libqt4-sql-sqlite notify-osd
-				add_package install xserver-xorg-lts-quantal
+				add_package install xserver-xorg-lts-raring
 				;;
 			*)
 				add_task install minimal standard edubuntu-desktop-gnome
@@ -187,13 +187,13 @@ case $PROJECT in
 		# tasks post-release at the moment.
 		case $ARCH in
 			amd64)
-				add_package live linux-signed-generic-lts-quantal
+				add_package live linux-signed-generic-lts-raring
 				;;
 		esac
 		COMPONENTS='main restricted universe'
 		case $ARCH in
 			amd64|i386)
-				KERNEL_FLAVOURS=generic-lts-quantal
+				KERNEL_FLAVOURS=generic-lts-raring
 				;;
 		esac
 		;;
@@ -223,7 +223,7 @@ case $PROJECT in
 				# sufficiently that some manual hints are
 				# needed.
 				add_package install ubuntu-minimal ubuntu-standard mythbuntu-desktop notify-osd
-				add_package install xserver-xorg-lts-quantal
+				add_package install xserver-xorg-lts-raring
 				;;
 			*)
 				add_task install minimal standard mythbuntu-desktop
@@ -233,7 +233,7 @@ case $PROJECT in
 		COMPONENTS='main restricted universe multiverse'
 		case $ARCH in
 			amd64|i386)
-				KERNEL_FLAVOURS=generic-lts-quantal
+				KERNEL_FLAVOURS=generic-lts-raring
 				;;
 		esac
 		;;

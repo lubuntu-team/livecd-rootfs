@@ -1,3 +1,9 @@
+livecd-rootfs (2.65.10) precise; urgency=low
+
+  * Move from lts-quantal to lts-raring packages for the point release.
+
+ -- Adam Conrad <adconrad@ubuntu.com>  Tue, 23 Jul 2013 12:58:37 +0100
+
 livecd-rootfs (2.65.9) precise; urgency=low
 
   * Add xserver-xorg-lts-quantal to Mythbuntu amd64/i386 as well.
