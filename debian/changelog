@@ -1,3 +1,12 @@
+livecd-rootfs (2.181) saucy; urgency=low
+
+  * Use new multiple-database scheme in click 0.4.3 to preinstall click
+    packages.
+  * Download core click packages from the right place when building images
+    outside the Canonical datacentre.
+
+ -- Colin Watson <cjwatson@ubuntu.com>  Thu, 05 Sep 2013 11:29:17 +0100
+
 livecd-rootfs (2.180) saucy; urgency=low
 
   * make sure the NM configuration mangling of touch images uses the sudo and
