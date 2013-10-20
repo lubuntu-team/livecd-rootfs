@@ -1,3 +1,9 @@
+livecd-rootfs (2.197) trusty; urgency=low
+
+  * Workaround to make ubuntu-touch build with older android package.
+
+ -- Stéphane Graber <stgraber@ubuntu.com>  Sun, 20 Oct 2013 16:52:29 -0400
+
 livecd-rootfs (2.196) saucy; urgency=low
 
   * Removing the PPAs for Ubuntu Touch builds.

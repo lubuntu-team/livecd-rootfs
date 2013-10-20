@@ -439,15 +439,15 @@ if [ "$PROJECT" = "ubuntu-touch" ] && [ "$ARCH" = "armhf" ]; then
 
 	REL="$LB_DISTRIBUTION"
 	for subarch in $touchsubarches; do
-		cp "chroot/usr/share/android/product/${REL}-preinstalled-system-armel+${subarch}.img"\
+		cp "chroot/usr/share/android/product/*-preinstalled-system-armel+${subarch}.img"\
 			 "${PREFIX}.system-armel+${subarch}.img"
-		cp "chroot/usr/share/android/product/${REL}-preinstalled-recovery-armel+${subarch}.img"\
+		cp "chroot/usr/share/android/product/*-preinstalled-recovery-armel+${subarch}.img"\
 			 "${PREFIX}.recovery-armel+${subarch}.img"
-		cp "chroot/usr/share/android/product/${REL}-preinstalled-boot-armhf+${subarch}.img"\
+		cp "chroot/usr/share/android/product/*-preinstalled-boot-armhf+${subarch}.img"\
 			 "${PREFIX}.boot-armhf+${subarch}.img"
 		# drop this following line once cdimage can handle -boot-*.img
 		cp "${PREFIX}.boot-armhf+${subarch}.img" "${PREFIX}.bootimg-${subarch}"
-		cp "chroot/usr/share/android/product/${REL}-preinstalled-touch-armel+${subarch}.zip"\
+		cp "chroot/usr/share/android/product/*-preinstalled-touch-armel+${subarch}.zip"\
 			 "${PREFIX}.armel+${subarch}.zip"
 	done
 
