@@ -1,3 +1,10 @@
+livecd-rootfs (2.214) utopic; urgency=medium
+
+  * ubuntu-desktop-next: Use the Task fields that the archive now has for this
+    project.
+
+ -- Iain Lane <iain.lane@canonical.com>  Wed, 28 May 2014 10:37:36 +0100
+
 livecd-rootfs (2.213) utopic; urgency=medium
 
   * The EXTRA_ARCHIVES environment variable defined in 2.212 doesn't quite
