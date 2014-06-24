@@ -4,6 +4,8 @@ livecd-rootfs (2.208.1) UNRELEASED; urgency=medium
     on it being in the corresponding tasks.  linux-signed-generic shouldn't
     be in a task because that expands to ABI-versioned packages, and tasks
     can't be updated post-release.
+  * Filter out kernel packages that mistakenly ended up in live tasks, so
+    that we can install updated versions separately (LP: #1325281).
 
  -- Colin Watson <cjwatson@ubuntu.com>  Tue, 24 Jun 2014 04:28:55 +0100
 
