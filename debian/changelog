@@ -1,4 +1,4 @@
-livecd-rootfs (2.208.1) UNRELEASED; urgency=medium
+livecd-rootfs (2.208.1) trusty; urgency=medium
 
   * Install linux-signed-generic directly in live passes rather than relying
     on it being in the corresponding tasks.  linux-signed-generic shouldn't
@@ -7,7 +7,7 @@ livecd-rootfs (2.208.1) UNRELEASED; urgency=medium
   * Filter out kernel packages that mistakenly ended up in live tasks, so
     that we can install updated versions separately (LP: #1325281).
 
- -- Colin Watson <cjwatson@ubuntu.com>  Tue, 24 Jun 2014 04:28:55 +0100
+ -- Colin Watson <cjwatson@ubuntu.com>  Tue, 24 Jun 2014 14:51:03 +0100
 
 livecd-rootfs (2.208) trusty; urgency=medium
 
