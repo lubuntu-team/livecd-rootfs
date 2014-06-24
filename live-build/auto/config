@@ -190,6 +190,9 @@ case $PROJECT in
 				;;
 		esac
 		LIVE_TASK='ubuntu-live'
+		case $ARCH in
+			amd64)	add_package live linux-signed-generic ;;
+		esac
 		;;
 
 	kubuntu|kubuntu-dvd)
@@ -209,6 +212,9 @@ case $PROJECT in
 				;;
 		esac
 		LIVE_TASK='kubuntu-live'
+		case $ARCH in
+			amd64)	add_package live linux-signed-generic ;;
+		esac
 		COMPONENTS='main restricted universe'
 		add_chroot_hook remove-gnome-icon-cache
 		;;
@@ -223,6 +229,9 @@ case $PROJECT in
 	edubuntu|edubuntu-dvd)
 		add_task install minimal standard ubuntu-desktop edubuntu-desktop-gnome
 		LIVE_TASK='edubuntu-live'
+		case $ARCH in
+			amd64)	add_package live linux-signed-generic ;;
+		esac
 		COMPONENTS='main restricted universe'
 		;;
 
@@ -230,6 +239,9 @@ case $PROJECT in
 		add_task install minimal standard xubuntu-desktop
 		add_package install xterm
 		LIVE_TASK='xubuntu-live'
+		case $ARCH in
+			amd64)	add_package live linux-signed-generic ;;
+		esac
 		COMPONENTS='main restricted universe multiverse'
 		case $ARCH in
 			amd64|i386)	KERNEL_FLAVOURS=generic ;;
@@ -244,12 +256,18 @@ case $PROJECT in
 	mythbuntu)
 		add_task install minimal standard mythbuntu-desktop
 		LIVE_TASK='mythbuntu-live'
+		case $ARCH in
+			amd64)	add_package live linux-signed-generic ;;
+		esac
 		COMPONENTS='main restricted universe multiverse'
 		;;
 
 	lubuntu)
 		add_task install minimal standard lubuntu-desktop
 		LIVE_TASK='lubuntu-live'
+		case $ARCH in
+			amd64)	add_package live linux-signed-generic ;;
+		esac
 		COMPONENTS='main restricted universe multiverse'
 		case $ARCH in
 			amd64|i386)	KERNEL_FLAVOURS=generic ;;
@@ -263,6 +281,9 @@ case $PROJECT in
 	ubuntu-gnome)
 		add_task install minimal standard ubuntu-gnome-desktop
 		LIVE_TASK='ubuntu-gnome-live'
+		case $ARCH in
+			amd64)	add_package live linux-signed-generic ;;
+		esac
 		COMPONENTS='main restricted universe'
 		;;
 
@@ -278,6 +299,9 @@ case $PROJECT in
 		add_task install minimal standard ubuntu-desktop
 		add_package install ubuntukylin-default-settings
 		LIVE_TASK='ubuntu-live'
+		case $ARCH in
+			amd64)	add_package live linux-signed-generic ;;
+		esac
 		COMPONENTS='main restricted universe'
 		;;
 
