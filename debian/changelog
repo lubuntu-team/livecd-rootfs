@@ -1,3 +1,17 @@
+livecd-rootfs (2.252) utopic; urgency=low
+
+  [ James Hunt ]
+  * Convert resolvconf hook from a chroot hook to a binary hook since lb
+    overwrites /etc/resolv.conf after the chroot hooks have run.  * 
+
+ -- Michael Vogt <michael.vogt@ubuntu.com>  Thu, 09 Oct 2014 13:20:40 +0200
+
+livecd-rootfs (2.251) utopic; urgency=low
+
+  * create /etc/hosts for ubuntu-core:system-image
+
+ -- Michael Vogt <michael.vogt@ubuntu.com>  Thu, 09 Oct 2014 09:24:39 +0200
+
 livecd-rootfs (2.250) utopic; urgency=low
 
   * build system-image without recommends
