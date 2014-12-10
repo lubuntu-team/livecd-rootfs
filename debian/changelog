@@ -1,3 +1,23 @@
+livecd-rootfs (2.274) vivid; urgency=medium
+
+  [ Michael Vogt ]
+  * live-build/ubuntu-core/hooks/400-create-apt-get-warning.binary:
+    - improve apt-get output
+  * live-build/auto/config:
+    - add click-apparmor for system-image
+  * live-build/ubuntu-core/hooks/400-create-apt-get-warning.binary:
+    - fix incorrect "echo"
+    - add missing wrappers for apt, apt-cache
+    - fix message
+  * live-build/ubuntu-core/hooks/14-set-motd.chroot:
+    - update motd
+
+  [ James Hunt ]
+  * live-build/ubuntu-core/hooks/10-remove-documentation.binary:
+    - compress remaining documentation to save further space.
+
+ -- Michael Vogt <michael.vogt@ubuntu.com>  Wed, 10 Dec 2014 12:57:30 +0100
+
 livecd-rootfs (2.273) vivid; urgency=low
 
   [ Michael Vogt ]
