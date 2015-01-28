@@ -149,6 +149,10 @@ if [ "$PREINSTALLED" = "true" ] && [ "$SUBPROJECT" != "wubi" ]; then
 			add_package live oem-config-gtk ubiquity-frontend-gtk
 			add_package live ubiquity-slideshow-xubuntu
 			;;
+		ubuntu-mate)
+			add_package live oem-config-gtk ubiquity-frontend-gtk
+			add_package live ubiquity-slideshow-ubuntu-mate
+			;;
 		ubuntu-server)
 			add_package live oem-config-debconf ubiquity-frontend-debconf
 			;;
@@ -306,6 +310,18 @@ case $PROJECT in
 		COMPONENTS='main restricted universe'
 		;;
 
+	ubuntu-mate)
+		add_task install minimal standard ubuntu-mate-core ubuntu-mate-desktop
+		LIVE_TASK='ubuntu-mate-live'
+		case $ARCH in
+			amd64)	add_package live linux-signed-generic ;;
+		esac
+		COMPONENTS='main restricted universe multiverse'
+		# The Ubuntu MATE STRUCTURE file has "feature
+		# no-follow-recommends".  Mirror this.
+		export APT_OPTIONS="--yes --no-install-recommends"
+		;;
+
 	ubuntustudio-dvd)
 		add_task install minimal standard ubuntustudio-desktop ubuntustudio-audio ubuntustudio-font-meta ubuntustudio-graphics ubuntustudio-video ubuntustudio-publishing ubuntustudio-photography
 		COMPONENTS='main restricted universe multiverse'
@@ -367,14 +383,13 @@ case $PROJECT in
                         esac
 
                         # generic kernel etc
+                        KERNEL_FLAVOURS=generic
                         case $ARCH in
 			    i386|amd64)	
 			        add_package install grub-pc
-                                KERNEL_FLAVOURS=virtual
                                 ;;
                             armhf)
                                 add_package install flash-kernel u-boot-tools
-                                KERNEL_FLAVOURS=generic
                                 ;;
                         esac
 		        OPTS="${OPTS:+$OPTS }--linux-packages=linux-image"
