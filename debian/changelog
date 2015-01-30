@@ -1,3 +1,9 @@
+livecd-rootfs (2.65.13) precise; urgency=medium
+
+  * Move from lts-saucy to lts-trusty packages for the point release.
+
+ -- Adam Conrad <adconrad@ubuntu.com>  Wed, 30 Jul 2014 02:44:48 -0600
+
 livecd-rootfs (2.65.12) precise; urgency=medium
 
   * Make the output kernel/initrd world-readable in a couple more cases,
