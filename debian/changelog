@@ -1,4 +1,4 @@
-livecd-rootfs (2.208.2) UNRELEASED; urgency=medium
+livecd-rootfs (2.208.2~ppa3) trusty; urgency=medium
 
   [ Colin Watson ]
   * If EXTRA_PPAS is set in the environment (as a space-separated sequence

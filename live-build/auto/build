@@ -358,6 +358,7 @@ done
 NUMFLAVOURS="$(set -- $LB_LINUX_FLAVOURS; echo $#)"
 if [ "$NUMFLAVOURS" = 1 ] && [ "$LB_LINUX_FLAVOURS" != "none" ]; then
 	# only one kernel flavour
+	FLAVOUR=${LB_LINUX_FLAVOURS%%-lts-*}
 	if [ -e "binary/$INITFS/vmlinuz" ]; then
 		ln "binary/$INITFS/vmlinuz" "$PREFIX.kernel"
 	else
