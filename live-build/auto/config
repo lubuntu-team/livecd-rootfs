@@ -201,6 +201,7 @@ case $ARCH in
 		;;
 esac
 SIGNED_KERNEL_PACKAGE="linux-signed-generic-lts-utopic"
+UNITY_HWE_HINTS="unity-settings-daemon notify-osd libqt4-sql-sqlite"
 
 case $PROJECT in
 	ubuntu|ubuntu-dvd)
@@ -216,7 +217,7 @@ case $PROJECT in
 					xserver-xorg-input-evdev-omap-revert 
 				;;
 			*)
-				add_package install ubuntu-desktop
+				add_package install ubuntu-desktop $UNITY_HWE_HINTS
 				add_package install $HWE_X_PACKAGES
 				;;
 		esac
@@ -262,7 +263,7 @@ case $PROJECT in
 		;;
 
 	edubuntu|edubuntu-dvd)
-		add_package install ubuntu-minimal ubuntu-standard ubuntu-desktop edubuntu-desktop-gnome
+		add_package install ubuntu-minimal ubuntu-standard ubuntu-desktop edubuntu-desktop-gnome $UNITY_HWE_HINTS
 		add_package install $HWE_X_PACKAGES
 		LIVE_TASK='edubuntu-live'
 		LIVE_TASK_FILTER='--not -Pe ^linux-\(headers\|image\|signed\)'
@@ -336,7 +337,7 @@ case $PROJECT in
 		;;
 
 	ubuntukylin)
-		add_package install ubuntu-minimal ubuntu-standard ubuntu-desktop
+		add_package install ubuntu-minimal ubuntu-standard ubuntu-desktop $UNITY_HWE_HINTS
 		add_package install $HWE_X_PACKAGES
 		add_package install ubuntukylin-default-settings
 		LIVE_TASK='ubuntu-live'

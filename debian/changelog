@@ -14,6 +14,7 @@ livecd-rootfs (2.208.2~ppa3) trusty; urgency=medium
   * Before trying to copy kernels around, cut -lts* off the end of FLAVOUR,
     since the actual files on disk are -generic, not -generic-lts-utopic.
   * Define HWE_X_PACKAGES required to install lts-utopic and use it.
+  * Define UNITY_HWE_HINTS to hint correct alternative package selections. 
 
  -- Adam Conrad <adconrad@ubuntu.com>  Mon, 02 Feb 2015 01:43:48 -0700
 
