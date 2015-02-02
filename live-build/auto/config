@@ -192,6 +192,15 @@ case $ARCH in
 		KERNEL_FLAVOURS="generic-lts-utopic"
 		;;
 esac
+case $ARCH in
+	i386)
+		HWE_X_PACKAGES="xserver-xorg-lts-utopic libegl1-mesa-drivers-lts-utopic xserver-xorg-video-all-lts-utopic xserver-xorg-video-geode-lts-utopic"
+		;;
+	*)
+		HWE_X_PACKAGES="xserver-xorg-lts-utopic libegl1-mesa-drivers-lts-utopic xserver-xorg-video-all-lts-utopic"
+		;;
+esac
+SIGNED_KERNEL_PACKAGE="linux-signed-generic-lts-utopic"
 
 case $PROJECT in
 	ubuntu|ubuntu-dvd)
@@ -208,12 +217,13 @@ case $PROJECT in
 				;;
 			*)
 				add_package install ubuntu-desktop
+				add_package install $HWE_X_PACKAGES
 				;;
 		esac
 		LIVE_TASK='ubuntu-live'
 		LIVE_TASK_FILTER='--not -Pe ^linux-\(headers\|image\|signed\)'
 		case $ARCH in
-			amd64)	add_package live linux-signed-generic-lts-utopic ;;
+			amd64)	add_package live $SIGNED_KERNEL_PACKAGE ;;
 		esac
 		;;
 
@@ -231,12 +241,13 @@ case $PROJECT in
 				;;
 			*)
 				add_package install kubuntu-desktop
+				add_package install $HWE_X_PACKAGES
 				;;
 		esac
 		LIVE_TASK='kubuntu-live'
 		LIVE_TASK_FILTER='--not -Pe ^linux-\(headers\|image\|signed\)'
 		case $ARCH in
-			amd64)	add_package live linux-signed-generic-lts-utopic ;;
+			amd64)	add_package live $SIGNED_KERNEL_PACKAGE ;;
 		esac
 		COMPONENTS='main restricted universe'
 		add_chroot_hook remove-gnome-icon-cache
@@ -244,6 +255,7 @@ case $PROJECT in
 
 	kubuntu-active)
 		add_package install ubuntu-minimal ubuntu-standard kubuntu-active
+		add_package install $HWE_X_PACKAGES
 		LIVE_TASK='kubuntu-active-live'
 		COMPONENTS='main restricted universe'
 		add_chroot_hook remove-gnome-icon-cache
@@ -251,21 +263,23 @@ case $PROJECT in
 
 	edubuntu|edubuntu-dvd)
 		add_package install ubuntu-minimal ubuntu-standard ubuntu-desktop edubuntu-desktop-gnome
+		add_package install $HWE_X_PACKAGES
 		LIVE_TASK='edubuntu-live'
 		LIVE_TASK_FILTER='--not -Pe ^linux-\(headers\|image\|signed\)'
 		case $ARCH in
-			amd64)	add_package live linux-signed-generic-lts-utopic ;;
+			amd64)	add_package live $SIGNED_KERNEL_PACKAGE ;;
 		esac
 		COMPONENTS='main restricted universe'
 		;;
 
 	xubuntu)
 		add_package install ubuntu-minimal ubuntu-standard xubuntu-desktop
+		add_package install $HWE_X_PACKAGES
 		add_package install xterm
 		LIVE_TASK='xubuntu-live'
 		LIVE_TASK_FILTER='--not -Pe ^linux-\(headers\|image\|signed\)'
 		case $ARCH in
-			amd64)	add_package live linux-signed-generic-lts-utopic ;;
+			amd64)	add_package live $SIGNED_KERNEL_PACKAGE ;;
 		esac
 		COMPONENTS='main restricted universe multiverse'
 		;;
@@ -277,20 +291,22 @@ case $PROJECT in
 
 	mythbuntu)
 		add_package install ubuntu-minimal ubuntu-standard mythbuntu-desktop
+		add_package install $HWE_X_PACKAGES
 		LIVE_TASK='mythbuntu-live'
 		LIVE_TASK_FILTER='--not -Pe ^linux-\(headers\|image\|signed\)'
 		case $ARCH in
-			amd64)	add_package live linux-signed-generic-lts-utopic ;;
+			amd64)	add_package live $SIGNED_KERNEL_PACKAGE ;;
 		esac
 		COMPONENTS='main restricted universe multiverse'
 		;;
 
 	lubuntu)
 		add_package install ubuntu-minimal ubuntu-standard lubuntu-desktop
+		add_package install $HWE_X_PACKAGES
 		LIVE_TASK='lubuntu-live'
 		LIVE_TASK_FILTER='--not -Pe ^linux-\(headers\|image\|signed\)'
 		case $ARCH in
-			amd64)	add_package live linux-signed-generic-lts-utopic ;;
+			amd64)	add_package live $SIGNED_KERNEL_PACKAGE ;;
 		esac
 		COMPONENTS='main restricted universe multiverse'
 
@@ -301,16 +317,18 @@ case $PROJECT in
 
 	ubuntu-gnome)
 		add_package install ubuntu-minimal ubuntu-standard ubuntu-gnome-desktop
+		add_package install $HWE_X_PACKAGES
 		LIVE_TASK='ubuntu-gnome-live'
 		LIVE_TASK_FILTER='--not -Pe ^linux-\(headers\|image\|signed\)'
 		case $ARCH in
-			amd64)	add_package live linux-signed-generic-lts-utopic ;;
+			amd64)	add_package live $SIGNED_KERNEL_PACKAGE ;;
 		esac
 		COMPONENTS='main restricted universe'
 		;;
 
 	ubuntustudio-dvd)
 		add_package install ubuntu-minimal ubuntu-standard ubuntustudio-desktop ubuntustudio-audio ubuntustudio-font-meta ubuntustudio-graphics ubuntustudio-video ubuntustudio-publishing ubuntustudio-photography
+		add_package install $HWE_X_PACKAGES
 		COMPONENTS='main restricted universe multiverse'
 		case $ARCH in
 			amd64|i386)	KERNEL_FLAVOURS=lowlatency-lts-utopic ;;
@@ -319,11 +337,12 @@ case $PROJECT in
 
 	ubuntukylin)
 		add_package install ubuntu-minimal ubuntu-standard ubuntu-desktop
+		add_package install $HWE_X_PACKAGES
 		add_package install ubuntukylin-default-settings
 		LIVE_TASK='ubuntu-live'
 		LIVE_TASK_FILTER='--not -Pe ^linux-\(headers\|image\|signed\)'
 		case $ARCH in
-			amd64)	add_package live linux-signed-generic-lts-utopic ;;
+			amd64)	add_package live $SIGNED_KERNEL_PACKAGE ;;
 		esac
 		COMPONENTS='main restricted universe'
 		;;
