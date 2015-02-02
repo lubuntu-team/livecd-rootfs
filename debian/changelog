@@ -11,6 +11,8 @@ livecd-rootfs (2.208.2) UNRELEASED; urgency=medium
   * Move from task-based installs to package-based installs, and switch
     to using the lts-utopic HWE kernel and X stack for all flavours.
   * Abstract the signed kernel image, so it's only defined in one spot.
+  * Before trying to copy kernels around, cut -lts* off the end of FLAVOUR,
+    since the actual files on disk are -generic, not -generic-lts-utopic.
   * Define HWE_X_PACKAGES required to install lts-utopic and use it.
 
  -- Adam Conrad <adconrad@ubuntu.com>  Mon, 02 Feb 2015 01:43:48 -0700
