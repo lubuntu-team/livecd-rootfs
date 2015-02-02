@@ -182,9 +182,20 @@ case $BINARYFORMAT in
 		;;
 esac
 
+# Default to lts-utopic for the point release, this is overridden later by
+# specific projects/flavours:
+case $ARCH in
+	powerpc)
+		KERNEL_FLAVOURS="powerpc-smp-lts-utopic powerpc64-smp-lts-utopic"
+		;;
+	*)
+		KERNEL_FLAVOURS="generic-lts-utopic"
+		;;
+esac
+
 case $PROJECT in
 	ubuntu|ubuntu-dvd)
-		add_task install minimal standard
+		add_package install ubuntu-minimal ubuntu-standard
 		case "$ARCH+$SUBARCH" in
 			armhf+omap4)
 				# Don't use the task as this drags in the regular X
@@ -196,18 +207,18 @@ case $PROJECT in
 					xserver-xorg-input-evdev-omap-revert 
 				;;
 			*)
-				add_task install ubuntu-desktop
+				add_package install ubuntu-desktop
 				;;
 		esac
 		LIVE_TASK='ubuntu-live'
 		LIVE_TASK_FILTER='--not -Pe ^linux-\(headers\|image\|signed\)'
 		case $ARCH in
-			amd64)	add_package live linux-signed-generic ;;
+			amd64)	add_package live linux-signed-generic-lts-utopic ;;
 		esac
 		;;
 
 	kubuntu|kubuntu-dvd)
-		add_task install minimal standard
+		add_package install ubuntu-minimal ubuntu-standard
 		case "$ARCH+$SUBARCH" in
 			armhf+omap4)
 				# Don't use the task as this drags in the regular X
@@ -219,75 +230,69 @@ case $PROJECT in
 					xserver-xorg-input-evdev-omap-revert 
 				;;
 			*)
-				add_task install kubuntu-desktop
+				add_package install kubuntu-desktop
 				;;
 		esac
 		LIVE_TASK='kubuntu-live'
 		LIVE_TASK_FILTER='--not -Pe ^linux-\(headers\|image\|signed\)'
 		case $ARCH in
-			amd64)	add_package live linux-signed-generic ;;
+			amd64)	add_package live linux-signed-generic-lts-utopic ;;
 		esac
 		COMPONENTS='main restricted universe'
 		add_chroot_hook remove-gnome-icon-cache
 		;;
 
 	kubuntu-active)
-		add_task install minimal standard kubuntu-active
+		add_package install ubuntu-minimal ubuntu-standard kubuntu-active
 		LIVE_TASK='kubuntu-active-live'
 		COMPONENTS='main restricted universe'
 		add_chroot_hook remove-gnome-icon-cache
 		;;
 
 	edubuntu|edubuntu-dvd)
-		add_task install minimal standard ubuntu-desktop edubuntu-desktop-gnome
+		add_package install ubuntu-minimal ubuntu-standard ubuntu-desktop edubuntu-desktop-gnome
 		LIVE_TASK='edubuntu-live'
 		LIVE_TASK_FILTER='--not -Pe ^linux-\(headers\|image\|signed\)'
 		case $ARCH in
-			amd64)	add_package live linux-signed-generic ;;
+			amd64)	add_package live linux-signed-generic-lts-utopic ;;
 		esac
 		COMPONENTS='main restricted universe'
 		;;
 
 	xubuntu)
-		add_task install minimal standard xubuntu-desktop
+		add_package install ubuntu-minimal ubuntu-standard xubuntu-desktop
 		add_package install xterm
 		LIVE_TASK='xubuntu-live'
 		LIVE_TASK_FILTER='--not -Pe ^linux-\(headers\|image\|signed\)'
 		case $ARCH in
-			amd64)	add_package live linux-signed-generic ;;
+			amd64)	add_package live linux-signed-generic-lts-utopic ;;
 		esac
 		COMPONENTS='main restricted universe multiverse'
-		case $ARCH in
-			amd64|i386)	KERNEL_FLAVOURS=generic ;;
-		esac
 		;;
 
 	ubuntu-netbook)
-		add_task install minimal standard ubuntu-netbook
+		add_package install ubuntu-minimal ubuntu-standard ubuntu-netbook
 		LIVE_TASK='netbook-live'
 		;;
 
 	mythbuntu)
-		add_task install minimal standard mythbuntu-desktop
+		add_package install ubuntu-minimal ubuntu-standard mythbuntu-desktop
 		LIVE_TASK='mythbuntu-live'
 		LIVE_TASK_FILTER='--not -Pe ^linux-\(headers\|image\|signed\)'
 		case $ARCH in
-			amd64)	add_package live linux-signed-generic ;;
+			amd64)	add_package live linux-signed-generic-lts-utopic ;;
 		esac
 		COMPONENTS='main restricted universe multiverse'
 		;;
 
 	lubuntu)
-		add_task install minimal standard lubuntu-desktop
+		add_package install ubuntu-minimal ubuntu-standard lubuntu-desktop
 		LIVE_TASK='lubuntu-live'
 		LIVE_TASK_FILTER='--not -Pe ^linux-\(headers\|image\|signed\)'
 		case $ARCH in
-			amd64)	add_package live linux-signed-generic ;;
+			amd64)	add_package live linux-signed-generic-lts-utopic ;;
 		esac
 		COMPONENTS='main restricted universe multiverse'
-		case $ARCH in
-			amd64|i386)	KERNEL_FLAVOURS=generic ;;
-		esac
 
 		# The Lubuntu STRUCTURE file has "feature
 		# no-follow-recommends".  Mirror this.
@@ -295,30 +300,30 @@ case $PROJECT in
 		;;
 
 	ubuntu-gnome)
-		add_task install minimal standard ubuntu-gnome-desktop
+		add_package install ubuntu-minimal ubuntu-standard ubuntu-gnome-desktop
 		LIVE_TASK='ubuntu-gnome-live'
 		LIVE_TASK_FILTER='--not -Pe ^linux-\(headers\|image\|signed\)'
 		case $ARCH in
-			amd64)	add_package live linux-signed-generic ;;
+			amd64)	add_package live linux-signed-generic-lts-utopic ;;
 		esac
 		COMPONENTS='main restricted universe'
 		;;
 
 	ubuntustudio-dvd)
-		add_task install minimal standard ubuntustudio-desktop ubuntustudio-audio ubuntustudio-font-meta ubuntustudio-graphics ubuntustudio-video ubuntustudio-publishing ubuntustudio-photography
+		add_package install ubuntu-minimal ubuntu-standard ubuntustudio-desktop ubuntustudio-audio ubuntustudio-font-meta ubuntustudio-graphics ubuntustudio-video ubuntustudio-publishing ubuntustudio-photography
 		COMPONENTS='main restricted universe multiverse'
 		case $ARCH in
-			amd64|i386)	KERNEL_FLAVOURS=lowlatency ;;
+			amd64|i386)	KERNEL_FLAVOURS=lowlatency-lts-utopic ;;
 		esac
 		;;
 
 	ubuntukylin)
-		add_task install minimal standard ubuntu-desktop
+		add_package install ubuntu-minimal ubuntu-standard ubuntu-desktop
 		add_package install ubuntukylin-default-settings
 		LIVE_TASK='ubuntu-live'
 		LIVE_TASK_FILTER='--not -Pe ^linux-\(headers\|image\|signed\)'
 		case $ARCH in
-			amd64)	add_package live linux-signed-generic ;;
+			amd64)	add_package live linux-signed-generic-lts-utopic ;;
 		esac
 		COMPONENTS='main restricted universe'
 		;;
@@ -328,7 +333,7 @@ case $PROJECT in
 		;;
 
 	ubuntu-server)
-		add_task install minimal
+		add_package install ubuntu-minimal
 		COMPONENTS='main'
 		PREINSTALL_POOL_SEEDS='server-ship'
 		;;
