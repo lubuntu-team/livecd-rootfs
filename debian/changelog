@@ -1,3 +1,9 @@
+livecd-rootfs (2.208.3) trusty; urgency=medium
+
+  * Pull xserver-xorg-video-geode-lts-utopic out of the i386 images.
+
+ -- Adam Conrad <adconrad@ubuntu.com>  Tue, 03 Feb 2015 07:03:03 -0700
+
 livecd-rootfs (2.208.2) trusty; urgency=medium
 
   [ Colin Watson ]
