@@ -201,7 +201,7 @@ case $ARCH in
 		;;
 esac
 SIGNED_KERNEL_PACKAGE="linux-signed-generic-lts-utopic"
-UNITY_HWE_HINTS="unity-settings-daemon notify-osd libqt4-sql-sqlite"
+UNITY_HWE_HINTS="unity-settings-daemon notify-osd libqt4-sql-sqlite unity"
 
 case $PROJECT in
 	ubuntu|ubuntu-dvd)
