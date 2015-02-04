@@ -256,7 +256,7 @@ case $PROJECT in
 		;;
 
 	edubuntu|edubuntu-dvd)
-		add_package install ubuntu-minimal ubuntu-standard ubuntu-desktop edubuntu-desktop-gnome $UNITY_HWE_HINTS
+		add_package install ubuntu-minimal ubuntu-standard ubuntu-desktop edubuntu-desktop $UNITY_HWE_HINTS
 		add_package install $HWE_X_PACKAGES
 		LIVE_TASK='edubuntu-live'
 		LIVE_TASK_FILTER='--not -Pe ^linux-\(headers\|image\|signed\)'

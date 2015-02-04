@@ -1,3 +1,9 @@
+livecd-rootfs (2.208.4) UNRELEASED; urgency=medium
+
+  * Use the correct metapackage for edubuntu-desktop
+
+ -- Adam Conrad <adconrad@ubuntu.com>  Wed, 04 Feb 2015 04:42:54 -0700
+
 livecd-rootfs (2.208.3) trusty; urgency=medium
 
   * Pull xserver-xorg-video-geode-lts-utopic out of the i386 images.
