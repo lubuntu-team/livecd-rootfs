@@ -234,7 +234,7 @@ case $PROJECT in
 					xserver-xorg-input-evdev-omap-revert 
 				;;
 			*)
-				add_package install kubuntu-desktop
+				add_package install kubuntu-desktop pinentry-qt4
 				add_package install $HWE_X_PACKAGES
 				;;
 		esac
