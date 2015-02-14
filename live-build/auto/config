@@ -197,6 +197,7 @@ SIGNED_KERNEL_PACKAGE="linux-signed-generic-lts-utopic"
 UNITY_HWE_HINTS="unity-settings-daemon notify-osd libqt4-sql-sqlite unity"
 KUBUNTU_HWE_HINTS="pinentry-qt4 kde-baseapps-bin"
 EDUBUNTU_HWE_HINTS="gnome-session gnome-terminal"
+XUBUNTU_HWE_HINTS="lightdm-gtk-greeter unity-settings-daemon-"
 
 case $PROJECT in
 	ubuntu|ubuntu-dvd)
@@ -269,7 +270,7 @@ case $PROJECT in
 		;;
 
 	xubuntu)
-		add_package install ubuntu-minimal ubuntu-standard xubuntu-desktop
+		add_package install ubuntu-minimal ubuntu-standard xubuntu-desktop $XUBUNTU_HWE_HINTS
 		add_package install $HWE_X_PACKAGES
 		add_package install xterm
 		LIVE_TASK='xubuntu-live'
