@@ -195,6 +195,8 @@ esac
 HWE_X_PACKAGES="xserver-xorg-lts-utopic libegl1-mesa-drivers-lts-utopic xserver-xorg-video-all-lts-utopic"
 SIGNED_KERNEL_PACKAGE="linux-signed-generic-lts-utopic"
 UNITY_HWE_HINTS="unity-settings-daemon notify-osd libqt4-sql-sqlite unity"
+KUBUNTU_HWE_HINTS="pinentry-qt4"
+EDUBUNTU_HWE_HINTS="gnome-session gnome-terminal"
 
 case $PROJECT in
 	ubuntu|ubuntu-dvd)
@@ -234,7 +236,7 @@ case $PROJECT in
 					xserver-xorg-input-evdev-omap-revert 
 				;;
 			*)
-				add_package install kubuntu-desktop pinentry-qt4
+				add_package install kubuntu-desktop $KUBUNTU_HWE_HINTS
 				add_package install $HWE_X_PACKAGES
 				;;
 		esac
@@ -256,7 +258,7 @@ case $PROJECT in
 		;;
 
 	edubuntu|edubuntu-dvd)
-		add_package install ubuntu-minimal ubuntu-standard ubuntu-desktop edubuntu-desktop $UNITY_HWE_HINTS
+		add_package install ubuntu-minimal ubuntu-standard ubuntu-desktop edubuntu-desktop $UNITY_HWE_HINTS $EDUBUNTU_HWE_HINTS
 		add_package install $HWE_X_PACKAGES
 		LIVE_TASK='edubuntu-live'
 		LIVE_TASK_FILTER='--not -Pe ^linux-\(headers\|image\|signed\)'
