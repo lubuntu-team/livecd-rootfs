@@ -195,7 +195,7 @@ esac
 HWE_X_PACKAGES="xserver-xorg-lts-utopic libegl1-mesa-drivers-lts-utopic xserver-xorg-video-all-lts-utopic"
 SIGNED_KERNEL_PACKAGE="linux-signed-generic-lts-utopic"
 UNITY_HWE_HINTS="unity-settings-daemon notify-osd libqt4-sql-sqlite unity"
-KUBUNTU_HWE_HINTS="pinentry-qt4"
+KUBUNTU_HWE_HINTS="pinentry-qt4 kde-baseapps-bin"
 EDUBUNTU_HWE_HINTS="gnome-session gnome-terminal"
 
 case $PROJECT in
