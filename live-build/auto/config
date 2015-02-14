@@ -298,7 +298,8 @@ case $PROJECT in
 		;;
 
 	lubuntu)
-		add_package install ubuntu-minimal ubuntu-standard lubuntu-desktop
+		add_task install minimal standard
+		add_package install lubuntu-desktop
 		add_package install $HWE_X_PACKAGES
 		LIVE_TASK='lubuntu-live'
 		LIVE_TASK_FILTER='--not -Pe ^linux-\(headers\|image\|signed\)'
