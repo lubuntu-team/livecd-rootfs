@@ -4,6 +4,7 @@ livecd-rootfs (2.208.5) UNRELEASED; urgency=medium
   * Rename XUBUNTU_HWE_HINTS to XFCE_HWE_HINTS, so it's more reusable
     and have MYTHBUNTU, XUBUNTU, and UBUNTUSTUDIO all make use of it.
   * Explicitly seed the correct notify option for every last flavour.
+  * Remove xscreensaver-data and xscreensaver with XUBUNTU_HWE_HINTS.
 
  -- Adam Conrad <adconrad@ubuntu.com>  Tue, 17 Feb 2015 13:57:51 -0700
 
