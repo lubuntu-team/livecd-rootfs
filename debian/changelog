@@ -1,3 +1,9 @@
+livecd-rootfs (2.208.5) UNRELEASED; urgency=medium
+
+  * Explicitly install the xserver-xorg-input-all-lts-utopic package
+
+ -- Adam Conrad <adconrad@ubuntu.com>  Tue, 17 Feb 2015 13:57:51 -0700
+
 livecd-rootfs (2.208.4) trusty; urgency=medium
 
   * Use the correct metapackage for edubuntu-desktop, and add HWE_HINTS
