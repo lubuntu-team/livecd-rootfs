@@ -1,4 +1,4 @@
-livecd-rootfs (2.208.4) UNRELEASED; urgency=medium
+livecd-rootfs (2.208.4) trusty; urgency=medium
 
   * Use the correct metapackage for edubuntu-desktop, and add HWE_HINTS
   * Add KUBUNTU_HWE_HINTS and populate to work around task->meta change
