@@ -7,6 +7,7 @@ livecd-rootfs (2.208.4) UNRELEASED; urgency=medium
   * Add XUBUNTU_HWE_HINTS and populate to work around task->meta change
   * Add UBUNTUGNOME_HWE_HINTS and populate it skip using unity packages
   * Add LUBUNTU_HWE_HINTS and populate to work around task->meta change
+  * Reuse XUBUNTU_HWE_HINTS for MYTHBUNTU_HWE_HINTS and add some tweaks
 
  -- Adam Conrad <adconrad@ubuntu.com>  Wed, 04 Feb 2015 04:42:54 -0700
 

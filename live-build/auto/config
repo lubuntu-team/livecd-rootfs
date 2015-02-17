@@ -197,9 +197,10 @@ SIGNED_KERNEL_PACKAGE="linux-signed-generic-lts-utopic"
 UNITY_HWE_HINTS="unity-settings-daemon notify-osd libqt4-sql-sqlite unity"
 KUBUNTU_HWE_HINTS="pinentry-qt4 kde-baseapps-bin"
 EDUBUNTU_HWE_HINTS="gnome-session gnome-terminal"
-XUBUNTU_HWE_HINTS="lightdm-gtk-greeter unity-settings-daemon- notification-daemon-"
+XUBUNTU_HWE_HINTS="lightdm-gtk-greeter unity-settings-daemon- unity-control-center- notification-daemon-"
 LUBUNTU_HWE_HINTS="xterm notification-daemon-"
 UBUNTUGNOME_HWE_HINTS="unity-settings-daemon- unity-control-center- libaccount-plugin-1.0-0-"
+MYTHBUNTU_HWE_HINTS="notify-osd $XUBUNTU_HWE_HINTS"
 
 case $PROJECT in
 	ubuntu|ubuntu-dvd)
@@ -289,7 +290,7 @@ case $PROJECT in
 		;;
 
 	mythbuntu)
-		add_package install ubuntu-minimal ubuntu-standard mythbuntu-desktop
+		add_package install ubuntu-minimal ubuntu-standard mythbuntu-desktop $MYTHBUNTU_HWE_HINTS
 		add_package install $HWE_X_PACKAGES
 		LIVE_TASK='mythbuntu-live'
 		LIVE_TASK_FILTER='--not -Pe ^linux-\(headers\|image\|signed\)'
