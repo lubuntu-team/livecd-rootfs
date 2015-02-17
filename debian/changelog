@@ -1,6 +1,6 @@
-livecd-rootfs (2.208.5) UNRELEASED; urgency=medium
+livecd-rootfs (2.208.5) trusty; urgency=medium
 
-  * Explicitly install the xserver-xorg-input-all-lts-utopic package
+  * Explicitly install the xserver-xorg-input-all-lts-utopic package.
   * Rename XUBUNTU_HWE_HINTS to XFCE_HWE_HINTS, so it's more reusable
     and have MYTHBUNTU, XUBUNTU, and UBUNTUSTUDIO all make use of it.
   * Explicitly seed the correct notify option for every last flavour.
