@@ -197,11 +197,12 @@ SIGNED_KERNEL_PACKAGE="linux-signed-generic-lts-utopic"
 UNITY_HWE_HINTS="unity-settings-daemon notify-osd libqt4-sql-sqlite unity gnome-terminal"
 KUBUNTU_HWE_HINTS="pinentry-qt4 kde-baseapps-bin"
 EDUBUNTU_HWE_HINTS="gnome-session gnome-terminal"
-XUBUNTU_HWE_HINTS="lightdm-gtk-greeter unity-settings-daemon- unity-control-center- notification-daemon- libpanel-applet-4-0-"
-LUBUNTU_HWE_HINTS="xterm notification-daemon-"
+XFCE_HWE_HINTS="lightdm-gtk-greeter unity-settings-daemon- unity-control-center- notification-daemon- libpanel-applet-4-0-"
+LUBUNTU_HWE_HINTS="xfce4-notifyd xterm notification-daemon-"
 UBUNTUGNOME_HWE_HINTS="unity-settings-daemon- unity-control-center- libaccount-plugin-1.0-0-"
-MYTHBUNTU_HWE_HINTS="notify-osd $XUBUNTU_HWE_HINTS"
-UBUNTUSTUDIO_HWE_HINTS="xfce4-notifyd $XUBUNTU_HWE_HINTS"
+XUBUNTU_HWE_HINTS="xfce4-notifyd $XFCE_HWE_HINTS"
+MYTHBUNTU_HWE_HINTS="notify-osd $XFCE_HWE_HINTS"
+UBUNTUSTUDIO_HWE_HINTS="xfce4-notifyd $XFCE_HWE_HINTS"
 
 case $PROJECT in
 	ubuntu|ubuntu-dvd)
@@ -329,7 +330,7 @@ case $PROJECT in
 		;;
 
 	ubuntustudio-dvd)
-		add_package install ubuntu-minimal ubuntu-standard ubuntustudio-desktop ubuntustudio-audio ubuntustudio-font-meta ubuntustudio-graphics ubuntustudio-video ubuntustudio-publishing ubuntustudio-photography $XUBUNTU_HWE_HINTS
+		add_package install ubuntu-minimal ubuntu-standard ubuntustudio-desktop ubuntustudio-audio ubuntustudio-font-meta ubuntustudio-graphics ubuntustudio-video ubuntustudio-publishing ubuntustudio-photography $UBUNTUSTUDIO_HWE_HINTS
 		add_package install $HWE_X_PACKAGES
 		COMPONENTS='main restricted universe multiverse'
 		case $ARCH in
