@@ -5,6 +5,8 @@ livecd-rootfs (2.208.4) UNRELEASED; urgency=medium
   * Revert lubuntu to using tasks for minimal and standard, since their
     unique snowflake apt --no-install-recommends setup breaks switching
   * Add XUBUNTU_HWE_HINTS and populate to work around task->meta change
+  * Add UBUNTUGNOME_HWE_HINTS and populate it skip using unity packages
+  * Add LUBUNTU_HWE_HINTS and populate to work around task->meta change
 
  -- Adam Conrad <adconrad@ubuntu.com>  Wed, 04 Feb 2015 04:42:54 -0700
 
