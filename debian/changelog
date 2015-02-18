@@ -1,3 +1,9 @@
+livecd-rootfs (2.208.6) trusty; urgency=medium
+
+  * Add audacious-plugins to LUBUNTU_HWE_HINTS to unsnag the PPC build.
+
+ -- Adam Conrad <adconrad@ubuntu.com>  Wed, 18 Feb 2015 12:00:36 -0700
+
 livecd-rootfs (2.208.5) trusty; urgency=medium
 
   * Explicitly install the xserver-xorg-input-all-lts-utopic package.
