@@ -1,3 +1,20 @@
+livecd-rootfs (2.287) vivid; urgency=low
+
+  [ Michael Vogt ]
+  * add even more verbose output to
+    live-build/ubuntu-core/hooks/00-uid-gid-fix.chroot_early
+    (thanks Oliver!)
+  * live-build/ubuntu-core/hooks/00-uid-gid-fix.chroot_early:
+    - adjust the {group,gshadow}_bootstrap values. The audio group
+      used to be gid 1005 after the bootstrap and is now 29.
+  * live-build/auto/config:
+    - add snappy-ubuntu
+
+  [ Oliver Grawert ]
+  * make sure /var/log is always owned by the syslog group on touch
+
+ -- Oliver Grawert <ogra@ubuntu.com>  Wed, 18 Feb 2015 15:03:54 +0100
+
 livecd-rootfs (2.286) vivid; urgency=medium
 
   * touch: forcing package mir-platform-graphics-android to see if we're able
