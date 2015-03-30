@@ -1,3 +1,15 @@
+livecd-rootfs (2.296) vivid; urgency=low
+
+  * ubuntu-core:
+    - update passwd/group etc for new syslog user
+    - remove live-build/ubuntu-core/hooks/15-pycompile-snappy.chroot
+    - merged lp:~snappy-dev/livecd-rootfs/core_update
+      to generate device tar conform hardware.yaml
+    - add compability handling for current u-d-f/grub when extracting
+      the device tarball
+
+ -- Michael Vogt <michael.vogt@ubuntu.com>  Mon, 30 Mar 2015 20:40:25 +0200
+
 livecd-rootfs (2.295) vivid; urgency=medium
 
   * forcefully add ubuntu-system-settings-online-accounts to ubuntu-touch
