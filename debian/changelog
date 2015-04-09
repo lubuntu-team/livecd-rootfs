@@ -1,3 +1,11 @@
+livecd-rootfs (2.297) vivid; urgency=low
+
+  * fix device.tar.gz generation for snappy
+  * lp:~ubuntu-on-ec2/livecd-rootfs/cpc2:
+    - build cloud based images using livecd-rootfs
+
+ -- Michael Vogt <michael.vogt@ubuntu.com>  Thu, 09 Apr 2015 14:54:23 +0200
+
 livecd-rootfs (2.296) vivid; urgency=low
 
   * ubuntu-core:
