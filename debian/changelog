@@ -1,3 +1,14 @@
+livecd-rootfs (2.298) vivid; urgency=low
+
+  * live-build/auto/config:
+    - remove resolvconf, click-apparmor, dosfstools
+    - shuffle install order around
+  * snappy:
+    + remove click-hook-framework
+    + remove /etc/init.d/grub-common 
+
+ -- Michael Vogt <michael.vogt@ubuntu.com>  Thu, 16 Apr 2015 09:37:34 -0500
+
 livecd-rootfs (2.297) vivid; urgency=low
 
   * fix device.tar.gz generation for snappy
