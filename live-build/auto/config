@@ -182,18 +182,18 @@ case $BINARYFORMAT in
 		;;
 esac
 
-# Default to lts-utopic for the point release, this is overridden later by
+# Default to lts-vivid for the point release, this is overridden later by
 # specific projects/flavours:
 case $ARCH in
 	powerpc)
-		KERNEL_FLAVOURS="powerpc-smp-lts-utopic powerpc64-smp-lts-utopic"
+		KERNEL_FLAVOURS="powerpc-smp-lts-vivid powerpc64-smp-lts-vivid"
 		;;
 	*)
-		KERNEL_FLAVOURS="generic-lts-utopic"
+		KERNEL_FLAVOURS="generic-lts-vivid"
 		;;
 esac
-HWE_X_PACKAGES="xserver-xorg-lts-utopic libegl1-mesa-drivers-lts-utopic xserver-xorg-video-all-lts-utopic xserver-xorg-input-all-lts-utopic"
-SIGNED_KERNEL_PACKAGE="linux-signed-generic-lts-utopic"
+HWE_X_PACKAGES="xserver-xorg-lts-vivid xserver-xorg-video-all-lts-vivid xserver-xorg-input-all-lts-vivid"
+SIGNED_KERNEL_PACKAGE="linux-signed-generic-lts-vivid"
 UNITY_HWE_HINTS="unity-settings-daemon notify-osd libqt4-sql-sqlite unity gnome-terminal"
 KUBUNTU_HWE_HINTS="pinentry-qt4 kde-baseapps-bin"
 EDUBUNTU_HWE_HINTS="gnome-session gnome-terminal"
@@ -334,7 +334,7 @@ case $PROJECT in
 		add_package install $HWE_X_PACKAGES
 		COMPONENTS='main restricted universe multiverse'
 		case $ARCH in
-			amd64|i386)	KERNEL_FLAVOURS=lowlatency-lts-utopic ;;
+			amd64|i386)	KERNEL_FLAVOURS=lowlatency-lts-vivid ;;
 		esac
 		;;
 
