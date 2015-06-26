@@ -1,3 +1,12 @@
+livecd-rootfs (2.319) wily; urgency=medium
+
+  * copy set locale hook from core to desktop-next
+  
+  [ Sergio Schvezov ]
+  * removing debian packaging artifacts from the image
+
+ -- Sebastien Bacher <seb128@ubuntu.com>  Fri, 26 Jun 2015 10:43:07 +0200
+
 livecd-rootfs (2.318) wily; urgency=medium
 
   * merge lp:~sergiusens/livecd-rootfs/no-walinuxagent to remove all the
