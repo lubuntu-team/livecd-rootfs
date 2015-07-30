@@ -1,3 +1,12 @@
+livecd-rootfs (2.208.8) trusty; urgency=medium
+
+  * Add xserver-xorg-core-lts-vivid to X HWE hints for the resolver.
+  * Add libwayland-egl1-mesa-lts-vivid to X HWE hints (LP: #1479524)
+  * Add kde-window-manager to kubuntu hints to fix a resolver issue.
+  * Add thermald to lubuntu hints to work around lack of recommends.
+
+ -- Adam Conrad <adconrad@ubuntu.com>  Tue, 28 Jul 2015 20:06:52 -0600
+
 livecd-rootfs (2.208.7) trusty; urgency=medium
 
   * live-build/auto/config: Switch HWE from lts-utopic to lts-vivid.

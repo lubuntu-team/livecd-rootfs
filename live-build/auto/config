@@ -192,13 +192,13 @@ case $ARCH in
 		KERNEL_FLAVOURS="generic-lts-vivid"
 		;;
 esac
-HWE_X_PACKAGES="xserver-xorg-lts-vivid xserver-xorg-video-all-lts-vivid xserver-xorg-input-all-lts-vivid"
+HWE_X_PACKAGES="xserver-xorg-core-lts-vivid xserver-xorg-lts-vivid xserver-xorg-video-all-lts-vivid xserver-xorg-input-all-lts-vivid libwayland-egl1-mesa-lts-vivid"
 SIGNED_KERNEL_PACKAGE="linux-signed-generic-lts-vivid"
 UNITY_HWE_HINTS="unity-settings-daemon notify-osd libqt4-sql-sqlite unity gnome-terminal"
-KUBUNTU_HWE_HINTS="pinentry-qt4 kde-baseapps-bin"
+KUBUNTU_HWE_HINTS="pinentry-qt4 kde-baseapps-bin kde-window-manager"
 EDUBUNTU_HWE_HINTS="gnome-session gnome-terminal"
 XFCE_HWE_HINTS="lightdm-gtk-greeter unity-settings-daemon- unity-control-center- notification-daemon- libpanel-applet-4-0-"
-LUBUNTU_HWE_HINTS="xfce4-notifyd xterm notification-daemon- audacious-plugins"
+LUBUNTU_HWE_HINTS="xfce4-notifyd xterm notification-daemon- audacious-plugins thermald"
 UBUNTUGNOME_HWE_HINTS="unity-settings-daemon- unity-control-center- libaccount-plugin-1.0-0-"
 XUBUNTU_HWE_HINTS="xfce4-notifyd xscreensaver-data- $XFCE_HWE_HINTS"
 MYTHBUNTU_HWE_HINTS="notify-osd $XFCE_HWE_HINTS"
