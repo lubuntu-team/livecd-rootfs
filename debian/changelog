@@ -1,3 +1,12 @@
+livecd-rootfs (2.339) wily; urgency=medium
+
+  * revert the apparmor-super-noise change, issue is found
+  * touch the cache files during build to prevent timestamp issues in the future
+  * drop copying of zip files of the android package, we do not generate these
+    anymore.
+
+ -- Oliver Grawert <ogra@ubuntu.com>  Wed, 12 Aug 2015 12:17:51 +0200
+
 livecd-rootfs (2.338) wily; urgency=medium
 
   [ Łukasz Zemczak ]
