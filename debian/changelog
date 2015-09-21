@@ -1,3 +1,14 @@
+livecd-rootfs (2.345) wily; urgency=medium
+
+  [ Łukasz Zemczak ]
+  * lp:~sil2100/livecd-rootfs/pocket-desktop:
+    - add support for pocket-desktop
+
+  [ Oliver Grawert ]
+  * add user/group fixes for snappy shipping tpm-tools
+
+ -- Michael Vogt <michael.vogt@ubuntu.com>  Mon, 21 Sep 2015 16:19:43 +0200
+
 livecd-rootfs (2.344) wily; urgency=medium
 
   * Drop 'landscape-client' from Cloud Images (LP: #1497030).
