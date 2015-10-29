@@ -1,3 +1,15 @@
+livecd-rootfs (2.350) xenial; urgency=medium
+
+  [ Oliver Grawert ]
+  * bump UID for tss user in snappy, else it matches dnsmasq and bad things
+    happen
+  * fix handling of writable files in /etc/default for snappy 
+
+  [ Ben Howard ]
+  * Cloud Images: disable new NIC naming convention (LP: #1510345).
+
+ -- Colin Watson <cjwatson@ubuntu.com>  Thu, 29 Oct 2015 14:25:28 +0000
+
 livecd-rootfs (2.349) wily; urgency=medium
 
   * do not hardcode installation of grub-pc for amd64 in snappy images,
