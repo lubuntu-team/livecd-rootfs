@@ -1,3 +1,11 @@
+livecd-rootfs (2.359) xenial; urgency=medium
+
+  * ubuntu-cpc:
+    - add devpts-live to hook builds
+    - add logic to settle the disks after UEFI builds
+
+ -- Ben Howard <ben.howard@ubuntu.com>  Mon, 23 Nov 2015 09:34:57 -0700
+
 livecd-rootfs (2.358) xenial; urgency=medium
 
   * Fix typo in ubuntu-cpc preventing non-intel builds.
