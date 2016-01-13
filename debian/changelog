@@ -1,3 +1,18 @@
+livecd-rootfs (2.369) xenial; urgency=medium
+
+  [ Łukasz 'sil2100' Zemczak ]
+  * Fix the invalid path for the error message in 00-uid-gid-fix.chroot_early
+    for ubuntu-touch.
+
+  [ Michael Vogt ]
+  * live-build/ubuntu-core/hooks/11-remove-extra-packages.chroot:
+    - remove libicu52 hook
+
+  [ Daniel Watkins ]
+  * Enable building of s390x cloud images.
+
+ -- Colin Watson <cjwatson@ubuntu.com>  Wed, 13 Jan 2016 10:29:43 +0000
+
 livecd-rootfs (2.368) xenial; urgency=medium
 
   * Fix earlier mistake of changing the wrong hashes.
