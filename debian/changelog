@@ -1,3 +1,9 @@
+livecd-rootfs (2.208.10) trusty; urgency=medium
+
+  * live-build/auto/config: Switch HWE from lts-vivid to lts-wily.
+
+ -- Adam Conrad <adconrad@ubuntu.com>  Fri, 15 Jan 2016 19:18:16 -0700
+
 livecd-rootfs (2.208.9) trusty; urgency=medium
 
   * Switch from lts-vivid to lts-wily HWE kernels (LP: #1524366)

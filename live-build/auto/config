@@ -192,7 +192,7 @@ case $ARCH in
 		KERNEL_FLAVOURS="generic-lts-wily"
 		;;
 esac
-HWE_X_PACKAGES="xserver-xorg-core-lts-vivid xserver-xorg-lts-vivid xserver-xorg-video-all-lts-vivid xserver-xorg-input-all-lts-vivid libwayland-egl1-mesa-lts-vivid"
+HWE_X_PACKAGES="xserver-xorg-core-lts-wily xserver-xorg-lts-wily xserver-xorg-video-all-lts-wily xserver-xorg-input-all-lts-wily libwayland-egl1-mesa-lts-wily"
 SIGNED_KERNEL_PACKAGE="linux-signed-generic-lts-wily"
 UNITY_HWE_HINTS="unity-settings-daemon notify-osd libqt4-sql-sqlite unity gnome-terminal"
 KUBUNTU_HWE_HINTS="pinentry-qt4 kde-baseapps-bin kde-window-manager"
