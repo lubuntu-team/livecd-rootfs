@@ -1,3 +1,9 @@
+livecd-rootfs (2.208.9) trusty; urgency=medium
+
+  * Switch from lts-vivid to lts-wily HWE kernels (LP: #1524366)
+
+ -- Adam Conrad <adconrad@ubuntu.com>  Wed, 09 Dec 2015 10:47:37 -0700
+
 livecd-rootfs (2.208.8) trusty; urgency=medium
 
   * Add xserver-xorg-core-lts-vivid to X HWE hints for the resolver.

@@ -182,18 +182,18 @@ case $BINARYFORMAT in
 		;;
 esac
 
-# Default to lts-vivid for the point release, this is overridden later by
+# Default to lts-wily for the point release, this is overridden later by
 # specific projects/flavours:
 case $ARCH in
 	powerpc)
-		KERNEL_FLAVOURS="powerpc-smp-lts-vivid powerpc64-smp-lts-vivid"
+		KERNEL_FLAVOURS="powerpc-smp-lts-wily powerpc64-smp-lts-wily"
 		;;
 	*)
-		KERNEL_FLAVOURS="generic-lts-vivid"
+		KERNEL_FLAVOURS="generic-lts-wily"
 		;;
 esac
 HWE_X_PACKAGES="xserver-xorg-core-lts-vivid xserver-xorg-lts-vivid xserver-xorg-video-all-lts-vivid xserver-xorg-input-all-lts-vivid libwayland-egl1-mesa-lts-vivid"
-SIGNED_KERNEL_PACKAGE="linux-signed-generic-lts-vivid"
+SIGNED_KERNEL_PACKAGE="linux-signed-generic-lts-wily"
 UNITY_HWE_HINTS="unity-settings-daemon notify-osd libqt4-sql-sqlite unity gnome-terminal"
 KUBUNTU_HWE_HINTS="pinentry-qt4 kde-baseapps-bin kde-window-manager"
 EDUBUNTU_HWE_HINTS="gnome-session gnome-terminal"
@@ -334,7 +334,7 @@ case $PROJECT in
 		add_package install $HWE_X_PACKAGES
 		COMPONENTS='main restricted universe multiverse'
 		case $ARCH in
-			amd64|i386)	KERNEL_FLAVOURS=lowlatency-lts-vivid ;;
+			amd64|i386)	KERNEL_FLAVOURS=lowlatency-lts-wily ;;
 		esac
 		;;
 
