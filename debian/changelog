@@ -1,3 +1,25 @@
+livecd-rootfs (2.374) xenial; urgency=medium
+
+  [ Michael Vogt ]
+  * ubuntu-core:
+    - include the dpkg.list in the device tarball
+    - store /usr/share/snappy/dpkg.list manifest on the OS tarball
+
+  [ Dimitri John Ledkov ]
+  * ubuntu-cpc:
+    - exclude s390x from should_install_grub
+
+  [ Steve Langasek ]
+  * Refactor/reorder ubuntu-cpc support for consistency with other flavors,
+    so that subarch overrides can be applied correctly.
+
+  [ Ben Howard ]
+  * ubuntu-cpc:
+    - fixed loop setup due to change of kpartx output
+    - only use grub-install logic for Intel architectures
+
+ -- Ben Howard <ben.howard@ubuntu.com>  Tue, 02 Feb 2016 10:18:14 -0700
+
 livecd-rootfs (2.373) xenial; urgency=medium
 
   * Set timeout options so ppc64el cloud images don't display a grub boot
