@@ -1,3 +1,16 @@
+livecd-rootfs (2.380) xenial; urgency=medium
+
+  [ Ben Howard ]
+  * live-build/ubuntu-cpc/hooks/042-vagrant.binary: add serial device for
+    Vagrant images (LP: #1546108).
+
+  [ Daniel Watkins ]
+  * Refactor ubuntu-cpc hooks to hard-code producing an 'ext4' rootfs, which
+    is used outside of the livecd-rootfs build process (specifically for EC2
+    publication).
+
+ -- Dimitri John Ledkov <xnox@ubuntu.com>  Mon, 22 Feb 2016 19:17:15 +0000
+
 livecd-rootfs (2.379) xenial; urgency=medium
 
   * add /var/lib/systemd/rfkill to pre-created dirs to use as writable
