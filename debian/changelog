@@ -1,3 +1,14 @@
+livecd-rootfs (2.381) xenial; urgency=medium
+
+  [ Ben Howard ]
+  * live-build/ubuntu-cpc/hooks/042-vagrant.binary: scope serial device for
+    Virtualbox only.
+
+  [ Łukasz 'sil2100' Zemczak ]
+  * Update the debootstrap group and gshadow hashes for ubuntu-touch.
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Thu, 03 Mar 2016 10:07:26 +0100
+
 livecd-rootfs (2.380) xenial; urgency=medium
 
   [ Ben Howard ]
