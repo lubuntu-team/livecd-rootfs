@@ -424,7 +424,7 @@ case $PROJECT in
 					add_package install flash-kernel u-boot-tools
 					;;
 				arm64)
-					add_package install u-boot-tools
+					add_package install u-boot-tools grub-efi-arm64
                                         ;;
 			esac
 			OPTS="${OPTS:+$OPTS }--linux-packages=none --initramfs=none"
@@ -569,7 +569,7 @@ case $ARCH in
 				echo "d-i passwd/auto-login boolean true" >config/preseed/autologin.preseed.chroot
 				;;
 			raspi2)
-				COMPONENTS='main restricted universe'
+				COMPONENTS='main restricted universe multiverse'
 				add_package install raspberrypi2-firmware u-boot-rpi flash-kernel u-boot-tools
 				BINARY_REMOVE_LINUX=false
 				;;
