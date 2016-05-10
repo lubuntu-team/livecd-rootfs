@@ -1,3 +1,11 @@
+livecd-rootfs (2.208.12) trusty; urgency=medium
+
+  * Rename old ubuntu-core tarballs to ubuntu-base, for consistency with
+    the changes already made to yakkety and the ubuntu-cdimage project.
+    LP: #1579950.
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Mon, 09 May 2016 17:03:01 -0700
+
 livecd-rootfs (2.208.11) trusty; urgency=medium
 
   * Only install thermald on amd64|i386 on lubuntu, fixing PPC build.

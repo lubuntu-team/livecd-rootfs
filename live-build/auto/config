@@ -164,7 +164,7 @@ if [ "$PREINSTALLED" = "true" ] && [ "$SUBPROJECT" != "wubi" ]; then
 		ubuntu-server)
 			add_package live oem-config-debconf ubiquity-frontend-debconf
 			;;
-		ubuntu-core|base|ubuntu-touch)
+		ubuntu-core|ubuntu-base|base|ubuntu-touch)
 			;;
 		*)
 			add_package live oem-config-gtk ubiquity-frontend-gtk
@@ -363,7 +363,7 @@ case $PROJECT in
 		PREINSTALL_POOL_SEEDS='server-ship'
 		;;
 
-	ubuntu-core)
+	ubuntu-core|ubuntu-base)
 		add_task install minimal
 		OPTS="${OPTS:+$OPTS }--bootstrap-flavour=minimal"
 		;;
@@ -451,7 +451,7 @@ case $ARCH in
 esac
 
 case $PROJECT in
-	ubuntu-server|ubuntu-core|ubuntu-touch)
+	ubuntu-server|ubuntu-core|ubuntu-base|ubuntu-touch)
 		OPTS="${OPTS:+$OPTS }--linux-packages=none --initramfs=none"
 		KERNEL_FLAVOURS=none
 		BINARY_REMOVE_LINUX=false
