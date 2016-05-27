@@ -1,3 +1,24 @@
+livecd-rootfs (2.411) yakkety; urgency=medium
+
+  [ Michael Vogt ]
+  * update kernel snap building to match the new kernel policy
+  * system-image: add /usr/local/bin/xdg-open dbus helper
+
+  [ Oliver Grawert ]
+  * add u-boot-tools to all snappy arches
+  * drop flash-kernel from snappy, it is useless there
+  * create /boot/uboot dir on all arches and configure /etc/fw_env.config
+    everywhere
+  * adjust motd message on snappy (capitalize "Snappy Ubuntu Core" and replace
+    the "snappy --help" with "snap --help"
+
+  [ Adam Conrad ]
+  * Stop explicitly removing systemd-sysv for touch.
+  * Move touch resolution hints to a HINTS variable, and adjust for use
+    on dual-stack gl/gles arches where things don't quite work right.
+
+ -- Adam Conrad <adconrad@ubuntu.com>  Thu, 26 May 2016 21:05:28 -0600
+
 livecd-rootfs (2.410) yakkety; urgency=medium
 
   * Rename old ubuntu-core tarballs to ubuntu-base to avoid confusion.
