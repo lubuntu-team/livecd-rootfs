@@ -1,3 +1,16 @@
+livecd-rootfs (2.415) yakkety; urgency=medium
+
+  [ Michael Vogt ]
+  * add var/lib/snapd/classic in ubuntu-core
+
+  [ Daniel Watkins ]
+  * Don't overwrite the default sources.list in cloud images.
+  * Replace sources.list generated using COMPONENTS with the sources.list from
+    an Ubuntu Server installation (i.e. with all components enabled, and all
+    deb-src lines commented).
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Wed, 08 Jun 2016 12:59:38 -0700
+
 livecd-rootfs (2.414) yakkety; urgency=medium
 
   * Update post-debootstrap hashes for ubuntu-touch.
