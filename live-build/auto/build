@@ -178,7 +178,7 @@ deb file:/var/lib/preinstalled-pool/ $LB_DISTRIBUTION $LB_PARENT_ARCHIVE_AREAS
 			> chroot/etc/apt/sources.list
 		rm chroot/etc/apt/sources.list.preinstall chroot/etc/apt/sources.list.orig
 	fi
-	if [ "$PROJECT" = "ubuntu-touch" ] || [ "$PROJECT" = "ubuntu-pd" ]; then
+	if [ "$PROJECT" = "ubuntu-touch" ] || [ "$PROJECT" = "ubuntu-touch-custom" ]; then
 		if [ "$ARCH" = "armhf" ]; then
 			INFO_DESC="$(lsb_release -d -s)"
 			echo "$INFO_DESC - $ARCH ($BUILDSTAMP)" >chroot/etc/media-info
@@ -257,7 +257,9 @@ if [ "$PROJECT:$SUBPROJECT" = "ubuntu-core:system-image" ]; then
             mkdir -p $rootfs/$dir
         done
 
-        VERSION="$(lsb_release -r -s)+$(date +20%y%m%d.%H-%M)"
+        # get a proper version from the chroot
+        . $rootfs/etc/os-release
+        VERSION="$(echo $PRETTY_NAME | sed 's/[^0-9.]*//g')"
 
         CORENAME="ubuntu-core"
         cat > $rootfs/meta/snap.yaml <<EOF
@@ -276,7 +278,7 @@ EOF
     fi
 fi
 
-if [ "$PROJECT" = "ubuntu-touch" ] || [ "$PROJECT" = "ubuntu-pd" ]; then
+if [ "$PROJECT" = "ubuntu-touch" ] || [ "$PROJECT" = "ubuntu-touch-custom" ]; then
 	(cd "binary/$INITFS/custom.dir/" && tar -c *) | \
 		gzip -9 --rsyncable > "$PREFIX.custom.tar.gz"
 	chmod 644 "$PREFIX.custom.tar.gz"
@@ -508,7 +510,7 @@ EOF
         ln -s $kernel kernel.img
         kvers="$(ls vmlinuz-*|sed 's/^.*vmlinuz-//;s/-[a-z.]*$//')"
 
-        VERSION=$kvers+$(date +20%y%m%d.%H-%M)
+        VERSION=$kvers
 
         cat > meta/kernel.yaml <<EOF
 version: $kvers
@@ -635,7 +637,7 @@ if [ "$SUBARCH" = "ac100" ] || [ "$SUBARCH" = "nexus7" ]; then
 
 fi
 
-if [ "$PROJECT" = "ubuntu-touch" ] || [ "$PROJECT" = "ubuntu-pd" ]; then
+if [ "$PROJECT" = "ubuntu-touch" ] || [ "$PROJECT" = "ubuntu-touch-custom" ]; then
 	sourceslist="chroot/etc/apt/sources.list"
 
 	lb chroot_proc install "$@"

@@ -1,3 +1,16 @@
+livecd-rootfs (2.420) yakkety; urgency=medium
+
+  [ Łukasz 'sil2100' Zemczak ]
+  * Remove the ubuntu-pd project from the scripts
+  * Add instead an ubuntu-touch-custom project for custom re-builds of
+    ubuntu-touch 
+
+  [ Oliver Grawert ]
+  * sanitize the version number of the ubuntu-core snap
+  * sanitize the version number of the kernel snap
+
+ -- Oliver Grawert <ogra@ubuntu.com>  Tue, 19 Jul 2016 13:59:16 +0200
+
 livecd-rootfs (2.419) yakkety; urgency=medium
 
   [ Daniel Watkins ]
