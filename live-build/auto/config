@@ -188,6 +188,7 @@ esac
 
 SIGNED_KERNEL_PACKAGE="linux-signed-generic"
 UNITY_HWE_HINTS="unity-settings-daemon notify-osd libqt4-sql-sqlite unity gnome-terminal"
+UBUNTUGNOME_HWE_HINTS="unity-settings-daemon- unity-control-center- libaccount-plugin-1.0-0- notification-daemon- libreoffice-style-elementary- libreoffice-style-human- libreoffice-style-breeze- curl- humanity-icon-theme- gnome-shell pinentry-curses"
 
 case $PROJECT in
 	ubuntu|ubuntu-dvd)
@@ -301,10 +302,11 @@ case $PROJECT in
 		;;
 
 	ubuntu-gnome)
-		add_task install minimal standard ubuntu-gnome-desktop
+		add_package install ubuntu-minimal ubuntu-standard
+		add_package install ubuntu-gnome-desktop $UBUNTUGNOME_HWE_HINTS	
 		LIVE_TASK='ubuntu-gnome-live'
 		case $ARCH in
-			amd64)	add_package live linux-signed-generic ;;
+			amd64)	add_package live $SIGNED_KERNEL_PACKAGE ;;
 		esac
 		COMPONENTS='main restricted universe'
 		;;
