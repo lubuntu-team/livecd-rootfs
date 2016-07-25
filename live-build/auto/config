@@ -182,18 +182,18 @@ case $BINARYFORMAT in
 		;;
 esac
 
-# Default to lts-wily for the point release, this is overridden later by
+# Default to lts-xenial for the point release, this is overridden later by
 # specific projects/flavours:
 case $ARCH in
 	powerpc)
-		KERNEL_FLAVOURS="powerpc-smp-lts-wily powerpc64-smp-lts-wily"
+		KERNEL_FLAVOURS="powerpc-smp-lts-xenial powerpc64-smp-lts-xenial"
 		;;
 	*)
-		KERNEL_FLAVOURS="generic-lts-wily"
+		KERNEL_FLAVOURS="generic-lts-xenial"
 		;;
 esac
-HWE_X_PACKAGES="xserver-xorg-core-lts-wily xserver-xorg-lts-wily xserver-xorg-video-all-lts-wily xserver-xorg-input-all-lts-wily libwayland-egl1-mesa-lts-wily"
-SIGNED_KERNEL_PACKAGE="linux-signed-generic-lts-wily"
+HWE_X_PACKAGES="xserver-xorg-core-lts-xenial xserver-xorg-lts-xenial xserver-xorg-video-all-lts-xenial xserver-xorg-input-all-lts-xenial libwayland-egl1-mesa-lts-xenial"
+SIGNED_KERNEL_PACKAGE="linux-signed-generic-lts-xenial"
 UNITY_HWE_HINTS="unity-settings-daemon notify-osd libqt4-sql-sqlite unity gnome-terminal"
 KUBUNTU_HWE_HINTS="pinentry-qt4 kde-baseapps-bin kde-window-manager"
 EDUBUNTU_HWE_HINTS="gnome-session gnome-terminal"
@@ -337,7 +337,7 @@ case $PROJECT in
 		add_package install $HWE_X_PACKAGES
 		COMPONENTS='main restricted universe multiverse'
 		case $ARCH in
-			amd64|i386)	KERNEL_FLAVOURS=lowlatency-lts-wily ;;
+			amd64|i386)	KERNEL_FLAVOURS=lowlatency-lts-xenial ;;
 		esac
 		;;
 
