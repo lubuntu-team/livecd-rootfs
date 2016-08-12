@@ -1,3 +1,10 @@
+livecd-rootfs (2.423) yakkety; urgency=medium
+
+  [ Simon Quigley ]
+  * Add an image for Lubuntu Next (LXQt)
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Fri, 12 Aug 2016 13:02:01 -0700
+
 livecd-rootfs (2.422) yakkety; urgency=medium
 
   * live-build/ubuntu-touch/includes.chroot/etc/lightdm/
