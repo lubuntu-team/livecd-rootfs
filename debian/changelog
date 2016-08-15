@@ -1,3 +1,9 @@
+livecd-rootfs (2.424) yakkety; urgency=medium
+
+  * Install nplan in the ubuntu-core image.
+
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Tue, 16 Aug 2016 10:28:45 +1200
+
 livecd-rootfs (2.423) yakkety; urgency=medium
 
   [ Simon Quigley ]
