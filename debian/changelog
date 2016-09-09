@@ -1,3 +1,20 @@
+livecd-rootfs (2.430) yakkety; urgency=medium
+
+  [ Michael Vogt ]
+  * live-build/ubuntu-core/hooks/01-setup_user.chroot:
+    - do not create "ubuntu" user for ubuntu-core anymore, the
+      console-conf package will create this user now
+  * live-build/ubuntu-core/hooks/02-add_user_to_groups.chroot
+    - dropped
+
+  [ Steve Langasek ]
+  * live-build/ubuntu-cpc/hooks/042-vagrant.binary: fix unmount handling
+    so that the teardown is done properly /before/ we try to make an
+    image from our filesystem, since otherwise /etc/resolv.conf is broken.
+    LP: #1621393.
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Fri, 09 Sep 2016 15:57:27 -0700
+
 livecd-rootfs (2.429) yakkety; urgency=medium
 
   * live-build/auto/build: Fix typo in netplan policy snippet.
