@@ -1,3 +1,14 @@
+livecd-rootfs (2.408.3) xenial-proposed; urgency=medium
+
+  [ Louis Zuckerman ]
+  * Fixes for vagrant box builder in ubuntu-cpc LP: #1565985
+    - Install virtualbox-guest-utils
+    - Don't disable default synced folder
+    - Don't set vm name
+    - Add cloud-init config to manage /etc/hosts LP: #1561250
+
+ -- Brian Murray <brian@ubuntu.com>  Tue, 30 Aug 2016 13:17:55 -0700
+
 livecd-rootfs (2.408.2) xenial; urgency=medium
 
   * Switch ubuntu-gnome from using tasks to metapackages (LP: #1602035)
