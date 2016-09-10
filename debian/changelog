@@ -1,3 +1,12 @@
+livecd-rootfs (2.408.4) UNRELEASED; urgency=medium
+
+  * live-build/ubuntu-cpc/hooks/042-vagrant.binary: fix unmount handling
+    so that the teardown is done properly /before/ we try to make an
+    image from our filesystem, since otherwise /etc/resolv.conf is broken.
+    LP: #1621393.
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Fri, 09 Sep 2016 17:04:35 -0700
+
 livecd-rootfs (2.408.3) xenial-proposed; urgency=medium
 
   [ Louis Zuckerman ]
