@@ -1,3 +1,11 @@
+livecd-rootfs (2.408.5) UNRELEASED; urgency=medium
+
+  [ Łukasz 'sil2100' Zemczak ]
+  * Temporarily change the 60-install-click.chroot script to pull in clicks for
+    arm64 builds from a different location for ubuntu-touch.
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Wed, 14 Sep 2016 18:58:26 +0000
+
 livecd-rootfs (2.408.4) xenial; urgency=medium
 
   * live-build/ubuntu-cpc/hooks/042-vagrant.binary: fix unmount handling
