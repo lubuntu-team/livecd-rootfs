@@ -3,6 +3,7 @@ livecd-rootfs (2.408.5) UNRELEASED; urgency=medium
   [ Łukasz 'sil2100' Zemczak ]
   * Temporarily change the 60-install-click.chroot script to pull in clicks for
     arm64 builds from a different location for ubuntu-touch.
+  * Add the new dhcpd user introduced by latest archive changes.
 
  -- Steve Langasek <steve.langasek@ubuntu.com>  Wed, 14 Sep 2016 18:58:26 +0000
 
