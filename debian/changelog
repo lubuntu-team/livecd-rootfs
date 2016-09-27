@@ -1,14 +1,15 @@
-livecd-rootfs (2.408.5) UNRELEASED; urgency=medium
-
-  [ Łukasz 'sil2100' Zemczak ]
+livecd-rootfs (2.408.5) xenial; urgency=medium
+ 
   * Temporarily change the 60-install-click.chroot script to pull in clicks for
     arm64 builds from a different location for ubuntu-touch.
-  * Add the new dhcpd user introduced by latest archive changes.
+  * Add the new dhcpd user to touch hooks introduced by latest archive changes.
+  * Remove the ubuntu-pd project logic.
+  * Synced ubuntu-touch-custom changes from the vivid branch to xenial. This
+    also adds a new symlink called ubuntu-touch-custom to the ubuntu-touch hooks
+    dir.
+  * Stop using the overlay PPA for touch livecd-rootfs changes (LP: #1628085).
 
-  [ Michael Vogt ]
-  * add meta/kernel.yaml to the kernel snaps
-
- -- Steve Langasek <steve.langasek@ubuntu.com>  Wed, 14 Sep 2016 18:58:26 +0000
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Tue, 27 Sep 2016 13:27:28 +0200
 
 livecd-rootfs (2.408.4) xenial; urgency=medium
 
