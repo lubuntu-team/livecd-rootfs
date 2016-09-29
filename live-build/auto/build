@@ -689,7 +689,7 @@ if [ "$SUBARCH" = "ac100" ] || [ "$SUBARCH" = "nexus7" ]; then
 
 fi
 
-if [ "$PROJECT" = "ubuntu-touch" ] && [ "$PROJECT" = "ubuntu-touch-custom" ]; then
+if [ "$PROJECT" = "ubuntu-touch" ] || [ "$PROJECT" = "ubuntu-touch-custom" ]; then
 	sourceslist="chroot/etc/apt/sources.list"
 
 	lb chroot_proc install "$@"
