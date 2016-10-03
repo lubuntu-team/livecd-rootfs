@@ -420,7 +420,13 @@ case $PROJECT in
 		;;
 
 	ubuntu-touch|ubuntu-touch-custom)
-		add_package install ubuntu-minimal ubuntu-touch systemd-sysv- packagekit ubuntu-system-settings-online-accounts
+		HINTS="packagekit ubuntu-system-settings-online-accounts"
+		case $ARCH in
+			amd64|i386)
+				HINTS="$HINTS qml-module-ubuntu-components-gles unity8"
+				;;
+		esac
+		add_package install ubuntu-minimal ubuntu-touch systemd-sysv- $HINTS
 
 		COMPONENTS='main restricted universe'
 		BOOTAPPEND_LIVE='hostname=ubuntu-phablet username=ubuntu'
