@@ -1,3 +1,10 @@
+livecd-rootfs (2.408.6) UNRELEASED; urgency=medium
+
+  * Add additional hints to ubuntu-touch* i386/amd64 image builds to pull in
+    the gles version of the UITK.
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Mon, 03 Oct 2016 14:14:43 +0200
+
 livecd-rootfs (2.408.5) xenial; urgency=medium
  
   * Temporarily change the 60-install-click.chroot script to pull in clicks for
