@@ -1,3 +1,19 @@
+livecd-rootfs (2.408.7) xenial; urgency=medium
+
+  [ Łukasz 'sil2100' Zemczak ]
+  * Add additional hints to ubuntu-touch* i386/amd64 image builds to pull in
+    the gles version of the UITK.
+  * Now that we have have systemd working on ubuntu-touch, remove the
+    systemd-sysv- in add_package config to make sure we can build an image with
+    systemd as the init system.
+
+  [ Adam Conrad ]
+  * Forward-port hardware enablement delta from trusty to xenial, with changes:
+    - Implement hwe stack swapping as task filters instead of install hints
+    - Revert ubuntu-desktop and ubuntu-gnome to use tasks again for the above
+
+ -- Adam Conrad <adconrad@ubuntu.com>  Wed, 08 Feb 2017 11:50:52 -0700
+
 livecd-rootfs (2.408.5) xenial; urgency=medium
  
   * Temporarily change the 60-install-click.chroot script to pull in clicks for
