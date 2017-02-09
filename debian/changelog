@@ -6,6 +6,9 @@ livecd-rootfs (2.408.6) UNRELEASED; urgency=medium
     systemd-sysv- in add_package config to make sure we can build an image with
     systemd as the init system.
 
+  [ Steve Langasek ]
+  * Document the Vcs-Bzr branch for SRUs.
+
  -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Mon, 03 Oct 2016 14:14:43 +0200
 
 livecd-rootfs (2.408.5) xenial; urgency=medium
