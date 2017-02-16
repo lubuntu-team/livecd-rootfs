@@ -1,3 +1,9 @@
+livecd-rootfs (2.408.8) xenial; urgency=medium
+
+  * Set device_tree_address for the new kernel in the RPi bootloader config.txt
+
+ -- Adam Conrad <adconrad@ubuntu.com>  Thu, 16 Feb 2017 10:21:51 -0700
+
 livecd-rootfs (2.408.7) xenial; urgency=medium
 
   [ Łukasz 'sil2100' Zemczak ]
