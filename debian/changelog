@@ -1,3 +1,16 @@
+livecd-rootfs (2.408.9) xenial; urgency=medium
+
+  [ Chris Glass ]
+  * Fix the manifest generation in OVA files so that ovf files don't have
+    double extensions.  (LP: #1627931)
+  * Fix the OVF's metadata to include Ubuntu specific identifiers and
+    descriptions instead of the generic Linux ones.  (LP: #1656293) 
+  [ Daniel Watkins ]
+  * Add replace_grub_root_with_label function thereby consolidating multiple
+    uses of the same calls to sed.
+
+ -- Robert C Jennings <robert.jennings@canonical.com>  Fri, 17 Mar 2017 13:15:49 -0500
+
 livecd-rootfs (2.408.8) xenial; urgency=medium
 
   * Set device_tree_address for the new kernel in the RPi bootloader config.txt
