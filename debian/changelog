@@ -1,3 +1,10 @@
+livecd-rootfs (2.435.1) yakkety; urgency=medium
+
+  [ Robert C Jennings ]
+  * ubuntu-cpc: Remove redundant copy of grub files. (LP: #1637290)
+
+ -- Mathieu Trudel-Lapierre <cyphermox@ubuntu.com>  Thu, 17 Nov 2016 16:13:28 -0500
+
 livecd-rootfs (2.435) yakkety; urgency=medium
 
   * Update the ubuntu-touch hints to try installing ubuntu-system-settings
