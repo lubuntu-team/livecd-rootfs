@@ -1,3 +1,16 @@
+livecd-rootfs (2.435.2) yakkety; urgency=medium
+
+  [ Chris Glass ]
+  * Fix the manifest generation in OVA files so that ovf files don't have
+    double extensions.  (LP: #1627931)
+  * Fix the OVF's metadata to include Ubuntu specific identifiers and
+    descriptions instead of the generic Linux ones.  (LP: #1656293)
+  [ Daniel Watkins ]
+  * Add replace_grub_root_with_label function thereby consolidating multiple
+    uses of the same calls to sed.
+
+ -- Robert C Jennings <robert.jennings@ubuntu.com>  Fri, 17 Mar 2017 13:46:47 -0500
+
 livecd-rootfs (2.435.1) yakkety; urgency=medium
 
   [ Robert C Jennings ]
