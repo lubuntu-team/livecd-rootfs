@@ -1,4 +1,4 @@
-livecd-rootfs (2.408.9) UNRELEASED; urgency=medium
+livecd-rootfs (2.408.9) xenial; urgency=medium
 
   [ Daniel Watkins ]
   * Don't overwrite the default sources.list in cloud images.
@@ -6,7 +6,17 @@ livecd-rootfs (2.408.9) UNRELEASED; urgency=medium
     an Ubuntu Server installation (i.e. with all components enabled, and all
     deb-src lines commented).  LP: #1513529.
 
- -- Steve Langasek <steve.langasek@ubuntu.com>  Tue, 21 Mar 2017 08:29:15 -0700
+  [ Chris Glass ]
+  * Fix the manifest generation in OVA files so that ovf files don't have
+    double extensions.  (LP: #1627931)
+  * Fix the OVF's metadata to include Ubuntu specific identifiers and
+    descriptions instead of the generic Linux ones.  (LP: #1656293) 
+
+  [ Daniel Watkins ]
+  * Add replace_grub_root_with_label function thereby consolidating multiple
+    uses of the same calls to sed.
+
+ -- Robert C Jennings <robert.jennings@canonical.com>  Fri, 17 Mar 2017 13:15:49 -0500
 
 livecd-rootfs (2.408.8) xenial; urgency=medium
 
