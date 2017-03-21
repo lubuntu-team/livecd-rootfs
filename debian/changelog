@@ -1,3 +1,13 @@
+livecd-rootfs (2.408.9) UNRELEASED; urgency=medium
+
+  [ Daniel Watkins ]
+  * Don't overwrite the default sources.list in cloud images.
+  * Replace sources.list generated using COMPONENTS with the sources.list from
+    an Ubuntu Server installation (i.e. with all components enabled, and all
+    deb-src lines commented).  LP: #1513529.
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Tue, 21 Mar 2017 08:29:15 -0700
+
 livecd-rootfs (2.408.8) xenial; urgency=medium
 
   * Set device_tree_address for the new kernel in the RPi bootloader config.txt
