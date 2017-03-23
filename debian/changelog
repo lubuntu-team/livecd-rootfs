@@ -1,3 +1,26 @@
+livecd-rootfs (2.408.9) xenial; urgency=medium
+
+  [ Daniel Watkins ]
+  * Don't overwrite the default sources.list in cloud images.
+  * Replace sources.list generated using COMPONENTS with the sources.list from
+    an Ubuntu Server installation (i.e. with all components enabled, and all
+    deb-src lines commented).  LP: #1513529.
+
+  [ Chris Glass ]
+  * Fix the manifest generation in OVA files so that ovf files don't have
+    double extensions.  (LP: #1627931)
+  * Fix the OVF's metadata to include Ubuntu specific identifiers and
+    descriptions instead of the generic Linux ones.  (LP: #1656293) 
+
+  [ Daniel Watkins ]
+  * Add replace_grub_root_with_label function thereby consolidating multiple
+    uses of the same calls to sed.
+
+  [ Robert C Jennings ]
+  * ubuntu-cpc: Remove redundant copy of grub files. (LP: #1637290)
+
+ -- Robert C Jennings <robert.jennings@canonical.com>  Thu, 23 Mar 2017 14:40:59 -0400
+
 livecd-rootfs (2.408.8) xenial; urgency=medium
 
   * Set device_tree_address for the new kernel in the RPi bootloader config.txt
