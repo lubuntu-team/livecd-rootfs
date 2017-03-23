@@ -1,3 +1,33 @@
+livecd-rootfs (2.440) zesty; urgency=medium
+
+  [ Steve Langasek ]
+  * live-build/ubuntu-cpc/functions: don't call sleep as part of
+    umount_settle; udevadm settle is synchronous and there's no reason to
+    sleep after it.
+  * live-build/ubuntu-cpc/functions: umount_partition: don't call
+    umount_settle for each submount; just unmount them one by one and
+    settle at the end.
+  * Support passing IMAGE_TARGETS in the environment, to limit which images
+    are output as part of a build; particularly useful for ubuntu-cpc builds
+    which output multiple image types.
+
+  [ Nishanth Aravamudan ]
+  * live-build/ubuntu-cpc/hooks/061-open-iscsi.chroot: generate iSCSI
+    Initiator Name at first iscsid run for cloud images to ensure it is
+    unique (LP: #1444992).
+
+  [ Brian Murray ]
+  * Fix the OVF's metadata to include Ubuntu specific identifiers and
+    descriptions instead of the generic Linux ones. Thanks to Chris Glass.
+    (LP: #1656293)
+  * Add replace_grub_root_with_label function thereby consolidating multiple
+    uses of the same calls to sed. Thanks to Dan Watkins.
+
+  [ Adam Conrad ]
+  * Set device_tree_address for the new kernel in the RPi bootloader config.txt
+
+ -- Adam Conrad <adconrad@ubuntu.com>  Thu, 23 Mar 2017 11:39:22 -0600
+
 livecd-rootfs (2.439) zesty; urgency=medium
 
   * Fix the manifest generation in OVA files so that ovf files don't have
