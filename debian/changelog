@@ -1,9 +1,9 @@
-livecd-rootfs (2.408.11) UNRELEASED; urgency=medium
+livecd-rootfs (2.408.11) xenial; urgency=medium
 
   * Add `apt-get update` to ubuntu-cpc ppc64el builds so they use the new
     sources.
 
- -- Daniel Watkins <daniel.watkins@canonical.com>  Fri, 07 Apr 2017 16:11:59 -0400
+ -- Daniel Watkins <daniel.watkins@canonical.com>  Fri, 07 Apr 2017 16:12:53 -0400
 
 livecd-rootfs (2.408.10) xenial; urgency=medium
 
