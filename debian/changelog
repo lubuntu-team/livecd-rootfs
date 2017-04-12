@@ -1,3 +1,14 @@
+livecd-rootfs (2.441) zesty; urgency=medium
+
+  [ Balint Reczey ]
+  * Add a basic but configurable autopkgtest.
+
+  [ Mathieu Trudel-Lapierre ]
+  * Add ubuntu-server:live for a subiquity-based server image.
+  * Refactor functions out of ubuntu-cpc and ubuntu-server hooks.
+
+ -- Mathieu Trudel-Lapierre <cyphermox@ubuntu.com>  Wed, 12 Apr 2017 19:37:08 -0400
+
 livecd-rootfs (2.440) zesty; urgency=medium
 
   [ Steve Langasek ]
