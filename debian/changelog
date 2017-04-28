@@ -1,3 +1,19 @@
+livecd-rootfs (2.442) artful; urgency=medium
+
+  [ Robert Jennings ]
+  * live-build/ubuntu-cpc/hooks/060-ipv6.chroot: remove faulty release
+    comparison prior to aa-series (LP: #1681548)
+  * live-build/ubuntu-cpc/hooks/999-extras.binary: Exit on first failure
+
+  [ Balint Reczey ]
+  * sync before calling kpartx to let writing to loop devices finish
+  * Sort and list dependencies nicely
+  * Require PROJECT environment to be set for lb build
+  * Allow overwriting IMAGEFORMAT even for ubuntu-cpc and ubuntu-server
+  * Optionally use ubuntu-image for building snap based images
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Fri, 28 Apr 2017 15:15:12 -0700
+
 livecd-rootfs (2.441.2) zesty; urgency=medium
 
   * The ubuntu-server:live should use a casper-based initramfs to work
