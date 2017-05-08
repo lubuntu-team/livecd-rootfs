@@ -1,3 +1,10 @@
+livecd-rootfs (2.441.3) UNRELEASED; urgency=medium
+
+  * Mark autopkgtests isolation-machine since debootstrap won't work in a
+    container.
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Fri, 28 Apr 2017 17:41:05 -0700
+
 livecd-rootfs (2.441.2) zesty; urgency=medium
 
   * The ubuntu-server:live should use a casper-based initramfs to work
