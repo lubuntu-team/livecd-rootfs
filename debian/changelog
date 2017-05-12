@@ -1,3 +1,10 @@
+livecd-rootfs (2.441.3) zesty; urgency=medium
+
+  * live-build/ubuntu-cpc/hooks/999-extras.binary: Exit on first failure.
+    (LP: #1687752)
+
+ -- Robert C Jennings <robert.jennings@canonical.com>  Tue, 09 May 2017 13:46:01 -0700
+
 livecd-rootfs (2.441.2) zesty; urgency=medium
 
   * The ubuntu-server:live should use a casper-based initramfs to work
