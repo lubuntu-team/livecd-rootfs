@@ -1,3 +1,10 @@
+livecd-rootfs (2.408.12) xenial; urgency=medium
+
+  * live-build/ubuntu-cpc/hooks/999-extras.binary: Exit on first failure.
+    (LP: #1687752)
+
+ -- Robert C Jennings <robert.jennings@canonical.com>  Tue, 09 May 2017 13:57:44 -0700
+
 livecd-rootfs (2.408.11) xenial; urgency=medium
 
   * Add `apt-get update` to ubuntu-cpc ppc64el builds so they use the new
