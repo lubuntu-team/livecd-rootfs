@@ -1,3 +1,14 @@
+livecd-rootfs (2.208.14) UNRELEASED; urgency=medium
+
+  [ Balint Reczey ]
+  * Add basic but configurable autopkgtest
+
+  [ Steve Langasek ]
+  * Mark autopkgtests isolation-machine since debootstrap won't work in a
+    container.
+
+ -- Balint Reczey <balint.reczey@canonical.com>  Thu, 11 May 2017 16:18:20 +0200
+
 livecd-rootfs (2.208.13) trusty; urgency=medium
 
   * live-build/auto/config: Switch HWE from wily to xenial (LP: #1568918)
