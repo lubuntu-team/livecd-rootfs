@@ -11,7 +11,7 @@ case $ARCH in
                      exit 0;;
 esac
 
-. /build/config/functions
+. config/functions
 
 if [ -e binary/boot/disk.ext4 ]; then
     create_vmdk binary/boot/disk.ext4 livecd.ubuntu-cpc.disk1.vmdk
