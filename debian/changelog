@@ -1,3 +1,10 @@
+livecd-rootfs (2.209.6) trusty; urgency=medium
+
+  [Daniel Watkins]
+  * Produce OVA files for i386 cloud builds.
+
+ -- Robert C Jennings <robert.jennings@canonical.com>  Tue, 23 May 2017 20:34:47 -0500
+
 livecd-rootfs (2.209.5) trusty; urgency=medium
 
   [Ben Howard]
