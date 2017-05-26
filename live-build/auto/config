@@ -113,7 +113,7 @@ add_binary_hook ()
 
 case $PROJECT in
 	ubuntu-cpc)
-		IMAGEFORMAT=plain
+		IMAGEFORMAT=ext4
 		;;
 esac
 
