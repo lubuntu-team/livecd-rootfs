@@ -1,232 +1,145 @@
-livecd-rootfs (2.209.20) trusty; urgency=medium
-
-  [Daniel Watkins]
-  * Add `apt-get update` to ubuntu-cpc ppc64el builds so they use the new
-    sources.
-
- -- Robert C Jennings <robert.jennings@canonical.com>  Tue, 24 May 2017 15:13:47 -0500
-
-livecd-rootfs (2.209.19) trusty; urgency=medium
-
-  [ Daniel Watkins ]
-  * Don't overwrite the default sources.list in cloud images.
-  * Replace sources.list generated using COMPONENTS with the sources.list from
-    an Ubuntu Server installation (i.e. with all components enabled, and all
-    deb-src lines commented).  LP: #1513529.
-
-  [ Chris Glass ]
-  * Fix the manifest generation in OVA files so that ovf files don't have
-    double extensions.  (LP: #1627931)
-  * Fix the OVF's metadata to include Ubuntu specific identifiers and
-    descriptions instead of the generic Linux ones.  (LP: #1656293)
-
-  [ Daniel Watkins ]
-  * Add replace_grub_root_with_label function thereby consolidating multiple
-    uses of the same calls to sed.
-
-  [ Robert C Jennings ]
-  * ubuntu-cpc: Remove redundant copy of grub files. (LP: #1637290)
-
- -- Robert C Jennings <robert.jennings@canonical.com>  Tue, 24 May 2017 15:09:47 -0500
-
-livecd-rootfs (2.209.18) trusty; urgency=medium
-
-  [Steve Langasek]
-  * live-build/ubuntu-cpc/hooks/042-vagrant.binary: fix unmount handling
-    so that the teardown is done properly /before/ we try to make an
-    image from our filesystem, since otherwise /etc/resolv.conf is broken.
-    LP: #1621393.
-
- -- Robert C Jennings <robert.jennings@canonical.com>  Tue, 24 May 2017 14:44:47 -0500
-
-livecd-rootfs (2.209.17) trusty; urgency=medium
-
-  [ Louis Zuckerman ]
-  * Fixes for vagrant box builder in ubuntu-cpc LP: #1565985
-    - Install virtualbox-guest-utils
-    - Don't disable default synced folder
-    - Don't set vm name
-    - Add cloud-init config to manage /etc/hosts LP: #1561250
-
- -- Robert C Jennings <robert.jennings@canonical.com>  Tue, 24 May 2017 14:41:47 -0500
-
-livecd-rootfs (2.209.16) trusty; urgency=medium
-
-  [ Daniel Watkins ]
-  * Enable building of powerpc cloud images.
-
- -- Robert C Jennings <robert.jennings@canonical.com>  Tue, 24 May 2017 14:31:47 -0500
-
-livecd-rootfs (2.209.15) trusty; urgency=medium
-
-  [ Ben Howard ]
-  * live-build/ubuntu-cpc/hooks/042-vagrant.binary: scope serial device for
-    Virtualbox only.
-
- -- Robert C Jennings <robert.jennings@canonical.com>  Tue, 24 May 2017 14:22:47 -0500
-
-livecd-rootfs (2.209.14) trusty; urgency=medium
-
-  [ Ben Howard ]
-  * live-build/ubuntu-cpc/hooks/042-vagrant.binary: add serial device for
-    Vagrant images (LP: #1546108).
-
-  [ Daniel Watkins ]
-  * Refactor ubuntu-cpc hooks to hard-code producing an 'ext4' rootfs, which
-    is used outside of the livecd-rootfs build process (specifically for EC2
-    publication).
-
- -- Robert C Jennings <robert.jennings@canonical.com>  Tue, 24 May 2017 14:08:47 -0500
-
-livecd-rootfs (2.209.13) trusty; urgency=medium
-
- [Adam Conrad]
- * live-build/ubuntu-cpc/hooks/999-cpc-fixes.chroot: Add fake_cloud_init
-    function to create a nocloud data source for cloud images that aren't
-    meant to be used on real clouds and use it by default on armhf+raspi2
-
- -- Robert C Jennings <robert.jennings@canonical.com>  Tue, 23 May 2017 22:35:47 -0500
-
-livecd-rootfs (2.209.12) trusty; urgency=medium
-
-  [ Steve Langasek ]
-  * Add hooks to ubuntu-cpc to divert /bin/sync in the chroot and undivert it
-    at the end.  This is a general-purpose change that should be applied to
-    all flavors and archs, but at the moment it's only needed on armhf+raspi2
-    to work around the raspberrypi2-firmware postinst calling sync, which is
-    actually warranted in the normal case.
-  * If a subarch is specified for a cloud image build, don't build rootfs
-    artifacts; these should come from the 'generic' build.
-  * Fix architecture handling in hooks.  We know we're always being invoked
-    from a launchpad-buildd-like setup, which passes ARCH and SUBARCH in the
-    environment, because auto/config and auto/build both rely on this.  So
-    don't scatter dpkg --print-architecture calls throughout, especially
-    when many of these are not cross-build-aware.
-  * Refactor ubuntu-cpc hooks to allow us to handle images where the root
-    partition should not be partition 1.
-
-  [ Ben Howard ]
-  * ubuntu-cpc: fix hooks/032-disk-image.binary call to
-    create_empty_partition, which requires five args due to "-u"
-  * ubuntu-cpc: in hooks/030-root-tarball.binary create /lib/modules to fix
-    (LP: 1543204).
-
-  [ Steve Langasek ]
-  * Refactor ubuntu-cpc hooks to always produce a 'plain' rootfs via
-    live-build and reuse this for the tarball, instead of lb_binary_rootfs
-    creating some artifact that we ignore / throw away.
-  * Initial support for raspi2 subarch.
-  * Import live-build/ubuntu-cpc/hooks/raspi2/mkknlimg from
-    https://github.com/raspberrypi/linux/blob/rpi-4.1.y/scripts/mkknlimg
-    and use it to install a bootable uboot.bin.
-
- -- Robert C Jennings <robert.jennings@canonical.com>  Tue, 23 May 2017 22:29:47 -0500
-
-livecd-rootfs (2.209.11) trusty; urgency=medium
-
-  [ Steve Langasek ]
-  * Refactor some non-idiomatic architecture handling in
-    live-build/ubuntu-cpc/hooks/999-cpc-fixes.chroot that also misidentifies
-    the architecture name for armhf.
-
- -- Robert C Jennings <robert.jennings@canonical.com>  Tue, 23 May 2017 21:38:47 -0500
-
-livecd-rootfs (2.209.10) trusty; urgency=medium
-
-  [ Steve Langasek ]
-  * Refactor/reorder ubuntu-cpc support for consistency with other flavors,
-    so that subarch overrides can be applied correctly.
-
-  [ Ben Howard ]
-  * ubuntu-cpc:
-    - fixed loop setup due to change of kpartx output
-    - only use grub-install logic for Intel architectures
-
- -- Robert C Jennings <robert.jennings@canonical.com>  Tue, 23 May 2017 21:01:47 -0500
-
-livecd-rootfs (2.209.9) trusty; urgency=medium
-
-  [Daniel Watkins]
-  * Set timeout options so ppc64el cloud images don't display a grub boot
-    menu (matching the behaviour of other cloud images).
-  * Specify a regex to run-parts so that cloud image extra scripts are found
-    and executed.
-
- -- Robert C Jennings <robert.jennings@canonical.com>  Tue, 23 May 2017 20:57:47 -0500
-
-livecd-rootfs (2.209.8) trusty; urgency=medium
-
-  [Daniel Watkins]
-  * Install grub in ppc64el cloud images so they are bootable (LP: #1538610)
-
- -- Robert C Jennings <robert.jennings@canonical.com>  Tue, 23 May 2017 20:51:47 -0500
-
-livecd-rootfs (2.209.7) trusty; urgency=medium
-
-  [Ben Howard]
-  * Remove unneeded packages from the root.tar.{gz,xz} cloud image targets
-    (LP: #1534764).
-
- -- Robert C Jennings <robert.jennings@canonical.com>  Tue, 23 May 2017 20:45:47 -0500
-
-livecd-rootfs (2.209.6) trusty; urgency=medium
-
-  [Daniel Watkins]
-  * Produce OVA files for i386 cloud builds.
-
- -- Robert C Jennings <robert.jennings@canonical.com>  Tue, 23 May 2017 20:34:47 -0500
-
-livecd-rootfs (2.209.5) trusty; urgency=medium
-
-  [Ben Howard]
-  * ubuntu-cpc:
-    - extended hooks/functions to support creation of derivative images
-      including mounting images.
-    - added the ability to create qcow2 images in hooks/functions
-    - simplified loop clean-up in hooks/functions
-    - removed assumption that disk1.img would be built
-    - switched qcow2 generation to use hooks/functions function
-
- -- Robert C Jennings <robert.jennings@canonical.com>  Tue, 23 May 2017 20:21:47 -0500
-
-livecd-rootfs (2.209.4) trusty; urgency=medium
-
-  [Ben Howard]
-  * ubuntu-cpc:
-    - add devpts-live to hook builds
-    - add logic to settle the disks after UEFI builds
-
- -- Robert C Jennings <robert.jennings@canonical.com>  Tue, 23 May 2017 20:12:47 -0500
-
-livecd-rootfs (2.209.3) trusty; urgency=medium
-
-  [Ben Howard]
-  * Fix typo in ubuntu-cpc preventing non-intel builds.
-
- -- Robert C Jennings <robert.jennings@canonical.com>  Tue, 23 May 2017 16:46:04 -0500
-
-livecd-rootfs (2.209.2) trusty; urgency=medium
-
-  [Oliver Grawert]
-  * added additional CPC build targets:
-    - added manifest generation for squashfs and root.tar.gz
-    - added VMDK generation
-    - added OVA generation from VMDK's
-    - added generic Vagrant image generation
-
- -- Robert C Jennings <robert.jennings@canonical.com>  Tue, 23 May 2017 16:40:29 -0500
-
-livecd-rootfs (2.209.1) trusty; urgency=medium
-
-  [Daniel Watkins]
-  * Move building of all architecture-specific CPC artifacts into Launchpad
-    (LP: #1513754).
-
- -- Robert C Jennings <robert.jennings@canonical.com>  Tue, 23 May 2017 16:33:44 -0500
-
 livecd-rootfs (2.209) trusty; urgency=medium
 
-  * Add ubuntu-cpc project
+  * Add ubuntu-cpc project (LP: #1693018)
+
+    [ Daniel Watkins ]
+    * Move building of all architecture-specific CPC artifacts into Launchpad
+      (LP: #1513754).
+
+    [ Oliver Grawert ]
+    * added additional CPC build targets:
+      - added manifest generation for squashfs and root.tar.gz
+      - added VMDK generation
+      - added OVA generation from VMDK's
+      - added generic Vagrant image generation
+
+    [ Ben Howard ]
+    * Fix typo in ubuntu-cpc preventing non-intel builds.
+    * add devpts-live to hook builds
+    * add logic to settle the disks after UEFI builds
+    * extended hooks/functions to support creation of derivative images
+    * including mounting images.
+    * added the ability to create qcow2 images in hooks/functions
+    * simplified loop clean-up in hooks/functions
+    * removed assumption that disk1.img would be built
+    * switched qcow2 generation to use hooks/functions function
+
+    [ Daniel Watkins ]
+    * Produce OVA files for i386 cloud builds.
+
+    [ Ben Howard ]
+    * Remove unneeded packages from the root.tar.{gz,xz} cloud image targets
+      (LP: #1534764).
+
+    [ Daniel Watkins ]
+    * Install grub in ppc64el cloud images so they are bootable (LP: #1538610)
+
+    [ Daniel Watkins ]
+    * Set timeout options so ppc64el cloud images don't display a grub boot
+      menu (matching the behaviour of other cloud images).
+    * Specify a regex to run-parts so that cloud image extra scripts are found
+      and executed.
+
+    [ Steve Langasek ]
+    * Refactor/reorder ubuntu-cpc support for consistency with other flavors,
+      so that subarch overrides can be applied correctly.
+
+    [ Ben Howard ]
+    * fixed loop setup due to change of kpartx output
+    * only use grub-install logic for Intel architectures
+
+    [ Steve Langasek ]
+    * Refactor some non-idiomatic architecture handling in
+      live-build/ubuntu-cpc/hooks/999-cpc-fixes.chroot that also misidentifies
+      the architecture name for armhf.
+
+    [ Steve Langasek ]
+    * Add hooks to ubuntu-cpc to divert /bin/sync in the chroot and undivert it
+      at the end.  This is a general-purpose change that should be applied to
+      all flavors and archs, but at the moment it's only needed on armhf+raspi2
+      to work around the raspberrypi2-firmware postinst calling sync, which is
+      actually warranted in the normal case.
+    * If a subarch is specified for a cloud image build, don't build rootfs
+      artifacts; these should come from the 'generic' build.
+    * Fix architecture handling in hooks.  We know we're always being invoked
+      from a launchpad-buildd-like setup, which passes ARCH and SUBARCH in the
+      environment, because auto/config and auto/build both rely on this.  So
+      don't scatter dpkg --print-architecture calls throughout, especially
+      when many of these are not cross-build-aware.
+    * Refactor ubuntu-cpc hooks to allow us to handle images where the root
+      partition should not be partition 1.
+
+    [ Ben Howard ]
+    * ubuntu-cpc: fix hooks/032-disk-image.binary call to
+      create_empty_partition, which requires five args due to "-u"
+    * ubuntu-cpc: in hooks/030-root-tarball.binary create /lib/modules to fix
+      (LP: 1543204).
+
+    [ Steve Langasek ]
+    * Refactor ubuntu-cpc hooks to always produce a 'plain' rootfs via
+      live-build and reuse this for the tarball, instead of lb_binary_rootfs
+      creating some artifact that we ignore / throw away.
+    * Initial support for raspi2 subarch.
+    * Import live-build/ubuntu-cpc/hooks/raspi2/mkknlimg from
+      https://github.com/raspberrypi/linux/blob/rpi-4.1.y/scripts/mkknlimg
+      and use it to install a bootable uboot.bin.
+
+    [ Adam Conrad ]
+    * live-build/ubuntu-cpc/hooks/999-cpc-fixes.chroot: Add fake_cloud_init
+      function to create a nocloud data source for cloud images that aren't
+      meant to be used on real clouds and use it by default on armhf+raspi2
+
+    [ Ben Howard ]
+    * live-build/ubuntu-cpc/hooks/042-vagrant.binary: add serial device for
+      Vagrant images (LP: #1546108).
+
+    [ Daniel Watkins ]
+    * Refactor ubuntu-cpc hooks to hard-code producing an 'ext4' rootfs, which
+      is used outside of the livecd-rootfs build process (specifically for EC2
+      publication).
+
+    [ Ben Howard ]
+    * live-build/ubuntu-cpc/hooks/042-vagrant.binary: scope serial device for
+      Virtualbox only.
+
+    [ Daniel Watkins ]
+    * Enable building of powerpc cloud images.
+
+    [ Louis Zuckerman ]
+    * Fixes for vagrant box builder in ubuntu-cpc LP: #1565985
+      - Install virtualbox-guest-utils
+      - Don't disable default synced folder
+      - Don't set vm name
+      - Add cloud-init config to manage /etc/hosts LP: #1561250
+
+    [ Steve Langasek ]
+    * live-build/ubuntu-cpc/hooks/042-vagrant.binary: fix unmount handling
+      so that the teardown is done properly /before/ we try to make an
+      image from our filesystem, since otherwise /etc/resolv.conf is broken.
+      LP: #1621393.
+
+    [ Daniel Watkins ]
+    * Don't overwrite the default sources.list in cloud images.
+    * Replace sources.list generated using COMPONENTS with the sources.list from
+      an Ubuntu Server installation (i.e. with all components enabled, and all
+      deb-src lines commented).  LP: #1513529.
+
+    [ Chris Glass ]
+    * Fix the manifest generation in OVA files so that ovf files don't have
+      double extensions.  (LP: #1627931)
+    * Fix the OVF's metadata to include Ubuntu specific identifiers and
+      descriptions instead of the generic Linux ones.  (LP: #1656293)
+
+    [ Daniel Watkins ]
+    * Add replace_grub_root_with_label function thereby consolidating multiple
+      uses of the same calls to sed.
+
+    [ Robert C Jennings ]
+    * ubuntu-cpc: Remove redundant copy of grub files. (LP: #1637290)
+
+    [ Daniel Watkins ]
+    * Add `apt-get update` to ubuntu-cpc ppc64el builds so they use the new
+      sources.
 
  -- Robert C Jennings <robert.jennings@canonical.com>  Mon, 08 May 2017 17:07:02 -0500
 
