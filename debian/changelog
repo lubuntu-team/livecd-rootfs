@@ -1,3 +1,13 @@
+livecd-rootfs (2.209.9) trusty; urgency=medium
+
+  [Daniel Watkins]
+  * Set timeout options so ppc64el cloud images don't display a grub boot
+    menu (matching the behaviour of other cloud images).
+  * Specify a regex to run-parts so that cloud image extra scripts are found
+    and executed.
+
+ -- Robert C Jennings <robert.jennings@canonical.com>  Tue, 23 May 2017 20:57:47 -0500
+
 livecd-rootfs (2.209.8) trusty; urgency=medium
 
   [Daniel Watkins]
