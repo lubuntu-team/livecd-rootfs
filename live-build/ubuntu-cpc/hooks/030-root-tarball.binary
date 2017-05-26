@@ -1,13 +1,13 @@
 #!/bin/bash -ex
-mkdir binary/boot/filesystem.dir
 
-cp -a chroot/* binary/boot/filesystem.dir
+if [ -n "$SUBARCH" ]; then
+	echo "Skipping rootfs build for subarch flavor build"
+	exit 0
+fi
 
-mount --bind /dev "binary/boot/filesystem.dir/dev"
-mount proc-live -t proc "binary/boot/filesystem.dir/proc"
-mount sysfs-live -t sysfs "binary/boot/filesystem.dir/sys"
-mv "binary/boot/filesystem.dir/etc/resolv.conf" resolv.conf.tmp
-cp /etc/resolv.conf "binary/boot/filesystem.dir/etc/resolv.conf"
+. /build/config/functions
+
+setup_mountpoint binary/boot/filesystem.dir
 
 chroot binary/boot/filesystem.dir dpkg-divert --local --rename /usr/sbin/grub-probe
 chroot binary/boot/filesystem.dir touch /usr/sbin/grub-probe
@@ -16,6 +16,7 @@ chroot binary/boot/filesystem.dir chmod +x /usr/sbin/grub-probe
 env DEBIAN_FRONTEND=noninteractive chroot binary/boot/filesystem.dir apt-get --purge remove --assume-yes '^linux-.*'
 env DEBIAN_FRONTEND=noninteractive chroot binary/boot/filesystem.dir apt-get --purge remove --assume-yes '^grub-.*'
 env DEBIAN_FRONTEND=noninteractive chroot binary/boot/filesystem.dir apt-get autoremove --purge --assume-yes
+chroot binary/boot/filesystem.dir mkdir /lib/modules
 
 chroot binary/boot/filesystem.dir rm /usr/sbin/grub-probe
 chroot binary/boot/filesystem.dir dpkg-divert --remove --local --rename /usr/sbin/grub-probe
@@ -23,4 +24,6 @@ chroot binary/boot/filesystem.dir dpkg-divert --remove --local --rename /usr/sbi
 mv resolv.conf.tmp "binary/boot/filesystem.dir/etc/resolv.conf"
 umount "binary/boot/filesystem.dir/proc"
 umount "binary/boot/filesystem.dir/sys"
+umount "binary/boot/filesystem.dir/dev/pts"
 umount "binary/boot/filesystem.dir/dev"
+umount "binary/boot/filesystem.dir/tmp"

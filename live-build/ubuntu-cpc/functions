@@ -41,6 +41,7 @@ mount_image() {
     apt-get install -qqy kpartx
     trap clean_loops EXIT
     backing_img="$1"
+    local rootpart="$2"
     kpartx_mapping="$(kpartx -s -v -a ${backing_img})"
 
     # Find the loop device
@@ -52,7 +53,7 @@ mount_image() {
     fi
 
     # Find the rootfs location
-    rootfs_dev_mapper="/dev/mapper/${loop_p1}"
+    rootfs_dev_mapper="/dev/mapper/${loop_p1%%[0-9]}${rootpart}"
     if [ ! -b "${rootfs_dev_mapper}" ]; then
         echo "${rootfs_dev_mapper} is not a block device";
         exit 1
@@ -65,11 +66,9 @@ mount_image() {
     return 0
 }
 
-mount_partition() {
-    partition="$1"
-    mountpoint="$2"
+setup_mountpoint() {
+    local mountpoint="$1"
 
-    mount "$partition" "$mountpoint"
     mount --bind /dev "$mountpoint/dev"
     mount devpts-live -t proc "$mountpoint/dev/pts"
     mount proc-live -t proc "$mountpoint/proc"
@@ -77,13 +76,22 @@ mount_partition() {
     mount -t tmpfs none "$mountpoint/tmp"
     mv "$mountpoint/etc/resolv.conf" resolv.conf.tmp
     cp /etc/resolv.conf "$mountpoint/etc/resolv.conf"
+
+}
+
+mount_partition() {
+    partition="$1"
+    mountpoint="$2"
+
+    mount "$partition" "$mountpoint"
+    setup_mountpoint "$mountpoint"
 }
 
 
 mount_disk_image() {
     local disk_image=${1}
     local mountpoint=${2}
-    mount_image ${disk_image}
+    mount_image ${disk_image} 1
     mount_partition "${rootfs_dev_mapper}" $mountpoint
 
     local uefi_dev="/dev/mapper${loop_device///dev/}p15"
