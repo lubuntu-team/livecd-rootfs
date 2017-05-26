@@ -1,3 +1,9 @@
+livecd-rootfs (2.209) trusty; urgency=medium
+
+  * Add ubuntu-cpc project
+
+ -- Robert C Jennings <robert.jennings@canonical.com>  Mon, 08 May 2017 17:07:02 -0500
+
 livecd-rootfs (2.208.14) UNRELEASED; urgency=medium
 
   [ Balint Reczey ]
