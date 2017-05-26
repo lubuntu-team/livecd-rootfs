@@ -1,3 +1,26 @@
+livecd-rootfs (2.209.19) trusty; urgency=medium
+
+  [ Daniel Watkins ]
+  * Don't overwrite the default sources.list in cloud images.
+  * Replace sources.list generated using COMPONENTS with the sources.list from
+    an Ubuntu Server installation (i.e. with all components enabled, and all
+    deb-src lines commented).  LP: #1513529.
+
+  [ Chris Glass ]
+  * Fix the manifest generation in OVA files so that ovf files don't have
+    double extensions.  (LP: #1627931)
+  * Fix the OVF's metadata to include Ubuntu specific identifiers and
+    descriptions instead of the generic Linux ones.  (LP: #1656293)
+
+  [ Daniel Watkins ]
+  * Add replace_grub_root_with_label function thereby consolidating multiple
+    uses of the same calls to sed.
+
+  [ Robert C Jennings ]
+  * ubuntu-cpc: Remove redundant copy of grub files. (LP: #1637290)
+
+ -- Robert C Jennings <robert.jennings@canonical.com>  Tue, 24 May 2017 15:09:47 -0500
+
 livecd-rootfs (2.209.18) trusty; urgency=medium
 
   [Steve Langasek]
