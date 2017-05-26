@@ -1,3 +1,14 @@
+livecd-rootfs (2.209.2) trusty; urgency=medium
+
+  [Oliver Grawert]
+  * added additional CPC build targets:
+    - added manifest generation for squashfs and root.tar.gz
+    - added VMDK generation
+    - added OVA generation from VMDK's
+    - added generic Vagrant image generation
+
+ -- Robert C Jennings <robert.jennings@canonical.com>  Tue, 23 May 2017 16:40:29 -0500
+
 livecd-rootfs (2.209.1) trusty; urgency=medium
 
   [Daniel Watkins]
