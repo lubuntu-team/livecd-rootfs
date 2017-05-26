@@ -1,3 +1,10 @@
+livecd-rootfs (2.209.8) trusty; urgency=medium
+
+  [Daniel Watkins]
+  * Install grub in ppc64el cloud images so they are bootable (LP: #1538610)
+
+ -- Robert C Jennings <robert.jennings@canonical.com>  Tue, 23 May 2017 20:51:47 -0500
+
 livecd-rootfs (2.209.7) trusty; urgency=medium
 
   [Ben Howard]
