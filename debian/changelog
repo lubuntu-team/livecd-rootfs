@@ -1,3 +1,11 @@
+livecd-rootfs (2.209.15) trusty; urgency=medium
+
+  [ Ben Howard ]
+  * live-build/ubuntu-cpc/hooks/042-vagrant.binary: scope serial device for
+    Virtualbox only.
+
+ -- Robert C Jennings <robert.jennings@canonical.com>  Tue, 24 May 2017 14:22:47 -0500
+
 livecd-rootfs (2.209.14) trusty; urgency=medium
 
   [ Ben Howard ]
