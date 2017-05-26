@@ -1,3 +1,11 @@
+livecd-rootfs (2.209.7) trusty; urgency=medium
+
+  [Ben Howard]
+  * Remove unneeded packages from the root.tar.{gz,xz} cloud image targets
+    (LP: #1534764).
+
+ -- Robert C Jennings <robert.jennings@canonical.com>  Tue, 23 May 2017 20:45:47 -0500
+
 livecd-rootfs (2.209.6) trusty; urgency=medium
 
   [Daniel Watkins]
