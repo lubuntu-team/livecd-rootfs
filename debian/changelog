@@ -1,3 +1,10 @@
+livecd-rootfs (2.209.3) trusty; urgency=medium
+
+  [Ben Howard]
+  * Fix typo in ubuntu-cpc preventing non-intel builds.
+
+ -- Robert C Jennings <robert.jennings@canonical.com>  Tue, 23 May 2017 16:46:04 -0500
+
 livecd-rootfs (2.209.2) trusty; urgency=medium
 
   [Oliver Grawert]
