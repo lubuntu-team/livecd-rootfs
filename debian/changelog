@@ -1,3 +1,12 @@
+livecd-rootfs (2.209.11) trusty; urgency=medium
+
+  [ Steve Langasek ]
+  * Refactor some non-idiomatic architecture handling in
+    live-build/ubuntu-cpc/hooks/999-cpc-fixes.chroot that also misidentifies
+    the architecture name for armhf.
+
+ -- Robert C Jennings <robert.jennings@canonical.com>  Tue, 23 May 2017 21:38:47 -0500
+
 livecd-rootfs (2.209.10) trusty; urgency=medium
 
   [ Steve Langasek ]
