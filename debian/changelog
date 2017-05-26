@@ -1,3 +1,11 @@
+livecd-rootfs (2.209.1) trusty; urgency=medium
+
+  [Daniel Watkins]
+  * Move building of all architecture-specific CPC artifacts into Launchpad
+    (LP: #1513754).
+
+ -- Robert C Jennings <robert.jennings@canonical.com>  Tue, 23 May 2017 16:33:44 -0500
+
 livecd-rootfs (2.209) trusty; urgency=medium
 
   * Add ubuntu-cpc project
