@@ -1,3 +1,12 @@
+livecd-rootfs (2.209.13) trusty; urgency=medium
+
+ [Adam Conrad]
+ * live-build/ubuntu-cpc/hooks/999-cpc-fixes.chroot: Add fake_cloud_init
+    function to create a nocloud data source for cloud images that aren't
+    meant to be used on real clouds and use it by default on armhf+raspi2
+
+ -- Robert C Jennings <robert.jennings@canonical.com>  Tue, 23 May 2017 22:35:47 -0500
+
 livecd-rootfs (2.209.12) trusty; urgency=medium
 
   [ Steve Langasek ]
