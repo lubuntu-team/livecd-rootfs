@@ -1,3 +1,16 @@
+livecd-rootfs (2.209.10) trusty; urgency=medium
+
+  [ Steve Langasek ]
+  * Refactor/reorder ubuntu-cpc support for consistency with other flavors,
+    so that subarch overrides can be applied correctly.
+
+  [ Ben Howard ]
+  * ubuntu-cpc:
+    - fixed loop setup due to change of kpartx output
+    - only use grub-install logic for Intel architectures
+
+ -- Robert C Jennings <robert.jennings@canonical.com>  Tue, 23 May 2017 21:01:47 -0500
+
 livecd-rootfs (2.209.9) trusty; urgency=medium
 
   [Daniel Watkins]
