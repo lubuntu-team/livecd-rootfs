@@ -4,6 +4,7 @@ livecd-rootfs (2.209) trusty; urgency=medium
 
     [ Daniel Watkins ]
     * Move building of all architecture-specific CPC artifacts into Launchpad
+      - Fixup virtual FLAVOUR kernel name
 
     [ Oliver Grawert ]
     * added additional CPC build targets:
