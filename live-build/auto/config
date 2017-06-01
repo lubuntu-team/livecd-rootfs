@@ -111,6 +111,12 @@ add_binary_hook ()
 	BINARY_HOOKS="${BINARY_HOOKS:+$BINARY_HOOKS }$1"
 }
 
+case $PROJECT in
+	ubuntu-cpc)
+		IMAGEFORMAT=ext4
+		;;
+esac
+
 case $IMAGEFORMAT in
 	ext2|ext3|ext4)
 		OPTS="${OPTS:+$OPTS }--initramfs none --chroot-filesystem $IMAGEFORMAT"
@@ -121,9 +127,15 @@ case $IMAGEFORMAT in
 				COMPONENTS='main restricted universe multiverse'
 				;;
 			*)
-				add_package live jasper
-				OPTS="${OPTS:+$OPTS }--swap-file-path SWAP.swap"
-				OPTS="${OPTS:+$OPTS }--swap-file-size 512"
+				case $PROJECT in
+					ubuntu-cpc)
+						;;
+					*)
+						add_package live jasper
+						OPTS="${OPTS:+$OPTS }--swap-file-path SWAP.swap"
+						OPTS="${OPTS:+$OPTS }--swap-file-size 512"
+						;;
+				esac
 				;;
 		esac
 		;;
@@ -164,7 +176,7 @@ if [ "$PREINSTALLED" = "true" ] && [ "$SUBPROJECT" != "wubi" ]; then
 		ubuntu-server)
 			add_package live oem-config-debconf ubiquity-frontend-debconf
 			;;
-		ubuntu-core|ubuntu-base|base|ubuntu-touch)
+		ubuntu-core|ubuntu-base|base|ubuntu-touch|ubuntu-cpc)
 			;;
 		*)
 			add_package live oem-config-gtk ubiquity-frontend-gtk
@@ -381,6 +393,38 @@ case $PROJECT in
 		OPTS="${OPTS:+$OPTS }--zsync false"
 		;;
 
+	ubuntu-cpc)
+		add_task install minimal standard cloud-image
+		add_package install ubuntu-minimal
+
+		BINARY_REMOVE_LINUX=false
+		OPTS="${OPTS:+$OPTS }--initramfs=none"
+		KERNEL_FLAVOURS=virtual
+		case $ARCH in
+			armhf)
+				KERNEL_FLAVOURS=generic-lpae
+				add_package install flash-kernel
+				add_task install server
+				;;
+			arm64)
+				KERNEL_FLAVOURS=generic
+				add_package install flash-kernel
+				add_task install server
+				;;
+			ppc64el)
+				add_task install server
+				;;
+			powerpc)
+				KERNEL_FLAVOURS=powerpc64-smp
+				add_task install server
+				;;
+		esac
+		OPTS="${OPTS:+$OPTS }--system=normal"
+		OPTS="${OPTS:+$OPTS }--hdd-label=cloudimg-rootfs"
+		OPTS="${OPTS:+$OPTS }--ext-resize-blocks=536870912 --ext-block-size=4096"
+		OPTS="${OPTS:+$OPTS }--ext-fudge-factor=15"
+		;;
+
 	*)
 		echo "unknown project $PROJECT" >&2
 		exit 2
@@ -446,6 +490,11 @@ case $ARCH in
 				echo "linux-firmware-nexus7 shared/nexus7_notice_accepted boolean true" >config/preseed/linux-firmware-nexus7.preseed.chroot
 				echo "d-i passwd/auto-login boolean true" >config/preseed/autologin.preseed.chroot
 				;;
+			raspi2)
+				COMPONENTS='main restricted universe'
+				add_package install raspberrypi2-firmware u-boot-rpi flash-kernel u-boot-tools
+				BINARY_REMOVE_LINUX=false
+				;;
 		esac
 		;;
 esac
@@ -466,7 +515,7 @@ add_chroot_hook remove-openssh-server-host-keys
 add_chroot_hook remove-udev-persistent-rules
 
 case $PROJECT in
-	ubuntu-server)
+	ubuntu-server|ubuntu-cpc)
 		;;
 
 	*)
@@ -501,6 +550,80 @@ lb config noauto \
 echo "LB_CHROOT_HOOKS=\"$CHROOT_HOOKS\"" >> config/chroot
 echo "LB_BINARY_HOOKS=\"$BINARY_HOOKS\"" >> config/binary
 echo "BUILDSTAMP=\"$NOW\"" >> config/binary
+
+case $ARCH+$SUBARCH in
+	armhf+raspi2)
+		cat > config/hooks/01-firmware-directory.chroot_early <<EOF
+#!/bin/sh -ex
+mkdir -p /boot/firmware
+EOF
+		cat > config/hooks/999-raspi2-fixes.chroot <<EOF
+#!/bin/sh -ex
+cat >> /etc/fstab << EOM
+LABEL=system-boot       /boot/firmware  vfat    defaults        0       1
+EOM
+
+cat > /boot/firmware/cmdline.txt << EOM
+dwc_otg.lpm_enable=0 console=ttyAMA0,115200 console=tty1 root=/dev/mmcblk0p2 rootfstype=ext4 elevator=deadline rootwait
+EOM
+
+cat > /boot/firmware/config.txt << EOM
+# For more options and information see 
+# http://www.raspberrypi.org/documentation/configuration/config-txt.md
+# Some settings may impact device functionality. See link above for details
+
+kernel=uboot.bin
+
+# enable i2c
+dtparam=i2c_arm=on
+dtparam=spi=on
+
+# uncomment if you get no picture on HDMI for a default "safe" mode
+#hdmi_safe=1
+
+# uncomment this if your display has a black border of unused pixels visible
+# and your display can output without overscan
+#disable_overscan=1
+
+# uncomment the following to adjust overscan. Use positive numbers if console
+# goes off screen, and negative if there is too much border
+#overscan_left=16
+#overscan_right=16
+#overscan_top=16
+#overscan_bottom=16
+
+# uncomment to force a console size. By default it will be display's size minus
+# overscan.
+#framebuffer_width=1280
+#framebuffer_height=720
+
+# uncomment if hdmi display is not detected and composite is being output
+#hdmi_force_hotplug=1
+
+# uncomment to force a specific HDMI mode (this will force VGA)
+#hdmi_group=1
+#hdmi_mode=1
+
+# uncomment to force a HDMI mode rather than DVI. This can make audio work in
+# DMT (computer monitor) modes
+#hdmi_drive=2
+
+# uncomment to increase signal to HDMI, if you have interference, blanking, or
+# no display
+#config_hdmi_boost=4
+
+# uncomment for composite PAL
+#sdtv_mode=2
+
+#uncomment to overclock the arm. 700 MHz is the default.
+#arm_freq=800
+
+EOM
+EOF
+		;;
+	*)
+		;;
+esac
 
 case $PROJECT in
 	ubuntu-server)
@@ -556,8 +679,8 @@ EOF
 		fi
 		;;
 
-	ubuntu-touch)
-		cp -af /usr/share/livecd-rootfs/live-build/ubuntu-touch/* \
+	ubuntu-touch|ubuntu-cpc)
+		cp -af /usr/share/livecd-rootfs/live-build/${PROJECT}/* \
 			config/
 		;;
 esac

@@ -1,0 +1,15 @@
+#!/bin/bash
+# Execute extra binary hooks.
+
+my_dir=$(dirname $(readlink -f ${0}))
+extra_d=${my_dir}/extra
+
+if [ ! -d ${my_dir}/extra ]; then
+    exit 0
+fi
+
+# Export the common functions to the extras
+. /build/config/functions
+
+# Cleaner execution
+/bin/run-parts --regex ".*\.binary" "${extra_d}"
