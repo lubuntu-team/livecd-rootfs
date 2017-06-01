@@ -4,7 +4,6 @@ livecd-rootfs (2.209) trusty; urgency=medium
 
     [ Daniel Watkins ]
     * Move building of all architecture-specific CPC artifacts into Launchpad
-      (LP: #1513754).
 
     [ Oliver Grawert ]
     * added additional CPC build targets:
@@ -29,10 +28,9 @@ livecd-rootfs (2.209) trusty; urgency=medium
 
     [ Ben Howard ]
     * Remove unneeded packages from the root.tar.{gz,xz} cloud image targets
-      (LP: #1534764).
 
     [ Daniel Watkins ]
-    * Install grub in ppc64el cloud images so they are bootable (LP: #1538610)
+    * Install grub in ppc64el cloud images so they are bootable
 
     [ Daniel Watkins ]
     * Set timeout options so ppc64el cloud images don't display a grub boot
@@ -73,7 +71,6 @@ livecd-rootfs (2.209) trusty; urgency=medium
     * ubuntu-cpc: fix hooks/032-disk-image.binary call to
       create_empty_partition, which requires five args due to "-u"
     * ubuntu-cpc: in hooks/030-root-tarball.binary create /lib/modules to fix
-      (LP: 1543204).
 
     [ Steve Langasek ]
     * Refactor ubuntu-cpc hooks to always produce a 'plain' rootfs via
@@ -91,7 +88,7 @@ livecd-rootfs (2.209) trusty; urgency=medium
 
     [ Ben Howard ]
     * live-build/ubuntu-cpc/hooks/042-vagrant.binary: add serial device for
-      Vagrant images (LP: #1546108).
+      Vagrant images
 
     [ Daniel Watkins ]
     * Refactor ubuntu-cpc hooks to hard-code producing an 'ext4' rootfs, which
@@ -106,36 +103,35 @@ livecd-rootfs (2.209) trusty; urgency=medium
     * Enable building of powerpc cloud images.
 
     [ Louis Zuckerman ]
-    * Fixes for vagrant box builder in ubuntu-cpc LP: #1565985
+    * Fixes for vagrant box builder in ubuntu-cpc
       - Install virtualbox-guest-utils
       - Don't disable default synced folder
       - Don't set vm name
-      - Add cloud-init config to manage /etc/hosts LP: #1561250
+      - Add cloud-init config to manage /etc/hosts
 
     [ Steve Langasek ]
     * live-build/ubuntu-cpc/hooks/042-vagrant.binary: fix unmount handling
       so that the teardown is done properly /before/ we try to make an
       image from our filesystem, since otherwise /etc/resolv.conf is broken.
-      LP: #1621393.
 
     [ Daniel Watkins ]
     * Don't overwrite the default sources.list in cloud images.
     * Replace sources.list generated using COMPONENTS with the sources.list from
       an Ubuntu Server installation (i.e. with all components enabled, and all
-      deb-src lines commented).  LP: #1513529.
+      deb-src lines commented).
 
     [ Chris Glass ]
     * Fix the manifest generation in OVA files so that ovf files don't have
-      double extensions.  (LP: #1627931)
+      double extensions.
     * Fix the OVF's metadata to include Ubuntu specific identifiers and
-      descriptions instead of the generic Linux ones.  (LP: #1656293)
+      descriptions instead of the generic Linux ones.
 
     [ Daniel Watkins ]
     * Add replace_grub_root_with_label function thereby consolidating multiple
       uses of the same calls to sed.
 
     [ Robert C Jennings ]
-    * ubuntu-cpc: Remove redundant copy of grub files. (LP: #1637290)
+    * ubuntu-cpc: Remove redundant copy of grub files.
 
     [ Daniel Watkins ]
     * Add `apt-get update` to ubuntu-cpc ppc64el builds so they use the new
