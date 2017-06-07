@@ -1,4 +1,4 @@
-livecd-rootfs (2.441.4) UNRELEASED; urgency=medium
+livecd-rootfs (2.441.4) zesty; urgency=medium
 
   [ Balint Reczey ]
   * wrap kpartx and trap spurious errors, to work around kpartx
@@ -8,7 +8,7 @@ livecd-rootfs (2.441.4) UNRELEASED; urgency=medium
   * Mark autopkgtests isolation-machine since debootstrap won't work in a
     container.
 
- -- Steve Langasek <steve.langasek@ubuntu.com>  Fri, 28 Apr 2017 17:41:05 -0700
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Tue, 06 Jun 2017 23:09:10 -0700
 
 livecd-rootfs (2.441.3) zesty; urgency=medium
 
