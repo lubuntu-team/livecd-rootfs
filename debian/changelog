@@ -140,11 +140,7 @@ livecd-rootfs (2.208.14) trusty; urgency=medium
       sources.
 
   [ Balint Reczey ]
-  * Add basic but configurable autopkgtest
-
-  [ Steve Langasek ]
-  * Mark autopkgtests isolation-machine since debootstrap won't work in a
-    container.
+  * Add basic but configurable autopkgtest.  LP: #1690440.
 
  -- Robert C Jennings <robert.jennings@canonical.com>  Thu, 01 Jun 2017 16:30:10 -0400
 
