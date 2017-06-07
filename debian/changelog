@@ -1,3 +1,15 @@
+livecd-rootfs (2.435.3) UNRELEASED; urgency=medium
+
+  [ Balint Reczey ]
+  * Source ubuntu-cpc functions from the right place
+  * Use all config hooks from the proper place, not from /build/
+  * Add basic but configurable autopkgtest (LP: #1690440)
+  * sync before calling kpartx to let writing to loop devices finish
+  * wrap kpartx and trap spurious errors, to work around kpartx
+    unreliability.
+
+ -- Balint Reczey <balint.reczey@canonical.com>  Thu, 11 May 2017 16:18:20 +0200
+
 livecd-rootfs (2.435.2) yakkety; urgency=medium
 
   [ Chris Glass ]
