@@ -1,3 +1,10 @@
+livecd-rootfs (2.435.3) yakkety; urgency=medium
+
+  * live-build/ubuntu-cpc/hooks/999-extras.binary: Exit on first failure.
+    (LP: #1687752)
+
+ -- Robert C Jennings <robert.jennings@canonical.com>  Tue, 09 May 2017 13:49:48 -0700
+
 livecd-rootfs (2.435.2) yakkety; urgency=medium
 
   [ Chris Glass ]
