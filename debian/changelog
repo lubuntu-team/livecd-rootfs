@@ -1,4 +1,4 @@
-livecd-rootfs (2.435.3) UNRELEASED; urgency=medium
+livecd-rootfs (2.435.3) yakkety; urgency=medium
 
   [ Balint Reczey ]
   * Source ubuntu-cpc functions from the right place
@@ -8,7 +8,7 @@ livecd-rootfs (2.435.3) UNRELEASED; urgency=medium
   * wrap kpartx and trap spurious errors, to work around kpartx
     unreliability.
 
- -- Balint Reczey <balint.reczey@canonical.com>  Thu, 11 May 2017 16:18:20 +0200
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Tue, 06 Jun 2017 22:01:41 -0700
 
 livecd-rootfs (2.435.2) yakkety; urgency=medium
 
