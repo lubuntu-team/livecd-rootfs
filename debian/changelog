@@ -1,9 +1,10 @@
 livecd-rootfs (2.441.4) UNRELEASED; urgency=medium
 
-  * Resurrect Balint's fix from
-    lp:~rbalint/livecd-rootfs/livecd-rootfs-autopkgtest-fix to wrap kpartx
-    and trap spurious errors, since the problem is still being seen
-    intermittently on i386 despite us calling sync before kpartx. (LP: #1684090)
+  [ Balint Reczey ]
+  * wrap kpartx and trap spurious errors, to work around kpartx
+    unreliability as seen in autopkgtests. (LP: #1684090)
+
+  [ Steve Langasek ]
   * Mark autopkgtests isolation-machine since debootstrap won't work in a
     container.
 
