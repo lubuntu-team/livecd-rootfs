@@ -65,7 +65,7 @@ add_task ()
 	    else
 		# If HWE_BUILD is set, we strip out drivers not available
 		# in the HWE stack, then sed the rest with their HWE suffixes
-		echo "!chroot chroot apt-cache dumpavail | grep-dctrl -nsPackage \\\\\\( -XFArchitecture $ARCH -o -XFArchitecture all \\\\\\) -a -wFTask $task | grep -v xserver-xorg-input-vmmouse | sed -e 's/xserver-xorg.*/&-hwe-16.04/'" >> "config/package-lists/livecd-rootfs.list.chroot_$pass"
+		echo "!chroot chroot apt-cache dumpavail | grep-dctrl -nsPackage \\\\\\( -XFArchitecture $ARCH -o -XFArchitecture all \\\\\\) -a -wFTask $task | grep -v xserver-xorg-input-vmmouse | grep -v libgles1-mesa | sed -e 's/xserver-xorg.*/&-hwe-16.04/'" >> "config/package-lists/livecd-rootfs.list.chroot_$pass"
 	    fi
 	done
 }
