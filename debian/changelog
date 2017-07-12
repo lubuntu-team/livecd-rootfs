@@ -1,3 +1,10 @@
+livecd-rootfs (2.408.14) xenial; urgency=medium
+
+  * live-build/auto/config: Filter libgles1-mesa out of tasks, as it is not a
+    dependency of anything in updates anymore, fixing mate/myth (LP: #1704013)
+
+ -- Adam Conrad <adconrad@ubuntu.com>  Wed, 12 Jul 2017 16:28:13 -0600
+
 livecd-rootfs (2.408.13) xenial; urgency=medium
 
   [ Balint Reczey ]
