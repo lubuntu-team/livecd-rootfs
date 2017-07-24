@@ -1,3 +1,22 @@
+livecd-rootfs (2.448) artful; urgency=medium
+
+  [ Balint Reczey ]
+  * Depend on packages in main instead of installing them at runtime
+  * Depend on vmdk-stream-converter instead of installing it at run time
+  * Use xz -T4 -0 instead of pxz (LP: #1701132)
+    Supported xz versions before 5.2 also accept the -T4 option but ignore
+    it.
+  * Depend on xz-utils instead of pxz
+
+  [ Mathieu Trudel-Lapierre ]
+  * auto/config: enable Debug::pkgDepCache::AutoInstall so tracking down
+    dependency bugs in the livefs is a little clearer.
+
+  [ Robert C Jennings ]
+  * live-build/functions: Update path for VMDKstream.py (LP: #1706116)
+
+ -- Brian Murray <brian@ubuntu.com>  Mon, 24 Jul 2017 11:06:24 -0700
+
 livecd-rootfs (2.447) artful; urgency=medium
 
   * Add cm3 as a known ubuntu-core image type.  LP: #1698223.
