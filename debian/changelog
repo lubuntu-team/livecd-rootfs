@@ -1,3 +1,13 @@
+livecd-rootfs (2.449) artful; urgency=medium
+
+  [ Balint Reczey ]
+  * Use VMDKstream in a more future-proof way
+
+  [ Dimitri John Ledkov ]
+  * Drop creating upstart jobs for serial getty.
+
+ -- Dimitri John Ledkov <xnox@ubuntu.com>  Mon, 14 Aug 2017 17:02:53 +0100
+
 livecd-rootfs (2.448) artful; urgency=medium
 
   [ Balint Reczey ]
