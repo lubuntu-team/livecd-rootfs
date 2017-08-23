@@ -82,8 +82,9 @@ install_grub() {
     cat << EOF >> mountpoint/etc/default/grub.d/50-cloudimg-settings.cfg
 ${CLOUD_IMG_STR}
 # For Cloud Image compatability
-GRUB_PRELOAD_MODULES="${grub_modules}"
+GRUB_PRELOAD_MODULES="${GRUB_PRELOAD_MODULES:-$grub_modules}"
 EOF
+
     chroot mountpoint grub-install "${loop_device}" \
         --boot-directory=/boot \
         --efi-directory=/boot/efi \
