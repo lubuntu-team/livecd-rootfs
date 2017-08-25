@@ -4,6 +4,14 @@ livecd-rootfs (2.408.15) UNRELEASED; urgency=medium
   * Drop preloading of grub modules that are built into the grub signed
     image.  This is functionally a no-op, changed only to clean up the code.
 
+  [ Steve Langasek ]
+  * live-build/ubuntu-cpc/functions: mount tmpfs on /var/cache/apt and
+    /var/lib/apt, so we don't have to leave empty space in our derivative
+    images for packages that have been downloaded/installed/removed.  This
+    normally isn't relevant for the installed system, since the root
+    filesystem will auto-expand in place on the target disk, but lets us
+    ship smaller images.
+
  -- Steve Langasek <steve.langasek@ubuntu.com>  Wed, 23 Aug 2017 17:35:40 -0700
 
 livecd-rootfs (2.408.14) xenial; urgency=medium
