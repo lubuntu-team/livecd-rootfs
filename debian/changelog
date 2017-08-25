@@ -11,6 +11,8 @@ livecd-rootfs (2.408.15) UNRELEASED; urgency=medium
     normally isn't relevant for the installed system, since the root
     filesystem will auto-expand in place on the target disk, but lets us
     ship smaller images.
+  * live-build/ubuntu-cpc/hooks/033-disk-image-uefi.binary: call apt-get
+    update *before* installing packages, not after.
 
  -- Steve Langasek <steve.langasek@ubuntu.com>  Wed, 23 Aug 2017 17:35:40 -0700
 
