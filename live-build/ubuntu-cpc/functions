@@ -21,7 +21,7 @@ clean_loops() {
         kpartx_stdout=$(kpartx -v -d "${backing_img}") || kpartx_ret=$?
         echo "$kpartx_stdout"
         if [ -n "$kpartx_ret" ]; then
-            if echo "$kpartx_stdout" | grep -q "loop deleted: "; then
+            if echo "$kpartx_stdout" | grep -q "loop deleted"; then
                 echo "Suppressing kpartx returning error (#860894)"
             else
                 exit $kpartx_ret
@@ -82,11 +82,12 @@ mount_image() {
 setup_mountpoint() {
     local mountpoint="$1"
 
-    mount --bind /dev "$mountpoint/dev"
-    mount devpts-live -t proc "$mountpoint/dev/pts"
+    mount --rbind /dev "$mountpoint/dev"
     mount proc-live -t proc "$mountpoint/proc"
     mount sysfs-live -t sysfs "$mountpoint/sys"
     mount -t tmpfs none "$mountpoint/tmp"
+    mount -t tmpfs none "$mountpoint/var/lib/apt"
+    mount -t tmpfs none "$mountpoint/var/cache/apt"
     mv "$mountpoint/etc/resolv.conf" resolv.conf.tmp
     cp /etc/resolv.conf "$mountpoint/etc/resolv.conf"
 
@@ -134,11 +135,8 @@ umount_settle() {
 umount_partition() {
     local mountpoint=${1}
     mv resolv.conf.tmp "$mountpoint/etc/resolv.conf"
-    for submnt in proc sys dev/pts dev tmp;
-    do
-        umount_settle $mountpoint/$submnt
-    done
-    umount_settle $mountpoint
+    umount -R $mountpoint
+    udevadm settle
 
     if [ -n "${rootfs_dev_mapper}" -a -b "${rootfs_dev_mapper}" ]; then
         # buildd's don't have /etc/mtab symlinked

@@ -1,3 +1,29 @@
+livecd-rootfs (2.408.15) xenial; urgency=medium
+
+  [ Mathieu Trudel-Lapierre ]
+  * Drop preloading of grub modules that are built into the grub signed
+    image.  This is functionally a no-op, changed only to clean up the code.
+
+  [ Steve Langasek ]
+  * live-build/ubuntu-cpc/functions: mount tmpfs on /var/cache/apt and
+    /var/lib/apt, so we don't have to leave empty space in our derivative
+    images for packages that have been downloaded/installed/removed.  This
+    normally isn't relevant for the installed system, since the root
+    filesystem will auto-expand in place on the target disk, but lets us
+    ship smaller images.
+  * live-build/ubuntu-cpc/hooks/033-disk-image-uefi.binary: call apt-get
+    update *before* installing packages, not after.
+
+  [ Colin Watson ]
+  * Mount and unmount /dev recursively, to cope with setups where there are
+    interesting bind-mounts under /dev (e.g. loop devices bind-mounted by
+    LXD).  LP: #1716465.
+
+  [ Balint Reczey ]
+  * Fix suppression of kpartx error.  LP: #1684090.
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Mon, 11 Sep 2017 14:38:42 -0700
+
 livecd-rootfs (2.408.14) xenial; urgency=medium
 
   * live-build/auto/config: Filter libgles1-mesa out of tasks, as it is not a
