@@ -1,4 +1,4 @@
-livecd-rootfs (2.408.15) UNRELEASED; urgency=medium
+livecd-rootfs (2.408.15) xenial; urgency=medium
 
   [ Mathieu Trudel-Lapierre ]
   * Drop preloading of grub modules that are built into the grub signed
@@ -22,7 +22,7 @@ livecd-rootfs (2.408.15) UNRELEASED; urgency=medium
   [ Balint Reczey ]
   * Fix suppression of kpartx error.  LP: #1684090.
 
- -- Steve Langasek <steve.langasek@ubuntu.com>  Wed, 23 Aug 2017 17:35:40 -0700
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Mon, 11 Sep 2017 14:38:42 -0700
 
 livecd-rootfs (2.408.14) xenial; urgency=medium
 
