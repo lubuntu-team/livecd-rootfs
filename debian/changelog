@@ -14,6 +14,11 @@ livecd-rootfs (2.408.15) UNRELEASED; urgency=medium
   * live-build/ubuntu-cpc/hooks/033-disk-image-uefi.binary: call apt-get
     update *before* installing packages, not after.
 
+  [ Colin Watson ]
+  * Mount and unmount /dev recursively, to cope with setups where there are
+    interesting bind-mounts under /dev (e.g. loop devices bind-mounted by
+    LXD).  LP: #1716465.
+
  -- Steve Langasek <steve.langasek@ubuntu.com>  Wed, 23 Aug 2017 17:35:40 -0700
 
 livecd-rootfs (2.408.14) xenial; urgency=medium
