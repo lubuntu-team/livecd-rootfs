@@ -1,3 +1,12 @@
+livecd-rootfs (2.441.5) UNRELEASED; urgency=medium
+
+  [ Colin Watson ]
+  * Mount and unmount /dev recursively, to cope with setups where there are
+    interesting bind-mounts under /dev (e.g. loop devices bind-mounted by
+    LXD).  LP: #1716465.
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Mon, 11 Sep 2017 11:47:53 -0700
+
 livecd-rootfs (2.441.4) zesty; urgency=medium
 
   [ Balint Reczey ]
