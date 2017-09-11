@@ -5,6 +5,9 @@ livecd-rootfs (2.441.5) UNRELEASED; urgency=medium
     interesting bind-mounts under /dev (e.g. loop devices bind-mounted by
     LXD).  LP: #1716465.
 
+  [ Balint Reczey ]
+  * Fix suppression of kpartx error.  LP: #1684090.
+
  -- Steve Langasek <steve.langasek@ubuntu.com>  Mon, 11 Sep 2017 11:47:53 -0700
 
 livecd-rootfs (2.441.4) zesty; urgency=medium
