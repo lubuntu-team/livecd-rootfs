@@ -1,10 +1,10 @@
-livecd-rootfs (2.408.16) UNRELEASED; urgency=medium
+livecd-rootfs (2.408.16) xenial; urgency=medium
 
   * live-build/ubuntu-cpc/functions: call apt-get update in the chroot
     after mounting a blank /var/lib/apt, so that further operations work
     as expected.
 
- -- Steve Langasek <steve.langasek@ubuntu.com>  Tue, 12 Sep 2017 13:24:27 -0700
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Tue, 12 Sep 2017 13:25:58 -0700
 
 livecd-rootfs (2.408.15) xenial; urgency=medium
 
