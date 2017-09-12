@@ -90,6 +90,7 @@ setup_mountpoint() {
     mount -t tmpfs none "$mountpoint/var/cache/apt"
     mv "$mountpoint/etc/resolv.conf" resolv.conf.tmp
     cp /etc/resolv.conf "$mountpoint/etc/resolv.conf"
+    chroot "$mountpoint" apt-get update
 
 }
 
