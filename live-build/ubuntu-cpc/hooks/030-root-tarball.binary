@@ -24,10 +24,4 @@ chroot binary/boot/filesystem.dir mkdir /lib/modules
 chroot binary/boot/filesystem.dir rm /usr/sbin/grub-probe
 chroot binary/boot/filesystem.dir dpkg-divert --remove --local --rename /usr/sbin/grub-probe
 
-mv resolv.conf.tmp "binary/boot/filesystem.dir/etc/resolv.conf"
-umount "binary/boot/filesystem.dir/proc"
-umount "binary/boot/filesystem.dir/sys"
-umount -R "binary/boot/filesystem.dir/dev"
-umount "binary/boot/filesystem.dir/tmp"
-umount "binary/boot/filesystem.dir/var/lib/apt"
-umount "binary/boot/filesystem.dir/var/cache/apt"
+teardown_mountpoint binary/boot/filesystem.dir
