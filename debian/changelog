@@ -1,4 +1,4 @@
-livecd-rootfs (2.441.6) UNRELEASED; urgency=medium
+livecd-rootfs (2.441.6) zesty; urgency=medium
 
   [ Robert C Jennings ]
   * live-build/ubuntu-cpc/functions: Add a function, teardown_mountpoint,
@@ -12,7 +12,7 @@ livecd-rootfs (2.441.6) UNRELEASED; urgency=medium
   * Also adjust live-build/ubuntu-server/hooks/032-installer-squashfs.binary
     to use teardown_mountpoint.
 
- -- Robert C Jennings <robert.jennings@canonical.com>  Wed, 13 Sep 2017 13:36:40 -0500
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Wed, 13 Sep 2017 12:13:10 -0700
 
 livecd-rootfs (2.441.5) zesty; urgency=medium
 
