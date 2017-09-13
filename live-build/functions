@@ -83,9 +83,27 @@ setup_mountpoint() {
     mount proc-live -t proc "$mountpoint/proc"
     mount sysfs-live -t sysfs "$mountpoint/sys"
     mount -t tmpfs none "$mountpoint/tmp"
+    mount -t tmpfs none "$mountpoint/var/lib/apt"
+    mount -t tmpfs none "$mountpoint/var/cache/apt"
     mv "$mountpoint/etc/resolv.conf" resolv.conf.tmp
     cp /etc/resolv.conf "$mountpoint/etc/resolv.conf"
+    chroot "$mountpoint" apt-get update
 
+}
+
+teardown_mountpoint() {
+    # Reverse the operations from setup_mountpoint
+    local mountpoint="$1"
+
+    umount "$mountpoint/var/cache/apt"
+    umount "$mountpoint/var/lib/apt"
+    umount "$mountpoint/tmp"
+    umount "$mountpoint/sys"
+    umount "$mountpoint/proc"
+    umount -R "$mountpoint/dev"
+    udevadm settle
+    sleep 3
+    mv resolv.conf.tmp "$mountpoint/etc/resolv.conf"
 }
 
 mount_partition() {
@@ -131,16 +149,9 @@ EOF
 
 }
 
-umount_settle() {
-    # Unmount device, and let it settle
-    umount $1
-    udevadm settle
-}
-
 umount_partition() {
     local mountpoint=${1}
-    mv resolv.conf.tmp "$mountpoint/etc/resolv.conf"
-    umount -R $mountpoint
+    teardown_mountpoint $mountpoint
     udevadm settle
 
     if [ -n "${rootfs_dev_mapper}" -a -b "${rootfs_dev_mapper}" ]; then

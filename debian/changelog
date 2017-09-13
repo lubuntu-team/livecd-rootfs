@@ -1,3 +1,31 @@
+livecd-rootfs (2.454) artful; urgency=medium
+
+  [ Steve Langasek ]
+  * live-build/functions: mount tmpfs on /var/cache/apt and var/lib/apt, so
+    we don't have to leave empty space in our derivative images for packages
+    that have been downloaded/installed/removed.  This normally isn't
+    relevant for the installed system, since the root filesystem will
+    auto-expand in place on the target disk, but lets us ship smaller
+    images.
+  * live-build/functions: also call 'apt-get update' after mounting the
+    blank /var/lib/apt.
+  * live-build/ubuntu-cpc/hooks/033-disk-image-uefi.binary: call apt-get
+    update *before* installing packages, not after.
+
+  [ Robert C Jennings ]
+  * live-build/ubuntu-cpc/functions: Add a function, teardown_mountpoint,
+    to reverse the work done in setup_mountpoint.  Lack of this function
+    has forced users of setup_mountpoint to implement this separately
+    and the implementations have diverged. (LP: #1716992)
+  * live-build/ubuntu-cpc/functions: Remove umount_settle function.
+    The was only used where teardown_mountpoint was lacking.
+
+  [ Steve Langasek ]
+  * Also adjust live-build/ubuntu-server/hooks/032-installer-squashfs.binary
+    to use teardown_mountpoint.
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Wed, 13 Sep 2017 12:04:48 -0700
+
 livecd-rootfs (2.453) artful; urgency=medium
 
   [ Chris Glass ]
