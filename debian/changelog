@@ -1,3 +1,15 @@
+livecd-rootfs (2.408.17) UNRELEASED; urgency=medium
+
+  [ Robert C Jennings ]
+  * live-build/ubuntu-cpc/functions: Add a function, teardown_mountpoint,
+    to reverse the work done in setup_mountpoint.  Lack of this function
+    has forced users of setup_mountpoint to implement this separately
+    and the implementations have diverged. (LP: #1716992)
+  * live-build/ubuntu-cpc/functions: Remove umount_settle function.
+    The was only used where teardown_mountpoint was lacking.
+
+ -- Robert C Jennings <robert.jennings@canonical.com>  Wed, 13 Sep 2017 12:00:59 -0500
+
 livecd-rootfs (2.408.16) xenial; urgency=medium
 
   * live-build/ubuntu-cpc/functions: call apt-get update in the chroot
