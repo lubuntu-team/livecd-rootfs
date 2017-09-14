@@ -1,8 +1,9 @@
-livecd-rootfs (2.408.17~1) UNRELEASED; urgency=medium
+livecd-rootfs (2.408.18) xenial; urgency=medium
 
+  [ Robert C Jennings ]
   * Install udev before calls to udevadm
 
- -- Robert C Jennings <robert.jennings@canonical.com>  Wed, 13 Sep 2017 21:03:59 -0500
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Wed, 13 Sep 2017 22:10:11 -0700
 
 livecd-rootfs (2.408.17) xenial; urgency=medium
 
