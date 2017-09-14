@@ -99,6 +99,8 @@ teardown_mountpoint() {
     umount "$mountpoint/sys"
     umount "$mountpoint/proc"
     umount -R "$mountpoint/dev"
+
+    apt-get install -qqy udev
     udevadm settle
     sleep 3
     mv resolv.conf.tmp "$mountpoint/etc/resolv.conf"

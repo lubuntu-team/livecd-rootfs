@@ -118,6 +118,7 @@ EOF
     sync
     umount mountpoint/boot/efi
     sleep 5
+    apt-get install -qqy udev
     udevadm settle
     mount
     umount_partition mountpoint
