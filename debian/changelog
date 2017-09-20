@@ -1,3 +1,15 @@
+livecd-rootfs (2.459) artful; urgency=medium
+
+  [ Steve Langasek ]
+  * Remove spurious call to 'sync'; we don't need to flush all disk caches
+    on the system to cleanly unmount a partition.
+
+  [ Michael Hudson-Doyle ]
+  * only show alert (i.e. panic) kernel messages on the console when
+    subiquity is running
+
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Thu, 21 Sep 2017 11:34:20 +1200
+
 livecd-rootfs (2.458) artful; urgency=medium
 
   * Move default netplan config for server-live image to where hook will
