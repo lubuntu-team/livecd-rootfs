@@ -196,6 +196,10 @@ HWE_X_PACKAGES="xserver-xorg-hwe-16.04 xserver-xorg-video-all-hwe-16.04 xserver-
 HWE_KERNEL_FLAVOUR="generic-hwe-16.04"
 HWE_SIGNED_KERNEL_PACKAGE="linux-signed-$HWE_KERNEL_FLAVOUR"
 
+if [ "$SUBPROJECT" = minimize ]; then
+	OPTS="${OPTS:+$OPTS }--bootstrap-flavour=minimal"
+fi
+
 case $PROJECT in
 	ubuntu|ubuntu-dvd)
 		HWE_BUILD="yes"
@@ -495,8 +499,12 @@ case $PROJECT in
 		;;
 
 	ubuntu-cpc)
-		add_task install minimal standard cloud-image
-		add_package install ubuntu-minimal
+		if [ "$SUBPROJECT" = minimize ]; then
+			add_task install cloud-image
+		else
+			add_task install minimal standard cloud-image
+			add_package install ubuntu-minimal
+		fi
 
 		BINARY_REMOVE_LINUX=false
 		OPTS="${OPTS:+$OPTS }--initramfs=none"
