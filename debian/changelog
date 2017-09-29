@@ -1,3 +1,15 @@
+livecd-rootfs (2.462) artful; urgency=medium
+
+  * Fix a reference to an undefined variable in a script that's set -u.
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Fri, 29 Sep 2017 15:10:47 -0400
+
+livecd-rootfs (2.461) artful; urgency=medium
+
+  * In subiquity, loadkeys to setup Shift+Tab key combination.
+
+ -- Dimitri John Ledkov <xnox@ubuntu.com>  Thu, 28 Sep 2017 13:58:43 -0400
+
 livecd-rootfs (2.460) artful; urgency=medium
 
   [ Steve Langasek ]
