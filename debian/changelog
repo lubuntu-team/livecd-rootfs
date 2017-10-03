@@ -12,21 +12,22 @@ livecd-rootfs (2.408.19) UNRELEASED; urgency=medium
     downstream.
   * Also nuke the sleep / udevadm settle calls in the process, which should
     never be required and slow down the builds.
-  * Begin adding support for a project-independent 'minimize' subproject, which
-    (ironically) omits ubuntu-minimal in favor of using only the minbase
+  * Begin adding support for a project-independent 'minimized' subproject,
+    which (ironically) omits ubuntu-minimal in favor of using only the minbase
     package set.
   * Export the subproject into config/chroot and config/binary, so that this
     information is available to per-project hooks that need to be
-    subproject-aware (e.g., to skip steps when SUBPROJECT=minimize)
+    subproject-aware (e.g., to skip steps when SUBPROJECT=minimized)
   * Make the 999-cpc-fixes.chroot subproject-aware, so we don't try to
     locale-gen
   * In a cloud environment, we can rely on the kernel being able to boot the
     root filesystem directly, without an initramfs; enable this when building
     minimized.
-  * If we're using SUBPROJECT=minimize, and tzdata is not installed, remove
+  * If we're using SUBPROJECT=minimized, and tzdata is not installed, remove
     files that have been left behind.  This is a workaround for a bug that
     should be fixed in tzdata.
   * Fix a reference to an undefined variable in a script that's set -u.
+  * Use /bin/sh, not /bin/bash, for autopkgtest.
 
   [ Balint Reczey ]
   * Mount using --make-rslave to ensure safe unmounts for rbind mounts
@@ -34,8 +35,13 @@ livecd-rootfs (2.408.19) UNRELEASED; urgency=medium
     /usr/share/doc/*/copyright and changelog.Debian.gz files are still kept
   * Add unminimize script for reverting minimization on running system
   * Install ubuntu-minimal while unminimizing the system
+  * Bump needed live-build version which can build images without initrd
+  * Mention unminimize script in motd
+  * Warn users that unminimize may fail reinstalling packages
+  * Run autopkgtest for SUBPROJECT=minimized
+  * When SUBPROJECT environment variable is not set assume it to be ""
 
- -- Victor Tapia <victor.tapia@canonical.com>  Tue, 19 Sep 2017 10:55:11 +0200
+ -- Balint Reczey <rbalint@ubuntu.com>  Tue, 03 Oct 2017 17:35:04 +0200
 
 livecd-rootfs (2.408.18) xenial; urgency=medium
 
