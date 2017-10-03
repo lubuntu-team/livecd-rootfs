@@ -26,6 +26,7 @@ livecd-rootfs (2.408.19) UNRELEASED; urgency=medium
   * If we're using SUBPROJECT=minimize, and tzdata is not installed, remove
     files that have been left behind.  This is a workaround for a bug that
     should be fixed in tzdata.
+  * Fix a reference to an undefined variable in a script that's set -u.
 
   [ Balint Reczey ]
   * Mount using --make-rslave to ensure safe unmounts for rbind mounts
