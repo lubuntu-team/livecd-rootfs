@@ -117,7 +117,7 @@ case $IMAGEFORMAT in
 	ext2|ext3|ext4)
 		OPTS="${OPTS:+$OPTS }--initramfs none --chroot-filesystem $IMAGEFORMAT"
 		PREINSTALLED=true
-		case $SUBPROJECT in
+		case ${SUBPROJECT:-} in
 			wubi)
 				add_package install lupin-support
 				COMPONENTS='main restricted universe multiverse'
@@ -196,7 +196,7 @@ HWE_X_PACKAGES="xserver-xorg-hwe-16.04 xserver-xorg-video-all-hwe-16.04 xserver-
 HWE_KERNEL_FLAVOUR="generic-hwe-16.04"
 HWE_SIGNED_KERNEL_PACKAGE="linux-signed-$HWE_KERNEL_FLAVOUR"
 
-if [ "$SUBPROJECT" = minimized ]; then
+if [ "${SUBPROJECT:-}" = minimized ]; then
 	OPTS="${OPTS:+$OPTS }--bootstrap-flavour=minimal"
 fi
 
@@ -227,7 +227,7 @@ case $PROJECT in
 		#      CDIMAGE_PREINSTALLED is not passed from build.py
 		#      and PREINSTALLED means something different. So
 		#      we use SUBPROJECT to pass on the information
-		if [ "$SUBPROJECT" = "system-image" ]; then
+		if [ "${SUBPROJECT:-}" = "system-image" ]; then
 			OPTS="${OPTS:+$OPTS }--linux-packages=linux-image"
 		fi
 		;;
@@ -481,7 +481,7 @@ case $PROJECT in
 		# SUBPROJECT, but it's a handy thing that launchpad-buildd
 		# already passes through to us that we weren't otherwise
 		# using here.
-		case $SUBPROJECT in
+		case ${SUBPROJECT:-} in
 		    ubuntu-rtm/dogfood)
 			MIRROR=http://derived-archive.dogfood.content.paddev.net/ubuntu-rtm/
 			OPTS="${OPTS:+$OPTS }--apt-secure false"
@@ -499,7 +499,7 @@ case $PROJECT in
 		;;
 
 	ubuntu-cpc)
-		if [ "$SUBPROJECT" = minimized ]; then
+		if [ "${SUBPROJECT:-}" = minimized ]; then
 			add_task install cloud-image
 			add_package install sudo
 		else
@@ -639,7 +639,7 @@ case $PROJECT in
 		;;
 esac
 
-case $SUBPROJECT in
+case ${SUBPROJECT:-} in
 	wubi)
 		add_binary_hook build-wubildr
 		;;
@@ -665,10 +665,10 @@ lb config noauto \
 	"$@"
 
 echo "LB_CHROOT_HOOKS=\"$CHROOT_HOOKS\"" >> config/chroot
-echo "SUBPROJECT=\"$SUBPROJECT\"" >> config/chroot
+echo "SUBPROJECT=\"${SUBPROJECT:-}\"" >> config/chroot
 echo "LB_BINARY_HOOKS=\"$BINARY_HOOKS\"" >> config/binary
 echo "BUILDSTAMP=\"$NOW\"" >> config/binary
-echo "SUBPROJECT=\"$SUBPROJECT\"" >> config/binary
+echo "SUBPROJECT=\"${SUBPROJECT:-}\"" >> config/binary
 
 case $ARCH+$SUBARCH in
 	armhf+raspi2)
@@ -783,7 +783,7 @@ EOF
 	      config/archives/proposed.list.binary
 fi
 
-case $PROJECT:$SUBPROJECT in
+case $PROJECT:${SUBPROJECT:-} in
 	*-dvd:*)
 		. config/bootstrap
 
@@ -869,7 +869,7 @@ EOF
 	fi
 fi
 
-case $SUBPROJECT in
+case ${SUBPROJECT:-} in
     ubuntu-rtm|ubuntu-rtm/*)
 	# debootstrap doesn't know about ubuntu-rtm series directly.  Rather
 	# than having to teach it, we employ a few hacks to make it use the
