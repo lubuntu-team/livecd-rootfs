@@ -196,7 +196,7 @@ HWE_X_PACKAGES="xserver-xorg-hwe-16.04 xserver-xorg-video-all-hwe-16.04 xserver-
 HWE_KERNEL_FLAVOUR="generic-hwe-16.04"
 HWE_SIGNED_KERNEL_PACKAGE="linux-signed-$HWE_KERNEL_FLAVOUR"
 
-if [ "$SUBPROJECT" = minimize ]; then
+if [ "$SUBPROJECT" = minimized ]; then
 	OPTS="${OPTS:+$OPTS }--bootstrap-flavour=minimal"
 fi
 
@@ -499,7 +499,7 @@ case $PROJECT in
 		;;
 
 	ubuntu-cpc)
-		if [ "$SUBPROJECT" = minimize ]; then
+		if [ "$SUBPROJECT" = minimized ]; then
 			add_task install cloud-image
 			add_package install sudo
 		else
