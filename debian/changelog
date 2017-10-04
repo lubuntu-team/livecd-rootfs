@@ -12,40 +12,30 @@ livecd-rootfs (2.408.19) UNRELEASED; urgency=medium
     downstream.  LP: #1721279.
   * Also nuke the sleep / udevadm settle calls in the process, which should
     never be required and slow down the builds.
-  * Begin adding support for a project-independent 'minimized' subproject,
-    which (ironically) omits ubuntu-minimal in favor of using only the minbase
-    package set.
-  * Export the subproject into config/chroot and config/binary, so that this
-    information is available to per-project hooks that need to be
-    subproject-aware (e.g., to skip steps when SUBPROJECT=minimized)
-  * Make the 999-cpc-fixes.chroot subproject-aware, so we don't try to
-    locale-gen
-  * In a cloud environment, we can rely on the kernel being able to boot the
-    root filesystem directly, without an initramfs; enable this when building
-    minimized.
-  * If we're using SUBPROJECT=minimized, and tzdata is not installed, remove
-    files that have been left behind.  This is a workaround for a bug that
-    should be fixed in tzdata.
   * Fix a reference to an undefined variable in a script that's set -u.
   * Use /bin/sh, not /bin/bash, for autopkgtest.
+  * debian/tests/default-bootstraps: minor adjustments to shell syntax,
+    syncing with artful where this originated.
+
+  [ Steve Langasek, Balint Reczey ]
+  * Introduce a new project-independent 'minimized' subproject
+    (LP: #1721261):
+    - omit ubuntu-minimal in favor of using only the minbase package set.
+    - boot directly by partuuid, avoiding the use of an initramfs.
+    - Bump needed live-build version which can build images without initrd
+    - drop man pages and most of the documentation from minimized images
+      (/usr/share/doc/*/copyright and changelog.Debian.gz files are still
+      kept)
+    - Add unminimize script for reverting minimization on a running system
+    - Mention unminimize script in motd
+    - Run autopkgtest for SUBPROJECT=minimized
+    - If we're using SUBPROJECT=minimized, and tzdata is not installed,
+      remove files that have been left behind.  This is a workaround for a
+      bug that should be fixed in tzdata.
 
   [ Balint Reczey ]
   * Mount using --make-rslave to ensure safe unmounts for rbind mounts
-  * Drop man pages and most of the documentation from minimized images
-    /usr/share/doc/*/copyright and changelog.Debian.gz files are still kept
-  * Add unminimize script for reverting minimization on running system
-  * Install ubuntu-minimal while unminimizing the system
-  * Bump needed live-build version which can build images without initrd
-  * Mention unminimize script in motd
-  * Warn users that unminimize may fail reinstalling packages
-  * Run autopkgtest for SUBPROJECT=minimized
   * When SUBPROJECT environment variable is not set assume it to be ""
-
-  [ Steve Langasek ]
-  * debian/tests/default-bootstraps: minor adjustments to shell syntax,
-    syncing with artful where this originated.
-  * Use kvm kernel flavor for minimized cloud image, not virtual
-  * Skip installation of kernel headers for all minimal images
 
  -- Balint Reczey <rbalint@ubuntu.com>  Tue, 03 Oct 2017 17:35:04 +0200
 
