@@ -31,6 +31,111 @@ Expire-Date: 0
 
 	lb bootstrap "$@"
 
+	if [ "${SUBPROJECT:-}" = minimized ] \
+	   && ! Chroot chroot dpkg -l tzdata 2>&1 |grep -q ^ii; then
+		# workaround for tzdata purge not removing these files
+		rm -f chroot/etc/localtime chroot/etc/timezone
+	fi
+
+	if [ "${SUBPROJECT:-}" = minimized ]; then
+		# set up dpkg filters to skip installing docs on minimizedd system
+		mkdir -p chroot/etc/dpkg/dpkg.cfg.d
+		cat > chroot/etc/dpkg/dpkg.cfg.d/excludes <<EOF
+# Drop all man pages
+path-exclude=/usr/share/man/*
+
+# Drop all documentation ...
+path-exclude=/usr/share/doc/*
+
+# ... except copyright files ...
+path-include=/usr/share/doc/*/copyright
+
+# ... and Debian changelogs
+path-include=/usr/share/doc/*/changelog.Debian.*
+EOF
+
+		# Remove docs installed by bootstrap
+		Chroot chroot dpkg-query -f '${binary:Package}\n' -W | Chroot chroot xargs apt-get install --reinstall
+
+                # Add unminimizer script which restores default image behavior
+                mkdir -p chroot/usr/local/sbin
+                cat > chroot/usr/local/sbin/unminimize <<'EOF'
+#!/bin/sh
+
+set -e
+
+echo "This system was optimized for smaller footprint by reducing the available"
+echo "installed documentation, removal of rarely used tools, and by other means."
+echo ""
+echo "This script reverts part of the optimization and makes documentation and"
+echo "tools available again to match the familiar Ubuntu minimial system."
+echo ""
+echo "Be warned that reinstallation of packages may fail due to changes to the"
+echo "system configuration, due to installation of 3rd party packages, or for"
+echo "other reasons."
+read -p "Would you like to continue? [y/N]" REPLY
+echo    # (optional) move to a new line
+if [ "$REPLY" != "y" ] && [ "$REPLY" != "Y" ]
+then
+    exit 1
+fi
+
+if [ -f /etc/dpkg/dpkg.cfg.d/excludes ] || [ -f /etc/dpkg/dpkg.cfg.d/excludes.dpkg-tmp ]; then
+    echo "Re-enabling installation of all documentation in dpkg..."
+    if [ -f /etc/dpkg/dpkg.cfg.d/excludes ]; then
+        mv /etc/dpkg/dpkg.cfg.d/excludes /etc/dpkg/dpkg.cfg.d/excludes.dpkg-tmp
+    fi
+    echo "Updating package list and upgrading packages..."
+    apt-get update
+    # apt-get upgrade asks for confirmation before upgrading packages to let the user stop here
+    apt-get upgrade
+    echo "Restoring system documentation..."
+    echo "Reinstalling packages with files in /usr/share/man/ ..."
+    # Reinstallation takes place in two steps because a single dpkg --verified
+    # command generates very long parameter list for "xargs dpkg -S" and may go
+    # over ARG_MAX. Since many packages have man pages the second download
+    # handles a much smaller amount of packages.
+    dpkg -S /usr/share/man/ |sed 's|, |\n|g;s|: [^:]*$||' | DEBIAN_FRONTEND=noninteractive xargs apt-get install --reinstall -y
+    echo "Reinstalling packages with system documentation in /usr/share/doc/ .."
+    # This step processes the packages which still have missing documentation
+    dpkg --verify --verify-format rpm | awk '/..5......   \/usr\/share\/doc/ {print $2}' | sed 's|/[^/]*$||' | sort |uniq \
+         | xargs dpkg -S | sed 's|, |\n|g;s|: [^:]*$||' | uniq | DEBIAN_FRONTEND=noninteractive xargs apt-get install --reinstall -y
+    if dpkg --verify --verify-format rpm | awk '/..5......   \/usr\/share\/doc/ {exit 1}'; then
+        echo "Documentation has been restored successfully."
+        rm /etc/dpkg/dpkg.cfg.d/excludes.dpkg-tmp
+    else
+        echo "There are still files missing from /usr/share/doc/:"
+        dpkg --verify --verify-format rpm | awk '/..5......   \/usr\/share\/doc/ {print " " $2}'
+        echo "You may want to try running this script again or you can remove"
+        echo "/etc/dpkg/dpkg.cfg.d/excludes.dpkg-tmp and restore the files manually."
+    fi
+fi
+
+if ! dpkg-query --show --showformat='${db:Status-Status}\n' ubuntu-minimal 2> /dev/null | grep -q '^installed$'; then
+    echo "Installing ubuntu-minimal package to provide the familiar Ubuntu minimal system..."
+    DEBIAN_FRONTEND=noninteractive apt-get install -y ubuntu-minimal
+fi
+
+# unminimization succeeded, there is no need to mention it in motd
+rm -f /etc/update-motd.d/60-unminimize
+
+EOF
+                chmod +x chroot/usr/local/sbin/unminimize
+        fi
+
+	# inform users about the unminimize script
+	cat > "chroot/etc/update-motd.d/60-unminimize" << EOF
+#!/bin/sh
+#
+# This file is not managed by a package.  If you no longer want to
+# see this message you can safely remove the file.
+echo ""
+echo "This system does not provide part of the tools and documentation"
+echo "which are available on standard Ubuntu systems."
+echo "To make them available please run the "unminimize" command."
+EOF
+
+	chmod +x chroot/etc/update-motd.d/60-unminimize
 	Chroot chroot "dpkg-divert --quiet --add \
 		--divert /usr/sbin/update-initramfs.REAL --rename \
 		/usr/sbin/update-initramfs"
@@ -249,7 +354,7 @@ elif [ -e binary-tar.tar.gz ]; then
 	cp -a binary-tar.tar.gz "$PREFIX.rootfs.tar.gz"
 fi
 
-if [ "$PROJECT:$SUBPROJECT" = "ubuntu-core:system-image" ]; then
+if [ "$PROJECT:${SUBPROJECT:-}" = "ubuntu-core:system-image" ]; then
     if [ -e "binary/$INITFS/filesystem.dir" ]; then
         rootfs="binary/$INITFS/filesystem.dir"
 
@@ -297,7 +402,7 @@ fi
 # ubuntu-core and ubuntu-desktop-next splits kernel stuff into a "device" tarball so
 # at this point we reset it to "none" as all the work to extract it was done already
 # in a binary hook
-case $PROJECT:$SUBPROJECT in
+case $PROJECT:${SUBPROJECT:-} in
         ubuntu-core:system-image|ubuntu-desktop-next:system-image)
 
     # create device tarball (for snappy only atm)
