@@ -41,6 +41,10 @@ livecd-rootfs (2.408.19) UNRELEASED; urgency=medium
   * Run autopkgtest for SUBPROJECT=minimized
   * When SUBPROJECT environment variable is not set assume it to be ""
 
+  [ Steve Langasek ]
+  * debian/tests/default-bootstraps: minor adjustments to shell syntax,
+    syncing with artful where this originated.
+
  -- Balint Reczey <rbalint@ubuntu.com>  Tue, 03 Oct 2017 17:35:04 +0200
 
 livecd-rootfs (2.408.18) xenial; urgency=medium
