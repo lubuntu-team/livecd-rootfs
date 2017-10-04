@@ -45,6 +45,7 @@ livecd-rootfs (2.408.19) UNRELEASED; urgency=medium
   * debian/tests/default-bootstraps: minor adjustments to shell syntax,
     syncing with artful where this originated.
   * Use kvm kernel flavor for minimized cloud image, not virtual
+  * Skip installation of kernel headers for all minimal images
 
  -- Balint Reczey <rbalint@ubuntu.com>  Tue, 03 Oct 2017 17:35:04 +0200
 

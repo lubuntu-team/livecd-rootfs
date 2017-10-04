@@ -197,7 +197,7 @@ HWE_KERNEL_FLAVOUR="generic-hwe-16.04"
 HWE_SIGNED_KERNEL_PACKAGE="linux-signed-$HWE_KERNEL_FLAVOUR"
 
 if [ "${SUBPROJECT:-}" = minimized ]; then
-	OPTS="${OPTS:+$OPTS }--bootstrap-flavour=minimal"
+	OPTS="${OPTS:+$OPTS }--bootstrap-flavour=minimal --linux-packages=linux-image"
 fi
 
 case $PROJECT in
