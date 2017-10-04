@@ -1,4 +1,4 @@
-livecd-rootfs (2.408.19) UNRELEASED; urgency=medium
+livecd-rootfs (2.408.19) xenial; urgency=medium
 
   [ Nishanth Aravamudan ]
   * live-build/ubuntu-cpc/hooks/061-open-iscsi.chroot: generate iSCSI
@@ -37,7 +37,7 @@ livecd-rootfs (2.408.19) UNRELEASED; urgency=medium
   * Mount using --make-rslave to ensure safe unmounts for rbind mounts
   * When SUBPROJECT environment variable is not set assume it to be ""
 
- -- Balint Reczey <rbalint@ubuntu.com>  Tue, 03 Oct 2017 17:35:04 +0200
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Wed, 04 Oct 2017 18:43:48 +0000
 
 livecd-rootfs (2.408.18) xenial; urgency=medium
 
