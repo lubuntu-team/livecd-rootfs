@@ -38,7 +38,7 @@ Expire-Date: 0
 	fi
 
 	if [ "${SUBPROJECT:-}" = minimized ]; then
-		# set up dpkg filters to skip installing docs on minimizedd system
+		# set up dpkg filters to skip installing docs on minimized system
 		mkdir -p chroot/etc/dpkg/dpkg.cfg.d
 		cat > chroot/etc/dpkg/dpkg.cfg.d/excludes <<EOF
 # Drop all man pages
@@ -64,15 +64,15 @@ EOF
 
 set -e
 
-echo "This system was optimized for smaller footprint by reducing the available"
-echo "installed documentation, removal of rarely used tools, and by other means."
+echo "This system has been minimized by removing packages and content that are"
+echo "not required on a system that users do not log into."
 echo ""
-echo "This script reverts part of the optimization and makes documentation and"
-echo "tools available again to match the familiar Ubuntu minimial system."
+echo "This script restores the content and packages that are found on a default"
+echo "Ubuntu server system."
 echo ""
-echo "Be warned that reinstallation of packages may fail due to changes to the"
-echo "system configuration, due to installation of 3rd party packages, or for"
-echo "other reasons."
+echo "Reinstallation of packages may fail due to changes to the system"
+echo "configuration, the presence of third-party packages, or for other"
+echo "reasons."
 read -p "Would you like to continue? [y/N]" REPLY
 echo    # (optional) move to a new line
 if [ "$REPLY" != "y" ] && [ "$REPLY" != "Y" ]
@@ -129,10 +129,10 @@ EOF
 #
 # This file is not managed by a package.  If you no longer want to
 # see this message you can safely remove the file.
+echo "This system has been minimized by removing packages and content that are"
+echo "not required on a system that users do not log into."
 echo ""
-echo "This system does not provide part of the tools and documentation"
-echo "which are available on standard Ubuntu systems."
-echo "To make them available please run the "unminimize" command."
+echo "To restore this content, you can run the 'unminimize' command."
 EOF
 
 	chmod +x chroot/etc/update-motd.d/60-unminimize
