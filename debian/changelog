@@ -32,6 +32,8 @@ livecd-rootfs (2.408.19) xenial; urgency=medium
     - If we're using SUBPROJECT=minimized, and tzdata is not installed,
       remove files that have been left behind.  This is a workaround for a
       bug that should be fixed in tzdata.
+  * Factor out grub-related diversions and use them consistently, so we
+    don't end up with wrong os-probe output in our grub.cfg.
 
   [ Balint Reczey ]
   * Mount using --make-rslave to ensure safe unmounts for rbind mounts
