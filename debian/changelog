@@ -34,6 +34,9 @@ livecd-rootfs (2.408.19) xenial; urgency=medium
       bug that should be fixed in tzdata.
   * Factor out grub-related diversions and use them consistently, so we
     don't end up with wrong os-probe output in our grub.cfg.
+  * Fix the force-partuuid handling to create the file under
+    /etc/default/grub.d/ with a .cfg extension as grub expects; it's unclear
+    how this ever worked without.
 
   [ Balint Reczey ]
   * Mount using --make-rslave to ensure safe unmounts for rbind mounts
