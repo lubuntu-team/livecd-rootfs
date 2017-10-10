@@ -61,6 +61,14 @@ install_grub() {
     efi_boot_dir="/boot/efi/EFI/BOOT"
     chroot mountpoint mkdir -p "${efi_boot_dir}"
 
+    if [ "${SUBPROJECT:-}" = minimized ] && [ -n "$partuuid" ]; then
+        # FIXME: code duplicated between 032-disk-image.binary
+        # and 033-disk-image-uefi.binary.  We want to fix this to not
+        # have initramfs-tools installed at all on these images.
+        echo "partuuid found for root device; omitting initrd"
+        echo "GRUB_FORCE_PARTUUID=$partuuid" >> mountpoint/etc/default/grub.d/40-force-partuuid.cfg
+    fi
+
     chroot mountpoint apt-get -y update
 
     # The modules below only make sense on non-Secure Boot UEFI systems.
@@ -111,19 +119,16 @@ EOF
         chroot mountpoint grub-install --target=i386-pc "${loop_device}"
     fi
 
-    chroot mountpoint dpkg-divert --local --rename /etc/grub.d/30_os-prober
+    divert_grub mountpoint
     chroot mountpoint update-grub
     replace_grub_root_with_label mountpoint
-    chroot mountpoint dpkg-divert --remove --local --rename /etc/grub.d/30_os-prober
+    undivert_grub mountpoint
 
     chroot mountpoint apt-get -y clean
 
     rm mountpoint/tmp/device.map
-    sync
     umount mountpoint/boot/efi
-    sleep 5
     apt-get install -qqy udev
-    udevadm settle
     mount
     umount_partition mountpoint
     rmdir mountpoint
@@ -134,6 +139,8 @@ disk_image=binary/boot/disk-uefi.ext4
 create_empty_disk_image "${disk_image}"
 create_partitions "${disk_image}"
 mount_image "${disk_image}" 1
+
+partuuid=$(blkid -s PARTUUID -o value "$rootfs_dev_mapper")
 
 # Copy the chroot in to the disk
 make_ext4_partition "${rootfs_dev_mapper}"

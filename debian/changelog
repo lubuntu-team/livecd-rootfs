@@ -1,3 +1,56 @@
+livecd-rootfs (2.408.20) xenial; urgency=medium
+
+  * Now that grub-related diversions have been factored out in 2.466
+    instead of having bogus root=stuff arg generated in grub.cfg, it is
+    actually empty. Therefore update the sed command to make the arg in
+    the root= token optional. This should resolve non-booting livecd cpc
+    images.
+
+ -- Dimitri John Ledkov <xnox@ubuntu.com>  Tue, 10 Oct 2017 13:49:49 +0100
+
+livecd-rootfs (2.408.19) xenial; urgency=medium
+
+  [ Nishanth Aravamudan ]
+  * live-build/ubuntu-cpc/hooks/061-open-iscsi.chroot: generate iSCSI
+    Initiator Name at first iscsid run for cloud images to ensure it is
+    unique (LP: #1444992).
+
+  [ Steve Langasek ]
+  * Improve teardown_mountpoint to recursively find all submounts and
+    unmount them, instead of working from a hard-coded list.  This makes
+    the code resilient against other submounts being added later, including
+    downstream.  LP: #1721279.
+  * Also nuke the sleep / udevadm settle calls in the process, which should
+    never be required and slow down the builds.
+  * Fix a reference to an undefined variable in a script that's set -u.
+  * Use /bin/sh, not /bin/bash, for autopkgtest.
+  * debian/tests/default-bootstraps: minor adjustments to shell syntax,
+    syncing with artful where this originated.
+
+  [ Steve Langasek, Balint Reczey ]
+  * Introduce a new project-independent 'minimized' subproject
+    (LP: #1721261):
+    - omit ubuntu-minimal in favor of using only the minbase package set.
+    - boot directly by partuuid, avoiding the use of an initramfs.
+    - Bump needed live-build version which can build images without initrd
+    - drop man pages and most of the documentation from minimized images
+      (/usr/share/doc/*/copyright and changelog.Debian.gz files are still
+      kept)
+    - Add unminimize script for reverting minimization on a running system
+    - Mention unminimize script in motd
+    - Run autopkgtest for SUBPROJECT=minimized
+    - If we're using SUBPROJECT=minimized, and tzdata is not installed,
+      remove files that have been left behind.  This is a workaround for a
+      bug that should be fixed in tzdata.
+  * Factor out grub-related diversions and use them consistently, so we
+    don't end up with wrong os-probe output in our grub.cfg.
+
+  [ Balint Reczey ]
+  * Mount using --make-rslave to ensure safe unmounts for rbind mounts
+  * When SUBPROJECT environment variable is not set assume it to be ""
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Wed, 04 Oct 2017 18:43:48 +0000
+
 livecd-rootfs (2.408.18) xenial; urgency=medium
 
   [ Robert C Jennings ]

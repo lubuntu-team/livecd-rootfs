@@ -5,7 +5,7 @@
 
 set -e
 
-if [ -z "$SUITE"]; then
+if [ -z "$SUITE" ]; then
     SUITE=$(lsb_release -c -s)
 fi
 
@@ -30,6 +30,7 @@ ALL_TRIPLETS="
  ubuntu-budgie-live::
  ubuntu-core:system-image:ubuntu-core
  ubuntu-cpc::ubuntu-cpc
+ ubuntu-cpc:minimized:ubuntu-cpc
  ubuntu-desktop-next:system-image:ubuntu-desktop-next
  ubuntu-desktop-next::ubuntu-desktop-next
  ubuntu-dvd::
@@ -66,19 +67,17 @@ live_build_rootfs() {
     if [ -n "$TEMPLATE" ]; then
         cp -a /usr/share/livecd-rootfs/live-build/$TEMPLATE .
     fi
-    (env PROJECT=$PROJECT \
+    env PROJECT=$PROJECT \
          SUBPROJECT=$SUBPROJECT \
          SUITE=$SUITE \
          ARCH=$ARCH \
          lb config
-    )
     mkdir chroot
     # this part needs root rights, but right now the whole script ran as root by autopkgtest
-    (env PROJECT=$PROJECT \
+    env PROJECT=$PROJECT \
          SUBPROJECT=$SUBPROJECT \
          ARCH=$ARCH \
          lb build
-    )
     echo "Build results for project: '$PROJECT' subproject: '$SUBPROJECT' template: '$TEMPLATE' in $PWD"
     du -sh *
     echo ""

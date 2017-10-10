@@ -82,7 +82,7 @@ mount_image() {
 setup_mountpoint() {
     local mountpoint="$1"
 
-    mount --rbind /dev "$mountpoint/dev"
+    mount --rbind --make-rslave /dev "$mountpoint/dev"
     mount proc-live -t proc "$mountpoint/proc"
     mount sysfs-live -t sysfs "$mountpoint/sys"
     mount -t tmpfs none "$mountpoint/tmp"
@@ -98,16 +98,13 @@ teardown_mountpoint() {
     # Reverse the operations from setup_mountpoint
     local mountpoint="$1"
 
-    umount "$mountpoint/var/cache/apt"
-    umount "$mountpoint/var/lib/apt"
-    umount "$mountpoint/tmp"
-    umount "$mountpoint/sys"
-    umount "$mountpoint/proc"
-    umount -R "$mountpoint/dev"
-
-    apt-get install -qqy udev
-    udevadm settle
-    sleep 3
+    # ensure we have exactly one trailing slash, and escape all slashes for awk
+    mountpoint_match=$(echo "$mountpoint" | sed -e's,/$,,; s,/,\\/,g;')'\/'
+    # sort -r ensures that deeper mountpoints are unmounted first
+    for submount in $(awk </proc/self/mounts "\$2 ~ /$mountpoint_match/ \
+                      { print \$2 }" | LC_ALL=C sort -r); do
+        umount $submount
+    done
     mv resolv.conf.tmp "$mountpoint/etc/resolv.conf"
 }
 
@@ -276,6 +273,41 @@ replace_grub_root_with_label() {
     # Instead, we want grub to use the cloudimg-rootfs labelled disk
     CHROOT_ROOT="$1"
 
-    sed -i -e "s,root=[^ ]\+,root=LABEL=cloudimg-rootfs," \
+    # If boot by partuuid has been requested, don't override.
+    if [ -f $CHROOT_ROOT/etc/default/grub.d/40-force-partuuid.cfg ] && \
+           grep -q ^GRUB_FORCE_PARTUUID= $CHROOT_ROOT/etc/default/grub.d/40-force-partuuid.cfg
+    then
+        return 0
+    fi
+    sed -i -e "s,root=[^ ]*,root=LABEL=cloudimg-rootfs," \
         "$CHROOT_ROOT/boot/grub/grub.cfg"
+}
+
+
+# When running update-grub in a chroot on a build host, we don't want it to
+# probe for disks or probe for other installed OSes.  Extract common
+# diversion wrappers, so this isn't reinvented differently for each image.
+divert_grub() {
+	CHROOT_ROOT="$1"
+
+	chroot "$CHROOT_ROOT" dpkg-divert --local \
+		--rename /usr/sbin/grub-probe
+	chroot "$CHROOT_ROOT" touch /usr/sbin/grub-probe
+	chroot "$CHROOT_ROOT" chmod +x /usr/sbin/grub-probe
+
+	chroot "$CHROOT_ROOT" dpkg-divert --local \
+		--divert /etc/grub.d/30_os-prober.dpkg-divert \
+		--rename /etc/grub.d/30_os-prober
+}
+
+undivert_grub() {
+	CHROOT_ROOT="$1"
+
+	chroot "$CHROOT_ROOT" rm /usr/sbin/grub-probe
+	chroot "$CHROOT_ROOT" dpkg-divert --remove --local \
+		--rename /usr/sbin/grub-probe
+
+	chroot "$CHROOT_ROOT" dpkg-divert --remove --local \
+		--divert /etc/grub.d/30_os-prober.dpkg-divert \
+		--rename /etc/grub.d/30_os-prober
 }
