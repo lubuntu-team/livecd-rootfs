@@ -1,3 +1,10 @@
+livecd-rootfs (2.472) artful; urgency=medium
+
+  [ Michael Hudson-Doyle ]
+  * Add snap.subiquity.started.service to subiquity.service's Requires=.
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Tue, 10 Oct 2017 18:41:01 -0400
+
 livecd-rootfs (2.471) artful; urgency=medium
 
   * Now that grub-related diversions have been factored out in 2.466
