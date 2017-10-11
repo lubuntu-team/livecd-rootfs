@@ -1,3 +1,17 @@
+livecd-rootfs (2.473) artful; urgency=medium
+
+  [ Balint Reczey ]
+  * Clean up dangling /boot/initrd.img symlink when needed
+  * Revert ignoring failure of minimized autopkgtest on ppc64el
+  * Use kvm kernel only on amd64
+  * Skip installing server task when building minimial images
+
+  [ Steve Langasek ]
+  * export SNAP_REEXEC=0 to our snappy systemd units in the livefs overlay,
+    to work around apparmor not working reliably against aufs.
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Wed, 11 Oct 2017 12:46:14 -0400
+
 livecd-rootfs (2.472) artful; urgency=medium
 
   [ Michael Hudson-Doyle ]
