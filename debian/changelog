@@ -1,3 +1,14 @@
+livecd-rootfs (2.408.21) xenial; urgency=medium
+
+  [ Balint Reczey ]
+  * Use kvm kernel only on amd64.
+  * Make non-x86 minimized images consistent with x86 by not explicitly
+    installing the server task.
+  * Clean up dangling /boot/initrd.img symlink left behind on minimized
+    builds.
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Fri, 20 Oct 2017 23:10:29 -0700
+
 livecd-rootfs (2.408.20) xenial; urgency=medium
 
   * Now that grub-related diversions have been factored out in 2.466
