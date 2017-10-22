@@ -1,3 +1,13 @@
+livecd-rootfs (2.408.22) xenial; urgency=medium
+
+  * Make sure to remove any initramfs that was generated in a minimized
+    image.
+  * divert /usr/bin/systemd-detect-virt as part of the grub diversions, so
+    that the grub kernel postinst hook is operational when we're building
+    in a container.  LP: #1729034.
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Sat, 21 Oct 2017 20:53:02 -0700
+
 livecd-rootfs (2.408.21) xenial; urgency=medium
 
   [ Balint Reczey ]
