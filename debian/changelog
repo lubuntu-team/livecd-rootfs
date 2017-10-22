@@ -1,3 +1,10 @@
+livecd-rootfs (2.408.22) UNRELEASED; urgency=medium
+
+  * Make sure to remove any initramfs that was generated in a minimized
+    image.
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Sat, 21 Oct 2017 20:52:38 -0700
+
 livecd-rootfs (2.408.21) xenial; urgency=medium
 
   [ Balint Reczey ]
