@@ -1,3 +1,10 @@
+livecd-rootfs (2.208.15) UNRELEASED; urgency=medium
+
+  * Fix security mirror sources.list entries for non-x86 architectures by
+    backporting trunk revision 1408. (LP: #1711735)
+
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Mon, 30 Oct 2017 12:18:48 +1300
+
 livecd-rootfs (2.208.14) trusty; urgency=medium
 
   [ Robert C. Jennings ]
