@@ -1,3 +1,10 @@
+livecd-rootfs (2.480) bionic; urgency=medium
+
+  [ Gary Wang ]
+  * Add the IMAGEFORMAT=none to support generating a single rootfs.
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Mon, 06 Nov 2017 11:12:45 -0800
+
 livecd-rootfs (2.479) bionic; urgency=medium
 
   * Purge initramfs-tools from minimized images.
