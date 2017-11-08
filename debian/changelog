@@ -1,4 +1,4 @@
-livecd-rootfs (2.478.1) UNRELEASED; urgency=medium
+livecd-rootfs (2.478.1) artful; urgency=medium
 
   [ Gary Wang ]
   * Add the IMAGEFORMAT=none to support generating a single rootfs
