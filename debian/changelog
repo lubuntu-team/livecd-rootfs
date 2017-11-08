@@ -1,3 +1,11 @@
+livecd-rootfs (2.478.1) UNRELEASED; urgency=medium
+
+  [ Gary Wang ]
+  * Add the IMAGEFORMAT=none to support generating a single rootfs
+    (LP: #1730642)
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Wed, 08 Nov 2017 12:02:04 +0100
+
 livecd-rootfs (2.478) artful; urgency=medium
 
   [ Michael Hudson-Doyle ]
