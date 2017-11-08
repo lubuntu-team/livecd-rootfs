@@ -139,6 +139,9 @@ case $IMAGEFORMAT in
 		PREINSTALLED=true
 		;;
 
+	none)
+		OPTS="${OPTS:+$OPTS }--chroot-filesystem $IMAGEFORMAT"
+		;;
 	*)
 		case $PROJECT in
 			ubuntu-server|ubuntu-touch|ubuntu-touch-custom)
@@ -815,6 +818,9 @@ EOF
 	ubuntu-touch:*|ubuntu-touch-custom:*|ubuntu-core:system-image|ubuntu-desktop-next:system-image|ubuntu-cpc:*)
 		cp -af /usr/share/livecd-rootfs/live-build/${PROJECT}/* \
 			config/
+		if [ "$IMAGEFORMAT" = none ]; then
+			rm -f config/hooks/*.binary*
+		fi
 		;;
 esac
 

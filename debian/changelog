@@ -1,3 +1,11 @@
+livecd-rootfs (2.408.23) UNRELEASED; urgency=medium
+
+  [ Gary Wang ]
+  * Add the IMAGEFORMAT=none to support generating a single rootfs
+    (LP: #1730642)
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Wed, 08 Nov 2017 12:33:37 +0100
+
 livecd-rootfs (2.408.22) xenial; urgency=medium
 
   * Make sure to remove any initramfs that was generated in a minimized
