@@ -1,4 +1,4 @@
-livecd-rootfs (2.408.23) UNRELEASED; urgency=medium
+livecd-rootfs (2.408.23) xenial; urgency=medium
 
   [ Gary Wang ]
   * Add the IMAGEFORMAT=none to support generating a single rootfs
@@ -19,7 +19,7 @@ livecd-rootfs (2.408.23) UNRELEASED; urgency=medium
     for any of the current minimal images), rather than being included
     directly in the cloud-image seed.
 
- -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Wed, 08 Nov 2017 12:33:37 +0100
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Tue, 14 Nov 2017 11:21:48 -0800
 
 livecd-rootfs (2.408.22) xenial; urgency=medium
 
