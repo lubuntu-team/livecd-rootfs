@@ -1,5 +1,10 @@
-livecd-rootfs (2.408.24) UNRELEASED; urgency=medium
+livecd-rootfs (2.408.23) UNRELEASED; urgency=medium
 
+  [ Gary Wang ]
+  * Add the IMAGEFORMAT=none to support generating a single rootfs
+    (LP: #1730642)
+
+  [ Christopher Glass (Ubuntu) ]
   * Backport "minimized round 2" changes from trunk to Xenial (LP: #1731492)
   * Remove apt, debconf, dpkg cruft files from /var/cache and /var/lib in
     all our livefses.
@@ -13,14 +18,6 @@ livecd-rootfs (2.408.24) UNRELEASED; urgency=medium
     included in images that are targeted to VMWare (which is not the case
     for any of the current minimal images), rather than being included
     directly in the cloud-image seed.
-
- -- Christopher Glass (Ubuntu) <tribaal@ubuntu.com>  Fri, 10 Nov 2017 18:39:52 +0100
-
-livecd-rootfs (2.408.23) UNRELEASED; urgency=medium
-
-  [ Gary Wang ]
-  * Add the IMAGEFORMAT=none to support generating a single rootfs
-    (LP: #1730642)
 
  -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Wed, 08 Nov 2017 12:33:37 +0100
 
