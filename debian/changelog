@@ -1,3 +1,26 @@
+livecd-rootfs (2.408.23) xenial; urgency=medium
+
+  [ Gary Wang ]
+  * Add the IMAGEFORMAT=none to support generating a single rootfs
+    (LP: #1730642)
+
+  [ Christopher Glass (Ubuntu) ]
+  * Backport "minimized round 2" changes from trunk to Xenial (LP: #1731492)
+  * Remove apt, debconf, dpkg cruft files from /var/cache and /var/lib in
+    all our livefses.
+  * Pass --cache false to lb config; otherwise we copy around caches of
+    .debs that are never used properly, and which prevent us from emptying
+    /var/cache/apt in images.
+  * When building minimized cloud images, remove various packages that we
+    don't want installed by default.  Some are tools that aren't needed for
+    non-interactive use; some are libraries whose reverse-dependencies
+    will have already been removed; and one, open-vm-tools, should only be
+    included in images that are targeted to VMWare (which is not the case
+    for any of the current minimal images), rather than being included
+    directly in the cloud-image seed.
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Tue, 14 Nov 2017 11:21:48 -0800
+
 livecd-rootfs (2.408.22) xenial; urgency=medium
 
   * Make sure to remove any initramfs that was generated in a minimized

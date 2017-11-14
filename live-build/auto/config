@@ -139,6 +139,9 @@ case $IMAGEFORMAT in
 		PREINSTALLED=true
 		;;
 
+	none)
+		OPTS="${OPTS:+$OPTS }--chroot-filesystem $IMAGEFORMAT"
+		;;
 	*)
 		case $PROJECT in
 			ubuntu-server|ubuntu-touch|ubuntu-touch-custom)
@@ -673,6 +676,7 @@ lb config noauto \
 	--initsystem none \
 	--bootloader "$BOOTLOADER" \
 	--initramfs-compression lzma \
+	--cache false \
 	${BOOTAPPEND_LIVE:+--bootappend-live "$BOOTAPPEND_LIVE"} \
 	$OPTS \
 	"$@"
@@ -815,6 +819,9 @@ EOF
 	ubuntu-touch:*|ubuntu-touch-custom:*|ubuntu-core:system-image|ubuntu-desktop-next:system-image|ubuntu-cpc:*)
 		cp -af /usr/share/livecd-rootfs/live-build/${PROJECT}/* \
 			config/
+		if [ "$IMAGEFORMAT" = none ]; then
+			rm -f config/hooks/*.binary*
+		fi
 		;;
 esac
 
