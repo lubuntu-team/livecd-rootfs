@@ -1,4 +1,4 @@
-livecd-rootfs (2.441.10) UNRELEASED; urgency=medium
+livecd-rootfs (2.441.10) zesty; urgency=medium
 
   * For the IMAGEFORMAT=none parts to work for ubuntu-image classic builds, we
     need to make sure IMAGEFORMAT is preserved and not overwritten if defined.
