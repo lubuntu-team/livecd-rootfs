@@ -1,3 +1,11 @@
+livecd-rootfs (2.441.10) UNRELEASED; urgency=medium
+
+  * For the IMAGEFORMAT=none parts to work for ubuntu-image classic builds, we
+    need to make sure IMAGEFORMAT is preserved and not overwritten if defined.
+    Backporting from artful.
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Tue, 21 Nov 2017 16:56:58 +0100
+
 livecd-rootfs (2.441.9) zesty; urgency=medium
 
   [ Gary Wang ]
