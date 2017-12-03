@@ -1,3 +1,18 @@
+livecd-rootfs (2.485) bionic; urgency=medium
+
+  [ Michael Hudson-Doyle ]
+  * Automount a partition of fixed UUID for giving subiquity canned answers.
+
+  [ Balint Reczey ]
+  * Use default xz compression (-6) for raspi2 image.
+    Xz with -0 generated ~35% bigger compressed image. (LP: #1732681)
+  * Zero fill space in UEFI partitions, too
+  * Set LB_ISO_PREPARER to livecd-rootfs to avoid unbound variable in
+    default string
+  * Build minimized images in a 1GiB image
+
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Mon, 04 Dec 2017 10:51:13 +1300
+
 livecd-rootfs (2.484) bionic; urgency=medium
 
   [ Balint Reczey ]
