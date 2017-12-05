@@ -10,7 +10,6 @@ case $ARCH:$SUBARCH in
 		;;
 esac
 
-apt-get install -qqy qemu-utils
 
 . config/functions
 
