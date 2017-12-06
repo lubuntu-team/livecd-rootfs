@@ -1,3 +1,13 @@
+livecd-rootfs (2.408.25) UNRELEASED; urgency=medium
+
+  * Sort and list dependencies nicely
+  * Depend on packages instead of installing them at run time
+  * Use xz -T4 instead of pxz.
+    Supported xz versions before 5.2 accept the -T4 option but ignore it.
+    Also depend on xz-utils instead of downloading pxz. (LP: #1701132)
+
+ -- Balint Reczey <rbalint@ubuntu.com>  Tue, 05 Dec 2017 22:43:06 +0100
+
 livecd-rootfs (2.408.24) xenial; urgency=medium
 
   * For the IMAGEFORMAT=none parts to work for ubuntu-image classic builds, we
