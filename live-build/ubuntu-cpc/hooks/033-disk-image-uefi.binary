@@ -11,8 +11,6 @@ esac
 
 . config/functions
 
-apt-get -qqy install dosfstools gdisk
-
 create_partitions() {
     disk_image="$1"
     sgdisk "${disk_image}" --zap-all
@@ -128,7 +126,6 @@ EOF
 
     rm mountpoint/tmp/device.map
     umount mountpoint/boot/efi
-    apt-get install -qqy udev
     mount
     umount_partition mountpoint
     rmdir mountpoint

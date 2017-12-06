@@ -7,8 +7,6 @@ if [ -n "$SUBARCH" ]; then
 	exit 0
 fi
 
-apt-get -qqy install squashfs-tools
-
 squashfs_f="${PWD}/livecd.ubuntu-cpc.squashfs"
 squashfs_f_manifest="${squashfs_f}.manifest"
 
