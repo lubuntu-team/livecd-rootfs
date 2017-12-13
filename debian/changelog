@@ -1,4 +1,4 @@
-livecd-rootfs (2.408.26) xenial; urgency=medium
+livecd-rootfs (2.408.26) UNRELEASED; urgency=medium
 
   * Changed default user configuration in the vagrant image, in accordance
     with the vagrant community's expectations (LP: #1569237)
