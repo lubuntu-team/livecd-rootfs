@@ -1,4 +1,4 @@
-livecd-rootfs (2.408.26) UNRELEASED; urgency=medium
+livecd-rootfs (2.408.26) xenial; urgency=medium
 
   * Added a "vagrant" user to the vagrant image in addition to the "ubuntu"
     user, in accordance with the vagrant community's expectations (LP: #1569237)
