@@ -1,3 +1,10 @@
+livecd-rootfs (2.408.27) xenial; urgency=medium
+
+  * Don't ask for password and GECOS while creating vagrant user
+    (LP: #1569237)
+
+ -- Balint Reczey <rbalint@ubuntu.com>  Thu, 21 Dec 2017 09:20:32 +0100
+
 livecd-rootfs (2.408.26) xenial; urgency=medium
 
   * Added a "vagrant" user to the vagrant image in addition to the "ubuntu"
