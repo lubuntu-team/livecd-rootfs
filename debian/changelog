@@ -1,4 +1,4 @@
-livecd-rootfs (2.408.27) UNRELEASED; urgency=medium
+livecd-rootfs (2.408.27) xenial; urgency=medium
 
   * Don't ask for password and GECOS while creating vagrant user
     (LP: #1569237)
