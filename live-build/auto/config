@@ -642,16 +642,6 @@ case $ARCH in
 				add_package live ac100-tarball-installer
 				BINARY_REMOVE_LINUX=false
 				;;
-			nexus7)
-				COMPONENTS='main restricted universe multiverse'
-				add_package install zram-config abootimg 
-				add_package install nvidia-tegra3 ubuntu-defaults-nexus7
-				add_package live ac100-tarball-installer
-				BINARY_REMOVE_LINUX=false
-				mkdir -p config/preseed
-				echo "linux-firmware-nexus7 shared/nexus7_notice_accepted boolean true" >config/preseed/linux-firmware-nexus7.preseed.chroot
-				echo "d-i passwd/auto-login boolean true" >config/preseed/autologin.preseed.chroot
-				;;
 			raspi2)
 				COMPONENTS='main restricted universe multiverse'
 				add_package install linux-firmware-raspi2 u-boot-rpi flash-kernel u-boot-tools
@@ -717,11 +707,6 @@ echo "SUBPROJECT=\"${SUBPROJECT:-}\"" >> config/chroot
 echo "LB_BINARY_HOOKS=\"$BINARY_HOOKS\"" >> config/binary
 echo "BUILDSTAMP=\"$NOW\"" >> config/binary
 echo "SUBPROJECT=\"${SUBPROJECT:-}\"" >> config/binary
-if [ "${SUBPROJECT:-}" = minimized ]; then
-	# try building minimized images in a 1GiB image but still allow overriding
-	# IMAGE_SIZE in lb build
-	echo 'IMAGE_SIZE=${IMAGE_SIZE:-'$((1024*1024*1024))'}' >> config/binary
-fi
 
 case $ARCH+$SUBARCH in
 	armhf+raspi2)

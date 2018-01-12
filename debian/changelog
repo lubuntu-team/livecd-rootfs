@@ -1,3 +1,16 @@
+livecd-rootfs (2.489) bionic; urgency=medium
+
+  [ Balint Reczey ]
+  * Revert to building minimized and not minimimized images with the same
+    ~2.2 GiB size
+  * Stop suggesting partimage which is not used anymore
+  * Drop Nexus 7 support
+
+  [ Steve Langasek ]
+  * Add support for passing snap channel to ubuntu-core image builds.
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Fri, 12 Jan 2018 15:04:42 -0800
+
 livecd-rootfs (2.488) bionic; urgency=medium
 
   * Enable systemd-networkd by default for live-server installs.
