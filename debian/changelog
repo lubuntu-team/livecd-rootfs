@@ -1,3 +1,14 @@
+livecd-rootfs (2.509) bionic; urgency=medium
+
+  [ Steve Langasek ]
+  * Properly handle loop device names when there are > 10 devices on the
+    system.
+
+  [ Dimitri John Ledkov ]
+  * Build EFI armhf images.
+
+ -- Dimitri John Ledkov <xnox@ubuntu.com>  Tue, 06 Mar 2018 12:58:46 +0000
+
 livecd-rootfs (2.508) bionic; urgency=medium
 
   * Use Ubuntu-specific branches when seeding snaps, as required in
