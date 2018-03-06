@@ -1,3 +1,11 @@
+livecd-rootfs (2.508) bionic; urgency=medium
+
+  * Use Ubuntu-specific branches when seeding snaps, as required in
+    <https://wiki.ubuntu.com/UbuntuSeededSnaps>.
+  * Add dependency on distro-info for the above.
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Tue, 06 Mar 2018 10:15:43 +0100
+
 livecd-rootfs (2.507) bionic; urgency=medium
 
   * ubuntu-server: generate multi-lowerdir overlayfs for
