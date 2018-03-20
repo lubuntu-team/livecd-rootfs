@@ -1,3 +1,10 @@
+livecd-rootfs (2.408.28) xenial; urgency=medium
+
+  * ubuntu-cpc: When performing a minimized build, don't generate artifacts
+    that won't boot with the linux-kvm kernel (LP: #1757223).
+
+ -- Daniel Watkins <daniel.watkins@canonical.com>  Tue, 20 Mar 2018 12:42:25 -0400
+
 livecd-rootfs (2.408.27) xenial; urgency=medium
 
   * Don't ask for password and GECOS while creating vagrant user
