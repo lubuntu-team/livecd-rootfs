@@ -1,3 +1,10 @@
+livecd-rootfs (2.517) bionic; urgency=medium
+
+  [ Simon Quigley ]
+  * Add proper lubuntu support in BASE_SEED.
+
+ -- Iain Lane <iain.lane@canonical.com>  Tue, 03 Apr 2018 11:56:32 +0100
+
 livecd-rootfs (2.516) bionic; urgency=medium
 
   [ Chris Glass ]
