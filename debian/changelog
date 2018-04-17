@@ -1,3 +1,10 @@
+livecd-rootfs (2.408.29) UNRELEASED; urgency=medium
+
+  * ubuntu-cpc: When performing a minimized build make sure the
+    /etc/cloud/build.info file says "minimal" (LP: #1759519)
+
+ -- Christopher Glass (Ubuntu) <tribaal@ubuntu.com>  Wed, 28 Mar 2018 12:08:48 +0200
+
 livecd-rootfs (2.408.28) xenial; urgency=medium
 
   * ubuntu-cpc: When performing a minimized build, don't generate artifacts
