@@ -1,9 +1,10 @@
-livecd-rootfs (2.408.29) UNRELEASED; urgency=medium
+livecd-rootfs (2.408.29) xenial; urgency=medium
 
+  [ Christopher Glass ]
   * ubuntu-cpc: When performing a minimized build make sure the
     /etc/cloud/build.info file says "minimal" (LP: #1759519)
 
- -- Christopher Glass (Ubuntu) <tribaal@ubuntu.com>  Wed, 28 Mar 2018 12:08:48 +0200
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Tue, 17 Apr 2018 13:28:50 -0700
 
 livecd-rootfs (2.408.28) xenial; urgency=medium
 
