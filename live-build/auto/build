@@ -37,7 +37,7 @@ Expire-Date: 0
                 # Set locale to C.UTF-8 by default for minimized
                 # images.  We can do this for all ubuntu-cpc images
                 # after further testing, however minimized images
-                # locale-gen so a change is more urgent.
+                # lack locale-gen so a change is more urgent.
                 echo "LANG=C.UTF-8" > chroot/etc/default/locale
             fi
             ;;
