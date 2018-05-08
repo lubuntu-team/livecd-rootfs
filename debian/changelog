@@ -1,4 +1,4 @@
-livecd-rootfs (2.408.30) xenial; urgency=medium
+livecd-rootfs (2.408.30) UNRELEASED; urgency=medium
 
   * Set the default locale to C.UTF-8 in minimized cloud images.
     (LP: #1759003)
