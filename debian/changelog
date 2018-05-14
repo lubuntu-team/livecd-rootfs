@@ -1,3 +1,9 @@
+livecd-rootfs (2.408.31) xenial; urgency=medium
+
+  * Backport snap preseeding functions from bionic. (LP: #1771177)
+
+ -- Mathieu Trudel-Lapierre <cyphermox@ubuntu.com>  Mon, 14 May 2018 14:16:35 -0400
+
 livecd-rootfs (2.408.30) xenial; urgency=medium
 
   * Set the default locale to C.UTF-8 in minimized cloud images.
