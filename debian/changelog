@@ -1,3 +1,11 @@
+livecd-rootfs (2.525.1) UNRELEASED; urgency=medium
+
+  * Symlink systemd-networkd-wait-online to /bin/true in the live installer
+    live session to avoid depending on buggy systemd behaviour.
+  * Remove "optional: true" from installer netplan config.
+
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Wed, 23 May 2018 14:27:01 +1200
+
 livecd-rootfs (2.525) bionic; urgency=medium
 
   * Don't fail to build CPC images if /lib/modules already exists in the
