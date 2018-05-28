@@ -1,7 +1,7 @@
 livecd-rootfs (2.525.1) bionic; urgency=medium
 
   * Symlink systemd-networkd-wait-online to /bin/true in the live installer
-    live session to avoid depending on buggy systemd behaviour.
+    live session to avoid depending on buggy systemd behaviour. (LP: #1773719)
   * Remove "optional: true" from installer netplan config.
 
  -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Wed, 23 May 2018 14:27:01 +1200
