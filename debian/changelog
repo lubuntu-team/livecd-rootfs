@@ -1,3 +1,15 @@
+livecd-rootfs (2.531) cosmic; urgency=medium
+
+  [ Daniel Watkins ]
+  * ubuntu-cpc: Use linux-kvm for all amd64 minimized builds (LP: #1775472).
+
+  [ Steve Langasek ]
+  * live-build/ubuntu-cpc/hooks/033-disk-image-uefi.binary: don't manually
+    install grub-efi-amd64 since that forces off grub-pc, which is otherwise
+    now coinstallable.
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Wed, 06 Jun 2018 17:34:07 -0700
+
 livecd-rootfs (2.530) cosmic; urgency=medium
 
   * ubuntu-cpc: Reintroduce the -root.tar.xz artifact (LP: #1585233).
