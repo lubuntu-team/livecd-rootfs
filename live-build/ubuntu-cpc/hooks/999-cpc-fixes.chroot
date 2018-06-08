@@ -47,7 +47,7 @@ respawn
 script
     exec /sbin/getty -L CONDEV 115200 vt102
 end script
-${CLOUD_IMG_STR}
+${IMAGE_STR}
 EOF
    sed -i "s/CONDEV/${condev}/g" "$idir/${condev}.conf"
 }

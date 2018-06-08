@@ -44,6 +44,8 @@ case $ARCH in
            exit 0;;
 esac
 
+IMAGE_STR="# CLOUD_IMG: This file was created/modified by the Cloud Image build process"
+
 . config/functions
 
 # Lets be safe about this

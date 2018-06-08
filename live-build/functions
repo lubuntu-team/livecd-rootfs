@@ -1,7 +1,8 @@
 # vi: ts=4 expandtab syntax=sh
 
-CLOUD_IMG_STR="# CLOUD_IMG: This file was created/modified by the Cloud Image build process"
-IMAGE_SIZE=$((2252*1024**2))  # 2.2G (the current size we ship)
+#imagesize=${IMAGE_SIZE:-$((2252*1024**2))}  # 2.2G (the current size we ship)
+imagesize=${IMAGE_SIZE:-2361393152}  # 2.2G (the current size we ship)
+fs_label="${FS_LABEL:-rootfs}"
 
 rootfs_dev_mapper=
 loop_device=
@@ -39,13 +40,13 @@ clean_loops() {
 
 create_empty_disk_image() {
     # Prepare an empty disk image
-    dd if=/dev/zero of="$1" bs=1 count=0 seek="${IMAGE_SIZE}"
+    dd if=/dev/zero of="$1" bs=1 count=0 seek="${imagesize}"
 }
 
 make_ext4_partition() {
     device="$1"
-
-    mkfs.ext4 -F -b 4096 -i 8192 -m 0 -L cloudimg-rootfs -E resize=536870912 "$device"
+    label=${fs_label:+-L "${fs_label}"}
+    mkfs.ext4 -F -b 4096 -i 8192 -m 0 ${label} -E resize=536870912 "$device"
 }
 
 mount_image() {
@@ -56,7 +57,7 @@ mount_image() {
 
     # Find the loop device
     loop_p1="$(echo -e ${kpartx_mapping} | head -n1 | awk '{print$3}')"
-    loop_device="/dev/loop$(echo ${loop_p1} | cut -b5)"
+    loop_device="/dev/${loop_p1%p[0-9]*}"
     if [ ! -b ${loop_device} ]; then
         echo "unable to find loop device for ${backing_img}"
         exit 1
@@ -129,7 +130,7 @@ mount_disk_image() {
     # such as updating grub and installing software
     cat > $mountpoint/usr/sbin/policy-rc.d << EOF
 #!/bin/sh
-# ${CLOUD_IMG_STR}
+# ${IMAGE_STR}
 echo "All runlevel operations denied by policy" >&2
 exit 101
 EOF
@@ -264,7 +265,7 @@ convert_to_qcow2() {
 
 replace_grub_root_with_label() {
     # When update-grub is run, it will detect the disks in the build system.
-    # Instead, we want grub to use the cloudimg-rootfs labelled disk
+    # Instead, we want grub to use the right labelled disk
     CHROOT_ROOT="$1"
 
     # If boot by partuuid has been requested, don't override.
@@ -273,7 +274,7 @@ replace_grub_root_with_label() {
     then
         return 0
     fi
-    sed -i -e "s,root=[^ ]*,root=LABEL=cloudimg-rootfs," \
+    sed -i -e "s,root=[^ ]*,root=LABEL=${fs_label}," \
         "$CHROOT_ROOT/boot/grub/grub.cfg"
 }
 
@@ -317,4 +318,126 @@ undivert_grub() {
 	rm "$CHROOT_ROOT"/usr/bin/systemd-detect-virt
 	chroot "$CHROOT_ROOT" dpkg-divert --remove --local \
 		--rename /usr/bin/systemd-detect-virt
+}
+
+release_ver() {
+    # Return the release version number
+    distro-info --series="$LB_DISTRIBUTION" -r | awk '{ print $1 }'
+}
+
+_snap_preseed() {
+    # Download the snap/assertion and add to the preseed
+    local CHROOT_ROOT=$1
+    local SNAP=$2
+    local SNAP_NAME=${SNAP%/*}
+    local CHANNEL=${3:?Snap channel must be specified}
+
+    local seed_dir="$CHROOT_ROOT/var/lib/snapd/seed"
+    local snaps_dir="$seed_dir/snaps"
+    local seed_yaml="$seed_dir/seed.yaml"
+    local assertions_dir="$seed_dir/assertions"
+
+    # Download the snap & assertion
+    local snap_download_failed=0
+    chroot $CHROOT_ROOT sh -c "
+        set -x;
+        cd /var/lib/snapd/seed;
+        SNAPPY_STORE_NO_CDN=1 snap download \
+            --channel=$CHANNEL \"$SNAP_NAME\"" || snap_download_failed=1
+    if [ $snap_download_failed = 1 ] ; then
+        echo "If the channel ($CHANNEL) includes '*/ubuntu-##.##' track per "
+        echo "Ubuntu policy (ex. stable/ubuntu-18.04) the publisher will need "
+        echo "to temporarily create the channel/track to allow fallback during"
+        echo "download (ex. stable/ubuntu-18.04 falls back to stable if the"
+        echo "prior had been created in the past)."
+        exit 1
+    fi
+
+    mv -v $seed_dir/*.assert $assertions_dir
+    mv -v $seed_dir/*.snap $snaps_dir
+
+    # Add the snap to the seed.yaml
+    ! [ -e $seed_yaml ] && echo "snaps:" > $seed_yaml
+    cat <<EOF >> $seed_yaml
+  -
+    name: ${SNAP_NAME}
+    channel: ${CHANNEL}
+EOF
+
+    case ${SNAP} in */classic) echo "    classic: true" >> $seed_yaml;; esac
+
+    echo -n "    file: " >> $seed_yaml
+    (cd $snaps_dir; ls -1 ${SNAP_NAME}_*.snap) >> $seed_yaml
+}
+
+snap_prepare_assertions() {
+    # Configure basic snapd assertions
+    local CHROOT_ROOT=$1
+    # A colon-separated string of brand:model to be used for the image's model
+    # assertion
+    local CUSTOM_BRAND_MODEL=$2
+
+    local seed_dir="$CHROOT_ROOT/var/lib/snapd/seed"
+    local snaps_dir="$seed_dir/snaps"
+    local assertions_dir="$seed_dir/assertions"
+    local model_assertion="$assertions_dir/model"
+    local account_key_assertion="$assertions_dir/account-key"
+    local account_assertion="$assertions_dir/account"
+
+    mkdir -p "$assertions_dir"
+    mkdir -p "$snaps_dir"
+
+    local brand="$(echo $CUSTOM_BRAND_MODEL | cut -d: -f 1)"
+    local model="$(echo $CUSTOM_BRAND_MODEL | cut -d: -f 2)"
+
+    if ! [ -e "$model_assertion" ] ; then
+        snap known --remote model series=16 \
+            model=$model brand-id=$brand \
+            > "$model_assertion"
+    fi
+
+    if ! [ -e "$account_key_assertion" ] ; then
+        local account_key=$(sed -n -e's/sign-key-sha3-384: //p' \
+            < "$model_assertion")
+        snap known --remote account-key \
+            public-key-sha3-384="$account_key" \
+            > "$account_key_assertion"
+    fi
+
+
+    if ! [ -e "$account_assertion" ] ; then
+        local account=$(sed -n -e's/account-id: //p' < "$account_key_assertion")
+        snap known --remote account account-id=$account \
+            > "$account_assertion"
+    fi
+}
+
+snap_prepare() {
+    # Configure basic snapd assertions and pre-seeds the 'core' snap
+    local CHROOT_ROOT=$1
+    # Optional. If set, should be a colon-separated string of brand:model to be
+    # used for the image's model assertion
+    local CUSTOM_BRAND_MODEL=${2:-generic:generic-classic}
+
+    local seed_dir="$CHROOT_ROOT/var/lib/snapd/seed"
+    local snaps_dir="$seed_dir/snaps"
+
+    snap_prepare_assertions "$CHROOT_ROOT" "$CUSTOM_BRAND_MODEL"
+
+    # Download the core snap
+    if ! [ -f $snaps_dir/core_[0-9]*.snap ] ; then
+        _snap_preseed $CHROOT_ROOT core stable
+    fi
+}
+
+snap_preseed() {
+    # Preseed a snap in the image
+    local CHROOT_ROOT=$1
+    local SNAP=$2
+    # Per Ubuntu policy, all seeded snaps (with the exception of the core
+    # snap) must pull from stable/ubuntu-$(release_ver) as their channel.
+    local CHANNEL=${3:-"stable/ubuntu-$(release_ver)"}
+
+    snap_prepare $CHROOT_ROOT
+    _snap_preseed $CHROOT_ROOT $SNAP $CHANNEL
 }
