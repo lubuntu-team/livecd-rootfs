@@ -1,3 +1,10 @@
+livecd-rootfs (2.408.33) xenial; urgency=medium
+
+  * Zero fill space in UEFI partitions, too
+  * Set LB_ISO_PREPARER to livecd-rootfs to avoid unbound variable in default string
+
+ -- Robert C Jennings <robert.jennings@canonical.com>  Fri, 08 Jun 2018 09:12:03 -0700
+
 livecd-rootfs (2.408.32) xenial; urgency=medium
 
   * snaps: Fixes for snap pre-seeding (LP: #1775710)
