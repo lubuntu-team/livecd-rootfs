@@ -33,8 +33,10 @@ if [ -z "$MIRROR" ]; then
 	esac
 fi
 
-mkdir -p config/package-lists
+mkdir -p config
 cp -af /usr/share/livecd-rootfs/live-build/functions config/functions
+
+mkdir -p config/package-lists
 
 add_task ()
 {

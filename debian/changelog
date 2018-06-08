@@ -1,3 +1,11 @@
+livecd-rootfs (2.408.32) xenial; urgency=medium
+
+  * snaps: Fixes for snap pre-seeding (LP: #1775710)
+    * Backport: Refactor functions out of ubuntu-cpc and ubuntu-server hooks.
+    * Add dependency on distro-info for snap preseeding
+
+ -- Robert C Jennings <robert.jennings@canonical.com>  Thu, 07 Jun 2018 14:12:26 -0700
+
 livecd-rootfs (2.408.31) xenial; urgency=medium
 
   * Backport snap preseeding functions from bionic. (LP: #1771177)
