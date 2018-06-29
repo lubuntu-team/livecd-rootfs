@@ -1,3 +1,10 @@
+livecd-rootfs (2.408.34) xenial; urgency=medium
+
+  * Add back pollinate for minimal after it is removed due to a dependency
+    on vim-common.  LP: #1779406.
+
+ -- Francis Ginther <francis.ginther@canonical.com>  Fri, 29 Jun 2018 10:42:06 -0500
+
 livecd-rootfs (2.408.33) xenial; urgency=medium
 
   * Zero fill space in UEFI partitions, too
