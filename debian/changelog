@@ -1,3 +1,9 @@
+livecd-rootfs (2.408.34) xenial; urgency=medium
+
+  * Keep vim-common in the minimal images for pollinate
+
+ -- Francis Ginther <francis.ginther@canonical.com>  Fri, 29 Jun 2018 10:42:06 -0500
+
 livecd-rootfs (2.408.33) xenial; urgency=medium
 
   * Zero fill space in UEFI partitions, too
