@@ -1,6 +1,7 @@
 livecd-rootfs (2.408.35) xenial; urgency=medium
 
-  * Fix install command for pollinate (add '-y') in minimal images
+  * Fix the install command for pollinate which is added back to minimal
+    images (LP: #1779406)
 
  -- Francis Ginther <francis.ginther@canonical.com>  Mon, 02 Jul 2018 14:44:34 -0500
 
