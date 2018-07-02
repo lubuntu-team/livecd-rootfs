@@ -1,3 +1,10 @@
+livecd-rootfs (2.408.35) xenial; urgency=medium
+
+  * Fix the install command for pollinate which is added back to minimal
+    images (LP: #1779406)
+
+ -- Francis Ginther <francis.ginther@canonical.com>  Mon, 02 Jul 2018 14:44:34 -0500
+
 livecd-rootfs (2.408.34) xenial; urgency=medium
 
   * Add back pollinate for minimal after it is removed due to a dependency
