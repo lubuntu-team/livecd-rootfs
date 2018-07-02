@@ -179,7 +179,7 @@ if [ "${SUBPROJECT:-}" = minimized ]; then
 		ubuntu-cloudimage-keyring file
 	# Add back pollinate, which gets removed due to a dependency on vim-common
 	_xchroot "${rootd}" env DEBIAN_FRONTEND=noninteractive \
-		apt-get install --no-install-recommends pollinate
+		apt-get -y install --no-install-recommends pollinate
 
 	_xchroot "${rootd}" apt clean
 fi
