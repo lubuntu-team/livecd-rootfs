@@ -1,6 +1,7 @@
 livecd-rootfs (2.525.2) bionic; urgency=medium
 
-  * Update unminimize script text and install ubuntu-standard (LP: #1778777)
+  * Update unminimize script text and install ubuntu-standard when
+    unminimizing a minimal image (LP: #1778777)
 
  -- Francis Ginther <francis.ginther@canonical.com>  Mon, 02 Jul 2018 13:27:15 -0500
 
