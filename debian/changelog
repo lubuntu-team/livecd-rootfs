@@ -1,4 +1,4 @@
-livecd-rootfs (2.408.36) UNRELEASED; urgency=medium
+livecd-rootfs (2.408.36) xenial; urgency=medium
 
   * Update unminimize script text and install ubuntu-standard when
     unminimizing a minimal image (LP: #1778777)
