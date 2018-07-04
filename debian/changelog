@@ -1,3 +1,10 @@
+livecd-rootfs (2.408.36) UNRELEASED; urgency=medium
+
+  * Update unminimize script text and install ubuntu-standard when
+    unminimizing a minimal image (LP: #1778777)
+
+ -- Francis Ginther <francis.ginther@canonical.com>  Mon, 02 Jul 2018 16:42:18 -0500
+
 livecd-rootfs (2.408.35) xenial; urgency=medium
 
   * Fix the install command for pollinate which is added back to minimal
