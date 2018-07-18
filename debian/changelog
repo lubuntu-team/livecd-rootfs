@@ -1,3 +1,19 @@
+livecd-rootfs (2.533) cosmic; urgency=medium
+
+  [ Robert C Jennings ]
+  * ubuntu-cpc: Remove git-man for minimized images 
+  * Disable checksum generation
+
+  [ Colin Watson ]
+  * live-build/auto/config: Drop "lp-*" hostname filter for Launchpad
+    builders, since LP #1747015 is now fixed; "*.buildd" should be enough.
+
+  [ Francis Ginther ]
+  * Update unminimize script text and install ubuntu-standard when
+    unminimizing a minimal image (LP: #1778777)
+
+ -- Adam Conrad <adconrad@ubuntu.com>  Wed, 18 Jul 2018 11:06:54 -0600
+
 livecd-rootfs (2.532) cosmic; urgency=medium
 
   * ubuntu-cpc: Generate the root image contents once, and use it for both the
