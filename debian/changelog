@@ -1,3 +1,10 @@
+livecd-rootfs (2.525.3) bionic; urgency=medium
+
+  * live-build/auto/config: Add nasty hack to order gtk-common-themese snap
+    first in snapd's seed.yaml to work around the snapd bug in LP: #1772844
+
+ -- Adam Conrad <adconrad@ubuntu.com>  Mon, 23 Jul 2018 10:02:04 -0600
+
 livecd-rootfs (2.525.2) bionic; urgency=medium
 
   * Update unminimize script text and install ubuntu-standard when
