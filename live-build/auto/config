@@ -700,7 +700,12 @@ if [ -n "${BASE_SEED}" ]; then
 		seed_snaps=$(sed -rn '1,/-----/d;/-----/,$d; s/(.*) \|.*/\1/; s, \(classic\),/classic,; p' "${file}")
 		for snap in ${seed_snaps}; do
 			echo "snap: found ${snap}"
-			ALL_SNAPS="${ALL_SNAPS:+${ALL_SNAPS} }${snap}"
+			# Reorder gtk-common-themes first due to LP: #1772844
+			if [ "${snap}" = "gtk-common-themes" ]; then
+				ALL_SNAPS="${snap}${ALL_SNAPS:+ ${ALL_SNAPS}}"
+			else
+				ALL_SNAPS="${ALL_SNAPS:+${ALL_SNAPS} }${snap}"
+			fi
 		done
 	done
 	if [ -n "${ALL_SNAPS}" ] || [ -n "${HOOK_SNAPS}" ]; then
