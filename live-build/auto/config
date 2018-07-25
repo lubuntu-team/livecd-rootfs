@@ -60,7 +60,7 @@ add_task ()
 
 	for task; do
 		if [ "$task" = "ubuntu-budgie-desktop" ]; then
-			filter="| grep -v '^linux.*-aws'"
+			filter="| grep -v '^linux.*tools'"
 		else
 			filter=""
 		fi
