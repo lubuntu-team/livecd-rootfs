@@ -59,9 +59,14 @@ add_task ()
 	# failure.
 
 	for task; do
+		if [ "$task" = "ubuntu-budgie-desktop" ]; then
+			filter="| grep -v '^linux.*-aws'"
+		else
+			filter=""
+		fi
 		# We need a ridiculous number of backslashes to protect
 		# parentheses from eval.
-		echo "!chroot chroot apt-cache dumpavail | grep-dctrl -nsPackage \\\\\\( -XFArchitecture $ARCH -o -XFArchitecture all \\\\\\) -a -wFTask $task" >> "config/package-lists/livecd-rootfs.list.chroot_$pass"
+		echo "!chroot chroot apt-cache dumpavail | grep-dctrl -nsPackage \\\\\\( -XFArchitecture $ARCH -o -XFArchitecture all \\\\\\) -a -wFTask $task $filter" >> "config/package-lists/livecd-rootfs.list.chroot_$pass"
 	done
 }
 

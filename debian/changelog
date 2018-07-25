@@ -1,3 +1,9 @@
+livecd-rootfs (2.525.4) bionic; urgency=medium
+
+  * live-build/auto/config: Dirty hack to filter linux-tools-aws from budgie.
+
+ -- Adam Conrad <adconrad@ubuntu.com>  Tue, 24 Jul 2018 21:55:49 -0600
+
 livecd-rootfs (2.525.3) bionic; urgency=medium
 
   * live-build/auto/config: Add nasty hack to order gtk-common-themese snap
