@@ -1,3 +1,9 @@
+livecd-rootfs (2.525.6) UNRELEASED; urgency=medium
+
+  * generate all tar files with --xattrs.  LP: #1302192.
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Wed, 01 Aug 2018 20:57:14 -0700
+
 livecd-rootfs (2.525.5) bionic; urgency=medium
 
   * live-build/auto/config: Improve linux-tools filter to work for i386 too.
