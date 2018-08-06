@@ -1,4 +1,4 @@
-livecd-rootfs (2.525.6) UNRELEASED; urgency=medium
+livecd-rootfs (2.525.6) bionic; urgency=medium
 
   [ Steve Langasek ]
   * generate all tar files with --xattrs.  LP: #1302192.
@@ -9,7 +9,7 @@ livecd-rootfs (2.525.6) UNRELEASED; urgency=medium
     -root.tar.xz and the .squashfs.
   * ubuntu-cpc: Generate -root.tar.xz with --xattrs.
 
- -- Steve Langasek <steve.langasek@ubuntu.com>  Wed, 01 Aug 2018 20:57:14 -0700
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Mon, 06 Aug 2018 14:16:04 -0700
 
 livecd-rootfs (2.525.5) bionic; urgency=medium
 
