@@ -1,6 +1,13 @@
 livecd-rootfs (2.525.6) UNRELEASED; urgency=medium
 
+  [ Steve Langasek ]
   * generate all tar files with --xattrs.  LP: #1302192.
+
+  [ Daniel Watkins ]
+  * ubuntu-cpc: Reintroduce the -root.tar.xz artifact (LP: #1585233).
+  * ubuntu-cpc: Generate the root image contents once, and use it for both the
+    -root.tar.xz and the .squashfs.
+  * ubuntu-cpc: Generate -root.tar.xz with --xattrs.
 
  -- Steve Langasek <steve.langasek@ubuntu.com>  Wed, 01 Aug 2018 20:57:14 -0700
 
