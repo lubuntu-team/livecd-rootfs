@@ -1,3 +1,14 @@
+livecd-rootfs (2.534) cosmic; urgency=medium
+
+  [ Michael Hudson-Doyle ]
+  * Disable journald rate limiting in the live-server live session.
+    (LP: #1776891)
+
+  [ Steve Langasek ]
+  * generate all tar files with --xattrs.  LP: #1302192.
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Mon, 06 Aug 2018 13:12:02 -0700
+
 livecd-rootfs (2.533) cosmic; urgency=medium
 
   [ Robert C Jennings ]
