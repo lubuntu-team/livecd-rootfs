@@ -1,4 +1,4 @@
-livecd-rootfs (2.525.8) UNRELEASED; urgency=medium
+livecd-rootfs (2.525.8) bionic; urgency=medium
 
   * Disentangle enabling universe in the final image a little from having
     PREINSTALLED=true set and enable it for a live-server build.
@@ -6,7 +6,7 @@ livecd-rootfs (2.525.8) UNRELEASED; urgency=medium
   * Fix live-server journald config snippet to actually disable journald rate
     limiting.
 
- -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Thu, 16 Aug 2018 21:28:00 +1200
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Tue, 28 Aug 2018 11:03:37 +1200
 
 livecd-rootfs (2.525.7) bionic; urgency=medium
 
