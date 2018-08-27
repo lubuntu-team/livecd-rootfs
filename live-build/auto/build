@@ -237,7 +237,7 @@ EOF
 	rm -f chroot/var/cache/debconf/*-old chroot/var/lib/dpkg/*-old
 	Chroot chroot apt clean
 
-	if [ -f config/oem-config-preinstalled ]; then
+	if [ -f config/universe-enabled ]; then
 
 # This is cargo-culted almost verbatim (with some syntax changes for
 # preinstalled being slightly different in what it doesn't ask) from
