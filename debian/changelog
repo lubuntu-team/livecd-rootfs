@@ -1,4 +1,4 @@
-livecd-rootfs (2.525.7) UNRELEASED; urgency=medium
+livecd-rootfs (2.525.7) bionic; urgency=medium
 
   * Disable journald rate limiting in the live-server live session. 
     (LP: #1776891) 
