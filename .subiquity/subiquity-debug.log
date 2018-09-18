@@ -1,5 +1,0 @@
-2018-06-12 10:15:24,458 subiquity:107 Starting SUbiquity v0.0.5
-2018-06-12 10:15:24,458 subiquity:108 Arguments passed: ['/home/mwhudson/src/subiquity/subiquity/__main__.py', '--dry-run', '--machine-config', 'examples/mwhudson.json', '--screens', 'Filesystem', '--uefi', '--click', 'Use', '--click', 'Cru']
-2018-06-12 10:15:24,458 subiquitycore.utils:30 Checking environment for installer requirements...
-2018-06-12 10:15:24,461 subiquitycore.utils:81 FAIL: /usr/bin/curtin is not found on the filesystem
-2018-06-12 10:15:24,461 subiquitycore.prober:40 User specified machine_config: examples/mwhudson.json
