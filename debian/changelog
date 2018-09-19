@@ -1,3 +1,9 @@
+livecd-rootfs (2.408.43) UNRELEASED; urgency=medium
+
+  * Add a buildd subproject.
+
+ -- Colin Watson <cjwatson@ubuntu.com>  Mon, 14 Jan 2019 17:45:38 +0000
+
 livecd-rootfs (2.408.42) xenial; urgency=medium
 
   [ Cody Shepherd ]
