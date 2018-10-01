@@ -1,3 +1,14 @@
+livecd-rootfs (2.541) cosmic; urgency=medium
+
+  [ Michael Hudson-Doyle ]
+  * Remove device nodes from Docker images. (LP: #1645468) 
+
+  [ Robert C Jennings ]
+  * Add the server snap seed to the ubuntu-cpc project
+  * Allow hooks to replace generic snap assertion
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Thu, 27 Sep 2018 15:21:49 -0700
+
 livecd-rootfs (2.540) cosmic; urgency=medium
 
   * Ensure /lib/modules exists in root tarballs and sqashfs.
