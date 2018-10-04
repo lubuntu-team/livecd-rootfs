@@ -10,6 +10,28 @@ Arguments "${@}"
 Read_conffiles config/all config/common config/bootstrap config/chroot config/binary config/source
 Set_defaults
 
+if [ -z "${PROJECT:-}" ]; then
+    echo "PROJECT environment variable has to be set" >&2
+    exit 1
+fi
+
+. config/functions
+
+# Link output files somewhere BuildLiveCD will be able to find them.
+PREFIX="livecd.$PROJECT${SUBARCH:+-$SUBARCH}"
+
+if [ "${IMAGEFORMAT:-}" = "ubuntu-image" ]; then
+	# Use ubuntu-image instead of live-build
+
+	CHANNEL="${CHANNEL:-edge}"
+	env SNAPPY_STORE_NO_CDN=1 \
+	ubuntu-image -c "$CHANNEL" $UBUNTU_IMAGE_ARGS \
+		-o "$PREFIX".img "$PREFIX".model-assertion
+	xz -0 -T4 "$PREFIX".img
+	mv seed.manifest "$PREFIX".manifest
+	exit 0
+fi
+
 # Setup cleanup function
 Setup_cleanup
 
