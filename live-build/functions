@@ -43,6 +43,14 @@ create_empty_disk_image() {
     dd if=/dev/zero of="$1" bs=1 count=0 seek="${imagesize}"
 }
 
+create_manifest() {
+    local dpkg_opts=$1
+    local target_file=$2
+    local chroot_root=$3
+    dpkg-query $dpkg_opts > $target_file
+    ./snap_seed_parse.py $chroot_root >> $target_file
+}
+
 make_ext4_partition() {
     device="$1"
     label=${fs_label:+-L "${fs_label}"}
