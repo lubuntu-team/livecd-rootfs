@@ -31,10 +31,10 @@ LINE_PREFIX = 'snap:'
 
 log("yaml path: {}".format(YAML_PATH))
 if not os.path.isfile(YAML_PATH):
-    sys.stderr.write("yaml path not found.\n")
+    log("yaml path not found.")
     exit(1)
 else:
-    sys.stderr.write("yaml path found.\n")
+    log("yaml path found.")
 
 # Open the seed.yaml and ingest its contents
 with open(YAML_PATH, 'r') as fh:
