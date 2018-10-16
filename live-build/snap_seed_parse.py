@@ -8,13 +8,28 @@ given manifest file.
 import re
 import sys
 import yaml
+import os.path
 
-CHROOT_ROOT = sys.argv[1] if len(sys.argv) > 1 else ''
+sys.stderr.write("Parsing seed.yaml\n")
+
+CHROOT_ROOT = sys.argv[1] if len(sys.argv) > 1 and len(sys.argv[1]) > 0 \
+                          else ''
 '''The chroot rooth path should be passed in by the caller'''
-YAML_PATH = str(CHROOT_ROOT) + 'var/lib/snapd/seed/seed.yaml'
+sys.stderr.write("CHROOT_ROOT: {}\n".format(CHROOT_ROOT))
+
+if len(CHROOT_ROOT) > 0 and CHROOT_ROOT[-1] == '/':
+    CHROOT_ROOT = CHROOT_ROOT[:-1]
+YAML_PATH = CHROOT_ROOT + '/var/lib/snapd/seed/seed.yaml'
 '''This is where we expect to find the seed.yaml file'''
 LINE_PREFIX = 'snap:'
 '''Snaps are prepended with this string in the manifest'''
+
+sys.stderr.write("yaml path: {}\n".format(YAML_PATH))
+if not os.path.isfile(YAML_PATH):
+    sys.stderr.write("yaml path not found.\n")
+    exit(0)
+else:
+    sys.stderr.write("yaml path found.\n")
 
 # Open the seed.yaml and ingest its contents
 with open(YAML_PATH, 'r') as fh:
