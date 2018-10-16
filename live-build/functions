@@ -44,10 +44,9 @@ create_empty_disk_image() {
 }
 
 create_manifest() {
-    local dpkg_opts=${1}
+    local chroot_root=${1}
     local target_file=${2}
-    local chroot_root=${3}
-    dpkg-query ${dpkg_opts} > ${target_file}
+    dpkg-query --show --admindir="${chroot_root}/var/lib/dpkg" > ${target_file}
     (>&2 echo "create_manifest chroot_root: ${chroot_root}")
     /build/config/snap_seed_parse "${chroot_root}" >> ${target_file}
 }

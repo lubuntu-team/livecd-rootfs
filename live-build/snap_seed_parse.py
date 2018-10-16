@@ -10,12 +10,17 @@ import sys
 import yaml
 import os.path
 
-sys.stderr.write("Parsing seed.yaml\n")
+
+def log(msg):
+    sys.stderr.write("snap_seed_parse: {}\n".format(msg))
+
+
+log("Parsing seed.yaml")
 
 CHROOT_ROOT = sys.argv[1] if len(sys.argv) > 1 and len(sys.argv[1]) > 0 \
                           else ''
 '''The chroot rooth path should be passed in by the caller'''
-sys.stderr.write("CHROOT_ROOT: {}\n".format(CHROOT_ROOT))
+log("CHROOT_ROOT: {}".format(CHROOT_ROOT))
 
 if len(CHROOT_ROOT) > 0 and CHROOT_ROOT[-1] == '/':
     CHROOT_ROOT = CHROOT_ROOT[:-1]
@@ -24,7 +29,7 @@ YAML_PATH = CHROOT_ROOT + '/var/lib/snapd/seed/seed.yaml'
 LINE_PREFIX = 'snap:'
 '''Snaps are prepended with this string in the manifest'''
 
-sys.stderr.write("yaml path: {}\n".format(YAML_PATH))
+log("yaml path: {}".format(YAML_PATH))
 if not os.path.isfile(YAML_PATH):
     sys.stderr.write("yaml path not found.\n")
     exit(1)
