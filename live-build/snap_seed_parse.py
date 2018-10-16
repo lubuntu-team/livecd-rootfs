@@ -27,7 +27,7 @@ LINE_PREFIX = 'snap:'
 sys.stderr.write("yaml path: {}\n".format(YAML_PATH))
 if not os.path.isfile(YAML_PATH):
     sys.stderr.write("yaml path not found.\n")
-    exit(0)
+    exit(1)
 else:
     sys.stderr.write("yaml path found.\n")
 
