@@ -1,3 +1,9 @@
+livecd-rootfs (2.525.9ubuntu1) bionic; urgency=medium
+
+  * Disable checksum generation (LP: #1799773)
+
+ -- Robert C Jennings <robert.jennings@canonical.com>  Wed, 24 Oct 2018 13:58:51 -0500
+
 livecd-rootfs (2.525.9) bionic; urgency=medium
 
   * Ensure /lib/modules exists in root tarballs and sqashfs.
