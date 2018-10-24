@@ -4,7 +4,7 @@ livecd-rootfs (2.408.39) UNRELEASED; urgency=medium
     IMAGEFORMAT=ubuntu-image).
   * Decide what model assertion series to fetch depending on the suite. Use 16
     for xenial and 18 for other series (bionic+). This enables core18 image
-    builds.
+    builds (LP: #1799736).
 
  -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Thu, 04 Oct 2018 19:30:17 +0200
 
