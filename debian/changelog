@@ -1,3 +1,9 @@
+livecd-rootfs (2.408.38ubuntu1) xenial; urgency=medium
+
+  * Disable checksum generation (LP: #1799773)
+
+ -- Robert C Jennings <robert.jennings@canonical.com>  Wed, 24 Oct 2018 14:19:39 -0500
+
 livecd-rootfs (2.408.38) xenial; urgency=medium
 
   * ubuntu-cpc: Handle a pre-existing /lib/modules in 030-root-tarball.hook
