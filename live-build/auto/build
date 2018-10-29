@@ -372,9 +372,6 @@ else
 	exit 1
 fi
 
-# Link output files somewhere BuildLiveCD will be able to find them.
-PREFIX="livecd.$PROJECT${SUBARCH:+-$SUBARCH}"
-
 case $LB_INITRAMFS in
 	casper)
 		INITFS="casper"
