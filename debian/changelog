@@ -1,6 +1,7 @@
 livecd-rootfs (2.542.1) UNRELEASED; urgency=medium
 
   * Ensure pre-seeded snaps are now published in the image manifests.
+  * Include grub efi packages in manifests for uefi images.
 
  -- Cody Shepherd <cody.shepherd@canonical.com>  Mon, 22 Oct 2018 10:16:19 -0700
 
