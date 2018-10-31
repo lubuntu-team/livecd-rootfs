@@ -1,4 +1,4 @@
-livecd-rootfs (2.408.39) UNRELEASED; urgency=medium
+livecd-rootfs (2.408.39) xenial; urgency=medium
 
   * Backport support for building ubuntu-core images with ubuntu-image (using
     IMAGEFORMAT=ubuntu-image).
