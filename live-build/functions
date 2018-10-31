@@ -77,6 +77,17 @@ mount_image() {
     return 0
 }
 
+setup_resolvconf() {
+    local mountpoint=${1}
+    mv "${mountpoint}/etc/resolv.conf" resolv.conf.tmp
+    cp /etc/resolv.conf "${mountpoint}/etc/resolv.conf"
+}
+
+recover_resolvconf() {
+    local mountmpoint=${1}
+    mv resolv.conf.tmp "${mountpoint}/etc/resolv.conf"
+}
+
 setup_mountpoint() {
     local mountpoint="$1"
 
@@ -86,8 +97,7 @@ setup_mountpoint() {
     mount -t tmpfs none "$mountpoint/tmp"
     mount -t tmpfs none "$mountpoint/var/lib/apt"
     mount -t tmpfs none "$mountpoint/var/cache/apt"
-    mv "$mountpoint/etc/resolv.conf" resolv.conf.tmp
-    cp /etc/resolv.conf "$mountpoint/etc/resolv.conf"
+    setup_resolvconf "${mountpoint}"
     chroot "$mountpoint" apt-get update
 
 }
@@ -103,7 +113,7 @@ teardown_mountpoint() {
                       { print \$2 }" | LC_ALL=C sort -r); do
         umount $submount
     done
-    mv resolv.conf.tmp "$mountpoint/etc/resolv.conf"
+    recover_resolvconf "${mountpoint}"
 }
 
 mount_partition() {
