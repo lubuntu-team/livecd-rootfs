@@ -84,7 +84,7 @@ setup_resolvconf() {
 }
 
 recover_resolvconf() {
-    local mountmpoint=${1}
+    local mountpoint=${1}
     mv resolv.conf.tmp "${mountpoint}/etc/resolv.conf"
 }
 
