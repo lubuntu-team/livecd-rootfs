@@ -3,7 +3,7 @@ livecd-rootfs (2.408.40) UNRELEASED; urgency=medium
   [ Cody Shepherd ]
   * Increasing modularity in relocation of /etc/resolv.conf to enable users
     of live-build/functions to manipulate /etc/resolv.conf in a more
-    granular and future-proof way.
+    granular and future-proof way.  LP: #1801134.
 
  -- Steve Langasek <steve.langasek@ubuntu.com>  Thu, 01 Nov 2018 10:10:12 -0700
 
