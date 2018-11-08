@@ -64,7 +64,7 @@ install_grub() {
     efi_boot_dir="/boot/efi/EFI/BOOT"
     chroot mountpoint mkdir -p "${efi_boot_dir}"
 
-    if [ "${SUBPROJECT:-}" = minimized ] && [ -n "$partuuid" ]; then
+    if [ -n "$partuuid" ]; then
         # FIXME: code duplicated between 032-disk-image.binary
         # and 033-disk-image-uefi.binary.  We want to fix this to not
         # have initramfs-tools installed at all on these images.
@@ -92,6 +92,12 @@ install_grub() {
             efi_target=x86_64-efi
             ;;
     esac
+
+    # This call to generate the package manifest is added here to capture 
+    # grub-efi packages that otherwise would not make it into the base
+    # manifest. filesystem.packages is moved into place via symlinking to
+    # livecd.ubuntu-cpc.manifest by live-build/auto/build after lb_binary runs
+    create_manifest "mountpoint" "binary/boot/filesystem.packages"
 
     chroot mountpoint grub-install "${loop_device}" \
         --boot-directory=/boot \
