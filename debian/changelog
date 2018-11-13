@@ -1,5 +1,12 @@
 livecd-rootfs (2.542.1) UNRELEASED; urgency=medium
 
+  * Fix snap-seed-parse to take filename argument instead of printing to
+    stdout
+
+ -- Cody Shepherd <cody.shepherd@canonical.com>  Tue, 13 Nov 2018 10:44:19 -0700
+
+livecd-rootfs (2.542.1) UNRELEASED; urgency=medium
+
   * Ensure pre-seeded snaps are now published in the image manifests.
   * Include grub efi packages in manifests for uefi images.
 
