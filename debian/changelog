@@ -1,4 +1,4 @@
-livecd-rootfs (2.542.1) UNRELEASED; urgency=medium
+livecd-rootfs (2.542.2) UNRELEASED; urgency=medium
 
   * Fix snap-seed-parse to take filename argument instead of printing to
     stdout
