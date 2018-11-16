@@ -1,8 +1,8 @@
-livecd-rootfs (2.408.41) UNRELEASED; urgency=medium
+livecd-rootfs (2.408.41) xenial; urgency=medium
 
   * Disable checksum generation (LP: #1799773)
 
- -- Robert C Jennings <robert.jennings@canonical.com>  Wed, 24 Oct 2018 14:19:39 -0500
+ -- Robert C Jennings <robert.jennings@canonical.com>  Fri, 16 Nov 2018 08:37:57 -0800
 
 livecd-rootfs (2.408.40) xenial; urgency=medium
 
