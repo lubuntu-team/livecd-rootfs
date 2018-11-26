@@ -1,12 +1,13 @@
-livecd-rootfs (2.525.10) UNRELEASED; urgency=medium
+livecd-rootfs (2.525.10ubuntu1) UNRELEASED; urgency=medium
 
   [ Cody Shepherd ]
   * Include grub efi packages in manifests for uefi images.
+    (LP: #1805190)
 
   [ Robert C Jennings ]
   * Disable checksum generation (LP: #1799773)
 
- -- Cody Shepherd <cody.shepherd@canonical.com>  Fri, 26 Oct 2018 15:01:07 -0600
+ -- Cody Shepherd <cody.shepherd@canonical.com>  Mon, 26 Nov 2018 09:47:22 -0800
 
 livecd-rootfs (2.525.9) bionic; urgency=medium
 
