@@ -1,3 +1,9 @@
+livecd-rootfs (2.408.42) UNRELEASED; urgency=medium
+
+  * Backport adding snaps to image manifests (LP: #1805497)
+
+ -- Cody Shepherd <cody.shepherd@canonical.com>  Thu, 29 Nov 2018 07:32:46 -0800
+
 livecd-rootfs (2.408.41) xenial; urgency=medium
 
   * Disable checksum generation (LP: #1799773)
