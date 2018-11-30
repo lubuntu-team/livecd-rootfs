@@ -1,3 +1,17 @@
+livecd-rootfs (2.525.10) bionic; urgency=medium
+
+  [ Cody Shepherd ]
+  * Include grub efi packages in manifests for uefi images.
+    (LP: #1805190)
+
+  [ Robert C Jennings ]
+  * Disable checksum generation. (LP: #1799773)
+
+  [Steve Langasek]
+  * Fix Vcs-Bzr link.
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Mon, 26 Nov 2018 12:55:11 -0800
+
 livecd-rootfs (2.525.9) bionic; urgency=medium
 
   * Ensure /lib/modules exists in root tarballs and sqashfs.
