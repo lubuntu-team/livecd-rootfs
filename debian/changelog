@@ -1,3 +1,11 @@
+livecd-rootfs (2.525.12) UNRELEASED; urgency=medium
+
+  * Key netplan delegation to NetworkManager on presence of
+    /usr/sbin/NetworkManager, not on /usr/lib/NetworkManager which may have
+    hooks from other packages (i.e., wpasupplicant).
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Thu, 06 Dec 2018 13:47:54 +0200
+
 livecd-rootfs (2.525.11) bionic; urgency=medium
 
   * Backport all the required changes to enable Raspberry Pi 3 armhf and arm64
