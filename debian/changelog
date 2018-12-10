@@ -1,3 +1,28 @@
+livecd-rootfs (2.408.41) xenial; urgency=medium
+
+  * Disable checksum generation (LP: #1799773)
+
+ -- Robert C Jennings <robert.jennings@canonical.com>  Fri, 16 Nov 2018 08:37:57 -0800
+
+livecd-rootfs (2.408.40) xenial; urgency=medium
+
+  [ Cody Shepherd ]
+  * Increasing modularity in relocation of /etc/resolv.conf to enable users
+    of live-build/functions to manipulate /etc/resolv.conf in a more
+    granular and future-proof way.  LP: #1801134.
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Thu, 01 Nov 2018 13:46:47 -0700
+
+livecd-rootfs (2.408.39) xenial; urgency=medium
+
+  * Backport support for building ubuntu-core images with ubuntu-image (using
+    IMAGEFORMAT=ubuntu-image).
+  * Decide what model assertion series to fetch depending on the suite. Use 16
+    for xenial and 18 for other series (bionic+). This enables core18 image
+    builds (LP: #1799736).
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Thu, 04 Oct 2018 19:30:17 +0200
+
 livecd-rootfs (2.408.38) xenial; urgency=medium
 
   * ubuntu-cpc: Handle a pre-existing /lib/modules in 030-root-tarball.hook
