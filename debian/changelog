@@ -4,6 +4,11 @@ livecd-rootfs (2.525.12) UNRELEASED; urgency=medium
     /usr/sbin/NetworkManager, not on /usr/lib/NetworkManager which may have
     hooks from other packages (i.e., wpasupplicant).
 
+  [ Cody Shepherd ]
+  * Include snaps in image manifests (LP: #1805497)
+  * Change call to add grub efi packages using new create_manifests()
+    function.
+
  -- Steve Langasek <steve.langasek@ubuntu.com>  Thu, 06 Dec 2018 13:47:54 +0200
 
 livecd-rootfs (2.525.11) bionic; urgency=medium
