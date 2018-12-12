@@ -9,6 +9,8 @@ livecd-rootfs (2.525.13) UNRELEASED; urgency=medium
     of installer.squashfs and fish kernel, initrd and modules out of that with
     an initrd hook that records kernel metapackage name in /run and mounts
     /lib/modules from a squashfs on the ISO.
+  * Do no install openssh-server in the base filsystem for the live server
+    installer.
 
  -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Thu, 13 Dec 2018 15:22:15 +1300
 
