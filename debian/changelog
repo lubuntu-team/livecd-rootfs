@@ -11,6 +11,13 @@ livecd-rootfs (2.525.13) UNRELEASED; urgency=medium
     /lib/modules from a squashfs on the ISO.
   * Do no install openssh-server in the base filsystem for the live server
     installer.
+  * A few simple tweaks to reduce size of live servers installer.squashfs:
+    - Do not run apt-get update (which can bring in package lists if we are
+      unlucky wrt publisher schedules).
+    - Run apt-get clean to clear out downloaded debs of curtin/casper and
+      dependencies.
+    - Do not install user-setup.
+    - Use the core snap from the base filesystem if present.
 
  -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Thu, 13 Dec 2018 15:22:15 +1300
 
