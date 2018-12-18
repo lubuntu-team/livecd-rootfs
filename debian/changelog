@@ -18,6 +18,9 @@ livecd-rootfs (2.525.13) UNRELEASED; urgency=medium
       dependencies.
     - Do not install user-setup.
     - Use the core snap from the base filesystem if present.
+  * Do not include curtin in the live-server installer.squashfs as the
+    version of subiquity that includes it in the snap has now been released to
+    stable.
 
  -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Thu, 13 Dec 2018 15:22:15 +1300
 
