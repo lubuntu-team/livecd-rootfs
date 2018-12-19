@@ -1,6 +1,7 @@
 livecd-rootfs (2.408.43) UNRELEASED; urgency=medium
 
   * Add a buildd subproject.
+  * Add a LXD image to builds for the buildd subproject.
 
  -- Colin Watson <cjwatson@ubuntu.com>  Mon, 14 Jan 2019 17:45:38 +0000
 
