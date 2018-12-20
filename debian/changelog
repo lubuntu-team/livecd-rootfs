@@ -1,9 +1,10 @@
-livecd-rootfs (2.542.1) UNRELEASED; urgency=medium
+livecd-rootfs (2.542.1) cosmic; urgency=medium
 
+  [ Cody Shepherd ]
   * Ensure pre-seeded snaps are now published in the image manifests.
   * Include grub efi packages in manifests for uefi images.
 
- -- Cody Shepherd <cody.shepherd@canonical.com>  Mon, 22 Oct 2018 10:16:19 -0700
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Thu, 20 Dec 2018 13:12:42 -0600
 
 livecd-rootfs (2.542) cosmic; urgency=medium
 
