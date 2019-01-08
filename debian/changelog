@@ -1,3 +1,10 @@
+livecd-rootfs (2.553) disco; urgency=medium
+
+  * Add a LXD image to builds for the buildd subproject.
+  * Move buildd image building to binary hooks.
+
+ -- Colin Watson <cjwatson@ubuntu.com>  Mon, 07 Jan 2019 21:23:31 +0000
+
 livecd-rootfs (2.552) disco; urgency=medium
 
   * Do not include curtin in the live-server installer.squashfs as the
