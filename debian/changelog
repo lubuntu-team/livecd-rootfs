@@ -1,9 +1,16 @@
 livecd-rootfs (2.525.13) UNRELEASED; urgency=medium
 
   [ Balint Reczey ]
-  * Update Vcs-* fields in debian/control to point to git. 
+  * Update Vcs-* fields in debian/control to point to git.
 
- -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Thu, 13 Dec 2018 15:22:15 +1300
+  [ Łukasz 'sil2100' Zemczak ]
+  * Add wpasupplicant to the additional packages installed for the raspi2 and
+    raspi3 targets.
+  * Default to IMAGEFORMAT=ubuntu-image for raspi3 ubuntu-cpc builds.
+  * Link the resulting raspi3 image to a filename that cdimage expects from a
+    preinstalled image build.
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Fri, 11 Jan 2019 14:53:10 +0100
 
 livecd-rootfs (2.525.12) bionic; urgency=medium
 
