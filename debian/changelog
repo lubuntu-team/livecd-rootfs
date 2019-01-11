@@ -1,3 +1,10 @@
+livecd-rootfs (2.556) disco; urgency=medium
+
+  * Add wpasupplicant to the additional packages installed for the raspi2 and
+    raspi3 targets.
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Fri, 11 Jan 2019 11:25:05 +0100
+
 livecd-rootfs (2.555) disco; urgency=medium
 
   * Apparently the last raspi3 image rename was not what cdimage expected.
