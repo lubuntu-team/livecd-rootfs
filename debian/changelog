@@ -10,6 +10,9 @@ livecd-rootfs (2.525.13) UNRELEASED; urgency=medium
     - Default to IMAGEFORMAT=ubuntu-image for raspi3 ubuntu-cpc builds.
     - Link the resulting raspi3 image to a filename that cdimage expects from a
       preinstalled image build.
+  * Add the 100-purge-grub-legacy-ec2-arm.chroot hook to remove
+    grub-legacy-ec2 from any ARM based ubuntu-cpc images we create. The package
+    is no longer in the server seed of newer series anyway.
 
  -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Fri, 11 Jan 2019 14:53:10 +0100
 
