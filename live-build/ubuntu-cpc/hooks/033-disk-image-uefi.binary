@@ -97,7 +97,7 @@ install_grub() {
     # grub-efi packages that otherwise would not make it into the base
     # manifest. filesystem.packages is moved into place via symlinking to
     # livecd.ubuntu-cpc.manifest by live-build/auto/build after lb_binary runs
-    dpkg-query --show --admindir="mountpoint/var/lib/dpkg" > "binary/boot/filesystem.packages"
+    create_manifest "mountpoint" "binary/boot/filesystem.packages"
 
     chroot mountpoint grub-install "${loop_device}" \
         --boot-directory=/boot \

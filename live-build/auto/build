@@ -23,12 +23,31 @@ PREFIX="livecd.$PROJECT${SUBARCH:+-$SUBARCH}"
 if [ "${IMAGEFORMAT:-}" = "ubuntu-image" ]; then
 	# Use ubuntu-image instead of live-build
 
-	CHANNEL="${CHANNEL:-edge}"
-	env SNAPPY_STORE_NO_CDN=1 \
-	ubuntu-image -c "$CHANNEL" $UBUNTU_IMAGE_ARGS \
-		-o "$PREFIX".img "$PREFIX".model-assertion
-	xz -0 -T4 "$PREFIX".img
-	mv seed.manifest "$PREFIX".manifest
+	if [ "$PROJECT" = "ubuntu-core"]; then
+		CHANNEL="${CHANNEL:-edge}"
+		env SNAPPY_STORE_NO_CDN=1 \
+		ubuntu-image snap -c "$CHANNEL" $UBUNTU_IMAGE_ARGS \
+			-O output "$PREFIX".model-assertion
+		# XXX: currently we only have one image generated, but really
+		#  we should be supporting more than one for models that
+		#  define those.
+		mv output/*.img "$PREFIX".img
+		xz -0 -T4 "$PREFIX".img
+		mv output/seed.manifest "$PREFIX".manifest
+	else
+		# First we need to build the gadget tree
+		make -C "config/$PREFIX-gadget" ARCH=$ARCH SERIES=$SUITE
+		ubuntu-image classic $UBUNTU_IMAGE_ARGS \
+			-s $SUITE -p $PROJECT -a $ARCH --subarch $SUBARCH \
+			-O output config/$PREFIX-gadget/install
+		# XXX: currently we only have one image generated, but really
+		#  we should be supporting more than one for models that
+		#  define those.
+		mv output/*.img "$PREFIX".img
+		xz -0 -T4 "$PREFIX".img
+		mv output/filesystem.manifest "$PREFIX".manifest
+	fi
+
 	exit 0
 fi
 
@@ -396,7 +415,7 @@ EOF
 	# default. Installing NM on an existing system only manages wifi and wwan via
 	# /usr/lib/NetworkManager/conf.d/10-globally-managed-devices.conf. When setting
 	# the global backend to NM, netplan overrides that file.
-	if [ -d chroot/usr/lib/NetworkManager ]; then
+	if [ -e chroot/usr/sbin/NetworkManager ]; then
 		echo "===== Enabling all devices in NetworkManager ===="
 		mkdir -p chroot/etc/netplan
 		cat <<EOF > chroot/etc/netplan/01-network-manager-all.yaml
@@ -503,6 +522,7 @@ fi
 
 # '--initramfs none' produces different manifest names.
 if [ -e "binary/$INITFS/filesystem.packages" ]; then
+	./config/snap-seed-parse "chroot/" "binary/${INITFS}/filesystem.packages"
 	ln "binary/$INITFS/filesystem.packages" "$PREFIX.manifest"
 	chmod 644 "$PREFIX.manifest"
 fi
@@ -800,13 +820,13 @@ done
 NUMFLAVOURS="$(set -- $LB_LINUX_FLAVOURS; echo $#)"
 if [ "$NUMFLAVOURS" = 1 ] && [ "$LB_LINUX_FLAVOURS" != "none" ]; then
 	# only one kernel flavour
-	if [ -e "binary/$INITFS/vmlinuz" ]; then
+	if [ -f "binary/$INITFS/vmlinuz" ] && ! [ -h "binary/$INITFS/vmlinuz" ]; then
 		ln "binary/$INITFS/vmlinuz" "$PREFIX.kernel"
 		chmod 644 "$PREFIX.kernel"
 	else
 		ln -sf "$PREFIX.kernel-$LB_LINUX_FLAVOURS" "$PREFIX.kernel"
 	fi
-	if [ -e "binary/$INITFS/initrd.lz" ]; then
+	if [ -f "binary/$INITFS/initrd.lz" ] && ! [ -h "binary/$INITFS/initrd.lz" ]; then
 		ln "binary/$INITFS/initrd.lz" "$PREFIX.initrd"
 		chmod 644 "$PREFIX.initrd"
 	else
@@ -814,36 +834,52 @@ if [ "$NUMFLAVOURS" = 1 ] && [ "$LB_LINUX_FLAVOURS" != "none" ]; then
 	fi
 fi
 
-if [ "$SUBARCH" = "ac100" ]; then
-	# create the md5sum and size files for which we are actually doing all this
-	md5sum $PREFIX.rootfs.tar.gz >chroot/installer.md5
-	wc -c $PREFIX.rootfs.tar.gz >chroot/installer.size
+case $SUBARCH in
+	ac100)
+		# create the md5sum and size files for which we are actually doing all this
+		md5sum $PREFIX.rootfs.tar.gz >chroot/installer.md5
+		wc -c $PREFIX.rootfs.tar.gz >chroot/installer.size
+	
+		INFO_DESC="$(lsb_release -d -s)"
+		INFO_STAMP=$(date +20%y%m%d-%H:%M)
+	
+		echo "$INFO_DESC - $ARCH ($INFO_STAMP)" >chroot/media-info
+	
+		# make sure update-initramfs feels cosy and warm in the environment
+		lb chroot_proc install "$@"
+		lb chroot_sysfs install "$@"
+		lb chroot_devpts install "$@"
+	
+		# re-create initrd to contain the installer.md5 file
+		Chroot chroot "env FLASH_KERNEL_SKIP=1 update-initramfs -k all -t -u -v"
+	
+		# create boot.img
+		Chroot chroot "abootimg --create /boot/installer-${KVERS}.img -f /boot/bootimg.cfg-$SUBARCH -r /boot/initrd.img-${KVERS} -k /boot/vmlinuz-${KVERS}"
+	
+		# clean up
+		lb chroot_devpts remove "$@"
+		lb chroot_sysfs remove "$@"
+		lb chroot_proc remove "$@"
+	
+		cp "chroot/boot/installer-${KVERS}.img" "$PREFIX.bootimg-$FLAVOUR"
+		ln -sf "$PREFIX.bootimg-$FLAVOUR" "$PREFIX.bootimg"
+		;;
 
-	INFO_DESC="$(lsb_release -d -s)"
-	INFO_STAMP=$(date +20%y%m%d-%H:%M)
+	raspi2|raspi3)
+		# copy the kernel and initrd to a predictable directory for
+		# ubuntu-image consumption.  In some cases, like in pi2/3
+		# u-boot, the bootloader needs to contain the kernel and initrd,
+		# so during rootfs build we copy it over to a directory that
+		# ubuntu-image looks for and shoves into the bootloader
+		# partition.
+		UBOOT_BOOT="image/boot/uboot"
 
-	echo "$INFO_DESC - $ARCH ($INFO_STAMP)" >chroot/media-info
+		mkdir -p $UBOOT_BOOT
 
-	# make sure update-initramfs feels cosy and warm in the environment
-	lb chroot_proc install "$@"
-	lb chroot_sysfs install "$@"
-	lb chroot_devpts install "$@"
-
-	# re-create initrd to contain the installer.md5 file
-	Chroot chroot "env FLASH_KERNEL_SKIP=1 update-initramfs -k all -t -u -v"
-
-	# create boot.img
-	Chroot chroot "abootimg --create /boot/installer-${KVERS}.img -f /boot/bootimg.cfg-$SUBARCH -r /boot/initrd.img-${KVERS} -k /boot/vmlinuz-${KVERS}"
-
-	# clean up
-	lb chroot_devpts remove "$@"
-	lb chroot_sysfs remove "$@"
-	lb chroot_proc remove "$@"
-
-	cp "chroot/boot/installer-${KVERS}.img" "$PREFIX.bootimg-$FLAVOUR"
-	ln -sf "$PREFIX.bootimg-$FLAVOUR" "$PREFIX.bootimg"
-
-fi
+		cp $PREFIX.initrd $UBOOT_BOOT/initrd.img || true
+		cp $PREFIX.kernel $UBOOT_BOOT/vmlinuz || true
+		;;
+esac
 
 if [ "$PROJECT" = "ubuntu-touch" ] || [ "$PROJECT" = "ubuntu-touch-custom" ]; then
 	sourceslist="chroot/etc/apt/sources.list"
