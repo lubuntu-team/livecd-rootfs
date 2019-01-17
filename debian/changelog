@@ -1,4 +1,4 @@
-livecd-rootfs (2.525.13) UNRELEASED; urgency=medium
+livecd-rootfs (2.525.13) bionic; urgency=medium
 
   [ Balint Reczey ]
   * Update Vcs-* fields in debian/control to point to git.
