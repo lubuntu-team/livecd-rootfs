@@ -1,3 +1,11 @@
+livecd-rootfs (2.525.14) UNRELEASED; urgency=medium
+
+  * More changes for raspi3 build support (LP: #1805668):
+    - Fix 100-purge-grub-legacy-ec2-arm.chroot to not gate on ARCH as that's
+      not defined in .chroot hooks.
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Fri, 18 Jan 2019 16:56:58 +0100
+
 livecd-rootfs (2.525.13) bionic; urgency=medium
 
   [ Balint Reczey ]

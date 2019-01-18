@@ -1,7 +1,10 @@
 #!/bin/sh -eux
 
 # Only execute the hack for ARM images
-if [ "$ARCH" != "armhf" ] && [ "$ARCH" != "arm64" ]; then
+# ARCH is not available in .chroot hooks so we need to get the architecture
+# manually.
+arch=$(dpkg --print-architecture)
+if [ "$arch" != "armhf" ] && [ "$arch" != "arm64" ]; then
 	exit 0
 fi
 
