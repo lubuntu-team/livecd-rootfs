@@ -114,7 +114,12 @@ add_binary_hook ()
 if [ -z "${IMAGEFORMAT:-}" ]; then
 	case $PROJECT:${SUBPROJECT:-} in
 		ubuntu-cpc:*)
-			IMAGEFORMAT=ext4
+			if [ "$SUBARCH" = "raspi3" ]; then
+				# For now only raspi3, but others are soon to follow
+				IMAGEFORMAT=ubuntu-image
+			else
+				IMAGEFORMAT=ext4
+			fi
 			;;
 		ubuntu-server:live)
 			IMAGEFORMAT=plain
@@ -806,13 +811,13 @@ case $ARCH in
 				;;
 			raspi2)
 				COMPONENTS='main restricted universe multiverse'
-				add_package install linux-firmware-raspi2 u-boot-rpi flash-kernel u-boot-tools
+				add_package install linux-firmware-raspi2 u-boot-rpi flash-kernel u-boot-tools wpasupplicant
 				BINARY_REMOVE_LINUX=false
 				;;
 			raspi3)
 				COMPONENTS='main restricted universe multiverse'
 				KERNEL_FLAVOURS=raspi2
-				add_package install raspi3-firmware u-boot-rpi flash-kernel u-boot-tools
+				add_package install linux-firmware-raspi2 u-boot-rpi flash-kernel u-boot-tools wpasupplicant
 				BINARY_REMOVE_LINUX=false
 				;;
 

@@ -45,6 +45,8 @@ if [ "${IMAGEFORMAT:-}" = "ubuntu-image" ]; then
 		#  define those.
 		mv output/*.img "$PREFIX".img
 		xz -0 -T4 "$PREFIX".img
+		# Also link the output image to a filename that cdimage expects
+		ln "$PREFIX".img.xz livecd.ubuntu-cpc.disk1.img.xz
 		mv output/filesystem.manifest "$PREFIX".manifest
 	fi
 

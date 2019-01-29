@@ -1,3 +1,32 @@
+livecd-rootfs (2.525.14) bionic; urgency=medium
+
+  * More changes for raspi3 build support (LP: #1805668):
+    - Fix 100-purge-grub-legacy-ec2-arm.chroot to not gate on ARCH as that's
+      not defined in .chroot hooks.
+    - Use the new linux-firmware-raspi2 for boot binary blobs as
+      raspi3-firmware includes upgrade hooks that conflict with our image
+      configuration.
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Fri, 18 Jan 2019 16:56:58 +0100
+
+livecd-rootfs (2.525.13) bionic; urgency=medium
+
+  [ Balint Reczey ]
+  * Update Vcs-* fields in debian/control to point to git.
+
+  [ Łukasz 'sil2100' Zemczak ]
+  * Another batch of cherry-picks for raspi3 support (LP: #1805668)
+    - Add wpasupplicant to the additional packages installed for the raspi2 and
+      raspi3 targets.
+    - Default to IMAGEFORMAT=ubuntu-image for raspi3 ubuntu-cpc builds.
+    - Link the resulting raspi3 image to a filename that cdimage expects from a
+      preinstalled image build.
+  * Add the 100-purge-grub-legacy-ec2-arm.chroot hook to remove
+    grub-legacy-ec2 from any ARM based ubuntu-cpc images we create. The package
+    is no longer in the server seed of newer series anyway.
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Fri, 11 Jan 2019 14:53:10 +0100
+
 livecd-rootfs (2.525.12) bionic; urgency=medium
 
   * Key netplan delegation to NetworkManager on presence of
