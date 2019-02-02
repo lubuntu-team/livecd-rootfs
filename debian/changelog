@@ -1,3 +1,10 @@
+livecd-rootfs (2.525.15) bionic; urgency=medium
+
+  * Forward-port HWE support from xenial, make it more generic, and enable
+    it for the current LTS flavours.
+
+ -- Adam Conrad <adconrad@ubuntu.com>  Fri, 01 Feb 2019 12:41:39 -0700
+
 livecd-rootfs (2.525.14) bionic; urgency=medium
 
   * More changes for raspi3 build support (LP: #1805668):
