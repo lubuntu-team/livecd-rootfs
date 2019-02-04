@@ -1,3 +1,13 @@
+livecd-rootfs (2.559) disco; urgency=medium
+
+  [ Jean-Baptiste Lallement ]
+  [ Didier Roche ]
+  * Add support for multi layer filesystem by generating one squashfs per layer
+    based on PASSES defined by project.
+    Thanks Michael Hudson-Doyle for the reviews.
+
+ -- Didier Roche <didrocks@ubuntu.com>  Fri, 01 Feb 2019 08:04:35 +0100
+
 livecd-rootfs (2.558) disco; urgency=medium
 
   * Use the new linux-firmware-raspi2 for pi3 boot binary blobs as
