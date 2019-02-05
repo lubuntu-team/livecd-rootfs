@@ -91,7 +91,7 @@ mount_image() {
 setup_mountpoint() {
     local mountpoint="$1"
 
-    mount --rbind --make-rslave /dev "$mountpoint/dev"
+    mount --rbind /dev "$mountpoint/dev"
     mount proc-live -t proc "$mountpoint/proc"
     mount sysfs-live -t sysfs "$mountpoint/sys"
     mount -t tmpfs none "$mountpoint/tmp"
@@ -112,6 +112,7 @@ teardown_mountpoint() {
     # sort -r ensures that deeper mountpoints are unmounted first
     for submount in $(awk </proc/self/mounts "\$2 ~ /$mountpoint_match/ \
                       { print \$2 }" | LC_ALL=C sort -r); do
+        mount --make-private $submount
         umount $submount
     done
     mv resolv.conf.tmp "$mountpoint/etc/resolv.conf"
@@ -179,7 +180,8 @@ EOF
 umount_partition() {
     local mountpoint=${1}
     teardown_mountpoint $mountpoint
-    umount -R $mountpoint
+    mount --make-private $mountpoint
+    umount $mountpoint
     udevadm settle
 
     if [ -n "${rootfs_dev_mapper}" -a -b "${rootfs_dev_mapper}" ]; then
@@ -202,6 +204,7 @@ umount_disk_image() {
 	# zero fill free space in UEFI partition
 	cat < /dev/zero > "$mountpoint/boot/efi/bloat_file" 2> /dev/null || true
 	rm "$mountpoint/boot/efi/bloat_file"
+        mount --make-private "$mountpoint/boot/efi"
         umount --detach-loop "$mountpoint/boot/efi"
     fi
 
@@ -433,11 +436,12 @@ _snap_preseed() {
         return
     fi
 
-    chroot $CHROOT_ROOT sh -c "
+    sh -c "
         set -x;
-        cd /var/lib/snapd/seed;
-        SNAPPY_STORE_NO_CDN=1 snap download \
-            --channel=$CHANNEL \"$SNAP_NAME\"" || snap_download_failed=1
+        cd \"$CHROOT_ROOT/var/lib/snapd/seed\";
+        SNAPPY_STORE_NO_CDN=1 /usr/share/livecd-rootfs/snap-tool download \
+            --cohort-key=\"${COHORT_KEY:-}\" \
+            --channel=\"$CHANNEL\" \"$SNAP_NAME\"" || snap_download_failed=1
     if [ $snap_download_failed = 1 ] ; then
         echo "If the channel ($CHANNEL) includes '*/ubuntu-##.##' track per "
         echo "Ubuntu policy (ex. stable/ubuntu-18.04) the publisher will need "
@@ -478,20 +482,33 @@ snap_prepare_assertions() {
     local account_key_assertion="$assertions_dir/account-key"
     local account_assertion="$assertions_dir/account"
 
-    if [ -d "$assertions_dir" ]; then
+    local brand="$(echo $CUSTOM_BRAND_MODEL | cut -d: -f 1)"
+    local model="$(echo $CUSTOM_BRAND_MODEL | cut -d: -f 2)"
+
+    # Get existing model and brand assertions to compare with new parameters
+    # For customized images, snap_prepare_assertions is called several times
+    # with different brand or model. In this case we want to overwrite
+    # existing brand and models.
+    local override_model_branch="false"
+    if [ -e "$model_assertion" ] ; then
+        existing_model=$(awk '/^model: / {print $2}' $model_assertion)
+        existing_brand=$(awk '/^brand-id: / {print $2}' $model_assertion)
+
+        if [ "$existing_model" != "$model" ] || [ "$existing_brand" != "$brand" ]; then
+            override_model_branch="true"
+        fi
+    fi
+
+    # Exit if assertions dir exists and we didn't change model or brand
+    if [ -d "$assertions_dir" ] && [ "$override_model_branch" = "false" ]; then
         return
     fi
 
     mkdir -p "$assertions_dir"
     mkdir -p "$snaps_dir"
 
-    local brand="$(echo $CUSTOM_BRAND_MODEL | cut -d: -f 1)"
-    local model="$(echo $CUSTOM_BRAND_MODEL | cut -d: -f 2)"
-
     # Clear the assertions if they already exist
     if [ -e "$model_assertion" ] ; then
-        existing_model=$(awk '/^model: / {print $2}' $model_assertion)
-        existing_brand=$(awk '/^brand-id: / {print $2}' $model_assertion)
         echo "snap_prepare_assertions: replacing $existing_brand:$existing_model with $brand:$model"
         rm "$model_assertion"
         rm "$account_key_assertion"

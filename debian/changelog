@@ -1,3 +1,27 @@
+livecd-rootfs (2.560) disco; urgency=medium
+
+  [ Colin Watson ]
+  * Disable merged /usr in buildd images.
+  * Drop code to handle building buildd images for series earlier than
+    disco; we'll deal with those in stable updates instead.
+
+  [ Tobias Koch ]
+  * When the REPO_SNAPSHOT_STAMP environment variable is set, inject a
+    proxy into the build providing a snapshot view of the package repo.
+  * Replace "snap download" with tool that uses snap store's coherence
+    feature.
+
+  [ Didier Roche ]
+  * Fix customized images with multiple brand/models.
+    Some customized images are built from the same chroot, but need to
+    override brands and models.
+
+  [ Balint Reczey ]
+  * live-build/functions: Always use mount --make-private before umount.
+    (LP: #1813730)
+
+ -- Balint Reczey <rbalint@ubuntu.com>  Tue, 05 Feb 2019 19:51:03 +0700
+
 livecd-rootfs (2.559) disco; urgency=medium
 
   [ Jean-Baptiste Lallement ]
