@@ -466,7 +466,12 @@ case $PROJECT in
 	lubuntu)
 		HWE="yes"
 		KERNEL_FLAVOURS="generic${HWE:+-$HWE_SUFFIX}"
-		add_task install minimal standard lubuntu-desktop
+		add_task install minimal standard lubuntu-gtk-core lubuntu-desktop
+		# Installing the lubuntu-gtk-core task explicitly appears
+		# to make dbus-user-session not get installed anymore:
+		add_package install dbus-user-session
+		# These themes also get dropped, maybe worth looking closer:
+		add_package install humanity-icon-theme gnome-icon-theme adwaita-icon-theme
 		LIVE_TASK='lubuntu-live'
 		case $ARCH in
 			amd64)	add_package live linux-signed-$KERNEL_FLAVOURS ;;

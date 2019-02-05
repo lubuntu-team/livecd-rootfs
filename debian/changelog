@@ -1,3 +1,11 @@
+livecd-rootfs (2.525.16) bionic; urgency=medium
+
+  * lubuntu: Select lubuntu-gtk-core task as well, so we get the HWE filter
+    applied to the explicit dependencies it has on Xorg-recommended packages.
+  * lubuntu: Manually install some packages that fall out due to the above.
+
+ -- Adam Conrad <adconrad@ubuntu.com>  Mon, 04 Feb 2019 12:48:51 -0700
+
 livecd-rootfs (2.525.15) bionic; urgency=medium
 
   * Forward-port HWE support from xenial, make it more generic, and enable
