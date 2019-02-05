@@ -4,6 +4,8 @@ set -e
 rm -rf config
 
 echo "Building on $(hostname --fqdn)"
+SUITENUM=$(distro-info --series="$SUITE" -r | awk '{ print $1 }')
+HWE_SUFFIX="hwe-${SUITENUM}"
 
 SEEDMIRROR=http://people.canonical.com/~ubuntu-archive/seeds/
 if [ -z "$MIRROR" ]; then
@@ -64,6 +66,11 @@ add_task ()
 			filter="| grep -v '^linux.*tools'"
 		else
 			filter=""
+		fi
+		if [ -n "$HWE" ]; then
+			# If HWE is set, we strip out drivers not available in the
+			# HWE stack, then sed the rest with their HWE suffixes:
+			filter="$filter | sed -e 's/xserver-xorg.*/&-${HWE_SUFFIX}/'"
 		fi
 		# We need a ridiculous number of backslashes to protect
 		# parentheses from eval.
@@ -285,8 +292,6 @@ case $BINARYFORMAT in
 		;;
 esac
 
-SIGNED_KERNEL_PACKAGE="linux-signed-generic"
-
 if [ "${SUBPROJECT:-}" = minimized ]; then
 	OPTS="${OPTS:+$OPTS }--bootstrap-flavour=minimal --linux-packages=linux-image"
 fi
@@ -361,10 +366,12 @@ esac
 
 case $PROJECT in
 	ubuntu|ubuntu-dvd)
+		HWE="yes"
+		KERNEL_FLAVOURS="generic${HWE:+-$HWE_SUFFIX}"
 		add_task install minimal standard ubuntu-desktop
 		LIVE_TASK='ubuntu-live'
 		case $ARCH in
-			amd64)	add_package live $SIGNED_KERNEL_PACKAGE ;;
+			amd64)	add_package live linux-signed-$KERNEL_FLAVOURS ;;
 		esac
 		;;
 
@@ -372,9 +379,9 @@ case $PROJECT in
 		add_task install minimal standard ubuntu-desktop-next ubuntu-sdk-libs
 		COMPONENTS='main restricted universe'
 		LIVE_TASK='ubuntu-touch-live'
-		KERNEL_FLAVOURS=generic
+		KERNEL_FLAVOURS="generic${HWE:+-$HWE_SUFFIX}"
 		case $ARCH in
-			amd64)	add_package live linux-signed-generic ;;
+			amd64)	add_package live linux-signed-$KERNEL_FLAVOURS ;;
 		esac
 
 		# system image snappy desktop next image
@@ -388,11 +395,13 @@ case $PROJECT in
 		;;
 
 	kubuntu|kubuntu-dvd)
+		HWE="yes"
+		KERNEL_FLAVOURS="generic${HWE:+-$HWE_SUFFIX}"
 		add_task install minimal standard
 		add_task install kubuntu-desktop
 		LIVE_TASK='kubuntu-live'
 		case $ARCH in
-			amd64)	add_package live linux-signed-generic ;;
+			amd64)	add_package live linux-signed-$KERNEL_FLAVOURS ;;
 		esac
 		COMPONENTS='main restricted universe'
 		add_chroot_hook remove-gnome-icon-cache
@@ -418,25 +427,25 @@ case $PROJECT in
 		;;
 
 	edubuntu|edubuntu-dvd)
+		KERNEL_FLAVOURS="generic${HWE:+-$HWE_SUFFIX}"
 		add_task install minimal standard ubuntu-desktop edubuntu-desktop-gnome
 		LIVE_TASK='edubuntu-live'
 		case $ARCH in
-			amd64)	add_package live linux-signed-generic ;;
+			amd64)	add_package live linux-signed-$KERNEL_FLAVOURS ;;
 		esac
 		COMPONENTS='main restricted universe'
 		;;
 
 	xubuntu)
+		HWE="yes"
+		KERNEL_FLAVOURS="generic${HWE:+-$HWE_SUFFIX}"
 		add_task install minimal standard xubuntu-desktop
 		add_package install xterm
 		LIVE_TASK='xubuntu-live'
 		case $ARCH in
-			amd64)	add_package live linux-signed-generic ;;
+			amd64)	add_package live linux-signed-$KERNEL_FLAVOURS ;;
 		esac
 		COMPONENTS='main restricted universe multiverse'
-		case $ARCH in
-			amd64|i386)	KERNEL_FLAVOURS=generic ;;
-		esac
 		;;
 
 	ubuntu-netbook)
@@ -445,24 +454,29 @@ case $PROJECT in
 		;;
 
 	mythbuntu)
+		KERNEL_FLAVOURS="generic${HWE:+-$HWE_SUFFIX}"
 		add_task install minimal standard mythbuntu-desktop
 		LIVE_TASK='mythbuntu-live'
 		case $ARCH in
-			amd64)	add_package live linux-signed-generic ;;
+			amd64)	add_package live linux-signed-$KERNEL_FLAVOURS ;;
 		esac
 		COMPONENTS='main restricted universe multiverse'
 		;;
 
 	lubuntu)
-		add_task install minimal standard lubuntu-desktop
+		HWE="yes"
+		KERNEL_FLAVOURS="generic${HWE:+-$HWE_SUFFIX}"
+		add_task install minimal standard lubuntu-gtk-core lubuntu-desktop
+		# Installing the lubuntu-gtk-core task explicitly appears
+		# to make dbus-user-session not get installed anymore:
+		add_package install dbus-user-session
+		# These themes also get dropped, maybe worth looking closer:
+		add_package install humanity-icon-theme gnome-icon-theme adwaita-icon-theme
 		LIVE_TASK='lubuntu-live'
 		case $ARCH in
-			amd64)	add_package live linux-signed-generic ;;
+			amd64)	add_package live linux-signed-$KERNEL_FLAVOURS ;;
 		esac
 		COMPONENTS='main restricted universe multiverse'
-		case $ARCH in
-			amd64|i386)	KERNEL_FLAVOURS=generic ;;
-		esac
 
 		# The Lubuntu STRUCTURE file has "feature
 		# no-follow-recommends".  Mirror this.
@@ -470,15 +484,13 @@ case $PROJECT in
 		;;
 
 	lubuntu-next)
+		KERNEL_FLAVOURS="generic${HWE:+-$HWE_SUFFIX}"
 		add_task install minimal standard lubuntu-qt-desktop
 		LIVE_TASK='lubuntu-live-qt'
 		case $ARCH in
-			amd64)	add_package live linux-signed-generic ;;
+			amd64)	add_package live linux-signed-$KERNEL_FLAVOURS ;;
 		esac
 		COMPONENTS='main restricted universe multiverse'
-		case $ARCH in
-			amd64|i386)	KERNEL_FLAVOURS=generic ;;
-		esac
 
 		# The Lubuntu STRUCTURE file has "feature
 		# no-follow-recommends". Mirror this.
@@ -486,46 +498,51 @@ case $PROJECT in
 		;;
 
 	ubuntu-gnome)
+		KERNEL_FLAVOURS="generic${HWE:+-$HWE_SUFFIX}"
 		add_task install minimal standard ubuntu-gnome-desktop
 		LIVE_TASK='ubuntu-gnome-live'
 		case $ARCH in
-			amd64)	add_package live linux-signed-generic ;;
+			amd64)	add_package live linux-signed-$KERNEL_FLAVOURS ;;
 		esac
 		COMPONENTS='main restricted universe'
 		;;
 
 	ubuntu-budgie)
+		HWE="yes"
+		KERNEL_FLAVOURS="generic${HWE:+-$HWE_SUFFIX}"
 		add_task install minimal standard ubuntu-budgie-desktop
 		LIVE_TASK='ubuntu-budgie-live'
 		case $ARCH in
-			amd64)	add_package live linux-signed-generic ;;
+			amd64)	add_package live linux-signed-$KERNEL_FLAVOURS ;;
 		esac
 		COMPONENTS='main restricted universe'
 		;;
 
 	ubuntu-mate)
+		HWE="yes"
+		KERNEL_FLAVOURS="generic${HWE:+-$HWE_SUFFIX}"
 		add_task install minimal standard ubuntu-mate-core ubuntu-mate-desktop
 		LIVE_TASK='ubuntu-mate-live'
 		case $ARCH in
-			amd64)	add_package live linux-signed-generic ;;
+			amd64)	add_package live linux-signed-$KERNEL_FLAVOURS ;;
 		esac
 		COMPONENTS='main restricted universe multiverse'
 		;;
 
 	ubuntustudio-dvd)
+		KERNEL_FLAVOURS="lowlatency${HWE:+-$HWE_SUFFIX}"
 		add_task install minimal standard ubuntustudio-desktop ubuntustudio-audio ubuntustudio-fonts ubuntustudio-graphics ubuntustudio-video ubuntustudio-publishing ubuntustudio-photography
 		COMPONENTS='main restricted universe multiverse'
-		case $ARCH in
-			amd64|i386)	KERNEL_FLAVOURS=lowlatency ;;
-		esac
 		;;
 
 	ubuntukylin)
+		HWE="yes"
+		KERNEL_FLAVOURS="generic${HWE:+-$HWE_SUFFIX}"
 		add_task install minimal standard ubuntukylin-desktop
 		add_package install ubuntukylin-default-settings
 		LIVE_TASK='ubuntukylin-live'
 		case $ARCH in
-			amd64)	add_package live linux-signed-generic ;;
+			amd64)	add_package live linux-signed-$KERNEL_FLAVOURS ;;
 		esac
 		COMPONENTS='main restricted universe'
 		;;

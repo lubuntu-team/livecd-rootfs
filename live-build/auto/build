@@ -789,6 +789,8 @@ for FLAVOUR in $LB_LINUX_FLAVOURS; do
 	if [ -z "$LB_LINUX_FLAVOURS" ] || [ "$LB_LINUX_FLAVOURS" = "none" ]; then
 		continue
 	fi
+	# hwe-* kernels don't use the hwe suffix on the filesystem:
+	FLAVOUR=${FLAVOUR%%-hwe-*}
 	if [ "$FLAVOUR" = "virtual" ]; then
 		# The virtual kernel is named generic in /boot
 		FLAVOUR="generic"
@@ -822,17 +824,18 @@ done
 NUMFLAVOURS="$(set -- $LB_LINUX_FLAVOURS; echo $#)"
 if [ "$NUMFLAVOURS" = 1 ] && [ "$LB_LINUX_FLAVOURS" != "none" ]; then
 	# only one kernel flavour
+	FLAVOUR=${LB_LINUX_FLAVOURS%%-hwe-*}
 	if [ -f "binary/$INITFS/vmlinuz" ] && ! [ -h "binary/$INITFS/vmlinuz" ]; then
 		ln "binary/$INITFS/vmlinuz" "$PREFIX.kernel"
 		chmod 644 "$PREFIX.kernel"
 	else
-		ln -sf "$PREFIX.kernel-$LB_LINUX_FLAVOURS" "$PREFIX.kernel"
+		ln -sf "$PREFIX.kernel-$FLAVOUR" "$PREFIX.kernel"
 	fi
 	if [ -f "binary/$INITFS/initrd.lz" ] && ! [ -h "binary/$INITFS/initrd.lz" ]; then
 		ln "binary/$INITFS/initrd.lz" "$PREFIX.initrd"
 		chmod 644 "$PREFIX.initrd"
 	else
-		ln -sf "$PREFIX.initrd-$LB_LINUX_FLAVOURS" "$PREFIX.initrd"
+		ln -sf "$PREFIX.initrd-$FLAVOUR" "$PREFIX.initrd"
 	fi
 fi
 
