@@ -1,4 +1,4 @@
-livecd-rootfs (2.525.18) UNRELEASED; urgency=medium
+livecd-rootfs (2.525.18) bionic; urgency=medium
 
   [ Michael Hudson-Doyle ]
   * Changes to kernel handling for live-server: do not include kernel/initrd
