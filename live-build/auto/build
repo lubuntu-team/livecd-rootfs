@@ -17,7 +17,7 @@ fi
 
 . config/functions
 
-# Link output files somewhere BuildLiveCD will be able to find them.
+# Link output files somewhere launchpad-buildd will be able to find them.
 PREFIX="livecd.$PROJECT${SUBARCH:+-$SUBARCH}"
 
 if [ "${IMAGEFORMAT:-}" = "ubuntu-image" ]; then

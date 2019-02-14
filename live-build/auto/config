@@ -162,20 +162,15 @@ case $IMAGEFORMAT in
 		;;
 
 	plain)
-		INITRAMFS_TYPE=none
 		case $PROJECT:${SUBPROJECT:-} in
 			ubuntu-server:live)
-				# Stop lb installing casper into filesystem.squashfs
-				#  by skipping lb_chroot_live-packages.
-				skip_lb_stage chroot_live-packages
-				INITRAMFS_TYPE=auto
 	                        touch config/universe-enabled
 				;;
 			*)
 				PREINSTALLED=true
 				;;
 		esac
-		OPTS="${OPTS:+$OPTS }--initramfs $INITRAMFS_TYPE --chroot-filesystem $IMAGEFORMAT"
+		OPTS="${OPTS:+$OPTS }--initramfs none --chroot-filesystem $IMAGEFORMAT"
 		;;
 
 	ubuntu-image)
@@ -557,10 +552,7 @@ case $PROJECT in
 			live)
 				add_task install standard
 				add_task install server
-				LIVE_TASK='cloud-image'
-				case $ARCH in
-					amd64)	add_package live linux-signed-generic ;;
-				esac
+				add_package install cloud-init
 				;;
 		esac
 		COMPONENTS='main'
@@ -716,6 +708,37 @@ case $PROJECT in
 		;;
 esac
 
+case $SUBPROJECT in
+	buildd)
+		OPTS="${OPTS:+$OPTS }--archive-areas main"
+		COMPONENTS='main restricted universe multiverse'
+		OPTS="${OPTS:+$OPTS }--apt-recommends false"
+		OPTS="${OPTS:+$OPTS }--apt-secure false"
+		OPTS="${OPTS:+$OPTS }--parent-mirror-binary ${MIRROR}"
+		# XXX cjwatson 2018-04-27: We need to work out how to make
+		# this conditional so that we can do things like building
+		# buildd chroots with -updates.  This probably involves
+		# either extending the PROPOSED hack or fixing the strange
+		# way that SUITE is in fact a series; in either case it's
+		# likely to involve work both here and in launchpad-buildd.
+		OPTS="${OPTS:+$OPTS }--security false --volatile false"
+
+		add_package install adduser
+		add_package install policyrcd-script-zg2
+		add_package install pkgbinarymangler
+		add_package install ca-certificates
+		add_package install gpg
+		add_package install gpg-agent
+		add_package install tzdata
+		add_package install fakeroot
+		add_package install build-essential
+		# Needed for LXD-based builds.
+		add_package install init
+
+		cp -af /usr/share/livecd-rootfs/live-build/make-lxd-metadata.py config/make-lxd-metadata
+		;;
+esac
+
 # we'll expand the base seed given here according to the STRUCTURE file, and
 # then look in all of the seeds found to see which snaps are seeded
 case $PROJECT:${SUBPROJECT:-} in
@@ -843,8 +866,6 @@ case $ARCH in
 esac
 
 case $PROJECT:${SUBPROJECT:-} in
-	ubuntu-server:live)
-		;;
 	ubuntu-server:*|ubuntu-base:*|ubuntu-touch:*|ubuntu-touch-custom:*)
 		OPTS="${OPTS:+$OPTS }--linux-packages=none --initramfs=none"
 		KERNEL_FLAVOURS=none
@@ -1035,6 +1056,12 @@ EOF
 		if [ "$IMAGEFORMAT" = none ]; then
 			rm -f config/hooks/*.binary*
 		fi
+		;;
+esac
+
+case $SUBPROJECT in
+	buildd)
+		cp -af /usr/share/livecd-rootfs/live-build/buildd/* config/
 		;;
 esac
 

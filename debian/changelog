@@ -1,3 +1,34 @@
+livecd-rootfs (2.525.18) bionic; urgency=medium
+
+  [ Michael Hudson-Doyle ]
+  * Changes to kernel handling for live-server: do not include kernel/initrd
+    in filesystem.squashfs but rather install it in a throwaway layer on top
+    of installer.squashfs and fish kernel, initrd and modules out of that with
+    an initrd hook that records kernel metapackage name in /run and mounts
+    /lib/modules from a squashfs on the ISO.
+  * Do no install openssh-server in the base filsystem for the live server
+    installer.
+  * A few simple tweaks to reduce size of live servers installer.squashfs:
+    - Do not run apt-get update (which can bring in package lists if we are
+      unlucky wrt publisher schedules).
+    - Run apt-get clean to clear out downloaded debs of curtin/casper and
+      dependencies.
+    - Do not install user-setup.
+    - Use the core snap from the base filesystem if present.
+  * Do not include curtin in the live-server installer.squashfs as the
+    version of subiquity that includes it in the snap has now been released to
+    stable.
+
+ -- Adam Conrad <adconrad@ubuntu.com>  Tue, 12 Feb 2019 11:35:48 -0700
+
+livecd-rootfs (2.525.17) bionic; urgency=medium
+
+  * Add a buildd subproject.
+  * Add a LXD image to builds for the buildd subproject.
+  * Move buildd image building to binary hooks.
+
+ -- Colin Watson <cjwatson@ubuntu.com>  Tue, 05 Feb 2019 14:55:06 +0000
+
 livecd-rootfs (2.525.16) bionic; urgency=medium
 
   * lubuntu: Select lubuntu-gtk-core task as well, so we get the HWE filter
