@@ -1,3 +1,9 @@
+livecd-rootfs (2.525.19) UNRELEASED; urgency=medium
+
+  * Make sure buildd images have a /usr/sbin/policy-rc.d symlink.
+
+ -- Colin Watson <cjwatson@ubuntu.com>  Mon, 18 Feb 2019 14:55:41 +0000
+
 livecd-rootfs (2.525.18) bionic; urgency=medium
 
   [ Michael Hudson-Doyle ]
