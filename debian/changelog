@@ -1,3 +1,10 @@
+livecd-rootfs (2.562) disco; urgency=medium
+
+  * subiquity: make subiqutiy_config.mount optional
+  * Add python3 vmdkstream support
+
+ -- Dimitri John Ledkov <xnox@ubuntu.com>  Mon, 18 Feb 2019 12:01:51 +0100
+
 livecd-rootfs (2.561) disco; urgency=medium
 
   * Support building pi3-arm64 core18 images. At the same time, make sure we
