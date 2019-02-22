@@ -2,6 +2,8 @@ livecd-rootfs (2.525.20) UNRELEASED; urgency=medium
 
   * Minimize the number of manually installed packages in images by marking
     dependencies of metapackages as automatically installed. (LP: #1800610)
+  * Do not mark direct dependencies of ubiquity as auto installed. This caused
+    cryptsetup to remain auto on the installed system (LP: #1801629)
 
  -- Julian Andres Klode <juliank@ubuntu.com>  Mon, 04 Mar 2019 18:00:26 +0100
 
