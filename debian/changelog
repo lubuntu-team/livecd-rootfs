@@ -1,3 +1,18 @@
+livecd-rootfs (2.408.44) xenial; urgency=medium
+
+  * Make sure buildd images have a /usr/sbin/policy-rc.d symlink
+    (LP: #1815251).
+
+ -- Colin Watson <cjwatson@ubuntu.com>  Mon, 18 Feb 2019 16:05:32 +0000
+
+livecd-rootfs (2.408.43) xenial; urgency=medium
+
+  * Add a buildd subproject (LP: #1815251).
+  * Add a LXD image to builds for the buildd subproject.
+  * Move buildd image building to binary hooks.
+
+ -- Colin Watson <cjwatson@ubuntu.com>  Fri, 08 Feb 2019 22:56:03 +0000
+
 livecd-rootfs (2.408.42) xenial; urgency=medium
 
   [ Cody Shepherd ]

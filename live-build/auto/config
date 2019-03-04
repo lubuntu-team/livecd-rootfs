@@ -611,6 +611,37 @@ case $PROJECT in
 		;;
 esac
 
+case $SUBPROJECT in
+	buildd)
+		OPTS="${OPTS:+$OPTS }--archive-areas main"
+		COMPONENTS='main restricted universe multiverse'
+		OPTS="${OPTS:+$OPTS }--apt-recommends false"
+		OPTS="${OPTS:+$OPTS }--apt-secure false"
+		OPTS="${OPTS:+$OPTS }--parent-mirror-binary ${MIRROR}"
+		# XXX cjwatson 2018-04-27: We need to work out how to make
+		# this conditional so that we can do things like building
+		# buildd chroots with -updates.  This probably involves
+		# either extending the PROPOSED hack or fixing the strange
+		# way that SUITE is in fact a series; in either case it's
+		# likely to involve work both here and in launchpad-buildd.
+		OPTS="${OPTS:+$OPTS }--security false --volatile false"
+
+		add_package install adduser
+		add_package install policyrcd-script-zg2
+		add_package install pkgbinarymangler
+		add_package install ca-certificates
+		add_package install pkg-create-dbgsym
+		add_package install apt-transport-https
+		add_package install tzdata
+		add_package install fakeroot
+		add_package install build-essential
+		# Needed for LXD-based builds.
+		add_package install init
+
+		cp -af /usr/share/livecd-rootfs/live-build/make-lxd-metadata.py config/make-lxd-metadata
+		;;
+esac
+
 if [ "$PREINSTALLED" != "true" ] && [ "$LIVE_TASK" ]; then
 	add_task live "$LIVE_TASK"
 fi
@@ -880,6 +911,12 @@ EOF
 		if [ "$IMAGEFORMAT" = none ]; then
 			rm -f config/hooks/*.binary*
 		fi
+		;;
+esac
+
+case $SUBPROJECT in
+	buildd)
+		cp -af /usr/share/livecd-rootfs/live-build/buildd/* config/
 		;;
 esac
 
