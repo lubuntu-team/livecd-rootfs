@@ -454,10 +454,12 @@ case $ARCH in
 				BINARY_REMOVE_LINUX=false
 				;;
 			omap)
+				COMPONENTS='main restricted universe'
 				add_package install u-boot-linaro-omap3-beagle u-boot-tools
 				BINARY_REMOVE_LINUX=false
 				;;
 			omap4)
+				COMPONENTS='main restricted universe'
 				case $PROJECT in
 					ubuntu-server|ubuntu-core|base)
 						add_package install u-boot-linaro-omap4-panda u-boot-tools

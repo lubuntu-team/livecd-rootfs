@@ -1,3 +1,10 @@
+livecd-rootfs (2.208.16) UNRELEASED; urgency=medium
+
+  * For omap and omap4, enable the universe component for u-boot-linaro-omap*
+    packages.  Without it those SUBARCHs will now fail to build.
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Mon, 04 Mar 2019 15:34:14 +0100
+
 livecd-rootfs (2.208.15) trusty; urgency=medium
 
   * Fix security mirror sources.list entries for non-x86 architectures by
