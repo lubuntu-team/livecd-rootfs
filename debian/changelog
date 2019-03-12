@@ -1,3 +1,15 @@
+livecd-rootfs (2.568) disco; urgency=medium
+
+  [ Tobias Koch ]
+  * Make sure snap-tool exits with non-zero exit status, if a problem
+    occurred.
+
+  [ Steve Langasek ]
+  * divert grub when calling into lb chroot, to avoid any problems from
+    grub-probe.
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Mon, 11 Mar 2019 18:14:46 -0700
+
 livecd-rootfs (2.567) disco; urgency=medium
 
   * Fix change to ignore ubiquity packages, it failed to mark anything
