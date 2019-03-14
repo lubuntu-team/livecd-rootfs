@@ -1,4 +1,4 @@
-livecd-rootfs (2.525.20) UNRELEASED; urgency=medium
+livecd-rootfs (2.525.20) bionic; urgency=medium
 
   [ Steve Langasek ]
   * Drop /etc/update-motd.d/51-cloudguest from cloud images; this is not
@@ -13,7 +13,7 @@ livecd-rootfs (2.525.20) UNRELEASED; urgency=medium
     caused cryptsetup to remain auto on the installed system in bionic (see
     LP #1801629)
 
- -- Steve Langasek <steve.langasek@ubuntu.com>  Tue, 12 Mar 2019 11:39:34 -0700
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Thu, 14 Mar 2019 11:04:49 -0700
 
 livecd-rootfs (2.525.19) bionic; urgency=medium
 
