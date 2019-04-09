@@ -1,3 +1,20 @@
+livecd-rootfs (2.525.20) bionic; urgency=medium
+
+  [ Steve Langasek ]
+  * Drop /etc/update-motd.d/51-cloudguest from cloud images; this is not
+    consistent with current Ubuntu Advantage product language.  Any future
+    customizations to update-motd for cloud images should be done via a
+    package instead.
+
+  [ Julian Andres Klode ]
+  * Minimize the number of manually installed packages in images by marking
+    dependencies of metapackages as automatically installed. (LP: #1800610);
+    but do not mark direct dependencies of ubiquity as auto installed. This
+    caused cryptsetup to remain auto on the installed system in bionic (see
+    LP #1801629)
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Thu, 14 Mar 2019 11:04:49 -0700
+
 livecd-rootfs (2.525.19) bionic; urgency=medium
 
   * Make sure buildd images have a /usr/sbin/policy-rc.d symlink
