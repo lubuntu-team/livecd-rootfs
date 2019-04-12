@@ -1,3 +1,26 @@
+livecd-rootfs (2.577) disco; urgency=medium
+
+  [ Tobias Koch ]
+  * Detect which core snaps are required and install them on-the-fly.
+  * If image has core18 snaps only, automatically preseed snapd.
+
+  [ Michael Hudson-Doyle ]
+  * Slim down ubuntu-cpc:minimized builds:
+    - Do not include any snaps in ubuntu-cpc:minimized builds (erroring if any
+      snap other than lxd is seeded).
+    - Install the lxd-installer package instead, which installs the lxd snap
+      when invoked.
+    - Install lxd snap in unminimize.
+
+  [ Balint Reczey ]
+  * Pass --sort=name to tar to make tarballs more reproducible and
+    rsync-friendly
+
+  [ Steve Langasek ]
+  * Adjust sed command for clarity.
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Fri, 12 Apr 2019 13:34:56 -0700
+
 livecd-rootfs (2.576) disco; urgency=medium
 
   * When the "snap-tool" script encounters a core snap it will switch to
