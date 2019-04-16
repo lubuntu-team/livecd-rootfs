@@ -204,7 +204,7 @@ class Snap:
         snap_data = response_dict["results"][0]
 
         # Have "base" initialized to something meaningful.
-        if self.is_core_snap():
+        if self.is_core_snap() or snap_data["snap"].get("base") == "none":
             snap_data["snap"]["base"] = ""
         elif snap_data["snap"].get("base") is None:
             snap_data["snap"]["base"] = "core"
