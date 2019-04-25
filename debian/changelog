@@ -1,3 +1,12 @@
+livecd-rootfs (2.542.4) UNRELEASED; urgency=medium
+
+  * ubuntu-cpc: parallel builds
+    - Replace "snap download" with tool that uses snap store's coherence feature
+    - Inject a proxy into the build providing a snapshot view of the package repo.
+    - Use series files with dependency handling to generate hook symlinks dynamically
+
+ -- Robert C Jennings <robert.jennings@canonical.com>  Wed, 24 Apr 2019 21:17:17 -0500
+
 livecd-rootfs (2.542.3) cosmic; urgency=medium
 
   * Remove device nodes later for ubuntu-base:minimized (i.e. docker) builds.
