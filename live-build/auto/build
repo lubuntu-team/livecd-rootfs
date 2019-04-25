@@ -254,10 +254,6 @@ EOF
 			apt-get -y --purge autoremove"
 	fi
 
-	# remove crufty files that shouldn't be left in an image
-	rm -f chroot/var/cache/debconf/*-old chroot/var/lib/dpkg/*-old
-	Chroot chroot apt clean
-
 	if [ -f config/universe-enabled ]; then
 
 # This is cargo-culted almost verbatim (with some syntax changes for
@@ -436,6 +432,10 @@ EOF
 	echo END docdirs
 
 	/usr/share/livecd-rootfs/minimize-manual chroot
+
+	# remove crufty files that shouldn't be left in an image
+	rm -f chroot/var/cache/debconf/*-old chroot/var/lib/dpkg/*-old
+	Chroot chroot apt clean
 
 	lb binary "$@"
 	touch binary.success
