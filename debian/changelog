@@ -1,8 +1,8 @@
-livecd-rootfs (2.525.21) UNRELEASED; urgency=medium
+livecd-rootfs (2.525.21) bionic; urgency=medium
 
   * Remove crufty files after minimize-manual (LP: #1826377)
 
- -- Julian Andres Klode <juliank@ubuntu.com>  Fri, 26 Apr 2019 10:39:49 +0200
+ -- Julian Andres Klode <juliank@ubuntu.com>  Fri, 26 Apr 2019 10:40:08 +0200
 
 livecd-rootfs (2.525.20) bionic; urgency=medium
 
