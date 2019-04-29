@@ -1,7 +1,6 @@
 livecd-rootfs (2.408.47) UNRELEASED; urgency=medium
 
   * ubuntu-cpc: parallel builds
-    - Replace "snap download" with tool that uses snap store's coherence feature
     - Inject a proxy into the build providing a snapshot view of the package repo.
     - Use series files with dependency handling to generate hook symlinks dynamically
   * ubuntu-cpc: Don't ignore failures to find a base VMDK for OVAs
