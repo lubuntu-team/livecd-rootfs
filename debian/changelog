@@ -1,3 +1,10 @@
+livecd-rootfs (2.578.3) UNRELEASED; urgency=medium
+
+  * ubuntu-cpc: Ensure base disk image is the same between all build targets
+    (LP: #1827426)
+
+ -- Robert C Jennings <robert.jennings@canonical.com>  Thu, 02 May 2019 16:02:10 -0500
+
 livecd-rootfs (2.578.2) disco; urgency=medium
 
   * Remove device nodes later for ubuntu-base:minimized (i.e. docker) builds.
