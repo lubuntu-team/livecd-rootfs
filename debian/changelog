@@ -1,3 +1,9 @@
+livecd-rootfs (2.578.1) disco; urgency=medium
+
+  * Run clean_debian_chroot after minimize_manual (LP: #1826377)
+
+ -- Julian Andres Klode <juliank@ubuntu.com>  Fri, 26 Apr 2019 10:34:05 +0200
+
 livecd-rootfs (2.578) disco; urgency=medium
 
   * Fix the sed script that Tobias had right in the first place and I
