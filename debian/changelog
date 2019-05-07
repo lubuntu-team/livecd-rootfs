@@ -1,3 +1,10 @@
+livecd-rootfs (2.542.3) UNRELEASED; urgency=medium
+
+  * Remove device nodes later for ubuntu-base:minimized (i.e. docker) builds.
+    (LP: #1828118)
+
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Wed, 08 May 2019 10:48:39 +1200
+
 livecd-rootfs (2.542.2) cosmic; urgency=medium
 
   * Remove crufty files after minimize-manual (LP: #1826377)
