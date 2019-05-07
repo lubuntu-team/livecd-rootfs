@@ -1,4 +1,4 @@
-livecd-rootfs (2.525.23) UNRELEASED; urgency=medium
+livecd-rootfs (2.525.23) bionic; urgency=medium
 
   * Backport two minimizations for the docker images: remove apt lists that
     are removed downstream anyway, and remove device nodes from the image.
