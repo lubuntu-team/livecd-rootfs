@@ -1,3 +1,11 @@
+livecd-rootfs (2.525.23) UNRELEASED; urgency=medium
+
+  * Backport two minimizations for the docker images: remove apt lists that
+    are removed downstream anyway, and remove device nodes from the image.
+    (LP: #1828118)
+
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Wed, 08 May 2019 10:48:39 +1200
+
 livecd-rootfs (2.525.22) bionic; urgency=medium
 
   * Subiquity specific changes SRU LP: #1827357
