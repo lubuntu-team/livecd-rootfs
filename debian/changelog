@@ -1,3 +1,12 @@
+livecd-rootfs (2.408.45) xenial; urgency=medium
+
+  * Drop /etc/update-motd.d/51-cloudguest from cloud images; this is not
+    consistent with current Ubuntu Advantage product language.  Any future
+    customizations to update-motd for cloud images should be done via a
+    package instead.  LP: #1823776.
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Thu, 14 Mar 2019 14:11:57 -0700
+
 livecd-rootfs (2.408.44) xenial; urgency=medium
 
   * Make sure buildd images have a /usr/sbin/policy-rc.d symlink
