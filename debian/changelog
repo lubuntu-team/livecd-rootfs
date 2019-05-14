@@ -1,3 +1,20 @@
+livecd-rootfs (2.525.23) bionic; urgency=medium
+
+  * Backport two minimizations for the docker images: remove apt lists that
+    are removed downstream anyway, and remove device nodes from the image.
+    (LP: #1828118)
+
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Wed, 08 May 2019 10:48:39 +1200
+
+livecd-rootfs (2.525.22) bionic; urgency=medium
+
+  * Subiquity specific changes SRU LP: #1827357
+    - subiquity: make subiquity_config.mount optional
+    - Make serial-subiquity@ use the same codepath as tty1 subiquity.
+    - Fix ubuntu-server-live images to generate initrd with casper UUID.
+
+ -- Dimitri John Ledkov <xnox@ubuntu.com>  Thu, 02 May 2019 11:34:34 +0100
+
 livecd-rootfs (2.525.21) bionic; urgency=medium
 
   * Remove crufty files after minimize-manual (LP: #1826377)
