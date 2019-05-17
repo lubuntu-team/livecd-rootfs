@@ -1,3 +1,9 @@
+livecd-rootfs (2.525.24) bionic; urgency=medium
+
+  * Build WSL rootfs tarball (LP: #1827930)
+
+ -- Balint Reczey <rbalint@ubuntu.com>  Fri, 17 May 2019 15:11:42 +0200
+
 livecd-rootfs (2.525.23) bionic; urgency=medium
 
   * Backport two minimizations for the docker images: remove apt lists that
