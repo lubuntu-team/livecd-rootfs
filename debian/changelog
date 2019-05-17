@@ -1,6 +1,12 @@
 livecd-rootfs (2.578.5) UNRELEASED; urgency=medium
 
+  [ Balint Reczey ]
   * Build WSL rootfs tarball (LP: #1827930)
+
+  [ Steve Langasek ]
+  * Strip translation files out of the minimal images, another thing that
+    goes unused when there is no human console user (and we already don't
+    have the locales themselves present on a minimal image).  LP: #1829333.
 
  -- Balint Reczey <rbalint@ubuntu.com>  Fri, 24 May 2019 12:42:50 +0200
 
