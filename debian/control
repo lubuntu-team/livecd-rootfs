@@ -11,6 +11,7 @@ Architecture: any
 Depends: ${misc:Depends},
          android-tools-fsutils [armhf],
          apt-utils,
+         attr,
          debootstrap,
          distro-info,
          dosfstools,
