@@ -1,3 +1,9 @@
+livecd-rootfs (2.408.46) xenial; urgency=medium
+
+  * Build WSL rootfs tarball (LP: #1827930)
+
+ -- Balint Reczey <rbalint@ubuntu.com>  Fri, 17 May 2019 15:14:38 +0200
+
 livecd-rootfs (2.408.45) xenial; urgency=medium
 
   * Drop /etc/update-motd.d/51-cloudguest from cloud images; this is not
