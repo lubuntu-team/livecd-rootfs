@@ -1,6 +1,6 @@
 livecd-rootfs (2.408.47) UNRELEASED; urgency=medium
 
-  * ubuntu-cpc: parallel builds
+  * ubuntu-cpc: parallel builds (LP: #1829938)
     - Inject a proxy into the build providing a snapshot view of the package repo.
     - Use series files with dependency handling to generate hook symlinks dynamically
   * ubuntu-cpc: Don't ignore failures to find a base VMDK for OVAs
