@@ -1,9 +1,10 @@
-livecd-rootfs (2.578.3) UNRELEASED; urgency=medium
+livecd-rootfs (2.578.3) disco; urgency=medium
 
+  [ Robert C Jennings ]
   * ubuntu-cpc: Ensure base disk image is the same between all build targets
     (LP: #1827426)
 
- -- Robert C Jennings <robert.jennings@canonical.com>  Thu, 02 May 2019 16:02:10 -0500
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Tue, 21 May 2019 15:19:34 -0700
 
 livecd-rootfs (2.578.2) disco; urgency=medium
 
