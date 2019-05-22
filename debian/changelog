@@ -1,12 +1,13 @@
-livecd-rootfs (2.408.47) UNRELEASED; urgency=medium
+livecd-rootfs (2.408.47) xenial; urgency=medium
 
+  [ Robert C Jennings ]
   * ubuntu-cpc: parallel builds (LP: #1829938)
     - Inject a proxy into the build providing a snapshot view of the package repo.
     - Use series files with dependency handling to generate hook symlinks dynamically
   * ubuntu-cpc: Don't ignore failures to find a base VMDK for OVAs
     - Backport of c1a36eb3cdd07b5180d7f9cfe1748fcdb21261c7
 
- -- Robert C Jennings <robert.jennings@canonical.com>  Wed, 24 Apr 2019 21:20:25 -0500
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Tue, 21 May 2019 17:19:42 -0700
 
 livecd-rootfs (2.408.46) xenial; urgency=medium
 
