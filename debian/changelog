@@ -1,8 +1,9 @@
-livecd-rootfs (2.578.4) UNRELEASED; urgency=medium
+livecd-rootfs (2.578.4) disco; urgency=medium
 
+  [ Robert C Jennings ]
   * magic-proxy: Send headers on error (LP: #1829944)
 
- -- Robert C Jennings <robert.jennings@canonical.com>  Tue, 21 May 2019 19:22:13 -0500
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Thu, 23 May 2019 13:33:40 -0700
 
 livecd-rootfs (2.578.3) disco; urgency=medium
 
