@@ -1,3 +1,11 @@
+livecd-rootfs (2.408.48) UNRELEASED; urgency=medium
+
+  * Do not depend on ubuntu-image on powerpc as it is not a supported platform
+    for building ubuntu-core images (and we don't build classic preinstalled
+    images on xenial).  (LP: #1830823)
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Wed, 29 May 2019 18:50:31 +0200
+
 livecd-rootfs (2.408.47) xenial; urgency=medium
 
   [ Robert C Jennings ]
