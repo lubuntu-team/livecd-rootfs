@@ -1,4 +1,4 @@
-livecd-rootfs (2.408.48) UNRELEASED; urgency=medium
+livecd-rootfs (2.408.48) xenial; urgency=medium
 
   * Do not depend on ubuntu-image on powerpc as it is not a supported platform
     for building ubuntu-core images (and we don't build classic preinstalled
