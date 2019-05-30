@@ -1,3 +1,10 @@
+livecd-rootfs (2.408.49) UNRELEASED; urgency=medium
+
+  * Add explicit dependency on python3-yaml, which is used in the code but
+    was previously pulled in indirectly via ubuntu-image.  LP: #1830823.
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Thu, 30 May 2019 14:17:45 -0700
+
 livecd-rootfs (2.408.48) xenial; urgency=medium
 
   * Do not depend on ubuntu-image on powerpc as it is not a supported platform
