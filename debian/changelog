@@ -1,4 +1,4 @@
-livecd-rootfs (2.578.5) UNRELEASED; urgency=medium
+livecd-rootfs (2.578.5) disco; urgency=medium
 
   [ Balint Reczey ]
   * Build WSL rootfs tarball (LP: #1827930)
@@ -8,7 +8,7 @@ livecd-rootfs (2.578.5) UNRELEASED; urgency=medium
     goes unused when there is no human console user (and we already don't
     have the locales themselves present on a minimal image).  LP: #1829333.
 
- -- Balint Reczey <rbalint@ubuntu.com>  Fri, 24 May 2019 12:42:50 +0200
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Thu, 30 May 2019 12:13:55 -0700
 
 livecd-rootfs (2.578.4) disco; urgency=medium
 
