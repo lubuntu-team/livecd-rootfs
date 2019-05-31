@@ -1,9 +1,9 @@
-livecd-rootfs (2.408.49) UNRELEASED; urgency=medium
+livecd-rootfs (2.408.49) xenial; urgency=medium
 
   * Add explicit dependency on python3-yaml, which is used in the code but
     was previously pulled in indirectly via ubuntu-image.  LP: #1830823.
 
- -- Steve Langasek <steve.langasek@ubuntu.com>  Thu, 30 May 2019 14:17:45 -0700
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Thu, 30 May 2019 14:20:30 -0700
 
 livecd-rootfs (2.408.48) xenial; urgency=medium
 
