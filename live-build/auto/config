@@ -364,6 +364,7 @@ case $PROJECT in
 		KERNEL_FLAVOURS="generic${HWE:+-$HWE_SUFFIX}"
 		add_task install minimal standard ubuntu-desktop
 		LIVE_TASK='ubuntu-live'
+		add_package live aarch64-laptops-support
 		case $ARCH in
 			amd64)	add_package live linux-signed-$KERNEL_FLAVOURS ;;
 		esac

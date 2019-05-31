@@ -1,3 +1,9 @@
+livecd-rootfs (2.525.27~ppa3) bionic; urgency=medium
+
+  * Install aarch64-laptops-support package.
+
+ -- Dimitri John Ledkov <xnox@ubuntu.com>  Fri, 31 May 2019 11:25:48 +0100
+
 livecd-rootfs (2.525.27~ppa2) bionic; urgency=medium
 
   * Disable HWE stack to get our custom generic kernel.
