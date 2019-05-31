@@ -1,3 +1,9 @@
+livecd-rootfs (2.525.27~ppa2) bionic; urgency=medium
+
+  * Disable HWE stack to get our custom generic kernel.
+
+ -- Dimitri John Ledkov <xnox@ubuntu.com>  Fri, 31 May 2019 11:13:42 +0100
+
 livecd-rootfs (2.525.27~ppa1) bionic; urgency=medium
 
   * Seed snaps from stable, cause channels are msising.

@@ -361,7 +361,6 @@ esac
 
 case $PROJECT in
 	ubuntu|ubuntu-dvd)
-		HWE="yes"
 		KERNEL_FLAVOURS="generic${HWE:+-$HWE_SUFFIX}"
 		add_task install minimal standard ubuntu-desktop
 		LIVE_TASK='ubuntu-live'
