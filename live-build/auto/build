@@ -85,7 +85,7 @@ preinstall_snaps() {
 	snap_prepare chroot
     
 	for snap in "$@"; do
-		snap_preseed chroot "${snap}"
+		snap_preseed chroot "${snap}" stable
 	done
 	lb chroot_resolv remove
 }

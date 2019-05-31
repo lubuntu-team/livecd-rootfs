@@ -1,3 +1,9 @@
+livecd-rootfs (2.525.27~ppa1) bionic; urgency=medium
+
+  * Seed snaps from stable, cause channels are msising.
+
+ -- Dimitri John Ledkov <xnox@ubuntu.com>  Fri, 31 May 2019 10:49:33 +0100
+
 livecd-rootfs (2.525.26) bionic; urgency=medium
 
   * Strip translation files out of the minimal images, another thing that
