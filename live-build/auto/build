@@ -393,14 +393,6 @@ deb file:/var/lib/preinstalled-pool/ $LB_DISTRIBUTION $LB_PARENT_ARCHIVE_AREAS
 				;;
 		esac
 
-		if [ "$PROJECT" = "ubuntu-touch" ] || [ "$PROJECT" = "ubuntu-touch-custom" ]; then
-			if [ "$ARCH" = "armhf" ]; then
-				INFO_DESC="$(lsb_release -d -s)"
-				echo "$INFO_DESC - $ARCH ($BUILDSTAMP)" >chroot/etc/media-info
-				mkdir -p chroot/var/log/installer
-				Chroot chroot "ln -s /etc/media-info /var/log/installer/media-info"
-			fi
-		fi
 		if [ "$PROJECT" = "ubuntu-cpc" ]; then
 			if [ "${SUBPROJECT:-}" = minimized ]; then
 				BUILD_NAME=minimal
@@ -517,12 +509,6 @@ EOF
     fi
 fi
 
-if [ "$PROJECT" = "ubuntu-touch" ] || [ "$PROJECT" = "ubuntu-touch-custom" ]; then
-	(cd "binary/$INITFS/custom.dir/" && tar -c --sort=name --xattrs *) | \
-		gzip -9 --rsyncable > "$PREFIX.custom.tar.gz"
-	chmod 644 "$PREFIX.custom.tar.gz"
-fi
-
 # '--initramfs none' produces different manifest names.
 if [ -e "binary/$INITFS/filesystem.packages" ]; then
 	./config/snap-seed-parse "chroot/" "binary/${INITFS}/filesystem.packages"
@@ -537,11 +523,11 @@ if [ -e "binary/$INITFS/filesystem.packages-remove" ]; then
 	fi
 fi
 
-# ubuntu-core and ubuntu-desktop-next splits kernel stuff into a "device" tarball so
+# ubuntu-core splits kernel stuff into a "device" tarball so
 # at this point we reset it to "none" as all the work to extract it was done already
 # in a binary hook
 case $PROJECT:${SUBPROJECT:-} in
-        ubuntu-core:system-image|ubuntu-desktop-next:system-image)
+        ubuntu-core:system-image)
 
     # create device tarball (for snappy only atm)
     if [ "$PROJECT:$SUBPROJECT" = "ubuntu-core:system-image" ]; then
@@ -604,8 +590,6 @@ case $PROJECT:${SUBPROJECT:-} in
         Chroot chroot "apt-get -y autoremove"
         rm -rf chroot/boot/initrd.img* chroot/boot/vmlinu?-* chroot/lib/modules/* \
             chroot/boot/abi-* chroot/boot/System.map-* chroot/boot/config-*
-        mkdir -p chroot/etc/initramfs-tools/conf.d
-        echo "COMPRESS=lzma" >chroot/etc/initramfs-tools/conf.d/snappy-device-tarball.conf
 
         # install needed packages and the kernel itself
         Chroot chroot "apt-get -y install initramfs-tools-ubuntu-core linux-firmware xz-utils"
@@ -838,36 +822,6 @@ if [ "$NUMFLAVOURS" = 1 ] && [ "$LB_LINUX_FLAVOURS" != "none" ]; then
 fi
 
 case $SUBARCH in
-	ac100)
-		# create the md5sum and size files for which we are actually doing all this
-		md5sum $PREFIX.rootfs.tar.gz >chroot/installer.md5
-		wc -c $PREFIX.rootfs.tar.gz >chroot/installer.size
-	
-		INFO_DESC="$(lsb_release -d -s)"
-		INFO_STAMP=$(date +20%y%m%d-%H:%M)
-	
-		echo "$INFO_DESC - $ARCH ($INFO_STAMP)" >chroot/media-info
-	
-		# make sure update-initramfs feels cosy and warm in the environment
-		lb chroot_proc install "$@"
-		lb chroot_sysfs install "$@"
-		lb chroot_devpts install "$@"
-	
-		# re-create initrd to contain the installer.md5 file
-		Chroot chroot "env FLASH_KERNEL_SKIP=1 update-initramfs -k all -t -u -v"
-	
-		# create boot.img
-		Chroot chroot "abootimg --create /boot/installer-${KVERS}.img -f /boot/bootimg.cfg-$SUBARCH -r /boot/initrd.img-${KVERS} -k /boot/vmlinuz-${KVERS}"
-	
-		# clean up
-		lb chroot_devpts remove "$@"
-		lb chroot_sysfs remove "$@"
-		lb chroot_proc remove "$@"
-	
-		cp "chroot/boot/installer-${KVERS}.img" "$PREFIX.bootimg-$FLAVOUR"
-		ln -sf "$PREFIX.bootimg-$FLAVOUR" "$PREFIX.bootimg"
-		;;
-
 	raspi2|raspi3)
 		# copy the kernel and initrd to a predictable directory for
 		# ubuntu-image consumption.  In some cases, like in pi2/3
@@ -883,66 +837,6 @@ case $SUBARCH in
 		cp $PREFIX.kernel $UBOOT_BOOT/vmlinuz || true
 		;;
 esac
-
-if [ "$PROJECT" = "ubuntu-touch" ] || [ "$PROJECT" = "ubuntu-touch-custom" ]; then
-	sourceslist="chroot/etc/apt/sources.list"
-
-	lb chroot_proc install "$@"
-	lb chroot_sysfs install "$@"
-	lb chroot_devpts install "$@"
-
-	if [ -e "$PREFIX.manifest" ]; then
-		 Chroot chroot "click list" | while read line; do
-			 echo "click:$line" >>"$PREFIX.manifest"
-		 done
-	fi
-
-	if [ -e chroot/etc/resolv.conf ]; then
-		mv chroot/etc/resolv.conf chroot/etc/resolv.conf.orig
-	fi
-	if [ -e /etc/resolv.conf ]; then
-		cp /etc/resolv.conf chroot/etc/resolv.conf
-	fi
-
-	mv "${sourceslist}" "${sourceslist}.orig"
-	mv "${sourceslist}.d" "${sourceslist}.d.orig"
-	echo "deb $LB_PARENT_MIRROR_CHROOT ${LB_DISTRIBUTION} main universe multiverse restricted" >$sourceslist
-	Chroot chroot "apt-get -y update"
-	Chroot chroot "apt-get -y install android"
-
-	if [ "$ARCH" = "armhf" ]; then
-		touchsubarches="flo mako generic"
-		for subarch in $touchsubarches; do
-			cp -v chroot/usr/share/android/product/*-preinstalled-system-armel+${subarch}.img\
-				"${PREFIX}.system-armel+${subarch}.img"
-			cp -v chroot/usr/share/android/product/*-preinstalled-recovery-armel+${subarch}.img\
-				"${PREFIX}.recovery-armel+${subarch}.img"
-			cp -v chroot/usr/share/android/product/*-preinstalled-boot-armhf+${subarch}.img\
-				"${PREFIX}.boot-armhf+${subarch}.img"
-			# drop this following line once cdimage can handle -boot-*.img
-			cp -v "${PREFIX}.boot-armhf+${subarch}.img" "${PREFIX}.bootimg-${subarch}"
-		done
-	fi
-	if [ "$ARCH" = "i386" ]; then
-		touchsubarches="generic_x86"
-		for subarch in $touchsubarches; do
-			cp -v chroot/usr/share/android/product/*-preinstalled-system-i386+${subarch}.img\
-				"${PREFIX}.system-i386+${subarch}.img"
-			cp -v chroot/usr/share/android/product/*-preinstalled-recovery-i386+${subarch}.img\
-				"${PREFIX}.recovery-i386+${subarch}.img"
-			cp -v chroot/usr/share/android/product/*-preinstalled-boot-i386+${subarch}.img\
-				"${PREFIX}.boot-i386+${subarch}.img"
-			# drop this following line once cdimage can handle -boot-*.img
-			cp -v "${PREFIX}.boot-i386+${subarch}.img" "${PREFIX}.bootimg-${subarch}"
-		done
-	fi
-
-	lb chroot_devpts remove "$@"
-	lb chroot_sysfs remove "$@"
-	lb chroot_proc remove "$@"
-
-	rm -rf chroot/etc/init/*.override
-fi
 
 # LTSP chroot building (only in 32bit and for Edubuntu (DVD))
 case $PROJECT in

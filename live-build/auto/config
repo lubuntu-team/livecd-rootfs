@@ -302,23 +302,7 @@ case $IMAGEFORMAT in
 	ext2|ext3|ext4)
 		OPTS="${OPTS:+$OPTS }--initramfs none --chroot-filesystem $IMAGEFORMAT"
 		PREINSTALLED=true
-		case ${SUBPROJECT:-} in
-			wubi)
-				add_package install lupin-support
-				COMPONENTS='main restricted universe multiverse'
-				;;
-			*)
-				case $PROJECT in
-					ubuntu-cpc)
-						;;
-					*)
-						add_package live jasper
-						;;
-				esac
-				;;
-		esac
 		;;
-
 	plain)
 		case $PROJECT:${SUBPROJECT:-} in
 			ubuntu-server:live)
@@ -421,7 +405,7 @@ case $IMAGEFORMAT in
 		;;
 	*)
 		case $PROJECT in
-			ubuntu-server|ubuntu-touch|ubuntu-touch-custom)
+			ubuntu-server)
 				;;
 			ubuntu)
 				if [ "$SUBPROJECT" != "canary" ]; then
@@ -459,7 +443,7 @@ if [ "$PREINSTALLED" = "true" ]; then
 		ubuntu-server)
 			add_package live oem-config-debconf ubiquity-frontend-debconf
 			;;
-		ubuntu-core|ubuntu-base|base|ubuntu-touch|ubuntu-touch-custom|ubuntu-cpc|ubuntu-desktop-next)
+		ubuntu-core|ubuntu-base|base|ubuntu-cpc)
 			;;
 		*)
 			add_package live oem-config-gtk ubiquity-frontend-gtk
@@ -522,12 +506,6 @@ if ! [ -e config/germinate-output/structure ]; then
 fi
 
 case $PROJECT in
-        base|edubuntu|edubuntu-dvd|kubuntu|kubuntu-active|kubuntu-dvd|kubuntu-plasma5|lubuntu|mythbuntu|ubuntu|ubuntu-budgie|ubuntu-desktop-next|ubuntu-dvd|ubuntu-gnome|ubuntu-mate|ubuntu-netbook|ubuntukylin|ubuntustudio-dvd|xubuntu)
-		INITRAMFS_COMPRESSION="lzma"
-		;;
-esac
-
-case $PROJECT in
 	ubuntu|ubuntu-dvd)
 
 		case ${SUBPROJECT:-} in
@@ -557,25 +535,6 @@ case $PROJECT in
 				esac
 				;;
 		esac
-		;;
-
-	ubuntu-desktop-next)
-		add_task install minimal standard ubuntu-desktop-next ubuntu-sdk-libs
-		COMPONENTS='main restricted universe'
-		LIVE_TASK='ubuntu-touch-live'
-		KERNEL_FLAVOURS=generic
-		case $ARCH in
-			amd64)	add_package live linux-signed-generic ;;
-		esac
-
-		# system image snappy desktop next image
-		# mvo: This is for cron.daily-preinstalled
-		#      CDIMAGE_PREINSTALLED is not passed from build.py
-		#      and PREINSTALLED means something different. So
-		#      we use SUBPROJECT to pass on the information
-		if [ "${SUBPROJECT:-}" = "system-image" ]; then
-			OPTS="${OPTS:+$OPTS }--linux-packages=linux-image"
-		fi
 		;;
 
 	kubuntu|kubuntu-dvd)
@@ -777,44 +736,6 @@ case $PROJECT in
 		OPTS="${OPTS:+$OPTS }--bootstrap-flavour=minimal"
 		;;
 
-	ubuntu-touch|ubuntu-touch-custom)
-		HINTS="packagekit ubuntu-system-settings"
-		case $ARCH in
-		    amd64|i386)
-			HINTS="$HINTS qml-module-ubuntu-components-gles unity8"
-			;;
-		esac
-		add_package install ubuntu-minimal ubuntu-touch $HINTS
-
-		COMPONENTS='main restricted universe'
-		BOOTAPPEND_LIVE='hostname=ubuntu-phablet username=ubuntu'
-		export LB_BOOTSTRAP_INCLUDE='apt-transport-https gnupg'
-		OPTS="${OPTS:+$OPTS }--apt-recommends false"
-		OPTS="${OPTS:+$OPTS }--compression gzip"
-		OPTS="${OPTS:+$OPTS }--system normal"
-		OPTS="${OPTS:+$OPTS }--zsync false"
-
-		# TODO cjwatson 2014-07-17: This is a bit of an abuse of
-		# SUBPROJECT, but it's a handy thing that launchpad-buildd
-		# already passes through to us that we weren't otherwise
-		# using here.
-		case ${SUBPROJECT:-} in
-		    ubuntu-rtm/dogfood)
-			MIRROR=http://derived-archive.dogfood.content.paddev.net/ubuntu-rtm/
-			OPTS="${OPTS:+$OPTS }--apt-secure false"
-			OPTS="${OPTS:+$OPTS }--mirror-chroot-security ${MIRROR}"
-			OPTS="${OPTS:+$OPTS }--mirror-binary-security ${MIRROR}"
-			OPTS="${OPTS:+$OPTS }--mirror-binary ${MIRROR}"
-			;;
-		    ubuntu-rtm)
-			MIRROR=http://derived.archive.canonical.com/ubuntu-rtm/
-			OPTS="${OPTS:+$OPTS }--mirror-chroot-security ${MIRROR}"
-			OPTS="${OPTS:+$OPTS }--mirror-binary-security ${MIRROR}"
-			OPTS="${OPTS:+$OPTS }--mirror-binary ${MIRROR}"
-			;;
-		esac
-		;;
-
 	ubuntu-cpc)
 		if [ "${SUBPROJECT:-}" = minimized ]; then
 			add_task install cloud-image
@@ -959,39 +880,9 @@ case $PROJECT in
 esac
 
 case $ARCH in
-	armel|armhf|arm64)
+	armhf|arm64)
 		KERNEL_FLAVOURS="${SUBARCH:-$KERNEL_FLAVOURS}"
 		case $SUBARCH in
-			dove)
-				BINARY_REMOVE_LINUX=false
-				;;
-			omap)
-				add_package install u-boot-linaro-omap3-beagle u-boot-tools
-				BINARY_REMOVE_LINUX=false
-				;;
-			omap4)
-				case $PROJECT in
-					ubuntu-server|ubuntu-core|base)
-						add_package install u-boot-linaro-omap4-panda u-boot-tools
-						;;
-					*)
-						add_package install u-boot-linaro-omap4-panda u-boot-tools pvr-omap4
-						;;
-				esac
-				BINARY_REMOVE_LINUX=false
-				;;
-			mx5)
-				COMPONENTS='main restricted universe'
-				KERNEL_FLAVOURS=linaro-lt-mx5
-				add_package install flash-kernel u-boot-linaro-mx53loco u-boot-tools
-				BINARY_REMOVE_LINUX=false
-				;;
-			ac100)
-				COMPONENTS='main restricted universe multiverse'
-				add_package install zram-config abootimg
-				add_package live ac100-tarball-installer
-				BINARY_REMOVE_LINUX=false
-				;;
 			raspi2)
 				COMPONENTS='main restricted universe multiverse'
 				add_package install linux-firmware-raspi2 u-boot-rpi flash-kernel u-boot-tools wpasupplicant
@@ -1009,7 +900,7 @@ case $ARCH in
 esac
 
 case $PROJECT:${SUBPROJECT:-} in
-	ubuntu-server:*|ubuntu-base:*|ubuntu-touch:*|ubuntu-touch-custom:*)
+	ubuntu-server:*|ubuntu-base:*)
 		OPTS="${OPTS:+$OPTS }--linux-packages=none --initramfs=none"
 		KERNEL_FLAVOURS=none
 		BINARY_REMOVE_LINUX=false
@@ -1027,12 +918,6 @@ case $PROJECT in
 	# if any flavours want to strip .pyc files from their live images, add them here
 	_)
 		add_chroot_hook remove-python-py
-		;;
-esac
-
-case ${SUBPROJECT:-} in
-	wubi)
-		add_binary_hook build-wubildr
 		;;
 esac
 
@@ -1207,7 +1092,7 @@ EOF
 		fi
 		;;
 
-	ubuntu-touch:*|ubuntu-touch-custom:*|ubuntu-core:system-image|ubuntu-desktop-next:system-image|ubuntu-cpc:*|ubuntu-server:live)
+	ubuntu-core:system-image|ubuntu-cpc:*|ubuntu-server:live)
 		cp -af /usr/share/livecd-rootfs/live-build/${PROJECT}/* \
 			config/
 
@@ -1303,22 +1188,6 @@ EOF
 		      config/archives/extra-ppas.pref.binary
 	fi
 fi
-
-case ${SUBPROJECT:-} in
-    ubuntu-rtm|ubuntu-rtm/*)
-	# debootstrap doesn't know about ubuntu-rtm series directly.  Rather
-	# than having to teach it, we employ a few hacks to make it use the
-	# Ubuntu script instead.
-	mkdir -p config/fake_debootstrap_dir/scripts
-	ln -s /usr/share/debootstrap/devices.tar.gz \
-		config/fake_debootstrap_dir/
-	ln -s /usr/share/debootstrap/functions config/fake_debootstrap_dir/
-	ln -s /usr/share/debootstrap/scripts/gutsy \
-		"config/fake_debootstrap_dir/scripts/$SUITE"
-	echo 'export DEBOOTSTRAP_DIR="$PWD/config/fake_debootstrap_dir"' \
-		>> config/bootstrap
-	;;
-esac
 
 if [ "$PREINSTALLED" = "true" ]; then
 	if [ -n "$PREINSTALL_POOL_SEEDS" ]; then
