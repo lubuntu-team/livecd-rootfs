@@ -1,4 +1,4 @@
-livecd-rootfs (2.525.27) UNRELEASED; urgency=medium
+livecd-rootfs (2.525.27) bionic; urgency=medium
 
   * Backport improvements to snap seeding from trunk.  LP: #1831675.
 
@@ -8,7 +8,7 @@ livecd-rootfs (2.525.27) UNRELEASED; urgency=medium
   * Detect which core snaps are required and install them on-the-fly.
   * If image has core18 snaps only, automatically preseed snapd.
 
- -- Steve Langasek <steve.langasek@ubuntu.com>  Wed,  5 Jun 2019 16:35:15 +0700
+ -- Dimitri John Ledkov <xnox@ubuntu.com>  Mon, 10 Jun 2019 18:46:16 +0100
 
 livecd-rootfs (2.525.26) bionic; urgency=medium
 
