@@ -1,3 +1,13 @@
+livecd-rootfs (2.594) eoan; urgency=medium
+
+  [ David Krauser ]
+  * Add support for HyperV Gallery images
+
+  [ Patrick Viafore ]
+  * Add support for linux-kvm images
+
+ -- Tiago Stürmer Daitx <tiago.daitx@ubuntu.com>  Wed, 12 Jun 2019 17:47:43 +0000
+
 livecd-rootfs (2.593) eoan; urgency=medium
 
   * Use boot-partition for cloud-init seed on RPi

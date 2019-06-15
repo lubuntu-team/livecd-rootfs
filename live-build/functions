@@ -1,7 +1,7 @@
 # vi: ts=4 expandtab syntax=sh
 
-#imagesize=${IMAGE_SIZE:-$((2252*1024**2))}  # 2.2G (the current size we ship)
-imagesize=${IMAGE_SIZE:-2361393152}  # 2.2G (the current size we ship)
+# default imagesize = 2252*1024**2 = 2.2G (the current size we ship)
+imagesize=${IMAGE_SIZE:-2361393152}
 fs_label="${FS_LABEL:-rootfs}"
 
 rootfs_dev_mapper=
@@ -876,4 +876,20 @@ is_live_layer () {
         return 0
     done
     return 1
+}
+
+replace_kernel () { 
+    mountpoint=$1
+    new_kernel=$2
+
+    # Install custom kernel (N.B. the trailing + retains linux-base during this
+    # operation)
+    env DEBIAN_FRONTEND=noninteractive chroot "${mountpoint}" apt-get \
+        remove --purge --assume-yes '^linux-.*' 'linux-base+'
+    env DEBIAN_FRONTEND=noninteractive chroot "${mountpoint}" apt-get \
+        update --assume-yes
+    env DEBIAN_FRONTEND=noninteractive chroot "${mountpoint}" apt-get \
+        install --assume-yes "${new_kernel}" 
+    env DEBIAN_FRONTEND=noninteractive chroot "${mountpoint}" apt-get \
+        autoremove --purge --assume-yes
 }
