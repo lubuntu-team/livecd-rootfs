@@ -1,3 +1,15 @@
+livecd-rootfs (2.525.27) bionic; urgency=medium
+
+  * Backport improvements to snap seeding from trunk.  LP: #1831675.
+
+  [ Tobias Koch ]
+  * Replace "snap download" with tool that uses snap store's coherence
+    feature.
+  * Detect which core snaps are required and install them on-the-fly.
+  * If image has core18 snaps only, automatically preseed snapd.
+
+ -- Dimitri John Ledkov <xnox@ubuntu.com>  Mon, 10 Jun 2019 18:46:16 +0100
+
 livecd-rootfs (2.525.26) bionic; urgency=medium
 
   * Strip translation files out of the minimal images, another thing that
