@@ -1,3 +1,21 @@
+livecd-rootfs (2.597) eoan; urgency=medium
+
+  * Install s390-tools-zkey into the installer layer for zkey support in
+    subiquity.
+  * Unbreak cpc/server builds, by ensuring that includes are copied with
+    archived symlinks, and only hooks resolve symlinks when getting
+    copied.
+
+ -- Dimitri John Ledkov <xnox@ubuntu.com>  Thu, 20 Jun 2019 23:25:13 +0100
+
+livecd-rootfs (2.596) eoan; urgency=medium
+
+  * Add tzdata to buildd images.  It isn't strictly build-essential, but it
+    has traditionally been present in both Debian and Ubuntu, and a variety
+    of things fail without it.
+
+ -- Colin Watson <cjwatson@ubuntu.com>  Wed, 19 Jun 2019 23:21:56 +0100
+
 livecd-rootfs (2.595) eoan; urgency=medium
 
   * Remove dangling symlink
