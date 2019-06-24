@@ -402,6 +402,10 @@ case $IMAGEFORMAT in
 
 	none)
 		OPTS="${OPTS:+$OPTS }--chroot-filesystem $IMAGEFORMAT"
+		# IMAGEFORMAT=none is used for our ubuntu-image preinstalled
+		# image rootfs builds.  Make sure the sources.list has universe
+		# enabled for those images as well.
+		touch config/universe-enabled
 		;;
 	*)
 		case $PROJECT in
