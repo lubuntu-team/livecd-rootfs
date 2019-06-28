@@ -131,7 +131,7 @@ case $arch in
 	# ARM images are special
 	armhf|arm64)
 		# Dirty hack because SUBARCH doesn't exist when running chroot hooks,
-		# and we don't want raspi2 images to depend on a cloud data source:
+		# and we don't want raspi images to depend on a cloud data source:
 		if _xchroot "${rootd}" dpkg -l linux-image-raspi2 2>/dev/null | grep -q '^.i'; then
 			fake_cloud_init
 		fi

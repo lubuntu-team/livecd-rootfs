@@ -1,3 +1,10 @@
+livecd-rootfs (2.599) UNRELEASED; urgency=medium
+
+  * Get rid of the deprecated raspi2 preinstalled image.  Switch to using the
+    raspi subarch instead of raspi3 for our generic Pi images.
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Fri, 28 Jun 2019 10:42:49 +0200
+
 livecd-rootfs (2.598) eoan; urgency=medium
 
   * Change minimize-manual to read package section from version instead

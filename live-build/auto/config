@@ -279,8 +279,8 @@ _get_live_passes ()
 if [ -z "${IMAGEFORMAT:-}" ]; then
 	case $PROJECT:${SUBPROJECT:-} in
 		ubuntu-cpc:*|ubuntu:desktop-preinstalled)
-			if [ "$SUBARCH" = "raspi3" ]; then
-				# For now only raspi3, but others are soon to follow
+			if [ "$SUBARCH" = "raspi" ]; then
+				# For now only raspi, but others are soon to follow
 				IMAGEFORMAT=ubuntu-image
 			else
 				IMAGEFORMAT=ext4
@@ -332,6 +332,11 @@ case $IMAGEFORMAT in
 				MODEL=pi3-arm64 ;;
 			armhf+cm3)
 				MODEL=cm3 ;;
+			armhf+raspi|arm64+raspi)
+				# Generic pi image - currently only for classic.  The resulting
+				# model name is 'pi3' temporarily, will be switched to pi once
+				# we merge the core and classic gadget into one.
+				MODEL=pi3
 			*)
 				echo "Model $ARCH+${SUBARCH:-} unknown to livecd-rootfs" >&2
 				exit 1
@@ -893,12 +898,7 @@ case $ARCH in
 	armhf|arm64)
 		KERNEL_FLAVOURS="${SUBARCH:-$KERNEL_FLAVOURS}"
 		case $SUBARCH in
-			raspi2)
-				COMPONENTS='main restricted universe multiverse'
-				add_package install linux-firmware-raspi2 u-boot-rpi flash-kernel u-boot-tools wpasupplicant
-				BINARY_REMOVE_LINUX=false
-				;;
-			raspi3)
+			raspi)
 				COMPONENTS='main restricted universe multiverse'
 				KERNEL_FLAVOURS=raspi2
 				add_package install linux-firmware-raspi2 u-boot-rpi flash-kernel u-boot-tools wpasupplicant
@@ -976,12 +976,12 @@ echo "SUBPROJECT=\"${SUBPROJECT:-}\"" >> config/binary
 echo "LB_DISTRIBUTION=\"$SUITE\"" >> config/binary
 
 case $ARCH+$SUBARCH in
-	armhf+raspi2|armhf+raspi3|arm64+raspi3)
+	armhf+raspi|arm64+raspi)
 		cat > config/hooks/01-firmware-directory.chroot_early <<EOF
 #!/bin/sh -ex
 mkdir -p /boot/firmware
 EOF
-		cat > config/hooks/999-raspi2-fixes.chroot <<EOF
+		cat > config/hooks/999-raspi-fixes.chroot <<EOF
 #!/bin/sh -ex
 cat >> /etc/fstab << EOM
 LABEL=system-boot       /boot/firmware  vfat    defaults        0       1
