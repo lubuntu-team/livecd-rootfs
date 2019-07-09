@@ -467,6 +467,7 @@ case $PROJECT in
 			# no Task: header yet
 			add_package install snapd
 			add_package install ubuntu-core-snapd-units
+			add_package install dmsetup
 
 			# no minimal as we want to be really minimal
 			#add_task install minimal

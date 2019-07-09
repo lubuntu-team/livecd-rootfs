@@ -1,3 +1,9 @@
+livecd-rootfs (2.408.51) UNRELEASED; urgency=medium
+
+  * Add dmsetup to the core and core16 snaps.  LP: #1835846.
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Mon, 08 Jul 2019 16:39:24 -0700
+
 livecd-rootfs (2.408.50) xenial; urgency=medium
 
   * Actually, do not depend on snapd on powerpc as well.  Snaps are not
