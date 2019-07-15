@@ -1,3 +1,11 @@
+livecd-rootfs (2.578.7) disco; urgency=medium
+
+  [ Tobias Koch ]
+  * Add retry logic to snap-tool to make downloads more resilient.
+    (LP: #1837871)
+
+ -- Tobias Koch <tobias.koch@canonical.com>  Mon, 26 Aug 2019 13:36:36 +0200
+
 livecd-rootfs (2.578.6) disco; urgency=medium
 
   [ Tobias Koch ]
