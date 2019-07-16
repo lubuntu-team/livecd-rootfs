@@ -4,6 +4,13 @@ livecd-rootfs (2.578.6) UNRELEASED; urgency=medium
   * Do proper error checking when calling snap-tool info to determine
     the base of a snap. (LP: #1828500)
 
+  [ Michael Vogt ]
+  * Run "snap debug validate-seed" during preseeding to do basic validation of
+
+  [ Iain Lane ]
+  * Seed core for non minimized builds, as it is still required (LP:
+    #1836594).
+
  -- Tobias Koch <tobias.koch@canonical.com>  Tue, 16 Jul 2019 11:27:10 +0200
 
 livecd-rootfs (2.578.5) disco; urgency=medium
