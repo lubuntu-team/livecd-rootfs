@@ -6,6 +6,7 @@ livecd-rootfs (2.525.28) bionic; urgency=medium
 
   [ Michael Vogt ]
   * Run "snap debug validate-seed" during preseeding to do basic validation of
+    the generated seed.yaml
 
   [ Iain Lane ]
   * Seed core for non minimized builds, as it is still required (LP:
