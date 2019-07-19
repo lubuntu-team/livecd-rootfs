@@ -1,3 +1,9 @@
+livecd-rootfs (2.525.30) UNRELEASED; urgency=medium
+
+  * ubuntu-cpc: Only produce explicitly specified artifacts (LP: #1837254)
+
+ -- Robert C Jennings <robert.jennings@canonical.com>  Mon, 26 Aug 2019 16:30:32 -0500
+
 livecd-rootfs (2.525.29) bionic; urgency=medium
 
   * Add retry logic to snap-tool to make downloads more resilient.
