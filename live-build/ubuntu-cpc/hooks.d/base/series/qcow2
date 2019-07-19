@@ -1,2 +1,5 @@
 depends disk-image
 base/qcow2-image.binary
+provides livecd.ubuntu-cpc.disk1.img
+provides livecd.ubuntu-cpc.uefi1.img
+provides livecd.ubuntu-cpc.disk1.img.xz
