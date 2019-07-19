@@ -1,3 +1,9 @@
+livecd-rootfs (2.578.8) UNRELEASED; urgency=medium
+
+  * ubuntu-cpc: Only produce explicitly specified artifacts (LP: #1837254)
+
+ -- Robert C Jennings <robert.jennings@canonical.com>  Mon, 26 Aug 2019 16:25:24 -0500
+
 livecd-rootfs (2.578.7) disco; urgency=medium
 
   [ Tobias Koch ]
