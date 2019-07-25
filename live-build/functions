@@ -445,11 +445,19 @@ _snap_preseed() {
             ;;
         *)
             # Determine if and what core snap is needed
-            local core_snap=$(/usr/share/livecd-rootfs/snap-tool info \
+            local snap_info
+
+            snap_info=$(/usr/share/livecd-rootfs/snap-tool info \
                 --cohort-key="${COHORT_KEY:-}" \
-                --channel="$CHANNEL" "$SNAP_NAME" | \
-                grep '^base:' | awk '{print $2}'
+                --channel="$CHANNEL" "${SNAP_NAME}" \
             )
+
+            if [ $? -ne 0 ]; then
+                echo "Failed to retrieve base of $SNAP_NAME!"
+                exit 1
+            fi
+
+            local core_snap=$(echo "$snap_info" | grep '^base:' | awk '{print $2}')
 
             # If $core_snap is not the empty string then SNAP itself is not a core
             # snap and we must additionally seed the core snap.
@@ -550,6 +558,12 @@ snap_prepare() {
     local snaps_dir="$seed_dir/snaps"
 
     snap_prepare_assertions "$CHROOT_ROOT" "$CUSTOM_BRAND_MODEL"
+
+    # ubuntu-cpc:minimized has its own special snap handling
+    if [ "$PROJECT:${SUBPROJECT:-}" != ubuntu-cpc:minimized ]; then
+        # Download the core snap
+        _snap_preseed "$CHROOT_ROOT" core stable
+    fi
 }
 
 snap_preseed() {
@@ -571,6 +585,15 @@ snap_preseed() {
             touch "$CHROOT_ROOT/var/lib/snapd/seed/.snapd-explicit-install-stamp"
             ;;
     esac
+
+
+    # Do basic validation of generated snapd seed.yaml, doing it here
+    # means we catch all the places(tm) that snaps are added but the
+    # downside is that each time a snap is added the seed must be valid,
+    # i.e. snaps with bases need to add bases first etc.
+    if [ -e chroot/var/lib/snapd/seed/seed.yaml ]; then
+        snap debug validate-seed "$CHROOT_ROOT/var/lib/snapd/seed/seed.yaml"
+    fi
 }
 
 is_live_layer () {

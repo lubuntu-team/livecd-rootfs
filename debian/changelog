@@ -1,3 +1,19 @@
+livecd-rootfs (2.525.28) bionic; urgency=medium
+
+  [ Tobias Koch ]
+  * Do proper error checking when calling snap-tool info to determine
+    the base of a snap. (LP: #1828500)
+
+  [ Michael Vogt ]
+  * Run "snap debug validate-seed" during preseeding to do basic validation of
+    the generated seed.yaml
+
+  [ Iain Lane ]
+  * Seed core for non minimized builds, as it is still required (LP:
+    #1836594).
+
+ -- Iain Lane <iain.lane@canonical.com>  Tue, 16 Jul 2019 13:20:18 +0100
+
 livecd-rootfs (2.525.27) bionic; urgency=medium
 
   * Backport improvements to snap seeding from trunk.  LP: #1831675.
