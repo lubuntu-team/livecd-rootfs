@@ -332,6 +332,8 @@ case $IMAGEFORMAT in
 				MODEL=pi3-arm64 ;;
 			armhf+cm3)
 				MODEL=cm3 ;;
+			armhf+imx6)
+				MODEL=nitrogen6x ;;
 			*)
 				echo "Model $ARCH+${SUBARCH:-} unknown to livecd-rootfs" >&2
 				exit 1
@@ -340,7 +342,6 @@ case $IMAGEFORMAT in
 
 		if [ $PROJECT = "ubuntu-core" ]; then
 			# snap-based core images
-			EXTRA_SNAPS=""
 
 			case $MODEL in
 				pc-amd64|pc-i386)
@@ -360,7 +361,7 @@ case $IMAGEFORMAT in
 
 			case "$ARCH+${SUBARCH:-}" in
 				amd64+kassel)
-					EXTRA_SNAPS="core bluez alsa-utils"
+					EXTRA_SNAPS="$EXTRA_SNAPS core bluez alsa-utils"
 					;;
 				*) ;;
 			esac
@@ -394,6 +395,9 @@ case $IMAGEFORMAT in
 
 			echo "Configured ubuntu-image for the following gadget model: $MODEL"
 		fi
+
+		# Save the model name used for building, mostly for any model-specific hook execution
+		echo "MODEL=$MODEL" >> config/common
 		# Fake finished configuration for lb build
 		mkdir -p .build
 		touch .build/config
@@ -902,6 +906,12 @@ case $ARCH in
 				COMPONENTS='main restricted universe multiverse'
 				KERNEL_FLAVOURS=raspi2
 				add_package install linux-firmware-raspi2 u-boot-rpi flash-kernel u-boot-tools wpasupplicant
+				BINARY_REMOVE_LINUX=false
+				;;
+			imx6)
+				COMPONENTS='main restricted universe multiverse'
+				KERNEL_FLAVOURS=generic
+				add_package install flash-kernel u-boot-tools wpasupplicant
 				BINARY_REMOVE_LINUX=false
 				;;
 
