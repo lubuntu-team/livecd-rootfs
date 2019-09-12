@@ -1,4 +1,4 @@
-livecd-rootfs (2.408.51) UNRELEASED; urgency=medium
+livecd-rootfs (2.408.51) xenial; urgency=medium
 
   * ubuntu-cpc: Only produce explicitly specified artifacts (LP: #1837254)
 
