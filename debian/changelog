@@ -1,4 +1,4 @@
-livecd-rootfs (2.525.30) UNRELEASED; urgency=medium
+livecd-rootfs (2.525.30) bionic; urgency=medium
 
   [ Robert C Jennings ]
   * ubuntu-cpc: Only produce explicitly specified artifacts (LP: #1837254)
