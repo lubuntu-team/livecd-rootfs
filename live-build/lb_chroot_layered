@@ -89,8 +89,9 @@ lb_chroot_install_snaps () {
 	snap_prepare chroot
 
 	while read snap; do
-		snap_preseed chroot "${snap}"
+		SNAP_NO_VALIDATE_SEED=1 snap_preseed chroot "${snap}"
 	done < $snaplist_file
+	snap_validate_seed chroot
 }
 
 lb_chroot_includes () {
@@ -239,7 +240,9 @@ create_chroot_pass () {
 	# layered mode is to create an initrd on each layer with a significant
 	# impact on image size (+30MB per layer). This is an issue even with
 	# update-initramfs disabled.
-	lb chroot_hacks ${*}
+	if $(is_live_layer $pass); then
+		lb chroot_hacks ${*}
+	fi
 
 	lb chroot_interactive ${*}
 
