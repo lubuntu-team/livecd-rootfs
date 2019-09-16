@@ -1,3 +1,27 @@
+livecd-rootfs (2.578.7) disco; urgency=medium
+
+  [ Tobias Koch ]
+  * Add retry logic to snap-tool to make downloads more resilient.
+    (LP: #1837871)
+
+ -- Tobias Koch <tobias.koch@canonical.com>  Mon, 26 Aug 2019 13:36:36 +0200
+
+livecd-rootfs (2.578.6) disco; urgency=medium
+
+  [ Tobias Koch ]
+  * Do proper error checking when calling snap-tool info to determine
+    the base of a snap. (LP: #1828500)
+
+  [ Michael Vogt ]
+  * Run "snap debug validate-seed" during preseeding to do basic validation of
+    the generated seed.yaml
+
+  [ Iain Lane ]
+  * Seed core for non minimized builds, as it is still required (LP:
+    #1836594).
+
+ -- Iain Lane <iain.lane@canonical.com>  Tue, 16 Jul 2019 13:20:52 +0100
+
 livecd-rootfs (2.578.5) disco; urgency=medium
 
   [ Balint Reczey ]
