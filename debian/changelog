@@ -1,3 +1,10 @@
+livecd-rootfs (2.408.52) UNRELEASED; urgency=medium
+
+  * Exclude makedev from buildd chroots, since it was historically excluded
+    and apparently breaks some builds (e.g. mir).
+
+ -- Colin Watson <cjwatson@ubuntu.com>  Tue, 17 Sep 2019 13:41:49 +0200
+
 livecd-rootfs (2.408.51) xenial; urgency=medium
 
   * ubuntu-cpc: Only produce explicitly specified artifacts (LP: #1837254)
