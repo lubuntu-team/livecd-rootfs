@@ -1,7 +1,7 @@
 livecd-rootfs (2.408.52) UNRELEASED; urgency=medium
 
   * Exclude makedev from buildd chroots, since it was historically excluded
-    and apparently breaks some builds (e.g. mir).
+    and apparently breaks some builds (e.g. mir; LP: #1844504).
 
  -- Colin Watson <cjwatson@ubuntu.com>  Tue, 17 Sep 2019 13:41:49 +0200
 
