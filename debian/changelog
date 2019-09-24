@@ -1,10 +1,10 @@
-livecd-rootfs (2.408.53) UNRELEASED; urgency=medium
+livecd-rootfs (2.408.53) xenial; urgency=medium
 
   * Fix exclusion of makedev from buildd chroots; debootstrap doesn't
     respect --exclude for "Priority: required" packages, so we have to purge
     makedev later (LP: #1844504).
 
- -- Colin Watson <cjwatson@ubuntu.com>  Tue, 24 Sep 2019 14:30:52 +0100
+ -- Colin Watson <cjwatson@ubuntu.com>  Tue, 24 Sep 2019 15:05:26 +0100
 
 livecd-rootfs (2.408.52) xenial; urgency=medium
 
