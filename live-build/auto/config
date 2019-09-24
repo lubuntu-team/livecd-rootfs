@@ -626,10 +626,6 @@ case $SUBPROJECT in
 		# likely to involve work both here and in launchpad-buildd.
 		OPTS="${OPTS:+$OPTS }--security false --volatile false"
 
-		# makedev was Priority: required in xenial, but has
-		# historically been excluded from buildd chroots.
-		export LB_BOOTSTRAP_EXCLUDE='makedev'
-
 		add_package install adduser
 		add_package install policyrcd-script-zg2
 		add_package install pkgbinarymangler
