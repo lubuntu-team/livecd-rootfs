@@ -1,3 +1,14 @@
+livecd-rootfs (2.408.54) UNRELEASED; urgency=medium
+
+  * Revert exclusion of makedev from buildd chroots, as it turned out not to
+    be the problem.  Instead, fix up /dev/ptmx to be a character device node
+    rather than a symlink to /dev/pts/ptmx, in line with the discussion in
+    https://bugs.debian.org/817236; I think this is safer than
+    cherry-picking the fix to debootstrap at this point in a stable release
+    cycle (LP: #1844504).
+
+ -- Colin Watson <cjwatson@ubuntu.com>  Thu, 26 Sep 2019 10:31:55 +0100
+
 livecd-rootfs (2.408.53) xenial; urgency=medium
 
   * Fix exclusion of makedev from buildd chroots; debootstrap doesn't

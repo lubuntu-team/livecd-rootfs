@@ -1,0 +1,19 @@
+#! /bin/sh
+set -e
+
+# debootstrap 1.0.76 started creating /dev/ptmx as a symlink to
+# /dev/pts/ptmx.  Unfortunately, this doesn't work with sbuild, because it
+# leaves the ptmxmode mount option at its default of 000, which causes
+# builds to be unable to open /dev/pts/ptmx.  To avoid this, debootstrap
+# 1.0.89 switched to creating it as a device node where possible.  See
+# https://bugs.debian.org/817236 for details and analysis.
+#
+# xenial has a version of debootstrap in the range that contains this bug.
+# It seems too risky to try to cherry-pick the debootstrap change in
+# question in an SRU at this point; instead, just fix things up here for
+# buildd images.
+
+if [ -h /dev/ptmx ]; then
+	mknod -m 666 /dev/ptmx.new c 5 2
+	mv /dev/ptmx.new /dev/ptmx
+fi

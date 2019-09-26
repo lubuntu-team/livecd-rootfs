@@ -1,7 +1,0 @@
-#! /bin/sh
-set -e
-
-# makedev is "Priority: required" in xenial and so unavoidably installed by
-# debootstrap, but it isn't truly required and has historically been
-# excluded from buildd chroots.
-apt-get -y purge makedev
