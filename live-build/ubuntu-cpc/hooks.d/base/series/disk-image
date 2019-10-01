@@ -1,3 +1,12 @@
 base/disk-image.binary
 base/disk-image-uefi.binary
 base/disk-image-ppc64el.binary
+provides livecd.ubuntu-cpc.ext4
+provides livecd.ubuntu-cpc.initrd-generic
+provides livecd.ubuntu-cpc.initrd-generic-lpae
+provides livecd.ubuntu-cpc.initrd-powerpc64-smp
+provides livecd.ubuntu-cpc.kernel-generic
+provides livecd.ubuntu-cpc.kernel-generic-lpae
+provides livecd.ubuntu-cpc.kernel-powerpc64-smp
+provides livecd.ubuntu-cpc.kernel-kvm
+provides livecd.ubuntu-cpc.manifest
