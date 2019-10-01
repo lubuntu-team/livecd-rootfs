@@ -1,3 +1,13 @@
+livecd-rootfs (2.525.30) bionic; urgency=medium
+
+  [ Robert C Jennings ]
+  * ubuntu-cpc: Only produce explicitly specified artifacts (LP: #1837254)
+
+  [ Ethan Hsieh ]
+  * Add support for the Nitrogen6x board (LP: #1838064).
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Tue, 10 Sep 2019 16:56:26 +0200
+
 livecd-rootfs (2.525.29) bionic; urgency=medium
 
   * Add retry logic to snap-tool to make downloads more resilient.
