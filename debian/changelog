@@ -1,4 +1,4 @@
-livecd-rootfs (2.408.54ubuntu1) UNRELEASED; urgency=medium
+livecd-rootfs (2.408.55) xenial; urgency=medium
 
   * magic-proxy: dump proxy log to stdout on failure (LP: #1847300)
 
