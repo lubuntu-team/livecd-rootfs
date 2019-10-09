@@ -1,3 +1,9 @@
+livecd-rootfs (2.525.32) UNRELEASED; urgency=medium
+
+  * Add support for HyperV Gallery Images (LP: 1837088)
+
+ -- David Krauser <david.krauser@canonical.com>  Wed, 09 Oct 2019 15:19:29 -0400
+
 livecd-rootfs (2.525.31) bionic; urgency=medium
 
   * magic-proxy: dump proxy log to stdout on failure (LP: #1847300)
