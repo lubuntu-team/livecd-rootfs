@@ -1,3 +1,9 @@
+livecd-rootfs (2.408.55) xenial; urgency=medium
+
+  * magic-proxy: dump proxy log to stdout on failure (LP: #1847300)
+
+ -- Robert C Jennings <robert.jennings@canonical.com>  Tue, 08 Oct 2019 11:02:08 -0500
+
 livecd-rootfs (2.408.54) xenial; urgency=medium
 
   * Revert exclusion of makedev from buildd chroots, as it turned out not to
