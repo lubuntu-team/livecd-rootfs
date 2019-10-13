@@ -1,6 +1,6 @@
 livecd-rootfs (2.525.45) UNRELEASED; urgency=medium
 
-  * Backport snap seeding fixes:
+  * Backport snap seeding and other fixes for live-server ISOs:
 
   [ Dimitri John Ledkov ]
   * Run snap info on the downloaded snap, rather than against the
@@ -9,6 +9,8 @@ livecd-rootfs (2.525.45) UNRELEASED; urgency=medium
     snap might be visible too. Thus seed the base of the snap revision we
     dowanloaded, rather than some random one from the store.
   * Use snap-tool to seed subiquity snap.
+  * Subiquity: install linux-firmware in the installer layer, to make
+    firmware blobs available in the live session. LP: #1847835
 
   [ Robert C Jennings ]
   * Fix logic to ensure snapd is seeded in core18-only images (LP: #1871919)
