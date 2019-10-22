@@ -1,3 +1,10 @@
+livecd-rootfs (2.525.32) UNRELEASED; urgency=medium
+
+  * Fix a terrible typo in auto/build that causes all core18 builds to fail on
+    this series (LP: #1849343).
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Tue, 22 Oct 2019 17:09:57 +0200
+
 livecd-rootfs (2.525.31) bionic; urgency=medium
 
   * magic-proxy: dump proxy log to stdout on failure (LP: #1847300)
