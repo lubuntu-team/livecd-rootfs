@@ -4,7 +4,9 @@ livecd-rootfs (2.525.32) UNRELEASED; urgency=medium
     this series (LP: #1849343).
   * Backport 999-ubuntu-image-customization.chroot to have a common place for
     our cloud-init datasource.  Add some modifications on top to make sure the
-    legacy raspi2 configuration stays the same.  (LP: #1849472)
+    legacy raspi2 configuration stays the same (LP: #1849472).
+  * Backport enabling of adding extra snaps to ubuntu-core images via the
+    EXTRA_SNAPS environment (LP: #1849491).
 
  -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Tue, 22 Oct 2019 17:34:31 +0200
 

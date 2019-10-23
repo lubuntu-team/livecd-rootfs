@@ -204,7 +204,10 @@ case $IMAGEFORMAT in
 				*)
 					UBUNTU_IMAGE_ARGS="" ;;
 			esac
-	
+
+			for snap in $EXTRA_SNAPS; do
+				UBUNTU_IMAGE_ARGS="$UBUNTU_IMAGE_ARGS --extra-snaps $snap"
+			done
 			echo "IMAGEFORMAT=$IMAGEFORMAT" >> config/common
 			echo "UBUNTU_IMAGE_ARGS=\"$UBUNTU_IMAGE_ARGS\"" >> config/common
 			# Store model assertion in top dir to get it picked up later as a build artifact
