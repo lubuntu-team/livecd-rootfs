@@ -930,6 +930,8 @@ echo "LB_BINARY_HOOKS=\"$BINARY_HOOKS\"" >> config/binary
 echo "BUILDSTAMP=\"$NOW\"" >> config/binary
 echo "SUBPROJECT=\"${SUBPROJECT:-}\"" >> config/binary
 echo "LB_DISTRIBUTION=\"$SUITE\"" >> config/binary
+echo "IMAGEFORMAT=\"$IMAGEFORMAT\"" >> config/chroot
+echo "SUBARCH=\"$SUBARCH\"" >> config/chroot
 
 case $ARCH+$SUBARCH in
 	armhf+raspi2|armhf+raspi3|arm64+raspi3)
