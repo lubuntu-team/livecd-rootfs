@@ -1,4 +1,4 @@
-livecd-rootfs (2.525.32) UNRELEASED; urgency=medium
+livecd-rootfs (2.525.32) bionic; urgency=medium
 
   * Fix a terrible typo in auto/build that causes all core18 builds to fail on
     this series (LP: #1849343).
