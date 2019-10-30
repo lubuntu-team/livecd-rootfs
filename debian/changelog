@@ -1,4 +1,4 @@
-livecd-rootfs (2.408.56) UNRELEASED; urgency=medium
+livecd-rootfs (2.408.56) xenial; urgency=medium
 
   * Backport enabling of adding extra snaps to ubuntu-core images via the
     EXTRA_SNAPS environment (LP: #1849491).
