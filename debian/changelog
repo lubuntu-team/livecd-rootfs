@@ -1,6 +1,6 @@
 livecd-rootfs (2.578.10) disco; urgency=medium
 
-  * Add support for HyperV Gallery Images (LP: 1837088)
+  * Add support for HyperV Gallery Images (LP: #1837088)
 
  -- David Krauser <david.krauser@canonical.com>  Wed, 09 Oct 2019 15:13:28 -0400
 
