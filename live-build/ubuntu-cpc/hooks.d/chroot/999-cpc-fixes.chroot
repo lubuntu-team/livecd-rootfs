@@ -142,22 +142,17 @@ fi
 #### END COMMON ARCH FUNCTIONS
 
 
-case $arch in
-	# ARM images are special
-	armhf|arm64)
-		# Dirty hack because SUBARCH doesn't exist when running chroot hooks,
-		# and we don't want raspi2 images to depend on a cloud data source:
-		if _xchroot "${rootd}" dpkg -l linux-image-raspi2 2>/dev/null | grep -q '^.i'; then
-			fake_cloud_init
-		fi
+case $arch+${SUBARCH:-} in
+    # raspi2 images are special
+    armhf+raspi2)
+        fake_cloud_init
+        echo "Image architecture is ARM. Existing vmbuilder-fixups"
+        exit 0
+        ;;
 
-		echo "Image architecture is ARM. Existing vmbuilder-fixups"
-
-		exit 0
-		;;
-	powerpc|ppc64el|s390x)
-		exit 0
-		;;
+    armhf+*|arm64+*|powerpc+*|ppc64el+*|s390x+*)
+        exit 0
+        ;;
 esac
 
 psuedo_grub_probe() {

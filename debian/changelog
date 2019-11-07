@@ -1,3 +1,21 @@
+livecd-rootfs (2.525.33) bionic; urgency=medium
+
+  * Add support for the 'kassel' subflavor of UC18 images. (LP: #1850674)
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Wed, 30 Oct 2019 18:09:02 +0100
+
+livecd-rootfs (2.525.32) bionic; urgency=medium
+
+  * Fix a terrible typo in auto/build that causes all core18 builds to fail on
+    this series (LP: #1849343).
+  * Backport 999-ubuntu-image-customization.chroot to have a common place for
+    our cloud-init datasource.  Add some modifications on top to make sure the
+    legacy raspi2 configuration stays the same (LP: #1849472).
+  * Backport enabling of adding extra snaps to ubuntu-core images via the
+    EXTRA_SNAPS environment (LP: #1849491).
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Tue, 22 Oct 2019 17:34:31 +0200
+
 livecd-rootfs (2.525.31) bionic; urgency=medium
 
   * magic-proxy: dump proxy log to stdout on failure (LP: #1847300)

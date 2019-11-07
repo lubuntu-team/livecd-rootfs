@@ -174,6 +174,7 @@ case $IMAGEFORMAT in
 		;;
 
 	ubuntu-image)
+		UBUNTU_IMAGE_ARGS=""
 		case "$ARCH+${SUBARCH:-}" in
 			amd64+*)
 				MODEL=pc-amd64 ;;
@@ -200,11 +201,20 @@ case $IMAGEFORMAT in
 
 			case $MODEL in
 				pc-amd64|pc-i386)
-					UBUNTU_IMAGE_ARGS="--image-size 3700M" ;;
-				*)
-					UBUNTU_IMAGE_ARGS="" ;;
+					[ -z "${SUBARCH:-}" ] \
+					&& UBUNTU_IMAGE_ARGS="--image-size 3700M"
+					;;
 			esac
-	
+
+			case "$ARCH+${SUBARCH:-}" in
+				amd64+kassel)
+					EXTRA_SNAPS="core bluez alsa-utils"
+					;;
+				*) ;;
+			esac
+			for snap in $EXTRA_SNAPS; do
+				UBUNTU_IMAGE_ARGS="$UBUNTU_IMAGE_ARGS --extra-snaps $snap"
+			done
 			echo "IMAGEFORMAT=$IMAGEFORMAT" >> config/common
 			echo "UBUNTU_IMAGE_ARGS=\"$UBUNTU_IMAGE_ARGS\"" >> config/common
 			# Store model assertion in top dir to get it picked up later as a build artifact
@@ -215,7 +225,6 @@ case $IMAGEFORMAT in
 		else
 			# classic images
 
-			UBUNTU_IMAGE_ARGS=""
 			UBUNTU_IMAGE_ARGS="$UBUNTU_IMAGE_ARGS${PROPOSED:+ --with-proposed}"
 			UBUNTU_IMAGE_ARGS="$UBUNTU_IMAGE_ARGS${EXTRA_PPAS:+ --extra-ppas \"$EXTRA_PPAS\"}"
 
@@ -930,6 +939,8 @@ echo "LB_BINARY_HOOKS=\"$BINARY_HOOKS\"" >> config/binary
 echo "BUILDSTAMP=\"$NOW\"" >> config/binary
 echo "SUBPROJECT=\"${SUBPROJECT:-}\"" >> config/binary
 echo "LB_DISTRIBUTION=\"$SUITE\"" >> config/binary
+echo "IMAGEFORMAT=\"$IMAGEFORMAT\"" >> config/chroot
+echo "SUBARCH=\"$SUBARCH\"" >> config/chroot
 
 case $ARCH+$SUBARCH in
 	armhf+raspi2|armhf+raspi3|arm64+raspi3)
