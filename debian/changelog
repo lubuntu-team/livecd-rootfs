@@ -1,3 +1,10 @@
+livecd-rootfs (2.408.56) xenial; urgency=medium
+
+  * Backport enabling of adding extra snaps to ubuntu-core images via the
+    EXTRA_SNAPS environment (LP: #1849491).
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Wed, 30 Oct 2019 17:28:57 +0100
+
 livecd-rootfs (2.408.55) xenial; urgency=medium
 
   * magic-proxy: dump proxy log to stdout on failure (LP: #1847300)
