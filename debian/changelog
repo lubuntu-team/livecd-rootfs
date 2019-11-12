@@ -1,4 +1,4 @@
-livecd-rootfs (2.525.35) UNRELEASED; urgency=medium
+livecd-rootfs (2.525.35) bionic; urgency=medium
 
   * Did not expect the bionic branch being so outdated. Backport support
     for fetching core18 model assertions on bionic hosts. This enables build
