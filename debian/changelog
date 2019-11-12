@@ -1,3 +1,9 @@
+livecd-rootfs (2.525.34) UNRELEASED; urgency=medium
+
+  * Add support for HyperV Gallery Images (LP: #1837088)
+
+ -- David Krauser <david.krauser@canonical.com>  Wed, 05 Nov 2019 15:19:29 -0400
+
 livecd-rootfs (2.525.33) bionic; urgency=medium
 
   * Add support for the 'kassel' subflavor of UC18 images. (LP: #1850674)
