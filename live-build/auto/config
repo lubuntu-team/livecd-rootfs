@@ -205,6 +205,14 @@ case $IMAGEFORMAT in
 					&& UBUNTU_IMAGE_ARGS="--image-size 3700M"
 					;;
 			esac
+			case $SUITE in
+				xenial)
+					# Ubuntu Core 16
+					;;
+				*)
+					# Ubuntu Core 18
+					MODEL="ubuntu-core-18-${MODEL#pc-}" ;;
+			esac
 
 			case "$ARCH+${SUBARCH:-}" in
 				amd64+kassel)
