@@ -1,3 +1,18 @@
+livecd-rootfs (2.626) focal; urgency=medium
+
+  * No-change rebuild to build for i386 again (for now).
+
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Thu, 28 Nov 2019 11:43:51 +1300
+
+livecd-rootfs (2.625) focal; urgency=medium
+
+  * Make autoinstall files from initrd and filesystem with label autoinstall
+    available on live-server systems.
+  * Create a filelist whenever creating a manifest for an ubuntu-cpc
+    project.
+
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Thu, 28 Nov 2019 09:20:38 +1300
+
 livecd-rootfs (2.624) focal; urgency=medium
 
   * Mark packages as autoinstalled using apt-mark in the chroot
