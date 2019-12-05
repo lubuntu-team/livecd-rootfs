@@ -1,3 +1,10 @@
+livecd-rootfs (2.208.18) UNRELEASED; urgency=medium
+
+  * Preserve ubuntu-advantage-tools' apt preferences against live-build's
+    attempt to delete them.
+
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Fri, 06 Dec 2019 10:23:03 +1300
+
 livecd-rootfs (2.208.17) trusty; urgency=medium
 
   * Drop /etc/update-motd.d/51-cloudguest from cloud images; this is not

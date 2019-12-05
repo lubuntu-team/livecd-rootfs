@@ -635,6 +635,18 @@ rm -f /etc/fstab
 EOF
 		;;
 
+	ubuntu-base)
+		cat > config/hooks/100-preserve-ua-tools-prefs.chroot <<EOF
+#! /bin/sh -ex
+
+# live-build "helpfully" removes /etc/apt/preferences.d/* so we put a
+# copy somewhere it won't touch it.
+
+cp -a /etc/apt/preferences.d /etc/apt/preferences.d.save
+
+EOF
+		;;
+
 	ubuntukylin)
 		cat > config/hooks/100-ubuntukylin.chroot <<EOF
 #! /bin/sh
