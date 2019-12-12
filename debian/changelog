@@ -1,3 +1,10 @@
+livecd-rootfs (2.632) focal; urgency=medium
+
+  [ David Krauser ]
+  * Fix broken DNS in buildd image builds.
+
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Thu, 12 Dec 2019 10:34:55 +1300
+
 livecd-rootfs (2.631) focal; urgency=medium
 
   * Add support for uc20 model assertions.
