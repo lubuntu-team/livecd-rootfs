@@ -1,3 +1,11 @@
+livecd-rootfs (2.525.36) UNRELEASED; urgency=medium
+
+  * Preserve apt preferences created by any package we install (i.e.
+    ubuntu-advantage-tools) against live-build's attempt to delete them.
+    (LP: #1855354)
+
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Thu, 19 Dec 2019 15:43:56 +1300
+
 livecd-rootfs (2.525.35) bionic; urgency=medium
 
   * Did not expect the bionic branch being so outdated. Backport support
