@@ -1,3 +1,17 @@
+livecd-rootfs (2.636) focal; urgency=medium
+
+  * Stop trying to install linux-oem. It's dropped, but us trying to install
+    it is causing Ubuntu images to fail to build. It is due to be replaced by
+    linux-oem-20.04 (currently built from linux-...-5.4). But that is stuck in
+    focal-proposed at the minute, so there is nothing to transition to until
+    it migrates.
+  * Drop linux-signed-generic for flavours too - follow up from 2.630 which
+    handled this for Ubuntu. (LP: #1859146)
+  * Ditto for ubuntu-core:system-image - move from linux-signed-image-generic
+    to linux-image-generic.
+
+ -- Iain Lane <iain@orangesquash.org.uk>  Fri, 10 Jan 2020 12:11:02 +0000
+
 livecd-rootfs (2.635) focal; urgency=medium
 
   * Preserve apt preferences created by any package we install (i.e.
