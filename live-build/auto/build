@@ -220,6 +220,12 @@ EOF
 
 	lb chroot "$@"
 
+	if [ -d chroot/etc/apt/preferences.d.save ]; then
+		# https://twitter.com/infinite_scream
+		mv chroot/etc/apt/preferences.d.save/* chroot/etc/apt/preferences.d/
+		rmdir chroot/etc/apt/preferences.d.save
+	fi
+
 	if [ "${SUBPROJECT:-}" = minimized ]; then
 		# and if initramfs-tools was configured before our kernel,
 		# /etc/kernel/postinst.d/initramfs-tools will have created

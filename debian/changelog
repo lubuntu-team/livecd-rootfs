@@ -1,3 +1,11 @@
+livecd-rootfs (2.408.57) xenial; urgency=medium
+
+  * Preserve apt preferences created by any package we install (i.e.
+    ubuntu-advantage-tools) against live-build's attempt to delete them.
+    (LP: #1855354)
+
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Thu, 19 Dec 2019 22:42:12 +1300
+
 livecd-rootfs (2.408.56) xenial; urgency=medium
 
   * Backport enabling of adding extra snaps to ubuntu-core images via the

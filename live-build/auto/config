@@ -875,6 +875,19 @@ EOF
 		;;
 esac
 
+if [ $PROJECT != ubuntu-cpc ]; then
+	cat > config/hooks/100-preserve-apt-prefs.chroot <<\EOF
+#! /bin/sh -ex
+
+# live-build "helpfully" removes /etc/apt/preferences.d/* so we put a
+# copy somewhere it won't touch it.
+
+if [ -n "$(ls -A /etc/apt/preferences.d)" ]; then
+    cp -a /etc/apt/preferences.d /etc/apt/preferences.d.save
+fi
+EOF
+fi
+
 if $BINARY_REMOVE_LINUX; then
 	cat > config/binary_rootfs/excludes << EOF
 boot/vmlinu?-*
