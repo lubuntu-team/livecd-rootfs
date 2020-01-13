@@ -1,4 +1,4 @@
-livecd-rootfs (2.525.37) UNRELEASED; urgency=medium
+livecd-rootfs (2.525.37) bionic; urgency=medium
 
   * Use the linux-raspi2-5.3 kernel flavour for the raspi3 images.  This kernel
     is required for proper pi4 support. (LP: #1859478)
