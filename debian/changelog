@@ -1,7 +1,7 @@
 livecd-rootfs (2.525.37) bionic; urgency=medium
 
-  * Use the linux-raspi2-5.3 kernel flavour for the raspi3 images.  This kernel
-    is required for proper pi4 support. (LP: #1859478)
+  * Use the raspi2-hwe-18.04-edge kernel flavour for the raspi3 images. This
+    kernel is required for proper pi4 support. (LP: #1859478)
 
  -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Mon, 13 Jan 2020 15:33:20 +0100
 
