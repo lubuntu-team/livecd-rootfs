@@ -1,3 +1,10 @@
+livecd-rootfs (2.525.38) UNRELEASED; urgency=medium
+
+  * Support generating a .disk/info file via ubuntu-image from the passed-in
+    datestamp parameter (using the $NOW environment variable). (LP: #1856684)
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Wed, 22 Jan 2020 09:18:06 +0100
+
 livecd-rootfs (2.525.37) bionic; urgency=medium
 
   * Use the raspi2-hwe-18.04-edge kernel flavour for the raspi3 images. This
