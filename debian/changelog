@@ -2,6 +2,7 @@ livecd-rootfs (2.525.38) UNRELEASED; urgency=medium
 
   * Support generating a .disk/info file via ubuntu-image from the passed-in
     datestamp parameter (using the $NOW environment variable). (LP: #1856684)
+  * Switch raspi2-hwe-18.04-edge to raspi2-hwe-18.04. (LP: #1859478)
 
  -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Wed, 22 Jan 2020 09:18:06 +0100
 

@@ -889,7 +889,7 @@ case $ARCH in
 				;;
 			raspi3)
 				COMPONENTS='main restricted universe multiverse'
-				KERNEL_FLAVOURS=raspi2-hwe-18.04-edge
+				KERNEL_FLAVOURS=raspi2-hwe-18.04
 				add_package install linux-firmware-raspi2 u-boot-rpi flash-kernel u-boot-tools wpasupplicant
 				BINARY_REMOVE_LINUX=false
 				;;
