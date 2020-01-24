@@ -1,3 +1,12 @@
+livecd-rootfs (2.525.39) UNRELEASED; urgency=medium
+
+  * Ensure seed partition is mounted on no-cloud images which use system-boot
+    as their seed (LP: #1860046)
+  * Have getty wait for cloud-init to complete to ensure that the default
+    user exists before presenting a login prompt
+
+ -- Dave Jones <dave.jones@canonical.com>  Fri, 24 Jan 2020 15:17:56 +0000
+
 livecd-rootfs (2.525.38) bionic; urgency=medium
 
   * Support generating a .disk/info file via ubuntu-image from the passed-in
