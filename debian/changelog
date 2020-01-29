@@ -1,3 +1,20 @@
+livecd-rootfs (2.639) focal; urgency=medium
+
+  * On s390x subiquity:
+    - enable cloud-init
+    - make cloud-init handle the default/baked in networking configuration
+    - install and enable openssh-server for the installation only
+    - provide cloud.cfg that generates random installer user password
+    - disable subiquity on sclp_line0 line based console
+
+ -- Dimitri John Ledkov <xnox@ubuntu.com>  Wed, 29 Jan 2020 14:16:09 +0000
+
+livecd-rootfs (2.638) focal; urgency=medium
+
+  * Install oem-20.04 kernel flavour on Ubuntu Desktop builds.
+
+ -- Dimitri John Ledkov <xnox@ubuntu.com>  Tue, 28 Jan 2020 15:06:02 +0000
+
 livecd-rootfs (2.637) focal; urgency=medium
 
   * Ensure seed partition is mounted on no-cloud images which use system-boot
