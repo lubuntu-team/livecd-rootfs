@@ -1,3 +1,27 @@
+livecd-rootfs (2.525.39) bionic; urgency=medium
+
+  * Ensure seed partition is mounted on no-cloud images which use system-boot
+    as their seed (LP: #1860046)
+  * Have getty wait for cloud-init to complete to ensure that the default
+    user exists before presenting a login prompt
+
+ -- Dave Jones <dave.jones@canonical.com>  Fri, 24 Jan 2020 15:17:56 +0000
+
+livecd-rootfs (2.525.38) bionic; urgency=medium
+
+  * Support generating a .disk/info file via ubuntu-image from the passed-in
+    datestamp parameter (using the $NOW environment variable). (LP: #1856684)
+  * Switch raspi2-hwe-18.04-edge to raspi2-hwe-18.04. (LP: #1859478)
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Wed, 22 Jan 2020 09:18:06 +0100
+
+livecd-rootfs (2.525.37) bionic; urgency=medium
+
+  * Use the raspi2-hwe-18.04-edge kernel flavour for the raspi3 images. This
+    kernel is required for proper pi4 support. (LP: #1859478)
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Mon, 13 Jan 2020 15:33:20 +0100
+
 livecd-rootfs (2.525.36) bionic; urgency=medium
 
   * Preserve apt preferences created by any package we install (i.e.
