@@ -182,12 +182,10 @@ case $IMAGEFORMAT in
 				MODEL=pc-i386 ;;
 			arm64+snapdragon)
 				MODEL=dragonboard ;;
-			armhf+raspi2)
-				MODEL=pi2 ;;
-			armhf+raspi3|arm64+raspi3)
-				MODEL=pi3 ;;
-			armhf+cm3)
-				MODEL=cm3 ;;
+			armhf+raspi3)
+				MODEL=pi ;;
+			arm64+raspi3)
+				MODEL=pi-arm64 ;;
 			armhf+imx6)
 				MODEL=nitrogen6x ;;
 			*)
@@ -239,6 +237,14 @@ case $IMAGEFORMAT in
 			echo "----------------------------------------------------------"
 		else
 			# classic images
+
+			# Certain models have different names but are built from the same source gadget tree
+			case $MODEL in
+				pi-arm64|pi)
+					# XXX: Temporarily this is still built from the pi3 tree,
+					#  but eventually we'll use the pi one.
+					MODEL=pi3 ;;
+			esac
 
 			UBUNTU_IMAGE_ARGS="$UBUNTU_IMAGE_ARGS${PROPOSED:+ --with-proposed}"
 			UBUNTU_IMAGE_ARGS="$UBUNTU_IMAGE_ARGS${EXTRA_PPAS:+ --extra-ppas \"$EXTRA_PPAS\"}"
