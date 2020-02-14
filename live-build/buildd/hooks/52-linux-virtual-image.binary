@@ -36,12 +36,24 @@ cleanup_linux_virtual() {
 }
 trap cleanup_linux_virtual EXIT
 
-# Install dependencies
 env DEBIAN_FRONTEND=noninteractive chroot "$mount_d" apt-get \
     update --assume-yes
+
+# Perform a dist-upgrade to pull in -security and other pockets
 env DEBIAN_FRONTEND=noninteractive chroot "$mount_d" apt-get \
-    install -y lsb-release locales initramfs-tools busybox-initramfs \
-               udev dbus netplan.io cloud-init openssh-server sudo snapd
+    dist-upgrade --assume-yes
+
+# Install dependencies
+env DEBIAN_FRONTEND=noninteractive chroot "$mount_d" apt-get \
+    install -y --install-recommends bind9 busybox-initramfs cloud-init dbus \
+               ifupdown initramfs-tools locales lsb-release \
+               openssh-server resolvconf sudo snapd udev 
+
+# Enable console output
+cat >> $mount_d/etc/default/grub.d/50-buildd-settings.cfg << EOF 
+${IMAGE_STR}
+GRUB_CMDLINE_LINUX_DEFAULT="console=ttyS0"
+EOF
 
 # Install a kernel
 divert_grub "$mount_d"
@@ -49,6 +61,7 @@ env DEBIAN_FRONTEND=noninteractive chroot "$mount_d" apt-get \
     install --assume-yes linux-image-virtual
 env DEBIAN_FRONTEND=noninteractive chroot "$mount_d" apt-get \
     autoremove --purge --assume-yes
+
 chroot "$mount_d" update-grub
 undivert_grub "$mount_d"
 

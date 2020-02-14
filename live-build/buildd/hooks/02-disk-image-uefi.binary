@@ -64,7 +64,8 @@ install_grub() {
     efi_boot_dir="/boot/efi/EFI/BOOT"
     chroot mountpoint mkdir -p "${efi_boot_dir}"
 
-    if [ "${SUBPROJECT:-}" = minimized ] && [ -n "$partuuid" ]; then
+    #if [ "${SUBPROJECT:-}" = minimized ] && [ -n "$partuuid" ]; then
+    if [ -n "$partuuid" ]; then
         echo "GRUB_FORCE_PARTUUID=$partuuid" >> mountpoint/etc/default/grub.d/40-force-partuuid.cfg
     fi
 
