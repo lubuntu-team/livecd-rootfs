@@ -1,3 +1,9 @@
+livecd-rootfs (2.408.57) xenial; urgency=medium
+
+  * Use a snap cohort key for consistent parallel builds (LP: #1866159)
+
+ -- Robert C Jennings <robert.jennings@canonical.com>  Fri, 21 Feb 2020 21:32:37 -0600
+
 livecd-rootfs (2.408.56) xenial; urgency=medium
 
   * Backport enabling of adding extra snaps to ubuntu-core images via the
