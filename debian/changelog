@@ -1,3 +1,10 @@
+livecd-rootfs (2.645) focal; urgency=medium
+
+  [ Robert C Jennings ]
+  * Use snap cli rather than custom snap-tool
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Fri, 21 Feb 2020 13:02:43 -0800
+
 livecd-rootfs (2.644) focal; urgency=medium
 
   * Rename the raspi3 SUBARCH to raspi, as we generate universal generic pi
