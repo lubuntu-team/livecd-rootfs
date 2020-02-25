@@ -1,8 +1,9 @@
 livecd-rootfs (2.525.41) UNRELEASED; urgency=medium
 
   * Use snap cli rather than custom snap-tool (LP: #1864252)
+  * Address snap base regression after snap-tool removal
 
- -- Robert C Jennings <robert.jennings@canonical.com>  Fri, 21 Feb 2020 20:21:31 -0600
+ -- Robert C Jennings <robert.jennings@canonical.com>  Thu, 27 Feb 2020 16:39:52 -0600
 
 livecd-rootfs (2.525.40) bionic; urgency=medium
 
