@@ -1,3 +1,10 @@
+livecd-rootfs (2.525.40) bionic; urgency=medium
+
+  * Stop building per-pi-flavor images and only build a pi generic image for
+    core18. (LP: #1861520)
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Fri, 31 Jan 2020 16:57:01 +0100
+
 livecd-rootfs (2.525.39) bionic; urgency=medium
 
   * Ensure seed partition is mounted on no-cloud images which use system-boot
