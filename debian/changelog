@@ -1,4 +1,4 @@
-livecd-rootfs (2.525.41) UNRELEASED; urgency=medium
+livecd-rootfs (2.525.41) bionic; urgency=medium
 
   * Use snap cli rather than custom snap-tool (LP: #1864252)
   * Address snap base regression after snap-tool removal
