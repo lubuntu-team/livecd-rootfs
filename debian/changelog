@@ -1,14 +1,8 @@
-livecd-rootfs (2.620.2) eoan; urgency=medium
-
-  * Address snap base regression after snap-tool removal
-
- -- Robert C Jennings <robert.jennings@canonical.com>  Tue, 25 Feb 2020 16:15:48 -0600
-
 livecd-rootfs (2.620.1) eoan; urgency=medium
 
   * Use snap cli rather than custom snap-tool (LP: #1864252)
 
- -- Robert C Jennings <robert.jennings@canonical.com>  Fri, 21 Feb 2020 20:20:11 -0600
+ -- Robert C Jennings <robert.jennings@canonical.com>  Tue, 25 Feb 2020 16:15:48 -0600
 
 livecd-rootfs (2.620) eoan; urgency=medium
 
