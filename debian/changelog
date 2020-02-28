@@ -1,3 +1,9 @@
+livecd-rootfs (2.525.42) UNRELEASED; urgency=medium
+
+  * Fix core_snap variable scope issue
+
+ -- Robert C Jennings <robert.jennings@canonical.com>  Fri, 28 Feb 2020 08:29:57 -0600
+
 livecd-rootfs (2.525.41) bionic; urgency=medium
 
   * Use snap cli rather than custom snap-tool (LP: #1864252)

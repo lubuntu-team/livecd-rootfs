@@ -440,6 +440,7 @@ _snap_preseed() {
     fi
 
     # Pre-seed snap's base
+    local core_snap=""
     case $SNAP_NAME in
         snapd)
             # snapd is self-contained, ignore base
@@ -458,7 +459,7 @@ _snap_preseed() {
                 exit 1
             fi
 
-            local core_snap=$(echo "$snap_info" | grep '^base:' | awk '{print $2}')
+            core_snap=$(echo "$snap_info" | grep '^base:' | awk '{print $2}')
 
             # If snap info does not list a base use 'core'
             core_snap=${core_snap:-core}
