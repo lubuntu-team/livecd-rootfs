@@ -367,6 +367,7 @@ _snap_preseed() {
         set -x;
         cd /var/lib/snapd/seed;
         SNAPPY_STORE_NO_CDN=1 snap download \
+            --cohort="${COHORT_KEY:-}" \
             --channel=$CHANNEL \"$SNAP_NAME\"" || snap_download_failed=1
     if [ $snap_download_failed = 1 ] ; then
         echo "If the channel ($CHANNEL) includes '*/ubuntu-##.##' track per "
