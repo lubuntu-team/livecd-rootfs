@@ -150,8 +150,10 @@ case $IMAGEFORMAT in
 				COMPONENTS='main restricted universe multiverse'
 				;;
 			*)
-				case $PROJECT in
-					ubuntu-cpc)
+				case $PROJECT:${SUBPROJECT:-} in
+					ubuntu-base:buildd)
+						;;
+					ubuntu-cpc:*)
 						;;
 					*)
 						add_package live jasper
