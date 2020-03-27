@@ -1,9 +1,9 @@
-livecd-rootfs (2.525.42) UNRELEASED; urgency=medium
+livecd-rootfs (2.525.42) bionic; urgency=medium
 
   [ Cody Shepherd / David Krauser ]
   * Add bootable buildd image (LP: #1863024)
 
- -- Robert C Jennings <robert.jennings@canonical.com>  Fri, 27 Mar 2020 14:27:03 -0500
+ -- Robert C Jennings <robert.jennings@canonical.com>  Fri, 27 Mar 2020 14:32:27 -0500
 
 livecd-rootfs (2.525.41) bionic; urgency=medium
 
