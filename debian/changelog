@@ -1,3 +1,10 @@
+livecd-rootfs (2.525.43) bionic; urgency=medium
+
+  [ David Krauser ]
+  * Add bootable buildd image w/ fixes (LP: #1863024)
+
+ -- Robert C Jennings <robert.jennings@canonical.com>  Mon, 30 Mar 2020 09:39:16 -0500
+
 livecd-rootfs (2.525.42) bionic; urgency=medium
 
   [ Cody Shepherd / David Krauser ]
