@@ -1,6 +1,7 @@
 livecd-rootfs (2.657) UNRELEASED; urgency=medium
 
   * Determine kernel image/initrd version exactly, using apt data.
+  * Use generic-hwe-20.04 as the default (rolling) kernel flavour.
 
  -- Dimitri John Ledkov <xnox@ubuntu.com>  Wed, 01 Apr 2020 11:13:42 +0100
 

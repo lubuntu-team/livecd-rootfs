@@ -560,6 +560,9 @@ if ! [ -e config/germinate-output/structure ]; then
                 ${COMPONENTS:+-c "$COMPONENTS"} -a $ARCH)
 fi
 
+# Default kernel
+KERNEL_FLAVOURS='generic-hwe-20.04'
+
 case $PROJECT in
 	ubuntu|ubuntu-dvd)
 
@@ -581,10 +584,9 @@ case $PROJECT in
 				LIVE_TASK='ubuntu-live'
 				add_task install minimal standard ubuntu-desktop
 				add_task live ubuntu-desktop-minimal-default-languages ubuntu-desktop-default-languages
-				KERNEL_FLAVOURS='generic'
 				case $ARCH in
 					amd64)
-						KERNEL_FLAVOURS='generic oem-20.04'
+						KERNEL_FLAVOURS="$KERNEL_FLAVOURS oem-20.04"
 						;;
 				esac
 				;;
@@ -629,9 +631,6 @@ case $PROJECT in
 		add_package install xterm
 		LIVE_TASK='xubuntu-live'
 		COMPONENTS='main restricted universe multiverse'
-		case $ARCH in
-			amd64|i386)	KERNEL_FLAVOURS=generic ;;
-		esac
 		;;
 
 	ubuntu-netbook)
@@ -649,9 +648,6 @@ case $PROJECT in
 		add_task install minimal standard lubuntu-desktop
 		LIVE_TASK='lubuntu-live'
 		COMPONENTS='main restricted universe multiverse'
-		case $ARCH in
-			amd64|i386)	KERNEL_FLAVOURS=generic ;;
-		esac
 		;;
 
 	ubuntu-gnome)
@@ -676,7 +672,7 @@ case $PROJECT in
 		add_task install minimal standard ubuntustudio-desktop ubuntustudio-audio ubuntustudio-fonts ubuntustudio-graphics ubuntustudio-video ubuntustudio-publishing ubuntustudio-photography
 		COMPONENTS='main restricted universe multiverse'
 		case $ARCH in
-			amd64|i386)	KERNEL_FLAVOURS=lowlatency ;;
+			amd64|i386)	KERNEL_FLAVOURS=lowlatency-hwe-20.04 ;;
 		esac
 		;;
 
