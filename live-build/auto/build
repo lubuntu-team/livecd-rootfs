@@ -819,33 +819,8 @@ for FLAVOUR in $LB_LINUX_FLAVOURS; do
 	if [ -z "$LB_LINUX_FLAVOURS" ] || [ "$LB_LINUX_FLAVOURS" = "none" ]; then
 		continue
 	fi
-	case $FLAVOUR in
-		virtual)
-			FLAVOUR="generic"
-			;;
-		oem-*)
-			FLAVOUR="oem"
-			;;
-	esac
-	KVERS="$( (cd "binary/$INITFS"; ls vmlinu?-* 2>/dev/null || true) | (fgrep -v .efi || true) | sed -n "s/^vmlinu.-\\([^-]*-[^-]*-$FLAVOUR\\)$/\\1/p" )"
-	if [ -z "$KVERS" ]; then
-		if [ -e "binary/$INITFS/vmlinuz" ]; then
-			# already renamed by ubuntu-defaults-image
-			break
-		fi
-		echo "No kernel output for $FLAVOUR!" >&2
-		exit 1
-	fi
-	NUMKVERS="$(set -- $KVERS; echo $#)"
-	if [ "$NUMKVERS" -gt 1 ]; then
-		echo "Cannot handle more than one kernel for $FLAVOUR ($KVERS)!" >&2
-		exit 1
-	fi
+	KVERS=$(Chroot chroot apt show linux-image-$FLAVOUR 2>/dev/null | sed -n 's/^Depends:.* linux-image-\([a-z0-9.-]*\).*/\1/p')
 	ln "binary/$INITFS/"vmlinu?-"$KVERS" "$PREFIX.kernel-$FLAVOUR"
-	if [ -e "binary/$INITFS/"vmlinu?-"$KVERS.efi.signed" ]; then
-		ln "binary/$INITFS/"vmlinu?-"$KVERS.efi.signed" "$PREFIX.kernel-$FLAVOUR.efi.signed"
-		chmod 644 "$PREFIX.kernel-$FLAVOUR.efi.signed"
-	fi
 	chmod 644 "$PREFIX.kernel-$FLAVOUR"
 	if [ -e "binary/$INITFS/initrd.img-$KVERS" ]; then
 		ln "binary/$INITFS/initrd.img-$KVERS" "$PREFIX.initrd-$FLAVOUR"

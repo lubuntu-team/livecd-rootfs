@@ -1,3 +1,9 @@
+livecd-rootfs (2.657) UNRELEASED; urgency=medium
+
+  * Determine kernel image/initrd version exactly, using apt data.
+
+ -- Dimitri John Ledkov <xnox@ubuntu.com>  Wed, 01 Apr 2020 11:13:42 +0100
+
 livecd-rootfs (2.656) focal; urgency=medium
 
   [ David Krauser ]
