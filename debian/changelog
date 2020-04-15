@@ -1,3 +1,9 @@
+livecd-rootfs (2.620.2) eoan; urgency=medium
+
+  * Fix logic to ensure snapd is seeded in core18-only images (LP: #1871919)
+
+ -- Robert C Jennings <robert.jennings@canonical.com>  Wed, 15 Apr 2020 10:05:55 -0500
+
 livecd-rootfs (2.620.1) eoan; urgency=medium
 
   * Use snap cli rather than custom snap-tool (LP: #1864252)
