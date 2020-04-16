@@ -439,6 +439,24 @@ _snap_preseed() {
         return
     fi
 
+    sh -c "
+        set -x;
+        cd \"$CHROOT_ROOT/var/lib/snapd/seed\";
+        SNAPPY_STORE_NO_CDN=1 snap download \
+            --cohort="${COHORT_KEY:-}" \
+            --channel=\"$CHANNEL\" \"$SNAP_NAME\"" || snap_download_failed=1
+    if [ $snap_download_failed = 1 ] ; then
+        echo "If the channel ($CHANNEL) includes '*/ubuntu-##.##' track per "
+        echo "Ubuntu policy (ex. stable/ubuntu-18.04) the publisher will need "
+        echo "to temporarily create the channel/track to allow fallback during"
+        echo "download (ex. stable/ubuntu-18.04 falls back to stable if the"
+        echo "prior had been created in the past)."
+        exit 1
+    fi
+
+    mv -v $seed_dir/*.assert $assertions_dir
+    mv -v $seed_dir/*.snap $snaps_dir
+
     # Pre-seed snap's base
     local core_snap=""
     case $SNAP_NAME in
@@ -452,7 +470,8 @@ _snap_preseed() {
             # Determine which core snap is needed
             local snap_info
 
-            snap_info=$(snap info --verbose "${SNAP_NAME}")
+            # snap info doesn't have --channel, so must run agains the downloaded snap
+            snap_info=$(snap info --verbose ${snaps_dir}/${SNAP_NAME}_[0-9]*.snap)
 
             if [ $? -ne 0 ]; then
                 echo "Failed to retrieve base of $SNAP_NAME!"
@@ -467,24 +486,6 @@ _snap_preseed() {
             _snap_preseed $CHROOT_ROOT $core_snap stable
             ;;
     esac
-
-    sh -c "
-        set -x;
-        cd \"$CHROOT_ROOT/var/lib/snapd/seed\";
-        SNAPPY_STORE_NO_CDN=1 snap download \
-            --cohort=\"${COHORT_KEY:-}\" \
-            --channel=\"$CHANNEL\" \"$SNAP_NAME\"" || snap_download_failed=1
-    if [ $snap_download_failed = 1 ] ; then
-        echo "If the channel ($CHANNEL) includes '*/ubuntu-##.##' track per "
-        echo "Ubuntu policy (ex. stable/ubuntu-18.04) the publisher will need "
-        echo "to temporarily create the channel/track to allow fallback during"
-        echo "download (ex. stable/ubuntu-18.04 falls back to stable if the"
-        echo "prior had been created in the past)."
-        exit 1
-    fi
-
-    mv -v $seed_dir/*.assert $assertions_dir
-    mv -v $seed_dir/*.snap $snaps_dir
 
     # Add the snap to the seed.yaml
     ! [ -e $seed_yaml ] && echo "snaps:" > $seed_yaml
