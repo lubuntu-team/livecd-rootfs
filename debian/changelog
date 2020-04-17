@@ -1,3 +1,19 @@
+livecd-rootfs (2.663) focal; urgency=medium
+
+  * Run snap info on the downloaded snap, rather than against the
+    store. First of all snap info doesn't have --channel argument, thus
+    queries the wrong channel, and depening on the cohort, a different
+    snap might be visible too. Thus seed the base of the snap revision we
+    dowanloaded, rather than some random one from the store.
+
+ -- Dimitri John Ledkov <xnox@ubuntu.com>  Fri, 17 Apr 2020 00:10:41 +0100
+
+livecd-rootfs (2.662) focal; urgency=medium
+
+  * Print subiquity ssh login details on s390x line based consoles.
+
+ -- Dimitri John Ledkov <xnox@ubuntu.com>  Thu, 16 Apr 2020 23:54:33 +0100
+
 livecd-rootfs (2.661) focal; urgency=medium
 
   * Switch Ubuntu desktop to only hwe-20.04 kernel flavour.
