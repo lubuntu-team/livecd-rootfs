@@ -1,3 +1,17 @@
+livecd-rootfs (2.525.43) bionic; urgency=medium
+
+  [ David Krauser ]
+  * Add bootable buildd image w/ fixes (LP: #1863024)
+
+ -- Robert C Jennings <robert.jennings@canonical.com>  Mon, 30 Mar 2020 09:39:16 -0500
+
+livecd-rootfs (2.525.42) bionic; urgency=medium
+
+  [ Cody Shepherd / David Krauser ]
+  * Add bootable buildd image (LP: #1863024)
+
+ -- Robert C Jennings <robert.jennings@canonical.com>  Fri, 27 Mar 2020 14:32:27 -0500
+
 livecd-rootfs (2.525.41) bionic; urgency=medium
 
   * Use snap cli rather than custom snap-tool (LP: #1864252)

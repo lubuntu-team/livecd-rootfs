@@ -1,0 +1,3 @@
+#!/bin/sh -e
+chroot chroot rm /etc/resolv.conf
+chroot chroot touch /etc/resolv.conf
