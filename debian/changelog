@@ -1,3 +1,9 @@
+livecd-rootfs (2.408.59) xenial; urgency=medium
+
+  * Backport snap preseed base support (LP: #1874834)
+
+ -- Robert C Jennings <robert.jennings@canonical.com>  Fri, 24 Apr 2020 10:54:54 -0500
+
 livecd-rootfs (2.408.58) xenial; urgency=medium
 
   * Use a snap cohort key for consistent parallel builds (LP: #1866159)
