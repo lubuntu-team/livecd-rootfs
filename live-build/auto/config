@@ -186,7 +186,7 @@ case $IMAGEFORMAT in
 				MODEL=dragonboard ;;
 			armhf+raspi3)
 				MODEL=pi ;;
-			arm64+raspi3)
+			arm64+raspi3*)
 				MODEL=pi-arm64 ;;
 			armhf+imx6)
 				MODEL=nitrogen6x ;;
@@ -206,6 +206,7 @@ case $IMAGEFORMAT in
 		if [ $PROJECT = "ubuntu-core" ]; then
 			# snap-based core images
 
+			BRAND_ID="canonical"
 			case $MODEL in
 				pc-amd64|pc-i386)
 					[ -z "${SUBARCH:-}" ] \
@@ -218,7 +219,19 @@ case $IMAGEFORMAT in
 					;;
 				*)
 					# Ubuntu Core 18
-					MODEL="ubuntu-core-18-${MODEL#pc-}" ;;
+					case $SUBARCH in
+						# Handle appliance images
+						*plexmediaserver|*adguard-home|*nextcloud|*openhab|*frr)
+							BRAND_ID="ubuntu"
+							APPLIANCE="${SUBARCH#raspi3-}"
+							MODEL="${APPLIANCE}-ubuntu-core-18-${MODEL#pc-}"
+							;;
+						# Default generic images
+						*)
+							MODEL="ubuntu-core-18-${MODEL#pc-}"
+							;;
+					esac
+					;;
 			esac
 
 			case "$ARCH+${SUBARCH:-}" in
@@ -233,7 +246,7 @@ case $IMAGEFORMAT in
 			echo "IMAGEFORMAT=$IMAGEFORMAT" >> config/common
 			echo "UBUNTU_IMAGE_ARGS=\"$UBUNTU_IMAGE_ARGS\"" >> config/common
 			# Store model assertion in top dir to get it picked up later as a build artifact
-			env SNAPPY_STORE_NO_CDN=1 snap known --remote model series=16 model="$MODEL" brand-id=canonical > "$PREFIX".model-assertion
+			env SNAPPY_STORE_NO_CDN=1 snap known --remote model series=16 model="$MODEL" brand-id="$BRAND_ID" > "$PREFIX".model-assertion
 			echo "Configured ubuntu-image for the following model assertion:"
 			cat "$PREFIX".model-assertion
 			echo "----------------------------------------------------------"
