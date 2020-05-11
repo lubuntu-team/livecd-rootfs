@@ -1,7 +1,7 @@
 #!/bin/bash -eux
 
 case $ARCH in
-    amd64|arm64|armhf)
+    amd64|arm64|armhf|riscv64)
         ;;
     *)
         echo "We don't create EFI images for $ARCH."
@@ -21,6 +21,10 @@ case ${PROJECT:-} in
         ;;
 esac
 
+if [ "$ARCH" = "riscv64" ] && [ -n "${SUBARCH:-}" ]; then
+    IMAGE_SIZE=3758096384 # bump to 3.5G (3584*1024**2), due to linux-generic instead of virtual
+fi
+
 . config/binary
 
 . config/functions
@@ -34,6 +38,38 @@ create_partitions() {
                 --new=15:0:204800 \
                 --typecode=15:ef00 \
                 --new=1:
+            ;;
+        riscv64)
+            # same as arm64/armhf, but set bit 2 legacy bios bootable
+            # on the first partition for uboot
+            # and have two loader partitions of uboot SPL & real one
+            # and have CIDATA partition for preinstalled image
+            if [ -z "${SUBARCH:-}" ]; then
+                # cloud-image
+                sgdisk "${disk_image}" \
+                       --set-alignment=2 \
+                       --new=15::+106M \
+                       --typecode=15:ef00 \
+                       --new=1:: \
+                       --attributes=1:set:2
+            else
+                # preinstalled server, currently FU540
+                # FU740 too in the future
+                sgdisk "${disk_image}" \
+                       --set-alignment=2 \
+                       --new=13:34:2081 \
+                       --change-name=13:loader1 \
+                       --typecode=13:5B193300-FC78-40CD-8002-E86C45580B47 \
+                       --new=14:2082:10273 \
+                       --change-name=14:loader2 \
+                       --typecode=14:2E54B353-1271-4842-806F-E436D6AF6985 \
+                       --new=15::+106M \
+                       --typecode=15:ef00 \
+                       --new=12::+4M \
+                       --change-name=12:CIDATA \
+                       --new=1:: \
+                       --attributes=1:set:2
+            fi
             ;;
         amd64)
             sgdisk "${disk_image}" \
@@ -99,6 +135,65 @@ install_grub() {
         amd64)
             chroot mountpoint apt-get install -qqy grub-pc shim-signed
             efi_target=x86_64-efi
+            ;;
+        riscv64)
+            # TODO grub-efi-riscv64 does not exist yet on riscv64
+            chroot mountpoint apt-get install -qqy u-boot-menu #grub-efi-riscv64
+            efi_target=riscv64-efi
+
+            chroot mountpoint u-boot-update
+
+            if [ -n "${SUBARCH:-}" ]; then
+                chroot mountpoint apt-get install -qqy u-boot-sifive
+                # FSBL, which gets U-Boot SPL
+                loader1="/dev/mapper${loop_device///dev/}p13"
+                # The real U-Boot
+                loader2="/dev/mapper${loop_device///dev/}p14"
+                dd if=mountpoint/usr/lib/u-boot/sifive_fu540/u-boot-spl.bin of=$loader1
+                dd if=mountpoint/usr/lib/u-boot/sifive_fu540/u-boot.itb of=$loader2
+                # Provide end-user modifyable CIDATA
+                cidata_dev="/dev/mapper${loop_device///dev/}p12"
+                setup_cidata "${cidata_dev}"
+                # Provide stock nocloud datasource
+                # Allow interactive login on baremetal SiFive board,
+                # without a cloud datasource.
+                mkdir -p mountpoint/var/lib/cloud/seed/nocloud-net
+                cat <<EOF >mountpoint/var/lib/cloud/seed/nocloud-net/meta-data
+instance-id: iid-$(openssl rand -hex 8)
+EOF
+                cat <<EOF >mountpoint/var/lib/cloud/seed/nocloud-net/user-data
+#cloud-config
+chpasswd:
+    expire: True
+    list:
+        - ubuntu:ubuntu
+ssh_pwauth: True
+EOF
+                cat <<EOF >mountpoint/var/lib/cloud/seed/nocloud-net/network-config
+# This is the initial network config.
+# It can be overwritten by cloud-init.
+version: 2
+ethernets:
+  zz-all-en:
+    match:
+      name: "en*"
+    dhcp4: true
+    optional: true
+  zz-all-eth:
+    match:
+      name: "eth*"
+    dhcp4: true
+    optional: true
+EOF
+            fi
+            ## TODO remove below once we have grub-efi-riscv64
+            rm mountpoint/tmp/device.map
+            umount mountpoint/boot/efi
+            mount
+            umount_partition mountpoint
+            rmdir mountpoint
+            return
+            ##
             ;;
     esac
 
