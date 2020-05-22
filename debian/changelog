@@ -1,3 +1,9 @@
+livecd-rootfs (2.620.3) eoan; urgency=medium
+
+  * Revert of initramfs package removal in KVM image (LP: #1880170)
+
+ -- Phil Roche <phil.roche@canonical.com>  Fri, 22 May 2020 13:03:20 +0100
+
 livecd-rootfs (2.620.2) eoan; urgency=medium
 
   * Fix logic to ensure snapd is seeded in core18-only images (LP: #1871919)
