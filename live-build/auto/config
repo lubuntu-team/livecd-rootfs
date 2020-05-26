@@ -224,7 +224,8 @@ case $IMAGEFORMAT in
 						*plexmediaserver|*adguard-home|*nextcloud|*openhab|*frr)
 							BRAND_ID="ubuntu"
 							APPLIANCE="${SUBARCH#raspi3-}"
-							MODEL="${APPLIANCE}-ubuntu-core-18-${MODEL#pc-}"
+							[ "$MODEL" = "pi-arm64" ] && MODEL="pi"
+							MODEL="${APPLIANCE}-core18-${MODEL#pc-}"
 							;;
 						# Default generic images
 						*)
