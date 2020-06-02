@@ -1,3 +1,9 @@
+livecd-rootfs (2.664.2) focal; urgency=medium
+
+  * Revert of initramfs package removal in KVM image (LP: #1880170)
+
+ -- Phil Roche <phil.roche@canonical.com>  Fri, 22 May 2020 13:03:20 +0100
+
 livecd-rootfs (2.664.1) focal; urgency=medium
 
   * Bump only the UC20 pc image to 8GB, and keep Pi images as small as possible.
