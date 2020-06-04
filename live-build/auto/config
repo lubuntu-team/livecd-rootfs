@@ -177,6 +177,8 @@ case $IMAGEFORMAT in
 
 	ubuntu-image)
 		UBUNTU_IMAGE_ARGS=""
+		BRAND_ID="canonical"
+
 		case "$ARCH+${SUBARCH:-}" in
 			amd64+*)
 				MODEL=pc-amd64 ;;
@@ -190,6 +192,14 @@ case $IMAGEFORMAT in
 				MODEL=pi-arm64 ;;
 			armhf+imx6)
 				MODEL=nitrogen6x ;;
+			# Handle appliance images
+			*+appliance_*)
+				BRAND_ID="ubuntu"
+				COMPOSED="${SUBARCH#appliance_}"
+				APPLIANCE="${COMPOSED%_*}"
+				DEVICE="${COMPOSED#*_}"
+				MODEL="${APPLIANCE}-core18-${DEVICE}"
+				;;
 			*)
 				echo "Model $ARCH+${SUBARCH:-} unknown to livecd-rootfs" >&2
 				exit 1
@@ -206,7 +216,6 @@ case $IMAGEFORMAT in
 		if [ $PROJECT = "ubuntu-core" ]; then
 			# snap-based core images
 
-			BRAND_ID="canonical"
 			case $MODEL in
 				pc-amd64|pc-i386)
 					[ -z "${SUBARCH:-}" ] \
@@ -219,19 +228,8 @@ case $IMAGEFORMAT in
 					;;
 				*)
 					# Ubuntu Core 18
-					case $SUBARCH in
-						# Handle appliance images
-						*plexmediaserver|*adguard-home|*nextcloud|*openhab|*frr)
-							BRAND_ID="ubuntu"
-							APPLIANCE="${SUBARCH#raspi3-}"
-							[ "$MODEL" = "pi-arm64" ] && MODEL="pi"
-							MODEL="${APPLIANCE}-core18-${MODEL#pc-}"
-							;;
-						# Default generic images
-						*)
-							MODEL="ubuntu-core-18-${MODEL#pc-}"
-							;;
-					esac
+					[ -z "${APPLIANCE:-}" ] \
+					&& MODEL="ubuntu-core-18-${MODEL#pc-}"
 					;;
 			esac
 
