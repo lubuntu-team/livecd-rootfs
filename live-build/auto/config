@@ -180,6 +180,12 @@ case $IMAGEFORMAT in
 		BRAND_ID="canonical"
 
 		case "$ARCH+${SUBARCH:-}" in
+			# Handle appliance images
+			*+appliance-*)
+				BRAND_ID="ubuntu"
+				MODEL="${SUBARCH#appliance-}"
+				APPLIANCE=1
+				;;
 			amd64+*)
 				MODEL=pc-amd64 ;;
 			i386+*)
@@ -192,12 +198,6 @@ case $IMAGEFORMAT in
 				MODEL=pi-arm64 ;;
 			armhf+imx6)
 				MODEL=nitrogen6x ;;
-			# Handle appliance images
-			*+appliance-*)
-				BRAND_ID="ubuntu"
-				MODEL="${SUBARCH#appliance-}"
-				APPLIANCE=1
-				;;
 			*)
 				echo "Model $ARCH+${SUBARCH:-} unknown to livecd-rootfs" >&2
 				exit 1
