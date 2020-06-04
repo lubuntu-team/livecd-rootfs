@@ -193,12 +193,10 @@ case $IMAGEFORMAT in
 			armhf+imx6)
 				MODEL=nitrogen6x ;;
 			# Handle appliance images
-			*+appliance_*)
+			*+appliance-*)
 				BRAND_ID="ubuntu"
-				COMPOSED="${SUBARCH#appliance_}"
-				APPLIANCE="${COMPOSED%_*}"
-				DEVICE="${COMPOSED#*_}"
-				MODEL="${APPLIANCE}-core18-${DEVICE}"
+				MODEL="${SUBARCH#appliance-}"
+				APPLIANCE=1
 				;;
 			*)
 				echo "Model $ARCH+${SUBARCH:-} unknown to livecd-rootfs" >&2
