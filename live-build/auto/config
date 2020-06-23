@@ -319,32 +319,10 @@ case $IMAGEFORMAT in
 
 	ubuntu-image)
 		UBUNTU_IMAGE_ARGS=""
-		case "$ARCH+${SUBARCH:-}" in
-			amd64+*)
-				MODEL=pc-amd64 ;;
-			i386+*)
-				MODEL=pc-i386 ;;
-			arm64+snapdragon)
-				MODEL=dragonboard ;;
-			armhf+raspi)
-				MODEL=pi ;;
-			armhf+raspi2)
-				MODEL=pi2 ;;
-			armhf+raspi3)
-				MODEL=pi3 ;;
-			arm64+raspi)
-				MODEL=pi-arm64 ;;
-			arm64+raspi3)
-				MODEL=pi3-arm64 ;;
-			armhf+cm3)
-				MODEL=cm3 ;;
-			armhf+imx6)
-				MODEL=nitrogen6x ;;
-			*)
-				echo "Model $ARCH+${SUBARCH:-} unknown to livecd-rootfs" >&2
-				exit 1
-				;;
-		esac
+		# We now allow passing the model name directly as SUBARCH, but for readability
+		# let's still use the MODEL variable so it's clear on what we're special-casing.
+		# But for the future, let's allow ourselves to set a MODEL explicitly too.
+		MODEL="${MODEL:-$SUBARCH}"
 
 		# If we have a datestamp coming from cdimage, use that to populate
 		# .disk/info on the target image
@@ -358,7 +336,7 @@ case $IMAGEFORMAT in
 
 			CHANNEL="${CHANNEL:-edge}"
 			case $MODEL in
-				pc-amd64|pc-i386)
+				ubuntu-core-*-amd64|ubuntu-core-*-i386)
 					if [ -z "${SUBARCH:-}" ]; then
 						case $SUITE in
 							xenial|bionic)
@@ -379,51 +357,40 @@ case $IMAGEFORMAT in
 					;;
 				bionic)
 					# Ubuntu Core 18
-					MODEL="ubuntu-core-18-${MODEL#pc-}"
 					UBUNTU_IMAGE_ARGS="$UBUNTU_IMAGE_ARGS -c $CHANNEL"
 					;;
 				*)
-					if [ "${MODEL}" = "pi" ]; then
-						MODEL=pi-armhf
-					fi
 					# Ubuntu Core 20
 					# Currently uc20 assertions do not support global
 					# channel overrides, instead we have per-channel models
 					case $CHANNEL in
-						stable)
-							MODEL="ubuntu-core-20-${MODEL#pc-}"
-							;;
 						candidate|beta|edge|dangerous)
-							MODEL="ubuntu-core-20-${MODEL#pc-}-${CHANNEL}"
+							MODEL="${MODEL}-${CHANNEL}"
 							;;
 						dangerous-*)
 							# That being said, the dangerous grade *does*
 							# support channel overrides, so we can use the
 							# dangerous model assertion and override the channel
 							# freely.
-							MODEL="ubuntu-core-20-${MODEL#pc-}-dangerous"
+							MODEL="${MODEL}-dangerous"
 							CHANNEL=${CHANNEL#dangerous-}
 							UBUNTU_IMAGE_ARGS="$UBUNTU_IMAGE_ARGS -c $CHANNEL"
-							;;
-						*)
-							echo "Unknown CHANNEL ${CHANNEL} specification for ${SUITE}"
-							exit 1
 							;;
 					esac
 					;;
 			esac
 
-			case "$ARCH+${SUBARCH:-}" in
-				amd64+kassel)
+			case "$MODEL" in
+				ubuntu-core-*-kassel)
+					# XXX: this should really have its own model assertion
+					MODEL="${MODEL%-kassel}-amd64"
 					EXTRA_SNAPS="$EXTRA_SNAPS core bluez alsa-utils"
 					;;
-				*) ;;
 			esac
 			for snap in $EXTRA_SNAPS; do
 				UBUNTU_IMAGE_ARGS="$UBUNTU_IMAGE_ARGS --extra-snaps $snap"
 			done
-			echo "IMAGEFORMAT=$IMAGEFORMAT" >> config/common
-			echo "UBUNTU_IMAGE_ARGS=\"$UBUNTU_IMAGE_ARGS\"" >> config/common
+
 			# Store model assertion in top dir to get it picked up later as a build artifact
 			env SNAPPY_STORE_NO_CDN=1 snap known --remote model series=16 model="$MODEL" brand-id=canonical > "$PREFIX".model-assertion
 			echo "Configured ubuntu-image for the following model assertion:"
@@ -433,15 +400,14 @@ case $IMAGEFORMAT in
 			# classic images
 
 			# Certain models have different names but are built from the same source gadget tree
-			BRANCH=18
-			case $MODEL in
-				pi-arm64|pi3-arm64)
+			BRANCH="18-$ARCH"
+			# XXX: once we're ready, BRANCH should be derived from SUITE
+
+			# For classic images we need to both have a MODEL, derived from the gadget name, and a
+			# SUBARCH that we'd push forward to the actual rootfs generation.
+			case $SUBARCH in
+				raspi*)
 					MODEL=pi
-					BRANCH=18-arm64
-					;;
-				pi)
-					BRANCH=18-armhf
-					;;
 			esac
 
 			UBUNTU_IMAGE_ARGS="$UBUNTU_IMAGE_ARGS${PROPOSED:+ --with-proposed}"
@@ -452,13 +418,13 @@ case $IMAGEFORMAT in
 			# - Github hosted gadgets are mirrored into a github-mirror repo
 			git clone git://git.launchpad.net/~canonical-foundations/snap-$MODEL/+git/snap-$MODEL -b $BRANCH config/$PREFIX-gadget || git clone git://git.launchpad.net/~canonical-foundations/snap-$MODEL/+git/github-mirror -b $BRANCH config/$PREFIX-gadget
 
-			echo "IMAGEFORMAT=$IMAGEFORMAT" >> config/common
 			echo "SUITE=$SUITE" >> config/common
-			echo "UBUNTU_IMAGE_ARGS=\"$UBUNTU_IMAGE_ARGS\"" >> config/common
 
 			echo "Configured ubuntu-image for the following gadget model: $MODEL"
 		fi
 
+		echo "IMAGEFORMAT=$IMAGEFORMAT" >> config/common
+		echo "UBUNTU_IMAGE_ARGS=\"$UBUNTU_IMAGE_ARGS\"" >> config/common
 		# Save the model name used for building, mostly for any model-specific hook execution
 		echo "MODEL=$MODEL" >> config/common
 		# Fake finished configuration for lb build
