@@ -380,6 +380,11 @@ case $IMAGEFORMAT in
 				bionic)
 					# Ubuntu Core 18
 					MODEL="ubuntu-core-18-${MODEL#pc-}"
+					case $CHANNEL in
+						appliance*)
+							CHANNEL="stable"
+							;;
+					esac
 					UBUNTU_IMAGE_ARGS="$UBUNTU_IMAGE_ARGS -c $CHANNEL"
 					;;
 				*)
