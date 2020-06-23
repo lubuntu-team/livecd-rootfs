@@ -35,6 +35,7 @@ mkdir -p config
 cp -af /usr/share/livecd-rootfs/live-build/functions config/functions
 cp -af /usr/share/livecd-rootfs/live-build/lb_*_layered config/
 cp -af /usr/share/livecd-rootfs/live-build/snap-seed-parse.py config/snap-seed-parse
+cp -af /usr/share/livecd-rootfs/live-build/squashfs-exclude-files config/
 
 mkdir -p config/package-lists
 
@@ -395,6 +396,15 @@ case $IMAGEFORMAT in
 							;;
 						candidate|beta|edge|dangerous)
 							MODEL="ubuntu-core-20-${MODEL#pc-}-${CHANNEL}"
+							;;
+						dangerous-*)
+							# That being said, the dangerous grade *does*
+							# support channel overrides, so we can use the
+							# dangerous model assertion and override the channel
+							# freely.
+							MODEL="ubuntu-core-20-${MODEL#pc-}-dangerous"
+							CHANNEL=${CHANNEL#dangerous-}
+							UBUNTU_IMAGE_ARGS="$UBUNTU_IMAGE_ARGS -c $CHANNEL"
 							;;
 						*)
 							echo "Unknown CHANNEL ${CHANNEL} specification for ${SUITE}"

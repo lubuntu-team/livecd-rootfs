@@ -1,3 +1,18 @@
+livecd-rootfs (2.668) groovy; urgency=medium
+
+  [ Łukasz 'sil2100' Zemczak ]
+  * Enable overrides of UC20 grade dangerous channels - as this is possible.
+    (LP: #1879350)
+
+  [ Patrick Wu ]
+  * live-build/ubuntu/hooks/040-hyperv-desktop-images.binary: fix issues
+    with Hyper-V xrdp support.
+
+  [ Balint Reczey ]
+  * Remove fstab from squashfs images (LP: #1877078)
+
+ -- Dimitri John Ledkov <xnox@ubuntu.com>  Tue, 23 Jun 2020 15:05:11 +0100
+
 livecd-rootfs (2.667) groovy; urgency=medium
 
   * Revert of initramfs package removal in KVM image
