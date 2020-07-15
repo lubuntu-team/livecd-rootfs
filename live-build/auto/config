@@ -194,7 +194,7 @@ case $IMAGEFORMAT in
 				MODEL=dragonboard ;;
 			armhf+raspi3)
 				MODEL=pi ;;
-			arm64+raspi3*)
+			arm64+raspi3)
 				MODEL=pi-arm64 ;;
 			armhf+imx6)
 				MODEL=nitrogen6x ;;
