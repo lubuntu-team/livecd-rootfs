@@ -1,6 +1,6 @@
 livecd-rootfs (2.525.44) UNRELEASED; urgency=medium
 
-  * Add support for building uc18 appliance images.
+  * Add support for building uc18 appliance images (LP: #1887673).
 
  -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Thu, 07 May 2020 18:38:54 +0200
 
