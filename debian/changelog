@@ -1,3 +1,10 @@
+livecd-rootfs (2.674) groovy; urgency=medium
+
+  [ David Krauser ]
+  * Fix broken minimal cloud image boot on amd64
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Thu, 16 Jul 2020 15:40:15 -0700
+
 livecd-rootfs (2.673) groovy; urgency=medium
 
   * Fix an unbound variable in scripts/functions. 
