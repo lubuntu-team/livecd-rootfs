@@ -1,4 +1,4 @@
-livecd-rootfs (2.525.44) UNRELEASED; urgency=medium
+livecd-rootfs (2.525.44) bionic; urgency=medium
 
   * Add support for building uc18 appliance images (LP: #1887673).
 
