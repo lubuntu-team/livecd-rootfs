@@ -1,3 +1,10 @@
+livecd-rootfs (2.525.45) UNRELEASED; urgency=medium
+
+  * Stop building and mounting the mass-rack and maas-region squashfses for
+    the server-live build as subiquity does not use them any more. 
+
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Wed, 22 Jul 2020 22:05:53 +1200
+
 livecd-rootfs (2.525.44) bionic; urgency=medium
 
   * Add support for building uc18 appliance images (LP: #1887673).
