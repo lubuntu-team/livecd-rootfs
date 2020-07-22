@@ -1,3 +1,20 @@
+livecd-rootfs (2.525.45) UNRELEASED; urgency=medium
+
+  * Backport snap seeding fixes:
+
+  [ Dimitri John Ledkov ]
+  * Run snap info on the downloaded snap, rather than against the
+    store. First of all snap info doesn't have --channel argument, thus
+    queries the wrong channel, and depening on the cohort, a different
+    snap might be visible too. Thus seed the base of the snap revision we
+    dowanloaded, rather than some random one from the store.
+  * Use snap-tool to seed subiquity snap.
+
+  [ Robert C Jennings ]
+  * Fix logic to ensure snapd is seeded in core18-only images (LP: #1871919)
+
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Wed, 22 Jul 2020 14:44:38 +1200
+
 livecd-rootfs (2.525.44) bionic; urgency=medium
 
   * Add support for building uc18 appliance images (LP: #1887673).
