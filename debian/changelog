@@ -1,4 +1,4 @@
-livecd-rootfs (2.664.3) UNRELEASED; urgency=medium
+livecd-rootfs (2.664.3) focal; urgency=medium
 
   [ Łukasz 'sil2100' Zemczak ]
   * Enable overrides of UC20 grade dangerous channels - as this is possible.
