@@ -1,9 +1,18 @@
 livecd-rootfs (2.664.3) UNRELEASED; urgency=medium
 
+  [ Łukasz 'sil2100' Zemczak ]
   * Enable overrides of UC20 grade dangerous channels - as this is possible.
     (LP: #1879350)
 
- -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Mon, 25 May 2020 16:40:27 +0200
+  [ Iain Lane ]
+  * Hack seeding of linux kernel in ubuntustudio/focal
+    ubuntustudio-default-settings in focal release has a Recommends to this
+    kernel, which makes it impossible to update the kernel later on, since we
+    would install the -updates and release kernel, which isn't allowed and
+    causes FTBFS. Hack out the focal-release kernel and let the rest of the
+    build process pull in the right one. (LP: #1884915)
+
+ -- Iain Lane <iain.lane@canonical.com>  Tue, 21 Jul 2020 16:25:18 +0100
 
 livecd-rootfs (2.664.2) focal; urgency=medium
 
