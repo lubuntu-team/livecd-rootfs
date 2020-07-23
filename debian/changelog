@@ -1,6 +1,8 @@
 livecd-rootfs (2.525.45) UNRELEASED; urgency=medium
 
-  * Backport snap seeding and other fixes for live-server ISOs:
+  * Backport snap seeding and other fixes for live-server ISOs. (LP: #1883156)
+  * Stop building and mounting the mass-rack and maas-region squashfses for
+    the server-live build as subiquity does not use them any more. 
 
   [ Dimitri John Ledkov ]
   * Run snap info on the downloaded snap, rather than against the
