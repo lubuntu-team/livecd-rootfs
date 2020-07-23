@@ -946,7 +946,8 @@ case $ARCH in
 			raspi)
 				# Generic Raspberry Pi images
 				COMPONENTS='main restricted universe multiverse'
-				add_package install linux-firmware-raspi2 u-boot-rpi flash-kernel u-boot-tools wpasupplicant
+				# XXX: those should really be part of a seed/meta-package
+				add_package install linux-firmware-raspi2 u-boot-rpi flash-kernel u-boot-tools wpasupplicant rpi-eeprom
 				BINARY_REMOVE_LINUX=false
 				;;
 			imx6)
