@@ -626,11 +626,31 @@ snap_prepare() {
 snap_preseed() {
     # Preseed a snap in the image (snap_prepare must be called once prior)
     local CHROOT_ROOT=$1
+    # $2 can be in the form of snap_name/classic=track/risk/branch
     local SNAP=$2
+    # strip CHANNEL specification
+    SNAP=${SNAP%=*}
+    # strip /classic confinement
     local SNAP_NAME=${SNAP%/*}
-    # Per Ubuntu policy, all seeded snaps (with the exception of the core
-    # snap) must pull from stable/ubuntu-$(release_ver) as their channel.
-    local CHANNEL=${3:-"stable/ubuntu-$(release_ver)"}
+    # Seed from the specified channel (e.g. core18 latest/stable)
+    # Or Channel endcoded in the snap name (e.g. lxd=4.0/stable/ubuntu-20.04)
+    # Or Ubuntu policy default channel latest/stable/ubuntu-$(release_ver)
+    local CHANNEL=${3:-}
+    if [ -z "$CHANNEL" ]; then
+        case $2 in
+            *=*)
+                CHANNEL=${2#*=}
+                ;;
+            *)
+                CHANNEL="stable/ubuntu-$(release_ver)"
+                ;;
+        esac
+    fi
+
+    # At this point:
+    # SNAP_NAME is just the snap name
+    # SNAP is either $SNAP_NAME or $SNAP_NAME/classic for classic confined
+    # CHANNEL is the channel
 
     if [ ! -e "$CHROOT_ROOT/var/lib/snapd/seed/assertions/model" ]; then
         echo "ERROR: Snap model assertion not present, snap_prepare must be called"

@@ -1,3 +1,9 @@
+livecd-rootfs (2.664.4) focal; urgency=medium
+
+  * snap_preseed: support channel specification with snap name (LP: #1882374)
+
+ -- Dimitri John Ledkov <xnox@ubuntu.com>  Thu, 23 Jul 2020 19:12:10 +0100
+
 livecd-rootfs (2.664.3) focal; urgency=medium
 
   [ Łukasz 'sil2100' Zemczak ]
