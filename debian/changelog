@@ -2,6 +2,7 @@ livecd-rootfs (2.525.45) UNRELEASED; urgency=medium
 
   [ Francis Ginther ]
   * Use the linux-raspi-hwe-18.04 kernel for raspi3 classic image builds.
+    (LP: #1889188)
 
   [ Michael Hudson-Doyle ]
   * Backport snap seeding and other fixes for live-server ISOs. (LP: #1883156)
