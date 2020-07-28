@@ -1,5 +1,9 @@
 livecd-rootfs (2.525.45) UNRELEASED; urgency=medium
 
+  [ Francis Ginther ]
+  * Use the linux-raspi-hwe-18.04 kernel for raspi3 classic image builds.
+
+  [ Michael Hudson-Doyle ]
   * Backport snap seeding and other fixes for live-server ISOs. (LP: #1883156)
   * Stop building and mounting the mass-rack and maas-region squashfses for
     the server-live build as subiquity does not use them any more. 
