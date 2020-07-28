@@ -1,4 +1,4 @@
-livecd-rootfs (2.525.45) UNRELEASED; urgency=medium
+livecd-rootfs (2.525.45) bionic; urgency=medium
 
   [ Francis Ginther ]
   * Use the linux-raspi-hwe-18.04 kernel for raspi3 classic image builds.
