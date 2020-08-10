@@ -1,3 +1,11 @@
+livecd-rootfs (2.525.46) UNRELEASED; urgency=medium
+
+  [ Cody Shepherd ]
+  * Add dist-upgrade to bootable-buildd hook to ensure the built image
+    doesn't contain vulnerable kernels or other packages.  LP: #1891061.
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Mon, 10 Aug 2020 14:16:55 -0700
+
 livecd-rootfs (2.525.45) bionic; urgency=medium
 
   [ Francis Ginther ]
