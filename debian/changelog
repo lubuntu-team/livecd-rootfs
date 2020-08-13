@@ -1,3 +1,11 @@
+livecd-rootfs (2.525.47) UNRELEAED; urgency=medium
+
+  * Apparently the lxd appliance needs to use a custom track (4.0) and since
+    model assertions do not accept track names in required-snaps, we need to do
+    this by hand during build. (LP: #1891505)
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Wed, 12 Aug 2020 15:58:19 +0200
+
 livecd-rootfs (2.525.46) bionic; urgency=medium
 
   [ Cody Shepherd ]
