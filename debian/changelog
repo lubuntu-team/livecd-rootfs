@@ -1,3 +1,29 @@
+livecd-rootfs (2.685) groovy; urgency=medium
+
+  * Revert 'ubuntu-cpc: Disable boot splash in all cloud images
+            (LP: #1725358)'
+
+ -- Robert C Jennings <robert.jennings@canonical.com>  Wed, 12 Aug 2020 16:52:05 -0500
+
+livecd-rootfs (2.684) groovy; urgency=medium
+
+  * ubuntu-cpc: Fix ppc64el grub console update
+
+ -- Robert C Jennings <robert.jennings@canonical.com>  Wed, 12 Aug 2020 13:40:42 -0500
+
+livecd-rootfs (2.683) groovy; urgency=medium
+
+  * Revert the removal of fstab from squashfs images, which has had knock-on
+    effects and breaks MAAS (ref bug #1890803)
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Wed, 12 Aug 2020 11:31:12 -0700
+
+livecd-rootfs (2.682) groovy; urgency=medium
+
+  * ubuntu-cpc: Disable boot splash in all cloud images (LP: #1725358)
+
+ -- Robert C Jennings <robert.jennings@canonical.com>  Wed, 12 Aug 2020 04:52:22 -0500
+
 livecd-rootfs (2.681) groovy; urgency=medium
 
   [ Patrick Wu ]
