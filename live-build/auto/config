@@ -219,6 +219,10 @@ case $IMAGEFORMAT in
 					[ -z "${SUBARCH:-}" ] \
 					&& UBUNTU_IMAGE_ARGS="$UBUNTU_IMAGE_ARGS --image-size 3700M"
 					;;
+				# Some appliances need different snap tracks
+				lxd-core18*)
+					EXTRA_SNAPS="lxd=4.0"
+					;;
 			esac
 			case $SUITE in
 				xenial)

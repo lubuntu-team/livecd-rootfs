@@ -1,3 +1,19 @@
+livecd-rootfs (2.525.47) bionic; urgency=medium
+
+  * Apparently the lxd appliance needs to use a custom track (4.0) and since
+    model assertions do not accept track names in required-snaps, we need to do
+    this by hand during build. (LP: #1891505)
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Wed, 12 Aug 2020 15:58:19 +0200
+
+livecd-rootfs (2.525.46) bionic; urgency=medium
+
+  [ Cody Shepherd ]
+  * Add dist-upgrade to bootable-buildd hook to ensure the built image
+    doesn't contain vulnerable kernels or other packages.  LP: #1891061.
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Mon, 10 Aug 2020 14:17:15 -0700
+
 livecd-rootfs (2.525.45) bionic; urgency=medium
 
   [ Francis Ginther ]
