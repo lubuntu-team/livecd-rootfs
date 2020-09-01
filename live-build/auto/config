@@ -688,6 +688,23 @@ case $PROJECT in
 
 	ubuntustudio-dvd)
 		add_task install minimal standard ubuntustudio-desktop ubuntustudio-audio ubuntustudio-fonts ubuntustudio-graphics ubuntustudio-video ubuntustudio-publishing ubuntustudio-photography
+		case $SUITE in
+			focal)
+				# ubuntustudio-default-settings in focal
+				# release has a Recommends to this kernel,
+				# which makes it impossible to update the
+				# kernel later on, since we would install the
+				# -updates and release kernel, which isn't
+				# allowed and causes the squashfs to fail to
+				# build.  Hack out the focal-release kernel and
+				# let the rest of the build process pull in the
+				# right one. (See right below.)
+				for package in linux-lowlatency linux-image-lowlatency linux-headers-lowlatency linux-image-5.4.0-26-lowlatency linux-headers-5.4.0-26-lowlatency; do
+					sed -i "s/$/ -a --not -XFPackage ${package}/" \
+						"config/package-lists/livecd-rootfs.list.chroot_install"
+				done
+				;;
+		esac
 		COMPONENTS='main restricted universe multiverse'
 		case $ARCH in
 			amd64|i386)	KERNEL_FLAVOURS=lowlatency ;;
@@ -877,7 +894,7 @@ if [ "$PROJECT:${SUBPROJECT:-}" = ubuntu-cpc:minimized ]; then
 	# build if we see such a snap.
 	for snap in `cat config/seeded-snaps`; do
 		case $snap in
-			lxd)
+			lxd | lxd=*)
 				;;
 			*)
 				echo "Unexpected seeded snap for ubuntu-cpc:minimized build: $snap"
