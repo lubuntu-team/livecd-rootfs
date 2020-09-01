@@ -1,9 +1,7 @@
 livecd-rootfs (2.664.6) focal; urgency=medium
 
   [ Patrick Wu ]
-  * Fix xrdp support in hyper-v images.
-  * Use the linux-azure kernel in hyper-v images instead of linux-virtual.
-  * LP: #1890980.
+  * Fix xrdp support in hyper-v images.  LP: #1890980.
 
  -- Steve Langasek <steve.langasek@ubuntu.com>  Wed, 26 Aug 2020 14:06:31 -0700
 
