@@ -63,6 +63,9 @@ undivert_grub "$mount_d"
 chroot "$mount_d" \
     sh -c 'update-initramfs -c -v -k $(ls /boot/vmlinuz*generic | sed 1q | cut -d- -f2-3)'
 
+# Set up resolvconf
+setup_resolvconf "$mount_d"
+
 # Cleanup
 env DEBIAN_FRONTEND=noninteractive chroot "$mount_d" apt-get \
     clean
