@@ -45,7 +45,7 @@ env DEBIAN_FRONTEND=noninteractive chroot "$mount_d" apt-get \
 
 # Install dependencies
 env DEBIAN_FRONTEND=noninteractive chroot "$mount_d" apt-get \
-    install -y --install-recommends bind9 busybox-initramfs cloud-init dbus \
+    install -y --install-recommends busybox-initramfs cloud-init dbus \
                ifupdown initramfs-tools locales lsb-release \
                openssh-server resolvconf sudo snapd udev 
 
