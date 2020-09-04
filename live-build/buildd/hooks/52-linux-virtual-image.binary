@@ -49,12 +49,6 @@ env DEBIAN_FRONTEND=noninteractive chroot "$mount_d" apt-get \
                ifupdown initramfs-tools locales lsb-release \
                openssh-server resolvconf sudo snapd udev 
 
-# Enable console output
-cat >> $mount_d/etc/default/grub.d/50-buildd-settings.cfg << EOF 
-${IMAGE_STR}
-GRUB_CMDLINE_LINUX_DEFAULT="console=ttyS0"
-EOF
-
 # Install a kernel
 divert_grub "$mount_d"
 env DEBIAN_FRONTEND=noninteractive chroot "$mount_d" apt-get \
