@@ -166,6 +166,10 @@ if [ "${SUBPROJECT:-}" = minimized ]; then
 	_xchroot "${rootd}" apt clean
 fi
 
+# install grub-legacy-ec2 and ubuntu-server for all ubuntu-cpc for LP: #1888575
+_xchroot "${rootd}" env DEBIAN_FRONTEND=noninteractive \
+  apt-get -y install grub-legacy-ec2
+
 #### END COMMON ARCH FUNCTIONS
 
 
