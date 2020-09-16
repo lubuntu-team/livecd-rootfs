@@ -1,9 +1,9 @@
-livecd-rootfs (2.408.60) UNRELEASED; urgency=medium
+livecd-rootfs (2.408.60) xenial; urgency=medium
 
   [ Cody Shepherd ]
-  * Install grub-legacy-ec2 for all ubuntu-cpc (LP #1888575)
+  * Install grub-legacy-ec2 for all ubuntu-cpc (LP: #1888575)
 
- -- Steve Langasek <steve.langasek@ubuntu.com>  Wed, 16 Sep 2020 13:39:38 -0700
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Wed, 16 Sep 2020 13:41:08 -0700
 
 livecd-rootfs (2.408.59) xenial; urgency=medium
 
