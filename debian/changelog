@@ -1,8 +1,8 @@
-livecd-rootfs (2.408.61) UNRELEASED; urgency=medium
+livecd-rootfs (2.408.61) xenial; urgency=medium
 
   * SRU: Enable bootable-buildd hooks for Xenial (LP: #1863024)
 
- -- Cody Shepherd <cody.shepherd@canonical.com>  Fri, 04 Sep 2020 11:03:48 -0700
+ -- Cody Shepherd <cody.shepherd@canonical.com>  Tue, 06 Oct 2020 12:56:18 -0700
 
 livecd-rootfs (2.408.60) xenial; urgency=medium
 
