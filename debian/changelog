@@ -1,3 +1,10 @@
+livecd-rootfs (2.664.7) focal; urgency=medium
+
+  [ Stanislav German-Evtushenko <giner> / John Chittum ]
+  * Send Vagrant serial connection to NULL. (LP: #1874453)
+
+ -- Robert C Jennings <robert.jennings@canonical.com>  Wed, 23 Sep 2020 13:32:32 -0500
+
 livecd-rootfs (2.664.6) focal; urgency=medium
 
   [ Patrick Wu ]
