@@ -1,8 +1,31 @@
-livecd-rootfs (2.694+1) hirsute; urgency=medium
+livecd-rootfs (2.698) hirsute; urgency=medium
 
-  * Add hirsute
+  * amd64: always install grub-pc with shim-signed (LP: #1901906)
+  * control: install qemu-utils & snapd on riscv64.
 
- -- Robert C Jennings <robert.jennings@canonical.com>  Wed, 28 Oct 2020 08:37:18 -0500
+ -- Dimitri John Ledkov <xnox@ubuntu.com>  Thu, 29 Oct 2020 22:22:30 +0000
+
+livecd-rootfs (2.697) hirsute; urgency=medium
+
+  [ John Chittum ]
+  * Ensure vmtools version entered into vmdk header (LP: #1893898)
+
+ -- Robert C Jennings <robert.jennings@canonical.com>  Wed, 28 Oct 2020 12:02:04 -0500
+
+livecd-rootfs (2.696) hirsute; urgency=medium
+
+  * auto/config: seed ubuntu-desktop when building hyperv image LP: #1901846
+  * auto/config: scope ubuntu:desktop-preinstalled:raspi image options LP: #1901846
+
+ -- Dimitri John Ledkov <xnox@ubuntu.com>  Wed, 28 Oct 2020 10:36:29 +0000
+
+livecd-rootfs (2.695) hirsute; urgency=medium
+
+  * Install only shim-signed to prevent shipping conflicting, autoremovable
+    packages
+  * Ensure autoremove is run after any package install
+
+ -- Joshua Powers <josh.powers@canonical.com>  Mon, 26 Oct 2020 11:58:57 -0700
 
 livecd-rootfs (2.694) groovy; urgency=medium
 
