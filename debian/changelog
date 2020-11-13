@@ -1,3 +1,11 @@
+livecd-rootfs (2.525.48) bionic; urgency=medium
+
+   [ Dimitri John Ledkov & Joshua Powers ]
+   * amd64: always install grub-pc with shim-signed (LP: #1901906), and
+     ensure to autoremove packages
+
+ -- Joshua Powers <josh.powers@canonical.com>  Fri, 13 Nov 2020 09:14:35 -0800
+
 livecd-rootfs (2.525.47) bionic; urgency=medium
 
   * Apparently the lxd appliance needs to use a custom track (4.0) and since
