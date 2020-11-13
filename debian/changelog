@@ -1,3 +1,11 @@
+livecd-rootfs (2.408.62) xenial; urgency=medium
+
+   [ Dimitri John Ledkov & Joshua Powers ]
+   * amd64: always install grub-pc with shim-signed (LP: #1901906), and
+     ensure to autoremove packages
+
+ -- Joshua Powers <josh.powers@canonical.com>  Fri, 13 Nov 2020 09:19:31 -0800
+
 livecd-rootfs (2.408.61) xenial; urgency=medium
 
   * SRU: Enable bootable-buildd hooks for Xenial (LP: #1863024)
