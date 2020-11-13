@@ -86,11 +86,13 @@ install_grub() {
             efi_target=arm64-efi
             ;;
         amd64)
-            chroot mountpoint apt-get install -qqy grub-efi-amd64-signed grub-efi-amd64 shim-signed
+            chroot mountpoint apt-get install -qqy grub-pc shim-signed
             grub_modules="multiboot serial usb usb_keyboard"
             efi_target=x86_64-efi
             ;;
     esac
+
+    chroot mountpoint apt-get autoremove --purge --assume-yes
 
     cat << EOF >> mountpoint/etc/default/grub.d/50-cloudimg-settings.cfg
 ${IMAGE_STR}
