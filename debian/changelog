@@ -1,3 +1,9 @@
+livecd-rootfs (2.664.9) UNRELEASED; urgency=medium
+
+  * Backport Ensure toolsVersion set in vmdk header (LP: #1893898) 
+
+ -- John Chittum <john.chittum@canonical.com>  Mon, 16 Nov 2020 08:57:16 -0600
+
 livecd-rootfs (2.664.8) focal; urgency=medium
 
   Backport snap-preseed work from groovy to focal LP: #1896755
