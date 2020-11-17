@@ -213,11 +213,24 @@ modify_vmdk_header() {
     # trim null bytes to treat as standard text file
     tr -d '\000' < $descriptor > $newdescriptor
 
+    #   remove the vmdk-stream-converter comment and replace with
+    #       # Disk DescriptorFile. This is needed for Virtualbox
+    #   remove the comments from vmdk-stream-converter which causes
+    #       VirtualBox and others to fail VMDK validation
+    sed -i -e 's|# Description file.*|# Disk DescriptorFile|' \
+        -e '/# Believe this is random*/d' \
+        -e '/# Indicates no parent/d' \
+        -e '/# The Disk Data Base/d' \
+            ${newdescriptor}
+
     # add newline to newdescriptor
     echo "" >> $newdescriptor
 
     # add required tools version
     echo -n 'ddb.toolsVersion = "2147483647"' >> $newdescriptor
+
+    echo "Cat'ing modified descriptor for debugging."
+    cat $newdescriptor
 
     # diff original descriptor and new descriptor for debugging
     # diff exits 1 if difference. pipefail not set so piping diff
