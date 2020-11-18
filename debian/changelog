@@ -1,3 +1,9 @@
+livecd-rootfs (2.408.62) UNRELEASED; urgency=medium
+
+  * Backport Ensure toolsVersion set in vmdk header (LP: #1893898) 
+
+ -- John Chittum <john.chittum@canonical.com>  Wed, 18 Nov 2020 13:25:08 -0600
+
 livecd-rootfs (2.408.61) xenial; urgency=medium
 
   * SRU: Enable bootable-buildd hooks for Xenial (LP: #1863024)
