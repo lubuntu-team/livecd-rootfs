@@ -97,10 +97,12 @@ install_grub() {
             efi_target=arm-efi
             ;;
         amd64)
-            chroot mountpoint apt-get install -qqy grub-efi-amd64-signed grub-efi-amd64 shim-signed
+            chroot mountpoint apt-get install -qqy grub-pc shim-signed
             efi_target=x86_64-efi
             ;;
     esac
+
+    chroot mountpoint apt-get autoremove --purge --assume-yes
 
     # This call to populate the package manifest is added here to capture
     # grub-efi packages that otherwise would not make it into the base

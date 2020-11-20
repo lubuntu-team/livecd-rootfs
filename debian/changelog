@@ -1,8 +1,13 @@
 livecd-rootfs (2.525.48) UNRELEASED; urgency=medium
 
+   [ Dimitri John Ledkov & Joshua Powers ]
+   * amd64: always install grub-pc with shim-signed (LP: #1901906), and
+     ensure to autoremove packages
+
+  [ Patrick Viafore ]
   * Increase Vagrant disk size from 10G to 40G (LP: #1580596) 
 
- -- Patrick Viafore <patrick.viafore@canonical.com>  Fri, 22 May 2020 15:16:16 -0500
+ -- Robert C Jennings <robert.jennings@canonical.com>  Fri, 22 May 2020 15:16:16 -0500
 
 livecd-rootfs (2.525.47) bionic; urgency=medium
 
