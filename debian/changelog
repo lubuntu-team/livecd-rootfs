@@ -1,8 +1,8 @@
-livecd-rootfs (2.408.62) UNRELEASED; urgency=medium
+livecd-rootfs (2.408.62) xenial; urgency=medium
 
-   [ Dimitri John Ledkov & Joshua Powers ]
-   * amd64: always install grub-pc with shim-signed (LP: #1901906), and
-     ensure to autoremove packages
+  [ Dimitri John Ledkov & Joshua Powers ]
+  * amd64: always install grub-pc with shim-signed (LP: #1901906), and
+    ensure to autoremove packages
 
   [ Patrick Viafore ]
   * Increase Vagrant disk size from 10G to 40G (LP: #1580596)
@@ -12,7 +12,7 @@ livecd-rootfs (2.408.62) UNRELEASED; urgency=medium
   * buildd: Skip jasper for buildd subproject
   * buildd: Create manifests for buildd tarballs
 
- -- Robert C Jennings <robert.jennings@canonical.com>  Fri, 20 Nov 2020 15:23:31 -0600
+ -- Robert C Jennings <robert.jennings@canonical.com>  Fri, 20 Nov 2020 15:27:09 -0600
 
 livecd-rootfs (2.408.61) xenial; urgency=medium
 
