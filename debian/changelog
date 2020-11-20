@@ -1,3 +1,12 @@
+livecd-rootfs (2.408.62) UNRELEASED; urgency=medium
+
+  [ Cody Shepherd ]
+  * buildd: ext4: change tar transform target to match changes in bionic+
+  * buildd: Skip jasper for buildd subproject
+  * buildd: Create manifests for buildd tarballs
+
+ -- Robert C Jennings <robert.jennings@canonical.com>  Fri, 20 Nov 2020 15:23:31 -0600
+
 livecd-rootfs (2.408.61) xenial; urgency=medium
 
   * SRU: Enable bootable-buildd hooks for Xenial (LP: #1863024)
