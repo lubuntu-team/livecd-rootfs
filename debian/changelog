@@ -1,5 +1,8 @@
 livecd-rootfs (2.408.62) UNRELEASED; urgency=medium
 
+  [ Patrick Viafore ]
+  * Increase Vagrant disk size from 10G to 40G (LP: #1580596)
+
   [ Cody Shepherd ]
   * buildd: ext4: change tar transform target to match changes in bionic+
   * buildd: Skip jasper for buildd subproject
