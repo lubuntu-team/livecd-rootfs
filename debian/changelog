@@ -1,4 +1,4 @@
-livecd-rootfs (2.525.48) groovy; urgency=medium
+livecd-rootfs (2.525.48) bionic; urgency=medium
 
    [ John Chittum ]
    * Ensure vmtools version entered into vmdk header (LP: #1893898)
