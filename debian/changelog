@@ -1,8 +1,9 @@
-livecd-rootfs (2.408.63) UNRELEASED; urgency=medium
+livecd-rootfs (2.408.63) xenial; urgency=medium
 
+  [ John Chittum ]
   * Backport Ensure toolsVersion set in vmdk header (LP: #1893898)
 
- -- John Chittum <john.chittum@canonical.com>  Wed, 18 Nov 2020 13:25:08 -0600
+ -- Robert C Jennings <robert.jennings@canonical.com>  Fri, 20 Nov 2020 15:55:00 -0600
 
 livecd-rootfs (2.408.62) xenial; urgency=medium
 
