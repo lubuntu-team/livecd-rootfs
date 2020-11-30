@@ -1,3 +1,10 @@
+livecd-rootfs (2.664.7.1) focal; urgency=medium
+
+   [ Dimitri John Ledkov & Joshua Powers ]
+   * amd64: always install grub-pc with shim-signed (LP: #1901906), and
+     ensure to autoremove packages
+
+ -- Robert C Jennings <robert.jennings@canonical.com>  Fri, 20 Nov 2020 15:08:54 -0600
 livecd-rootfs (2.664.7) focal; urgency=medium
 
   [ Stanislav German-Evtushenko <giner> / John Chittum ]
