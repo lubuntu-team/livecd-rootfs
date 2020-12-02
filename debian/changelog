@@ -1,3 +1,10 @@
+livecd-rootfs (2.408.64) xenial; urgency=medium
+
+  [ Joshua Powers ]
+  * amd64: always install grub-efi-amd64-signed (LP: #1901906)
+
+ -- Robert C Jennings <robert.jennings@canonical.com>  Wed, 02 Dec 2020 13:11:27 -0600
+
 livecd-rootfs (2.408.63) xenial; urgency=medium
 
   [ John Chittum ]
