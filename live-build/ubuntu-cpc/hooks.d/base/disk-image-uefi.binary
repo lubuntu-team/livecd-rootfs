@@ -86,7 +86,7 @@ install_grub() {
             efi_target=arm64-efi
             ;;
         amd64)
-            chroot mountpoint apt-get install -qqy grub-pc shim-signed
+            chroot mountpoint apt-get install -qqy grub-pc shim-signed grub-efi-amd64-signed
             grub_modules="multiboot serial usb usb_keyboard"
             efi_target=x86_64-efi
             ;;
