@@ -1,3 +1,27 @@
+livecd-rootfs (2.664.8) focal; urgency=medium
+
+  Backport snap-preseed work from groovy to focal LP: #1896755
+
+  [ Robert C Jennings ]
+  * Apply snap-preseed optimizations after seeding snaps
+
+  [ Dimitri John Ledkov ]
+  * live-server: remove duplicate snaps, due to overlayfs vs snap-preseed.
+  * apparmor: Add generic v5.4 kernel apparmor features
+  * apparmor: mount more up-to-date apparmor features in the chroot.
+  * seccomp: add more up-to-date seccomp actions
+  * seccomp: mount more up-to-date seccomp features
+  * apparmor: compile all profiles
+
+  [ Robert C Jennings ]
+  * Avoid rbind /sys for chroot snap pre-seeding (cgroups fail to unmount)
+
+  [ Dimitri John Ledkov ]
+  * auto/build: use setup|teardown_mountpoint to reduce duplication
+  * functions: provide nss_systemd-less nsswitch.conf in chroots.
+
+ -- Dimitri John Ledkov <xnox@ubuntu.com>  Mon, 05 Oct 2020 10:33:02 +0100
+
 livecd-rootfs (2.664.7) focal; urgency=medium
 
   [ Stanislav German-Evtushenko <giner> / John Chittum ]
