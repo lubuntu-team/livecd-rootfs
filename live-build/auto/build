@@ -58,6 +58,10 @@ if [ "${IMAGEFORMAT:-}" = "ubuntu-image" ]; then
 		mv output/*.img "$PREFIX".img
 		xz -0 -T4 "$PREFIX".img
 		mv output/seed.manifest "$PREFIX".manifest
+		# For appliance images we also need to generate qcow2 images
+		case "${SUBARCH:-}" in appliance-*)
+			convert_to_qcow2 "$PREFIX".img "$PREFIX".qcow2 ;;
+		esac
 	else
 		# First we need to build the gadget tree
 		make -C "config/$PREFIX-gadget" ARCH=$ARCH SERIES=$SUITE
