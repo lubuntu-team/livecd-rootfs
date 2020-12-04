@@ -501,9 +501,9 @@ case $PROJECT in
 					add_package install grub-pc
 					;;
 				amd64)
-					add_package install grub-pc
-					add_package install shim-signed
+					add_package install grub-pc-bin
 					add_package install grub-efi-amd64-signed
+					add_package install shim-signed
 					;;
 				armhf)
 					add_package install flash-kernel u-boot-tools
