@@ -1,9 +1,9 @@
 livecd-rootfs (2.408.65) xenial; urgency=medium
 
-  [Joshua Powers]
+  [ Joshua Powers ]
   * amd64: revert install grub changes on Xenial (LP: #1901906)
 
- -- Joshua Powers <josh.powers@canonical.com>  Fri, 04 Dec 2020 13:29:27 -0800
+ -- Robert C Jennings <robert.jennings@canonical.com>  Tue, 15 Dec 2020 11:11:14 -0600
 
 livecd-rootfs (2.408.64) xenial; urgency=medium
 
