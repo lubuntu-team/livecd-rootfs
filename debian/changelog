@@ -1,8 +1,8 @@
-livecd-rootfs (2.525.49) UNRELEASED; urgency=medium
+livecd-rootfs (2.525.49) bionic; urgency=medium
 
   * Create additional qcow2 images for ubuntu-appliances (LP: #1906805).
 
- -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Fri, 04 Dec 2020 12:24:31 +0100
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Mon, 11 Jan 2021 15:44:20 +0100
 
 livecd-rootfs (2.525.48) bionic; urgency=medium
 
