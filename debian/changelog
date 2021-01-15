@@ -1,3 +1,10 @@
+livecd-rootfs (2.664.11) focal; urgency=medium
+
+  * riscv64: backport HiFive unleashed & cloud-image building support
+    (LP: #1903034)
+
+ -- Dimitri John Ledkov <xnox@ubuntu.com>  Fri, 15 Jan 2021 17:07:20 +0000
+
 livecd-rootfs (2.664.10) focal; urgency=medium
 
   * Do not hard-code the UC20 amd64 image size to 8GB as now ubuntu-image
