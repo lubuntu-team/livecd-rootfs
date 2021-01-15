@@ -1,4 +1,4 @@
-livecd-rootfs (2.664.11) focal; urgency=medium
+livecd-rootfs (2.664.12) focal; urgency=medium
 
   * riscv64: backport HiFive unleashed & cloud-image building support
     (LP: #1903034)
