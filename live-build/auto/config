@@ -802,11 +802,21 @@ case $PROJECT in
 			add_task install minimal standard cloud-image
 			add_package install ubuntu-minimal
 			KERNEL_FLAVOURS=virtual
-		        case $ARCH in
-				armhf|arm64|ppc64el|powerpc)
+
+			case $ARCH+${SUBARCH:-} in
+				armhf+raspi|arm64+raspi)
+					# Generic Raspberry Pi images
+					COMPONENTS='main restricted universe multiverse'
+					add_task install ubuntu-server-raspi
+					add_package install u-boot-rpi u-boot-tools
+					BINARY_REMOVE_LINUX=false
+					;;
+
+				armhf*|arm64*|ppc64el*|powerpc*)
 					add_task install server
 					;;
 			esac
+
 		fi
 
 		BINARY_REMOVE_LINUX=false
@@ -866,6 +876,12 @@ case $SUBPROJECT in
 		add_package install tzdata
 
 		cp -af /usr/share/livecd-rootfs/live-build/make-lxd-metadata.py config/make-lxd-metadata
+		;;
+esac
+
+case $ARCH in
+	armhf|arm64)
+		KERNEL_FLAVOURS="${SUBARCH:-$KERNEL_FLAVOURS}"
 		;;
 esac
 
@@ -934,27 +950,6 @@ case $PROJECT in
 
 	*-dvd)
 		add_task live "$PROJECT-live"
-		;;
-esac
-
-case $ARCH in
-	armhf|arm64)
-		KERNEL_FLAVOURS="${SUBARCH:-$KERNEL_FLAVOURS}"
-		case $SUBARCH in
-			raspi)
-				# Generic Raspberry Pi images
-				COMPONENTS='main restricted universe multiverse'
-				add_package install linux-firmware-raspi2 u-boot-rpi flash-kernel u-boot-tools wpasupplicant
-				BINARY_REMOVE_LINUX=false
-				;;
-			imx6)
-				COMPONENTS='main restricted universe multiverse'
-				KERNEL_FLAVOURS=generic
-				add_package install flash-kernel u-boot-tools wpasupplicant
-				BINARY_REMOVE_LINUX=false
-				;;
-
-		esac
 		;;
 esac
 

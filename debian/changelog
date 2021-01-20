@@ -1,3 +1,11 @@
+livecd-rootfs (2.664.13) UNRELEASED; urgency=medium
+
+  * Remove some unused and unneeded imx6 code paths.
+  * Enable usage of the ubuntu-server-raspi task for raspi images
+    (LP: #1912498).
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Wed, 20 Jan 2021 15:43:18 +0100
+
 livecd-rootfs (2.664.12) focal; urgency=medium
 
   * riscv64: backport HiFive unleashed & cloud-image building support
