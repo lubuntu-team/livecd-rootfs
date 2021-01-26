@@ -27,8 +27,7 @@ INSTALLER_ROOT=binary/boot/installer.squashfs.dir
 KERNEL_BITS_ROOT=binary/boot/kernel-bits.dir
 KERNEL_BITS_OVERLAY=binary/boot/overlay-kernel-bits
 
-#variants='ga hwe'
-variants='ga'
+variants='ga hwe'
 
 for variant in $variants; do
 	if [ "$variant" = "ga" ]; then
