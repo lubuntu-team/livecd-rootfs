@@ -1,4 +1,4 @@
-livecd-rootfs (2.664.13) UNRELEASED; urgency=medium
+livecd-rootfs (2.664.13) focal; urgency=medium
 
   * Enable the hwe variant for ubuntu-server-live (LP: #1913314)
 
