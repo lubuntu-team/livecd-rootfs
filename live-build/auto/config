@@ -1166,7 +1166,7 @@ if [ "$PROPOSED" ]; then
 	. config/bootstrap
 
 	cat > config/archives/proposed.list.chroot << EOF
-deb $LB_PARENT_MIRROR_BINARY_VOLATILE $SUITE-proposed $LB_PARENT_ARCHIVE_AREAS
+deb $LB_PARENT_MIRROR_BINARY_VOLATILE $SUITE-proposed ${COMPONENTS:-${LB_PARENT_ARCHIVE_AREAS}}
 EOF
 	cp -a config/archives/proposed.list.chroot \
 	      config/archives/proposed.list.binary

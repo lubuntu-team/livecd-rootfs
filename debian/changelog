@@ -1,3 +1,11 @@
+livecd-rootfs (2.711) UNRELEASED; urgency=medium
+
+  * auto/config: when running with PROPOSED=1, enable -proposed for all the
+    components we listed as required and not just the default set (main,
+    restricted).
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Fri, 29 Jan 2021 01:33:07 +0100
+
 livecd-rootfs (2.710) hirsute; urgency=medium
 
   * esp: install grub in ubuntu bootloader id path, instead of removable.
