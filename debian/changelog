@@ -1,4 +1,4 @@
-livecd-rootfs (2.664.14) UNRELEASED; urgency=medium
+livecd-rootfs (2.664.14) focal; urgency=medium
 
   * Actually also enable the hwe kernel for all flavours for 20.04.2
     (LP: #1914119)
