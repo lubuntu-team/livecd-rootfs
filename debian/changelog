@@ -1,3 +1,10 @@
+livecd-rootfs (2.664.14) UNRELEASED; urgency=medium
+
+  * Actually also enable the hwe kernel for all flavours for 20.04.2
+    (LP: #1914119)
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Mon, 01 Feb 2021 22:17:01 +0100
+
 livecd-rootfs (2.664.13) focal; urgency=medium
 
   * Enable the hwe variant for ubuntu-server-live (LP: #1913314)
