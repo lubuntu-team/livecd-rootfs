@@ -1,3 +1,9 @@
+livecd-rootfs (2.664.15) UNRELEASED; urgency=medium
+
+  * Properly handle lowlatency-hwe-* (LP: #1914217)
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Tue, 02 Feb 2021 11:39:11 +0100
+
 livecd-rootfs (2.664.14) focal; urgency=medium
 
   * Actually also enable the hwe kernel for all flavours for 20.04.2
