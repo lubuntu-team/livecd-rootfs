@@ -1,4 +1,4 @@
-livecd-rootfs (2.664.15) UNRELEASED; urgency=medium
+livecd-rootfs (2.664.15) focal; urgency=medium
 
   * Properly handle lowlatency-hwe-* (LP: #1914217)
 
