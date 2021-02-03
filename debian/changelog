@@ -1,3 +1,9 @@
+livecd-rootfs (2.694.2) UNRELEASED; urgency=medium
+
+  * Create manifests for buildd tarball images (LP: #1914445)
+
+ -- Cody Shepherd <cody.shepherd@canonical.com>  Wed, 03 Feb 2021 08:12:59 -0800
+
 livecd-rootfs (2.694.1) groovy; urgency=medium
 
   * livecd-rootfs SRU of change up to 2.699 from hirsute to groovy.
