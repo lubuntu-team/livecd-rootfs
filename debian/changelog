@@ -1,3 +1,9 @@
+livecd-rootfs (2.525.50) UNRELEASED; urgency=medium
+
+  * Create manifests for buildd tarball images (LP: #1914445)
+
+ -- Cody Shepherd <cody.shepherd@canonical.com>  Wed, 03 Feb 2021 07:47:49 -0800
+
 livecd-rootfs (2.525.49) bionic; urgency=medium
 
   * Create additional qcow2 images for ubuntu-appliances (LP: #1906805).
