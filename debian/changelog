@@ -1,8 +1,9 @@
-livecd-rootfs (2.664.16) UNRELEASED; urgency=medium
+livecd-rootfs (2.664.16) focal; urgency=medium
 
+  [ Cody Shepherd ]
   * Produce manifests for buildd tarball images (LP: #1914445)
 
- -- Cody Shepherd <cody.shepherd@canonical.com>  Wed, 03 Feb 2021 07:31:05 -0800
+ -- Robert C Jennings <robert.jennings@canonical.com>  Fri, 05 Feb 2021 14:57:56 -0600
 
 livecd-rootfs (2.664.15) focal; urgency=medium
 
