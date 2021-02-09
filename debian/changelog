@@ -1,3 +1,12 @@
+livecd-rootfs (2.525.51) UNRELEASED; urgency=medium
+
+  * buildd: produce kernel and initrd as separate artifacts LP: #1910557
+  * buildd: call update-initramfs for all installed kernels
+    We only have one kernel installed, so we don't need to
+    specify an explicit version. LP: #1910557
+
+ -- David Krauser <david.krauser@canonical.com>  Tue, 20 Oct 2020 15:00:38 -0400
+
 livecd-rootfs (2.525.50) bionic; urgency=medium
 
   [ Cody Shepherd ]
