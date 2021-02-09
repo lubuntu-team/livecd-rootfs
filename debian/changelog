@@ -1,11 +1,20 @@
-livecd-rootfs (2.694.3) UNRELEASED; urgency=medium
+livecd-rootfs (2.694.3) groovy; urgency=medium
 
+  [ David Krauser ]
   * buildd: produce kernel and initrd as separate artifacts LP: #1910557
   * buildd: call update-initramfs for all installed kernels
     We only have one kernel installed, so we don't need to
     specify an explicit version. LP: #1910557
 
- -- David Krauser <david.krauser@canonical.com>  Tue, 20 Oct 2020 15:00:38 -0400
+  [ Dimitri John Ledkov ]
+  * esp: install grub in ubuntu bootloader id path, instead of removable.
+    (LP: #1912830)
+  * esp: perform fsck. (LP: #1912835)
+  * Perform fsck on all rootfs. (LP: #1912835)
+  * functions: stop removing systemd-detect-virt unconditionally in undivert_grub
+    (LP: #1902260)
+
+ -- Dimitri John Ledkov <xnox@ubuntu.com>  Tue, 09 Feb 2021 00:40:38 +0000
 
 livecd-rootfs (2.694.2) groovy; urgency=medium
 
