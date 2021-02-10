@@ -1,3 +1,10 @@
+livecd-rootfs (2.408.67) xenial; urgency=medium
+
+  * Revert "esp: install grub in ubuntu bootloader id path, instead of
+    removable." as xenial's grub doesn't support shim fallback mode.
+
+ -- Dimitri John Ledkov <xnox@ubuntu.com>  Wed, 10 Feb 2021 13:00:48 +0000
+
 livecd-rootfs (2.408.66) xenial; urgency=medium
 
   [ David Krauser ]
@@ -8,7 +15,6 @@ livecd-rootfs (2.408.66) xenial; urgency=medium
 
   [ Dimitri John Ledkov ]
   * esp: install grub in ubuntu bootloader id path, instead of removable.
-    (LP: #1912830)
   * esp: perform fsck. (LP: #1912835)
   * Perform fsck on all rootfs. (LP: #1912835)
   * functions: stop removing systemd-detect-virt unconditionally in undivert_grub
