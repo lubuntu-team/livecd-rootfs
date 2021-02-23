@@ -1,10 +1,10 @@
-livecd-rootfs (2.664.18) UNRELEASED; urgency=medium
+livecd-rootfs (2.664.18) focal; urgency=medium
 
+  [ Patrick Viafore ]
   * Only try without initrd-less on replaced kernels, not all kernels
   * Provide a mechanism to detect initrd-less fallback 
 
- -- Patrick Viafore <patrick.viafore@canonical.com>  Tue, 09 Feb 2021 12:40:04 -0600
-
+ -- Robert C Jennings <robert.jennings@canonical.com>  Tue, 23 Feb 2021 14:45:23 -0600
 
 livecd-rootfs (2.664.17) focal; urgency=medium
 
