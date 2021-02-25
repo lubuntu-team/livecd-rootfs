@@ -1,3 +1,19 @@
+livecd-rootfs (2.713) hirsute; urgency=medium
+
+  * Use the full name of the 'boot' flag in parted calls as it's not good
+    practice to rely on the shortened, ambiguous version.
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Wed, 24 Feb 2021 12:55:37 +0100
+
+livecd-rootfs (2.712) hirsute; urgency=medium
+
+  [ Cody Shepherd ]
+  * Add grub config to produce console output and install lxd-agent loader
+    to allow buildd vm images to work in lxd without requirement for manual
+    installation (LP: #1915571)
+
+ -- Robert C Jennings <robert.jennings@canonical.com>  Tue, 23 Feb 2021 14:32:19 -0600
+
 livecd-rootfs (2.711) hirsute; urgency=medium
 
   * Perform fsck on all rootfs. (LP: #1912835)
