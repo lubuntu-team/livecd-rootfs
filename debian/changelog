@@ -1,3 +1,9 @@
+livecd-rootfs (2.714) hirsute; urgency=medium
+
+  * Suppress cloud-init output during boot of live server ISO.
+
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Fri, 26 Feb 2021 09:57:21 +1300
+
 livecd-rootfs (2.713) hirsute; urgency=medium
 
   * Use the full name of the 'boot' flag in parted calls as it's not good
