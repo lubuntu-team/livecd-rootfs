@@ -1,14 +1,15 @@
-livecd-rootfs (2.664.19) UNRELEASED; urgency=medium
+livecd-rootfs (2.664.19) hirsute; urgency=medium
 
-  *  Fix broken minimal cloud image boot on amd64 LP: #1920043
+  [ Patrick Viafore ]
+  * Fix broken minimal cloud image boot on amd64 LP: #1920043
 
- -- Patrick Viafore <patrick.viafore@canonical.com>  Thu, 18 Mar 2021 11:50:04 -0500
+ -- Robert C Jennings <robert.jennings@canonical.com>  Mon, 22 Mar 2021 10:57:50 -0500
 
 livecd-rootfs (2.664.18) focal; urgency=medium
 
   [ Patrick Viafore ]
   * Only try without initrd-less on replaced kernels, not all kernels
-  * Provide a mechanism to detect initrd-less fallback 
+  * Provide a mechanism to detect initrd-less fallback (LP: #1870189)
 
  -- Robert C Jennings <robert.jennings@canonical.com>  Tue, 23 Feb 2021 14:45:23 -0600
 
