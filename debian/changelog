@@ -1,8 +1,9 @@
-livecd-rootfs (2.664.18.2) focal; urgency=medium
+livecd-rootfs (2.664.19) focal; urgency=medium
 
-  *  Fix broken minimal cloud image boot on amd64 LP: #1920043
+  [ Patrick Viafore ]
+  * Fix broken minimal cloud image boot on amd64 LP: #1920043
 
- -- Patrick Viafore <patrick.viafore@canonical.com>  Thu, 18 Mar 2021 11:50:04 -0500
+ -- Robert C Jennings <robert.jennings@canonical.com>  Mon, 22 Mar 2021 10:57:50 -0500
 
 livecd-rootfs (2.664.18) focal; urgency=medium
 
