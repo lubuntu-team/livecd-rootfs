@@ -1,11 +1,12 @@
-livecd-rootfs (2.694.4) UNRELEASED; urgency=medium
+livecd-rootfs (2.694.4) groovy; urgency=medium
 
+  [ Gauthier Jolly ]
   * ubuntu-cpc: secure esp mountpoint (LP: #1881006)
     Change mount option for ubuntu-cpc images from "defaults" to "umask=0077"
     ESP partitions might contain sensitive data and non-root users shouldn't
     have read access on it.
 
- -- Gauthier Jolly <gauthier.jolly@canonical.com>  Wed, 17 Mar 2021 16:55:37 +0000
+ -- Robert C Jennings <robert.jennings@canonical.com>  Sat, 10 Apr 2021 05:08:58 -0500
 
 livecd-rootfs (2.694.3) groovy; urgency=medium
 
