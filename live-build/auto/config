@@ -317,7 +317,7 @@ if [ "$PREINSTALLED" = "true" ]; then
 		ubuntu-server)
 			add_package live oem-config-debconf ubiquity-frontend-debconf
 			;;
-		ubuntu-core|ubuntu-base|base|ubuntu-touch|ubuntu-touch-custom|ubuntu-cpc|ubuntu-desktop-next)
+		ubuntu-core|ubuntu-base|base|ubuntu-touch|ubuntu-touch-custom|ubuntu-cpc|ubuntu-desktop-next|ubuntu-oci)
 			;;
 		ubuntu)
 			add_package live oem-config-gtk ubiquity-frontend-gtk
@@ -672,6 +672,10 @@ case $PROJECT in
 		OPTS="${OPTS:+$OPTS }--bootstrap-flavour=minimal"
 		;;
 
+	ubuntu-oci)
+	        OPTS="${OPTS:+$OPTS }--bootstrap-flavour=minimal"
+	        ;;
+	    
 	ubuntu-touch|ubuntu-touch-custom)
 		HINTS="packagekit ubuntu-system-settings"
 		case $ARCH in
@@ -925,7 +929,7 @@ case $ARCH in
 esac
 
 case $PROJECT:${SUBPROJECT:-} in
-	ubuntu-server:*|ubuntu-base:*|ubuntu-touch:*|ubuntu-touch-custom:*)
+	ubuntu-server:*|ubuntu-base:*|ubuntu-touch:*|ubuntu-touch-custom:*|ubuntu-oci:*)
 		OPTS="${OPTS:+$OPTS }--linux-packages=none --initramfs=none"
 		KERNEL_FLAVOURS=none
 		BINARY_REMOVE_LINUX=false
