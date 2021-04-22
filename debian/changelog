@@ -1,3 +1,9 @@
+livecd-rootfs (2.719+1) impish; urgency=medium
+
+  * Add impish
+
+ -- Patrick Viafore <patrick.viafore@canoincal.com>  Thu, 22 Apr 2021 10:55:14 -0500
+
 livecd-rootfs (2.719) hirsute; urgency=medium
 
   * Our raspi server images should have used the raspi-server seed in hirsute,
