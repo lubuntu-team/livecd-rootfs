@@ -1,10 +1,11 @@
-livecd-rootfs (2.694.5) UNRELEASED; urgency=medium
+livecd-rootfs (2.694.5) groovy; urgency=medium
 
+  [ Thomas Bechtold ]
   * Add a new ubuntu-oci project that contains the customizations currently
     performed downstream for the official Ubuntu images on dockerhub.
     (LP: #1926732)
 
- -- Thomas Bechtold <thomas.bechtold@canonical.com>  Fri, 30 Apr 2021 13:41:00 +0200
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Tue, 11 May 2021 11:37:12 +1200
 
 livecd-rootfs (2.694.4) groovy; urgency=medium
 
