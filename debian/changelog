@@ -1,9 +1,8 @@
-livecd-rootfs (2.720) UNRELEASED; urgency=medium
+livecd-rootfs (2.719.1) UNRELEASED; urgency=medium
 
   * Add a new ubuntu-oci project that contains the customizations currently
     performed downstream for the official Ubuntu images on dockerhub.
     (LP: #1926732)
-
 
  -- Thomas Bechtold <thomas.bechtold@canonical.com>  Fri, 30 Apr 2021 13:13:59 +0200
 
