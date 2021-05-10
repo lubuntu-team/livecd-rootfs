@@ -439,6 +439,9 @@ deb file:/var/lib/preinstalled-pool/ $LB_DISTRIBUTION $LB_PARENT_ARCHIVE_AREAS
 			Chroot chroot "ln -s /etc/media-info /var/log/installer/media-info"
 		fi
 	fi
+	if [ "$PROJECT" = "ubuntu-oci" ]; then
+	    configure_oci chroot
+	fi
 	if [ "$PROJECT" = "ubuntu-cpc" ]; then
 		if [ "${SUBPROJECT:-}" = minimized ]; then
 			BUILD_NAME=minimal
