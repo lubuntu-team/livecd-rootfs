@@ -1116,6 +1116,26 @@ EOF
 		;;
 esac
 
+if [ $PROJECT = ubuntu ]; then
+	cat > config/hooks/001-active-directory.chroot <<EOF
+#!/bin/sh
+
+set -e
+
+echo "I: Adding dependencies for Active Directory support (Workaround LP: #1921862)"
+
+apt-get -y update
+
+apt-get -y install sssd realmd adcli krb5-config
+
+echo "I: Removing /var/lib/apt/lists/*"
+find /var/lib/apt/lists/ -type f | xargs rm -f
+
+echo "I: Removing /var/cache/apt/*.bin"
+rm -f /var/cache/apt/*.bin/
+EOF
+fi
+
 if [ $PROJECT = ubuntu-server ] && [ "${SUBPROJECT:-}" != live ]; then
 	cat > config/hooks/100-remove-fstab.chroot <<EOF
 #! /bin/sh
