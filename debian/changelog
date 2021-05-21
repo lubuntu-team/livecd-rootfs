@@ -1,3 +1,9 @@
+livecd-rootfs (2.664.23) focal; urgency=medium
+
+  * Adding dependencies for Active Directory support (LP: #1921374)
+
+ -- Jean-Baptiste Lallement <jean-baptiste.lallement@ubuntu.com>  Thu, 20 May 2021 17:52:20 +0200
+
 livecd-rootfs (2.664.22) focal; urgency=medium
 
   * Add grub config to produce console output and install lxd-agent loader
