@@ -1,9 +1,9 @@
-livecd-rootfs (2.525.54) UNRELEASED; urgency=medium
+livecd-rootfs (2.525.54) bionic; urgency=medium
 
   * Add grub config to produce console output to allow buildd vm images to
     produce console output in lxd vms (LP: #1915571)
 
- -- Cody Shepherd <cody.shepherd@canonical.com>  Mon, 01 Mar 2021 09:07:01 -0800
+ -- Cody Shepherd <cody.shepherd@canonical.com>  Fri, 21 May 2021 17:30:56 -0700
 
 livecd-rootfs (2.525.53) bionic; urgency=medium
 
