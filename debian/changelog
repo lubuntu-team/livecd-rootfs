@@ -1,3 +1,10 @@
+livecd-rootfs (2.525.55) UNRELEASED; urgency=medium
+
+  * Remove device node files in /dev from rootfs tarball for oci project
+    builds (LP: #1930686)
+
+ -- Thomas Bechtold <thomas.bechtold@canonical.com>  Thu, 03 Jun 2021 10:27:32 +0200
+
 livecd-rootfs (2.525.54) bionic; urgency=medium
 
   * Add grub config to produce console output to allow buildd vm images to
