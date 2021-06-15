@@ -1,3 +1,10 @@
+livecd-rootfs (2.664.24) UNRELEASED; urgency=medium
+
+  * Backport generalising of the riscv64 images from hirsute to support
+    building separate unmatched and unleached images in focal (LP: #1932014)
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Tue, 15 Jun 2021 13:33:33 +0200
+
 livecd-rootfs (2.664.23) focal; urgency=medium
 
   * Adding dependencies for Active Directory support (LP: #1921374)
