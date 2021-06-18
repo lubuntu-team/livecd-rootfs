@@ -1,4 +1,4 @@
-livecd-rootfs (2.664.24) UNRELEASED; urgency=medium
+livecd-rootfs (2.664.24) focal; urgency=medium
 
   * Backport generalising of the riscv64 images from hirsute to support
     building separate unmatched and unleashed images in focal (LP: #1932014)
