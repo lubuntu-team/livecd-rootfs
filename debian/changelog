@@ -1,3 +1,19 @@
+livecd-rootfs (2.728) impish; urgency=medium
+
+  [ Dan Bungert ]
+  * Remove the customized final message from the live server cloud-init config
+    as it is no longer displayed.
+
+  [ Michael Hudson-Doyle ]
+  * Make sure the process that prints SSH connection info on s390x has
+    its output connected to the console. (LP: #1933523)
+
+  [ Brian Murray ]
+  * Add a subarch of intel-iotg which is used for creating images with a
+    kernel optimized for Intel IOT devices.
+
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Thu, 01 Jul 2021 11:00:08 +1200
+
 livecd-rootfs (2.727) impish; urgency=medium
 
   * Remove assumption in 032-installer-squashfs.binary that all core snaps
