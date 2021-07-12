@@ -130,8 +130,27 @@ reduce_pass_size () {
 		if ! diff --brief --no-dereference "$pass_dir/$f" "$parent_pass_dir/$f" >/dev/null; then
 			continue
 		fi
+		p=$(dirname $f)
+		while [ "$p" != . ]; do
+			# As explained in the overlayfs documentation
+			# https://www.kernel.org/doc/html/latest/filesystems/overlayfs.html#whiteouts-and-opaque-directories
+			# an xattr of trusted.overlay.opaque indicates an 'opaque' directory
+			# that was deleted from the overlay. Removing files from within the
+			# directory, even if identical with one in the lower layer, will result
+			# in it going missing from the combined filesystem.
+			#
+			# It would be possible to be more clever, e.g. if the two directories
+			# are still similar, we could the delete the attribute and convert any
+			# still-needed deletions to whiteouts but it doesn't seem worth it in
+			# the cases seen so far.
+			if [ -n "$(getfattr -n trusted.overlay.opaque -h --only-values -- "$pass_dir/$p" 2>/dev/null)" ]; then
+				Echo_message "reduce_pass_size: '%s' would be removed from overlay but for trusted.overlay.opaque on '%s'" "$f" "$p"
+				continue 2
+			fi
+			p=$(dirname $p)
+		done
 		# Files are strictly identical between the 2 passes (only mod or access times differs). No need for unused delta.
-		Echo_message "reduce_pass_size: '$f' is strictly identical between $parent and $pass. Removing."
+		Echo_message "reduce_pass_size: '%s' is strictly identical between %s and %s. Removing." "$f" "$pass" "$parent"
 		rm "$pass_dir/$f"
 	done
 
@@ -143,7 +162,7 @@ create_chroot_pass () {
 	local pass=$1
 	shift 1 # restore ${*}
 
-	Echo_message "lb_chroot_layered: treating pass $pass"
+	Echo_message "lb_chroot_layered: treating pass %s" "$pass"
 
 	# We have already treated that pass just return.
 	local overlay_dir="overlay.${pass}"
@@ -154,7 +173,7 @@ create_chroot_pass () {
 	# Only get some function executed on root passes
 	# Copy bootstrap on root layers
 	if $(is_root_layer $pass); then
-		rm -f .build/chroot_linux-image .build/chroot_preseed .build/chroot_hacks
+		rm -f .build/chroot_linux-image .build/chroot_preseed
 		cp -a chroot.bootstrap/ "$overlay_dir/"
 	fi
 	# Others have to be executed on every pass
@@ -196,7 +215,6 @@ create_chroot_pass () {
 	# Only configure universe on root passes
 	if $(is_root_layer $pass); then
 		lb chroot_archives chroot install ${*}
-		configure_universe
 	fi
 
 	# Customizing chroot
@@ -247,13 +265,24 @@ create_chroot_pass () {
 
 	lb chroot_hooks ${*}
 
-	# Run chroot_hacks only on root layers.
-	# chroot_hacks changes the mode of boot/initrd*. The side effect in
-	# layered mode is to create an initrd on each layer with a significant
-	# impact on image size (+30MB per layer). This is an issue even with
-	# update-initramfs disabled.
+	# Run chroot_hacks only on live layers.  chroot_hacks is what repacks
+	# the initrd in a full casperized mode. We don't want to do that for
+	# each and every layer, just for the live layers (which
+	# lb_binary_layered will call lb binary_linux-image on).
 	if $(is_live_layer $pass); then
+		rm -f .build/chroot_hacks
 		lb chroot_hacks ${*}
+	else
+		# chroot_hacks also removes some cruft, which is appropriate for
+		# any layer so we copy and paste that bit here.
+		rm -f chroot/boot/initrd*bak*
+		rm -f chroot/etc/apt/trusted.gpg~
+		rm -f chroot/etc/group- chroot/etc/passwd-
+		rm -f chroot/etc/gshadow- chroot/etc/shadow-
+		rm -f chroot/var/cache/debconf/*-old
+		rm -f chroot/var/lib/dpkg/*-old
+		rm -f chroot/var/log/apt/term.log
+		rm -f chroot/etc/adjtime
 	fi
 
 	lb chroot_interactive ${*}
@@ -267,6 +296,7 @@ create_chroot_pass () {
 	# Deconfiguring chroot
 	if $(is_root_layer $pass); then
 		lb chroot_archives chroot remove ${*}
+		configure_universe
 	fi
 	lb chroot_apt remove ${*}
 	lb chroot_hostname remove ${*}

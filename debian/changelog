@@ -1,3 +1,18 @@
+livecd-rootfs (2.729) impish; urgency=medium
+
+  [ Michael Hudson-Doyle ]
+  * Fix a few things found while porting the live server ISO builds to
+    layers.
+  * Port live server ISO builds to layers.
+
+  [ Chloé 'kajiya' Smith ]
+  * Image hangs during boot after deploying groovy-server-cloudimg-amd64.ova,
+    and the upgrading the ESXi hardware version. Adding a serial port
+    rectifies this - so this code change simply adds a serial port to the OVF
+    template (so there is a serial port as default). (LP: #1895104)
+
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Mon, 12 Jul 2021 10:27:35 +1200
+
 livecd-rootfs (2.728) impish; urgency=medium
 
   [ Dan Bungert ]
