@@ -1,3 +1,13 @@
+livecd-rootfs (2.664.25) UNRELEASED; urgency=medium
+
+  * Simplify how the subiquity client is run on the serial console in the live
+    server environment, breaking a unit cycle that sometimes prevents
+    subiquity from starting up at all. (LP: #1888497)
+  * Do not set the password for the installer user via cloud-init as subiquity
+    can now do this itself. (LP: #1933523)
+
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Fri, 23 Jul 2021 11:57:01 +1200
+
 livecd-rootfs (2.664.24) focal; urgency=medium
 
   * Backport generalising of the riscv64 images from hirsute to support
