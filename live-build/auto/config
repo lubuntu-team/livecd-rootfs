@@ -607,6 +607,7 @@ case $PROJECT in
 					OPTS="${OPTS:+$OPTS }--ext-resize-blocks=536870912 --ext-block-size=4096"
 					OPTS="${OPTS:+$OPTS }--ext-fudge-factor=15"
 				fi
+				;;
 			*)
 				LIVE_TASK='ubuntu-live'
 				add_task install minimal standard ubuntu-desktop
