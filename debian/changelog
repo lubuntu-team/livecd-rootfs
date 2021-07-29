@@ -1,4 +1,4 @@
-livecd-rootfs (2.664.25) UNRELEASED; urgency=medium
+livecd-rootfs (2.664.25) focal; urgency=medium
 
   [ Brian Murray ]
   * Add support for creating images (ubuntu-core and classic) with a kernel
