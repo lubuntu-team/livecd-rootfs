@@ -11,7 +11,12 @@ livecd-rootfs (2.664.25) UNRELEASED; urgency=medium
   * Do not set the password for the installer user via cloud-init as subiquity
     can now do this itself. (LP: #1933523)
 
- -- Brian Murray <brian@ubuntu.com>  Wed, 28 Jul 2021 13:31:19 -0700
+  [ Łukasz 'sil2100' Zemczak ]
+  * Fix sharing of the /dev tree to make sure we can safely umount the chroot
+    when needed. This fixes local non-livefs-builder image builds.
+    (LP: #1938414)
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Thu, 29 Jul 2021 11:05:58 +0200
 
 livecd-rootfs (2.664.24) focal; urgency=medium
 
