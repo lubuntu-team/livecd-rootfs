@@ -1,3 +1,26 @@
+livecd-rootfs (2.732) impish; urgency=medium
+
+  [ Michael Hudson-Doyle ]
+  * lb_chroot_layered: fix quoting when searching for
+    trusted.overlay.opaque
+
+  [ Łukasz 'sil2100' Zemczak ]
+  * Revert previous change of fixing /dev sharing - this causes weird
+    autopkgtest issues.
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Mon, 02 Aug 2021 22:10:11 +0200
+
+livecd-rootfs (2.731) impish; urgency=medium
+
+  [ Jason C. McDonald ]
+  * Generate manifest for HyperV desktop image
+
+  [ Łukasz 'sil2100' Zemczak ]
+  * Fix sharing of the /dev tree to make sure we can safely umount the chroot
+    when needed. This fixes local non-livefs-builder image builds.
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Wed, 28 Jul 2021 22:01:56 +0200
+
 livecd-rootfs (2.730) impish; urgency=medium
 
   * Rename subarch of intel-iotg to intel-iot, add support for intel-iot
