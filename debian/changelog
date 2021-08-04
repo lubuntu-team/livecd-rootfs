@@ -1,3 +1,10 @@
+livecd-rootfs (2.664.27) UNRELEASED; urgency=medium
+
+  * And whoops, we missed adding ARCH in the SUBARCH ubuntu-image handling for
+    intel-iot.
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Wed, 04 Aug 2021 17:32:37 +0200
+
 livecd-rootfs (2.664.26) focal; urgency=medium
 
   * Revert previous change of fixing /dev sharing - this causes weird
