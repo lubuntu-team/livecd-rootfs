@@ -440,6 +440,7 @@ case $IMAGEFORMAT in
 					;;
 				intel-iot)
 					MODEL=pc
+					BRANCH=classic
 					;;
 			esac
 
