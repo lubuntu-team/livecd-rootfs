@@ -1,4 +1,4 @@
-livecd-rootfs (2.664.28) UNRELEASED; urgency=medium
+livecd-rootfs (2.664.28) focal; urgency=medium
 
   [ Brian Murray ]
   * Make sure we're using the 'classic' branch for the intel-iot gadget.
