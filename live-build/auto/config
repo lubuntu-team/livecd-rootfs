@@ -280,7 +280,7 @@ if [ -z "${IMAGEFORMAT:-}" ]; then
 	case $PROJECT:${SUBPROJECT:-} in
 		ubuntu-cpc:*|ubuntu:desktop-preinstalled)
 			case $SUBARCH in
-				raspi|imx6)
+				raspi|imx6|intel-iot)
 					IMAGEFORMAT=ubuntu-image
 					;;
 				*)
@@ -320,6 +320,8 @@ case $IMAGEFORMAT in
 	ubuntu-image)
 		UBUNTU_IMAGE_ARGS=""
 		case "$ARCH+${SUBARCH:-}" in
+			amd64+intel-iot)
+				MODEL=intel-iot ;;
 			amd64+*)
 				MODEL=pc-amd64 ;;
 			i386+*)
@@ -436,6 +438,9 @@ case $IMAGEFORMAT in
 				pi)
 					BRANCH=18-armhf
 					;;
+				intel-iot)
+					MODEL=pc
+					;;
 			esac
 
 			UBUNTU_IMAGE_ARGS="$UBUNTU_IMAGE_ARGS${PROPOSED:+ --with-proposed}"
@@ -444,7 +449,7 @@ case $IMAGEFORMAT in
 			# We need to look in two places for the gadget tree:
 			# - Launchpad hosted gadgets will be in the snap-gadget repo
 			# - Github hosted gadgets are mirrored into a github-mirror repo
-			git clone git://git.launchpad.net/~canonical-foundations/snap-$MODEL/+git/snap-$MODEL -b $BRANCH config/$PREFIX-gadget || git clone git://git.launchpad.net/~canonical-foundations/snap-$MODEL/+git/github-mirror -b $BRANCH config/$PREFIX-gadget
+			git clone git://git.launchpad.net/~canonical-foundations/snap-$MODEL/+git/snap-$MODEL -b $BRANCH config/$PREFIX-gadget || git clone git://git.launchpad.net/~canonical-foundations/snap-$MODEL/+git/github-mirror -b $BRANCH config/$PREFIX-gadget || git clone git://git.launchpad.net/~canonical-foundations/snap-$MODEL/+git/github-mirror-$ARCH -b $BRANCH config/$PREFIX-gadget
 
 			echo "IMAGEFORMAT=$IMAGEFORMAT" >> config/common
 			echo "SUITE=$SUITE" >> config/common
@@ -589,6 +594,19 @@ case $PROJECT in
 				remove_packages_from_seed_regexp minimal desktop-minimal-default-languages ''  # none (if no default langpack is selected)
 				remove_packages_from_seed_regexp minimal.standard desktop-default-languages '^desktop-(?!default-languages|minimal|common)[^.]+$'
 				remove_packages_from_seed_regexp minimal.standard desktop-default-languages ''  # none (if no default langpack is selected)
+				;;
+
+			desktop-preinstalled)
+				add_task install minimal standard ubuntu-desktop
+				if [ "$SUBARCH" = "intel-iot" ]; then
+				    	KERNEL_FLAVOURS='image-intel'
+					COMPONENTS='main restricted universe'
+					OPTS="${OPTS:+$OPTS }--initramfs=none"
+					OPTS="${OPTS:+$OPTS }--system=normal"
+					OPTS="${OPTS:+$OPTS }--hdd-label=cloudimg-rootfs"
+					OPTS="${OPTS:+$OPTS }--ext-resize-blocks=536870912 --ext-block-size=4096"
+					OPTS="${OPTS:+$OPTS }--ext-fudge-factor=15"
+				fi
 				;;
 			*)
 				LIVE_TASK='ubuntu-live'
@@ -815,6 +833,13 @@ case $PROJECT in
 			arm64)
 				add_package install flash-kernel
 				;;
+			amd64)
+				if [ "${SUBARCH:-}" = "intel-iot" ]; then
+					KERNEL_FLAVOURS=image-intel
+					COMPONENTS='main restricted universe'
+					OPTS="${OPTS:+$OPTS }--initramfs=none"
+				fi
+				;;
 			riscv64)
 				if [ -n "$SUBARCH" ]; then
 					KERNEL_FLAVOURS=generic
@@ -973,6 +998,14 @@ case $PROJECT in
 	# if any flavours want to strip .pyc files from their live images, add them here
 	_)
 		add_chroot_hook remove-python-py
+		;;
+	amd64)
+		KERNEL_FLAVOURS="${SUBARCH:-$KERNEL_FLAVOURS}"
+		case $SUBARCH in
+			intel-iot)
+				COMPONENTS='main restricted universe'
+				KERNEL_FLAVOURS='image-intel'
+		esac
 		;;
 esac
 
