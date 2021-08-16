@@ -1,3 +1,11 @@
+livecd-rootfs (2.664.29) UNRELEASED; urgency=medium
+
+  [ Jason C. McDonald ]
+  * Generate manifest for HyperV desktop image
+  (LP: #1940136) 
+
+ -- Jason C. McDonald <codemouse92@outlook.com>  Mon, 16 Aug 2021 14:27:20 -0700
+
 livecd-rootfs (2.664.28) focal; urgency=medium
 
   [ Brian Murray ]
