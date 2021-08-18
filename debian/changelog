@@ -1,3 +1,15 @@
+livecd-rootfs (2.664.28) focal; urgency=medium
+
+  [ Brian Murray ]
+  * Make sure we're using the 'classic' branch for the intel-iot gadget.
+    (LP: #1938338)
+
+  [ Łukasz 'sil2100' Zemczak ]
+  * Add support for passing SUBPROJECT to classic ubuntu-image calls. This
+    should fix running desktop-preinstalled builds. (LP: #1938338)
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Mon, 16 Aug 2021 13:02:23 +0200
+
 livecd-rootfs (2.664.27) focal; urgency=medium
 
   * And whoops, we missed adding ARCH in the SUBARCH ubuntu-image handling for

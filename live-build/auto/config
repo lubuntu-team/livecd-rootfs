@@ -440,9 +440,11 @@ case $IMAGEFORMAT in
 					;;
 				intel-iot)
 					MODEL=pc
+					BRANCH=classic
 					;;
 			esac
 
+			UBUNTU_IMAGE_ARGS="$UBUNTU_IMAGE_ARGS${SUBPROJECT:+ --subproject \"$SUBPROJECT\"}"
 			UBUNTU_IMAGE_ARGS="$UBUNTU_IMAGE_ARGS${PROPOSED:+ --with-proposed}"
 			UBUNTU_IMAGE_ARGS="$UBUNTU_IMAGE_ARGS${EXTRA_PPAS:+ --extra-ppas \"$EXTRA_PPAS\"}"
 
