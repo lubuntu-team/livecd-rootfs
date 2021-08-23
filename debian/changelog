@@ -1,3 +1,19 @@
+livecd-rootfs (2.735) impish; urgency=medium
+
+  * Get source catalog translations from subiquity git, as brz is in universe.
+
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Mon, 23 Aug 2021 15:42:33 +1200
+
+livecd-rootfs (2.734) impish; urgency=medium
+
+  [ Ethan Hsieh ]
+  * Download snap packages with correct architecture.
+
+  [ Michael Hudson-Doyle ]
+  * Create source catalogs for the installable live server layers.
+
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Thu, 19 Aug 2021 16:49:26 +1200
+
 livecd-rootfs (2.733) impish; urgency=medium
 
   [ Michael Hudson-Doyle ]
