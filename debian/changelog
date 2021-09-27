@@ -1,3 +1,21 @@
+livecd-rootfs (2.740) impish; urgency=medium
+
+  [ Thomas Bechtold ]
+  * magic-proxy: fix TypeError when trying to call get_uri() LP:#1944906
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Mon, 27 Sep 2021 08:38:00 -0700
+
+livecd-rootfs (2.739) impish; urgency=medium
+
+  [ Daniel Bungert ]
+  * Correct the 'type' in the source catalog entries for the desktop ISOs.
+
+  [ Michael Hudson-Doyle ]
+  * Record information about locale support (in particular, whether to install
+    langpacks and which languages have pre-baked squashfses).
+
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Mon, 27 Sep 2021 11:10:46 +1300
+
 livecd-rootfs (2.738) impish; urgency=medium
 
   [ Thomas Bechtold ]
