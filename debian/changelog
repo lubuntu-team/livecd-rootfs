@@ -1,3 +1,10 @@
+livecd-rootfs (2.741) impish; urgency=medium
+
+  [ John Chittum ]
+  * mount cgroup2 type for snapd LP:#1944004 
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Wed, 29 Sep 2021 11:25:24 -0700
+
 livecd-rootfs (2.740) impish; urgency=medium
 
   [ Thomas Bechtold ]
