@@ -1,4 +1,4 @@
-livecd-rootfs (2.664.30) impish; urgency=medium
+livecd-rootfs (2.664.30) focal; urgency=medium
 
   [ Thomas Bechtold ]
   * magic-proxy: Replace http.client with urllib calls. live-build/auto/build:
