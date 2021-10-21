@@ -1,4 +1,4 @@
-livecd-rootfs (2.664.30) UNRELEASED; urgency=medium
+livecd-rootfs (2.664.30) impish; urgency=medium
 
   [ Thomas Bechtold ]
   * magic-proxy: Replace http.client with urllib calls. live-build/auto/build:
@@ -6,7 +6,7 @@ livecd-rootfs (2.664.30) UNRELEASED; urgency=medium
     works after transparent proxy has been installed. (LP: #1917920)
   * magic-proxy: fix TypeError when trying to call get_uri() (LP: #1944906)
 
- -- Brian Murray <brian@ubuntu.com>  Thu, 21 Oct 2021 11:30:33 -0700
+ -- Brian Murray <brian@ubuntu.com>  Thu, 21 Oct 2021 11:55:24 -0700
 
 livecd-rootfs (2.664.29) focal; urgency=medium
 
