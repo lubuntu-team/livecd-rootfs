@@ -1,3 +1,13 @@
+livecd-rootfs (2.719.3) hirsute; urgency=medium
+
+  [ Thomas Bechtold ]
+  * magic-proxy: Replace http.client with urllib calls. live-build/auto/build:
+    change iptables calls to query rules and quickly check that connectivity
+    works after transparent proxy has been installed. (LP: #1917920)
+  * magic-proxy: fix TypeError when trying to call get_uri() (LP: #1944906)
+
+ -- Brian Murray <brian@ubuntu.com>  Thu, 21 Oct 2021 11:13:29 -0700
+
 livecd-rootfs (2.719.2) hirsute; urgency=medium
 
   * Generate manifest for HyperV desktop image (LP: #1940136) 
