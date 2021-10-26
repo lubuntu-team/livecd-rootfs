@@ -1,3 +1,9 @@
+livecd-rootfs (2.742.1) impish; urgency=medium
+
+  * magic-proxy: fix exception handling for URLError LP: #1946520
+
+ -- Thomas Bechtold <thomas.bechtold@canonical.com>  Tue, 26 Oct 2021 16:32:33 +0200
+
 livecd-rootfs (2.742) impish; urgency=medium
 
   [ Brian Murray ]
