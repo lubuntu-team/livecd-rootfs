@@ -137,4 +137,7 @@ rm "$raw_img"
 
 apt-get install -y zip
 zip "$vhd_img.zip" "$vhd_img"
+
+create_manifest chroot "$vhd_img.zip.manifest"
+
 rm "$vhd_img"
