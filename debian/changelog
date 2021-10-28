@@ -1,4 +1,4 @@
-livecd-rootfs (2.664.31) UNRELEASED; urgency=medium
+livecd-rootfs (2.664.31) focal; urgency=medium
 
   [ Łukasz 'sil2100' Zemczak ]
   * Add the 099-ubuntu-image-customization.chroot for
