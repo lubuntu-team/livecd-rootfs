@@ -1,3 +1,9 @@
+livecd-rootfs (2.664.32) UNRELEASED; urgency=medium
+
+  * 099-ubuntu-image-customization.chroot: fix a typo in it.
+
+ -- Brian Murray <brian@ubuntu.com>  Thu, 28 Oct 2021 11:11:47 -0700
+
 livecd-rootfs (2.664.31) focal; urgency=medium
 
   [ Łukasz 'sil2100' Zemczak ]
