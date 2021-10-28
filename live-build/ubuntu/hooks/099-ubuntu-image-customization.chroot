@@ -1,0 +1,115 @@
+#!/bin/bash -ex
+
+. /root/config/chroot
+
+# Specific ubuntu-image chroot configuration goes here.
+if [ "$IMAGEFORMAT" == "none" ]; then
+    if [ "$SUBPROJECT" == "desktop-preinstalled" ]; then
+        # Create files/dirs Ubiquity requires
+        mkdir -p /var/log/installer
+        touch /var/log/installer/debug
+        touch /var/log/syslog
+        chown syslog:adm /var/log/syslog
+
+        # Create the oem user account
+        if [ -e "/usr/sbin/oem-config-prepare" ] then
+            /usr/sbin/useradd -d /home/oem -G adm,sudo -m -N -u 29999 oem
+
+            /usr/sbin/oem-config-prepare --quiet
+            touch "/var/lib/oem-config/run"
+        fi
+
+        # Make the writable partition grow
+        echo "LABEL=writable    /     ext4    defaults,x-systemd.growfs    0 0" >>/etc/fstab
+
+        # Create a 1GB swapfile
+        dd if=/dev/zero of=/swapfile bs=1M count=1024
+        chmod 0600 /swapfile
+        mkswap /swapfile
+
+        echo "/swapfile         none  swap    sw    0 0" >>/etc/fstab
+
+        if [ $(dpkg --print-architecture) == "amd64" ]; then
+            # We need to get a grub.cfg generated for our image
+            # This is copy-pasted from 999-cpc-fixes.chroot
+            # TODO: Make this better. One idea would be to have this exported
+            #  in functions or something, and then reused by both the cpc-fixes
+            #  and here. Another possibility is to actually trim down the
+            #  pseudo_grub_probe to only work for a regular preinstalled
+            #  desktop.
+            #  But short term it's safer to use a known code-base.
+            psuedo_grub_probe() {
+               cat <<"PSUEDO_GRUB_PROBE"
+#!/bin/sh
+Usage() {
+   cat <<EOF
+Usage: euca-psuedo-grub-probe
+   this is a wrapper around grub-probe to provide the answers for an ec2 guest
+EOF
+}
+bad_Usage() { Usage 1>&2; fail "$@"; }
+
+short_opts=""
+long_opts="device-map:,target:,device"
+getopt_out=$(getopt --name "${0##*/}" \
+   --options "${short_opts}" --long "${long_opts}" -- "$@") &&
+   eval set -- "${getopt_out}" ||
+   bad_Usage
+
+device_map=""
+target=""
+device=0
+arg=""
+
+while [ $# -ne 0 ]; do
+   cur=${1}; next=${2};
+   case "$cur" in
+      --device-map) device_map=${next}; shift;;
+      --device) device=1;;
+      --target) target=${next}; shift;;
+      --) shift; break;;
+   esac
+   shift;
+done
+arg=${1}
+
+case "${target}:${device}:${arg}" in
+   device:*:/*) echo "/dev/sda1"; exit 0;;
+   fs:*:*) echo "ext2"; exit 0;;
+   partmap:*:*)
+      # older versions of grub (lucid) want 'part_msdos' written
+      # rather than 'msdos'
+      legacy_pre=""
+      grubver=$(dpkg-query --show --showformat '${Version}\n' grub-pc 2>/dev/null) &&
+         dpkg --compare-versions "${grubver}" lt 1.98+20100804-5ubuntu3 &&
+         legacy_pre="part_"
+      echo "${legacy_pre}msdos";
+      exit 0;;
+   abstraction:*:*) echo ""; exit 0;;
+   drive:*:/dev/sda) echo "(hd0)";;
+   drive:*:/dev/sda*) echo "(hd0,1)";;
+   fs_uuid:*:*) exit 1;;
+esac
+PSUEDO_GRUB_PROBE
+            }
+
+            gprobe="/usr/sbin/grub-probe"
+            moved=0
+            if [ -f "${gprobe}" ]; then
+               mv "${gprobe}" "${gprobe}.dist"
+               moved=1
+            fi
+            psuedo_grub_probe > "${gprobe}"
+            chmod 755 "${gprobe}"
+
+            # Generate grub.cfg
+            /usr/sbin/update-grub2
+
+            grub2cfg="/boot/grub/grub.cfg"
+            [ ! -f "${grub2cfg}" ] ||
+               sed -i -e "s,root=/dev/[hs]da1,root=LABEL=writable," "${grub2cfg}"
+
+            [ ${moved} -eq 0 ] || mv "${gprobe}.dist" "${gprobe}"
+        fi
+    fi
+fi
