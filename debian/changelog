@@ -1,10 +1,14 @@
 livecd-rootfs (2.664.31) UNRELEASED; urgency=medium
 
+  [ Łukasz 'sil2100' Zemczak ]
   * Add the 099-ubuntu-image-customization.chroot for
     desktop-preinstalled images similar to what we have in groovy+ (for the pi
     desktop), but improved for amd64 platforms. We need it to generate a valid
     grub.cfg on the rootfs (similar to ubuntu-cpc) and then use that instead
     of a static configuration locked on the boot partition (LP: #1949102).
+
+  [ Brian Murray ]
+  * Properly check ARCH when setting the intel-iot model.
 
  -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Thu, 28 Oct 2021 17:35:12 +0200
 

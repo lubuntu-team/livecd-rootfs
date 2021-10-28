@@ -835,7 +835,7 @@ case $PROJECT in
 			arm64)
 				add_package install flash-kernel
 				;;
-			amd64)
+			amd64*)
 				if [ "${SUBARCH:-}" = "intel-iot" ]; then
 					KERNEL_FLAVOURS=image-intel
 					COMPONENTS='main restricted universe'
