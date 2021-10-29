@@ -1,4 +1,4 @@
-livecd-rootfs (2.664.33) UNRELEASED; urgency=medium
+livecd-rootfs (2.664.33) focal; urgency=medium
 
   * Install cloud-initramfs-growroot to actually enable rootfs resize.
   * Fix a grub error by making sure the unicode.pf2 font is installed in the
