@@ -105,6 +105,13 @@ PSUEDO_GRUB_PROBE
             # Generate grub.cfg
             /usr/sbin/update-grub2
 
+            # Somehow grub doesn't copy unicode.pf2 to the right fonts
+            # directory.
+	    if [ ! -e "/boot/grub/fonts/unicode.pf2" ]; then
+                mkdir -p /boot/grub/fonts
+                ln /boot/grub/unicode.pf2 /boot/grub/fonts/unicode.pf2
+            fi
+
             grub2cfg="/boot/grub/grub.cfg"
             [ ! -f "${grub2cfg}" ] ||
                sed -i -e "s,root=/dev/[hs]da1,root=LABEL=writable," "${grub2cfg}"

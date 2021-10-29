@@ -601,6 +601,9 @@ case $PROJECT in
 			desktop-preinstalled)
 				add_task install minimal standard ubuntu-desktop
 				if [ "$SUBARCH" = "intel-iot" ]; then
+					# Since for non-pi we don't have any seeds yet but we want to be able to
+					# grow the rootfs, manually install cloud-initramfs-growroot during build
+					add_package install cloud-initramfs-growroot
 				    	KERNEL_FLAVOURS='image-intel'
 					COMPONENTS='main restricted universe'
 					OPTS="${OPTS:+$OPTS }--initramfs=none"
