@@ -107,7 +107,7 @@ PSUEDO_GRUB_PROBE
 
             # Somehow grub doesn't copy unicode.pf2 to the right fonts
             # directory.
-	    if [ ! -e "/boot/grub/fonts/unicode.pf2" ]; then
+            if [ ! -e "/boot/grub/fonts/unicode.pf2" ]; then
                 mkdir -p /boot/grub/fonts
                 ln /boot/grub/unicode.pf2 /boot/grub/fonts/unicode.pf2
             fi
