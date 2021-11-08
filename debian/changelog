@@ -1,3 +1,41 @@
+livecd-rootfs (2.664.33) focal; urgency=medium
+
+  * Install cloud-initramfs-growroot to actually enable rootfs resize.
+  * Fix a grub error by making sure the unicode.pf2 font is installed in the
+    right path for preinstalled amd64 desktop images.
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Fri, 29 Oct 2021 15:33:34 +0200
+
+livecd-rootfs (2.664.32) focal; urgency=medium
+
+  * 099-ubuntu-image-customization.chroot: fix a typo in it.
+
+ -- Brian Murray <brian@ubuntu.com>  Thu, 28 Oct 2021 11:12:32 -0700
+
+livecd-rootfs (2.664.31) focal; urgency=medium
+
+  [ Łukasz 'sil2100' Zemczak ]
+  * Add the 099-ubuntu-image-customization.chroot for
+    desktop-preinstalled images similar to what we have in groovy+ (for the pi
+    desktop), but improved for amd64 platforms. We need it to generate a valid
+    grub.cfg on the rootfs (similar to ubuntu-cpc) and then use that instead
+    of a static configuration locked on the boot partition (LP: #1949102).
+
+  [ Brian Murray ]
+  * Properly check ARCH when setting the intel-iot model.
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Thu, 28 Oct 2021 17:35:12 +0200
+
+livecd-rootfs (2.664.30) focal; urgency=medium
+
+  [ Thomas Bechtold ]
+  * magic-proxy: Replace http.client with urllib calls. live-build/auto/build:
+    change iptables calls to query rules and quickly check that connectivity
+    works after transparent proxy has been installed. (LP: #1917920)
+  * magic-proxy: fix TypeError when trying to call get_uri() (LP: #1944906)
+
+ -- Brian Murray <brian@ubuntu.com>  Thu, 21 Oct 2021 11:55:24 -0700
+
 livecd-rootfs (2.664.29) focal; urgency=medium
 
   * Generate manifest for HyperV desktop image (LP: #1940136)
