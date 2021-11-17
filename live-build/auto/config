@@ -605,7 +605,7 @@ case $PROJECT in
 					# grow the rootfs, manually install cloud-initramfs-growroot during build
 					add_package install cloud-initramfs-growroot
 				    	KERNEL_FLAVOURS='image-intel'
-					COMPONENTS='main restricted universe'
+					COMPONENTS='main restricted'
 					OPTS="${OPTS:+$OPTS }--initramfs=none"
 					OPTS="${OPTS:+$OPTS }--system=normal"
 					OPTS="${OPTS:+$OPTS }--hdd-label=cloudimg-rootfs"
@@ -618,6 +618,10 @@ case $PROJECT in
 				add_task install minimal standard ubuntu-desktop
 				add_task live ubuntu-desktop-minimal-default-languages ubuntu-desktop-default-languages
 				KERNEL_FLAVOURS='generic-hwe-20.04'
+				if [ "$SUBARCH" = "intel-iot" ]; then
+					KERNEL_FLAVOURS='image-intel'
+					COMPONENTS='main restricted'
+				fi
 				;;
 		esac
 		;;
@@ -841,7 +845,7 @@ case $PROJECT in
 			amd64*)
 				if [ "${SUBARCH:-}" = "intel-iot" ]; then
 					KERNEL_FLAVOURS=image-intel
-					COMPONENTS='main restricted universe'
+					COMPONENTS='main restricted'
 					OPTS="${OPTS:+$OPTS }--initramfs=none"
 				fi
 				;;
@@ -1008,8 +1012,9 @@ case $PROJECT in
 		KERNEL_FLAVOURS="${SUBARCH:-$KERNEL_FLAVOURS}"
 		case $SUBARCH in
 			intel-iot)
-				COMPONENTS='main restricted universe'
+				COMPONENTS='main restricted'
 				KERNEL_FLAVOURS='image-intel'
+				;;
 		esac
 		;;
 esac

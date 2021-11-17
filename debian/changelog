@@ -1,3 +1,11 @@
+livecd-rootfs (2.664.34) focal; urgency=medium
+
+  * Add the capability to build an ISO image for the Intel IoT project.
+    Additionally, stop using universe with the project given that the kernel
+    is now in main. (LP: #1951173)
+
+ -- Brian Murray <brian@ubuntu.com>  Tue, 16 Nov 2021 16:56:36 -0800
+
 livecd-rootfs (2.664.33) focal; urgency=medium
 
   * Install cloud-initramfs-growroot to actually enable rootfs resize.
