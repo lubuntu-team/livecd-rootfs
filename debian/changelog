@@ -1,3 +1,11 @@
+livecd-rootfs (2.664.36) UNRELEASED; urgency=medium
+
+  * live-build/ubuntu-server/hooks/032-installer-squashfs.binary: be more
+    careful in deleting snaps that snap-preseed has copied up into the live
+    installer layer. (LP: #1952093)
+
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Thu, 25 Nov 2021 10:31:53 +1300
+
 livecd-rootfs (2.664.35) focal; urgency=medium
 
   [ Thomas Bechtold ]
