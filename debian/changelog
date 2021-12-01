@@ -1,3 +1,10 @@
+livecd-rootfs (2.719.4) hirsute; urgency=medium
+
+  [ Thomas Bechtold ]
+  * magic-proxy: fix exception handling for URLError (LP: #1946520)
+
+ -- Brian Murray <brian@ubuntu.com>  Thu, 18 Nov 2021 15:25:42 -0800
+
 livecd-rootfs (2.719.3) hirsute; urgency=medium
 
   [ Thomas Bechtold ]
