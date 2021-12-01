@@ -1,3 +1,10 @@
+livecd-rootfs (2.664.35) focal; urgency=medium
+
+  [ Thomas Bechtold ]
+  * magic-proxy: fix exception handling for URLError (LP: #1946520)
+
+ -- Brian Murray <brian@ubuntu.com>  Thu, 18 Nov 2021 15:42:45 -0800
+
 livecd-rootfs (2.664.34) focal; urgency=medium
 
   * Add the capability to build an ISO image for the Intel IoT project.
