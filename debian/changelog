@@ -1,3 +1,11 @@
+livecd-rootfs (2.742.2) impish; urgency=medium
+
+  * Bump UEFI disk image size for armhf to 3.5 GB (LP: #1953609)
+    Current builds are failing because the disk size is not big enough.
+    This a backport from jammy and upstream livecd-rootfs:ubuntu/master.
+
+ -- Phil Roche <phil.roche@canonical.com>  Wed, 08 Dec 2021 11:24:18 +0000
+
 livecd-rootfs (2.742.1) impish; urgency=medium
 
   [ Thomas Bechtold ]
