@@ -1,3 +1,35 @@
+livecd-rootfs (2.747) jammy; urgency=medium
+
+  * ubuntu-cpc/hooks.d/base/disk-image-uefi.binary: Bump UEFI disk image
+    size for armhf to 3.5 GB.
+    Current builds are failing because the disk size is not big enough.
+
+ -- Thomas Bechtold <thomas.bechtold@canonical.com>  Tue, 23 Nov 2021 10:15:18 +0100
+
+livecd-rootfs (2.746) jammy; urgency=medium
+
+  * Add the capability to build an ISO image for the Intel IoT project.
+    Additionally, stop using universe with the project given that the kernel
+    is now in main.
+
+ -- Brian Murray <brian@ubuntu.com>  Tue, 16 Nov 2021 17:00:57 -0800
+
+livecd-rootfs (2.745) jammy; urgency=medium
+
+  [ Erich Eickmeyer ]
+  * Remove fonts and publishing tasks from ubuntustudio DVD
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Mon, 08 Nov 2021 13:43:53 -0800
+
+livecd-rootfs (2.744) jammy; urgency=medium
+
+  * Install desired already seeded snap in wsl.
+    As wsl is an image target of ubuntu-cpc, the base seed is hardcoded to
+    ubuntu-server instead of wsl one. For now, add it, as for the other
+    cpc images, in hooks.
+
+ -- Didier Roche <didrocks@ubuntu.com>  Fri, 05 Nov 2021 10:23:24 +0100
+
 livecd-rootfs (2.743) jammy; urgency=medium
 
   * magic-proxy: fix exception handling for URLError. LP: #1946520

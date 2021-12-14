@@ -707,7 +707,7 @@ case $PROJECT in
 						;;
 					intel-iot)
 						KERNEL_FLAVOURS='image-intel'
-						COMPONENTS='main restricted universe'
+						COMPONENTS='main restricted'
 						OPTS="${OPTS:+$OPTS }--initramfs=none"
 						OPTS="${OPTS:+$OPTS }--system=normal"
 						OPTS="${OPTS:+$OPTS }--hdd-label=cloudimg-rootfs"
@@ -724,6 +724,10 @@ case $PROJECT in
 				add_task install minimal standard ubuntu-desktop
 				add_task live ubuntu-desktop-minimal-default-languages ubuntu-desktop-default-languages
 				KERNEL_FLAVOURS='generic-hwe-20.04'
+				if [ "$SUBARCH" = "intel-iot" ]; then
+					KERNEL_FLAVOURS='image-intel'
+					COMPONENTS='main restricted'
+				fi
 				;;
 		esac
 		;;
@@ -810,7 +814,7 @@ case $PROJECT in
 		;;
 
 	ubuntustudio-dvd)
-		add_task install minimal standard ubuntustudio-desktop ubuntustudio-audio ubuntustudio-fonts ubuntustudio-graphics ubuntustudio-video ubuntustudio-publishing ubuntustudio-photography
+		add_task install minimal standard ubuntustudio-desktop ubuntustudio-audio ubuntustudio-graphics ubuntustudio-video ubuntustudio-photography
 		COMPONENTS='main restricted universe multiverse'
 		case $ARCH in
 			amd64|i386)	KERNEL_FLAVOURS=lowlatency ;;
@@ -923,7 +927,7 @@ case $PROJECT in
 					KERNEL_FLAVOURS=generic
 				elif [ "${SUBARCH:-}" = "intel-iot" ]; then
 					KERNEL_FLAVOURS=image-intel
-					COMPONENTS='main restricted universe'
+					COMPONENTS='main restricted'
 					OPTS="${OPTS:+$OPTS }--initramfs=none"
 				fi
 				;;
@@ -1082,8 +1086,9 @@ case $PROJECT in
 		KERNEL_FLAVOURS="${SUBARCH:-$KERNEL_FLAVOURS}"
 		case $SUBARCH in
 			intel-iot)
-				COMPONENTS='main restricted universe'
+				COMPONENTS='main restricted'
 				KERNEL_FLAVOURS='image-intel'
+				;;
 		esac
 		;;
 esac
