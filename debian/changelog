@@ -1,3 +1,29 @@
+livecd-rootfs (2.751) jammy; urgency=medium
+
+  * Revert patch for unmounting in local builds as it is causing autopkgtest
+    regressions
+
+ -- William 'jawn-smith' Wilson <jawn-smith@ubuntu.com>  Wed, 12 Jan 2022 13:43:24 -0600
+
+livecd-rootfs (2.750) jammy; urgency=medium
+
+  * Do not look for a base snap on snaps of type base, because recursive
+    dependencies are not allowed for snaps.  LP: #1957123.
+  * Treat it as a fatal error if we are asked to install a snap that would
+    pull in the core snap.  Ubuntu 20.04 and Ubuntu 22.04 official images
+    should never require snaps that depend on an Ubuntu 16.04 runtime, this
+    indicates a misconfiguration that will bloat the install.
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Tue, 11 Jan 2022 17:34:37 -0800
+
+livecd-rootfs (2.749) jammy; urgency=medium
+
+  [ Heinrich Schuchardt ]
+  * riscv64: ensure reasonable partition alignment (LP: #1952916).
+  * functions: fix unmounting for local builds (LP: #1952921).
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Thu, 16 Dec 2021 12:40:16 +0100
+
 livecd-rootfs (2.748) jammy; urgency=medium
 
   * live-build/ubuntu-cpc/hooks.d/base/ovf/ubuntu-ova-v1-vmdk.tmpl: do not

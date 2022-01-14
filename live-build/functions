@@ -585,12 +585,20 @@ _snap_preseed() {
                 exit 1
             fi
 
-            local core_snap=$(echo "$snap_info" | grep '^base:' | awk '{print $2}')
+            local snap_type=$(echo "$snap_info" | awk '/^type:/ { print $2 }')
 
-            # If snap info does not list a base use 'core'
-            core_snap=${core_snap:-core}
+            if [ "$snap_type" != base ]; then
+                local core_snap=$(echo "$snap_info" | awk '/^base:/ {print $2}')
 
-            _snap_preseed $CHROOT_ROOT $core_snap stable
+                # If snap info does not list a base the default is 'core'
+                # which is now an error to use.
+                if [ -z "$core_snap" ]; then
+                    echo "Legacy snap with no base declaration found, refusing to install 'core' snap"
+                    exit 1
+                fi
+
+                _snap_preseed $CHROOT_ROOT $core_snap stable
+            fi
             ;;
     esac
 
