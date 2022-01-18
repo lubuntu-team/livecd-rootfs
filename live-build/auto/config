@@ -237,7 +237,7 @@ case $IMAGEFORMAT in
 
 			case "$ARCH+${SUBARCH:-}" in
 				amd64+kassel)
-					EXTRA_SNAPS="core bluez alsa-utils"
+					EXTRA_SNAPS="core core20 bluez alsa-utils"
 					;;
 				*) ;;
 			esac

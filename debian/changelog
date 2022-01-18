@@ -1,3 +1,11 @@
+livecd-rootfs (2.525.57) UNRELEASED; urgency=medium
+
+  * Fix UC18 amd64+kassel images by explicitly adding in the core20 snap.
+    This is now needed after the bluez snap switch its base to core20
+    (LP: #1958218).
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Tue, 18 Jan 2022 09:46:34 +0100
+
 livecd-rootfs (2.525.56) bionic; urgency=medium
 
   [ Jason C. McDonald ]
