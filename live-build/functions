@@ -165,6 +165,8 @@ umount_partition() {
     teardown_mountpoint $mountpoint
     umount -R $mountpoint
     udevadm settle
+    # workaround for LP: 1960537
+    sleep 30 
 
     if [ -n "${rootfs_dev_mapper}" -a -b "${rootfs_dev_mapper}" ]; then
         # buildd's don't have /etc/mtab symlinked
