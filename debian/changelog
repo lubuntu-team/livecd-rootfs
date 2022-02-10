@@ -1,3 +1,9 @@
+livecd-rootfs (2.742.3) impish; urgency=medium
+
+  * Add sleep due to e2fsck error in umount_partition. LP: #1960537
+
+ -- Brian Murray <brian@ubuntu.com>  Thu, 10 Feb 2022 15:28:29 -0800
+
 livecd-rootfs (2.742.2) impish; urgency=medium
 
   * Bump UEFI disk image size for armhf to 3.5 GB (LP: #1953609)
