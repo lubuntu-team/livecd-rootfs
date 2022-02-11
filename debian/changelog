@@ -1,3 +1,15 @@
+livecd-rootfs (2.755) jammy; urgency=medium
+
+  [ Brian Murray ]
+  * Add the casper package instead of the lupin-casper package as the
+    installer for Windows is a project that is no longer supported and lupin
+    is being removed the archive in LP: 1960457.
+
+  [ John Chittum ]
+  *  Add sleep due to e2fsck error in umount_partition. LP: #1960537
+
+ -- Brian Murray <brian@ubuntu.com>  Thu, 10 Feb 2022 13:54:42 -0800
+
 livecd-rootfs (2.754) jammy; urgency=medium
 
   * Disable APT periodic update for OCI/docker images when cron-like
