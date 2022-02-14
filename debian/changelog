@@ -1,3 +1,11 @@
+livecd-rootfs (2.664.40) UNRELEASED; urgency=medium
+
+  * Unset `initrdless_boot_fallback_triggered` in /boot/grub/grubenv instead
+    of setting it to 0 when the fallback is not triggered to prevent integrity
+    monitoring errors on GCE. (LP: #1960564)
+
+ -- Ivan Kapelyukhin <ivan.kapelyukhin@canonical.com>  Mon, 14 Feb 2022 21:32:01 +0100
+
 livecd-rootfs (2.664.39) focal; urgency=medium
 
   * Switch to building raspi classic images using the 'classic' branch instead
