@@ -1,3 +1,10 @@
+livecd-rootfs (2.664.39) UNRELEASED; urgency=medium
+
+  * Switch to building raspi classic images using the 'classic' branch instead
+    of '18'. This is needed for proper Pi Zero 2 support (LP: #1960950).
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Tue, 15 Feb 2022 18:59:05 +0100
+
 livecd-rootfs (2.664.38) focal; urgency=medium
 
   * Add sleep due to e2fsck error in umount_partition. LP: #1960537
