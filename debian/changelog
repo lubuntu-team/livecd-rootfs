@@ -1,8 +1,14 @@
 livecd-rootfs (2.664.41) UNRELEASED; urgency=medium
 
-  * Split UEFI image out of `disk-image` series file into `disk-image-uefi` (LP: #1961760) 
+  [ Ivan Kapelyukhin ]
+  * Split UEFI image out of `disk-image` series file into
+    `disk-image-uefi`. (LP: #1961760)
 
- -- Ivan Kapelyukhin <ivan.kapelyukhin@canonical.com>  Thu, 03 Mar 2022 15:57:13 +0100
+  [ Thomas Bechtold ]
+  * Optionally (when ALLOW_CORE_SNAP env var is set) allow to install
+    core snap. Still needed by some CPC projects. (LP: #1964303)
+
+ -- Thomas Bechtold <thomas.bechtold@canonical.com>  Fri, 04 Mar 2022 14:00:16 +0100
 
 livecd-rootfs (2.664.40) focal; urgency=medium
 
