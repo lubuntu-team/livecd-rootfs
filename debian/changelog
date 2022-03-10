@@ -1,4 +1,4 @@
-livecd-rootfs (2.664.41) UNRELEASED; urgency=medium
+livecd-rootfs (2.664.41) focal; urgency=medium
 
   [ Ivan Kapelyukhin ]
   * Split UEFI image out of `disk-image` series file into
