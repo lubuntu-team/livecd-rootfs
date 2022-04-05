@@ -1,3 +1,13 @@
+livecd-rootfs (2.762) jammy; urgency=medium
+
+  [ Dimitri John Ledkov ]
+  * auto/config: drop support for 0c3.net domain, now obsolete.
+
+  [ Jean-Baptiste Lallement ]
+  * wsl: Create missing groups in chroot
+
+ -- Jean-Baptiste Lallement <jean-baptiste.lallement@ubuntu.com>  Thu, 31 Mar 2022 08:56:33 +0200
+
 livecd-rootfs (2.761) jammy; urgency=medium
 
   [ Jean-Baptiste Lallement ]
