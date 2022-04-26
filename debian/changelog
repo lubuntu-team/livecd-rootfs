@@ -1,3 +1,9 @@
+livecd-rootfs (2.764+1) kinetic; urgency=medium
+
+  * add kinetic
+
+ -- Thomas Bechtold <thomas.bechtold@canonical.com>  Tue, 26 Apr 2022 15:33:31 +0200
+
 livecd-rootfs (2.764) jammy; urgency=medium
 
   [ Michał Sawicz ]
