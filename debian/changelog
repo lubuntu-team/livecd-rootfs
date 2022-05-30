@@ -1,8 +1,15 @@
-livecd-rootfs (2.764+1) kinetic; urgency=medium
+livecd-rootfs (2.765) kinetic; urgency=medium
 
-  * add kinetic
+  [ Michael Hudson-Doyle ]
+  * auto/config: preserve germinate-output directory when removing config to
+    speed up local iteration.
+  * auto/config: Emit error message to stderr in _sanitize_passes.
+  * Produce a tarball of artifacts for netbooting during live-server build.
 
- -- Thomas Bechtold <thomas.bechtold@canonical.com>  Tue, 26 Apr 2022 15:33:31 +0200
+  [ John Chittum ]
+  * vagrant: use ed25519 insecure key (LP: #1969664) 
+
+ -- John Chittum <john.chittum@canonical.com>  Thu, 26 May 2022 09:28:26 -0500
 
 livecd-rootfs (2.764) jammy; urgency=medium
 
