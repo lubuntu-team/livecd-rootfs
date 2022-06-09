@@ -1,3 +1,12 @@
+livecd-rootfs (2.664.42) UNRELEASED; urgency=medium
+
+  * Switch intel-iot to use intel-iotg-edge, the 5.15 based IOTG kernel
+    - While at it, build using the main kernel meta, not just with
+      linux-image-*
+  * Add support for building live-server images for intel-iot
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Thu, 09 Jun 2022 16:46:37 +0200
+
 livecd-rootfs (2.664.41) focal; urgency=medium
 
   [ Ivan Kapelyukhin ]

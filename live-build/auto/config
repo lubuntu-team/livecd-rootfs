@@ -599,7 +599,7 @@ case $PROJECT in
 					# Since for non-pi we don't have any seeds yet but we want to be able to
 					# grow the rootfs, manually install cloud-initramfs-growroot during build
 					add_package install cloud-initramfs-growroot
-				    	KERNEL_FLAVOURS='image-intel'
+				    	KERNEL_FLAVOURS='intel-iotg-edge'
 					COMPONENTS='main restricted'
 					OPTS="${OPTS:+$OPTS }--initramfs=none"
 					OPTS="${OPTS:+$OPTS }--system=normal"
@@ -614,7 +614,7 @@ case $PROJECT in
 				add_task live ubuntu-desktop-minimal-default-languages ubuntu-desktop-default-languages
 				KERNEL_FLAVOURS='generic-hwe-20.04'
 				if [ "$SUBARCH" = "intel-iot" ]; then
-					KERNEL_FLAVOURS='image-intel'
+					KERNEL_FLAVOURS='intel-iotg-edge'
 					COMPONENTS='main restricted'
 				fi
 				;;
@@ -746,6 +746,10 @@ case $PROJECT in
 				;;
 		esac
 		COMPONENTS='main'
+		if [ "$SUBARCH" = "intel-iot" ]; then
+			KERNEL_FLAVOURS='intel-iotg-edge'
+			COMPONENTS='main restricted'
+		fi
 		PREINSTALL_POOL_SEEDS='server-ship'
 		;;
 
@@ -839,7 +843,7 @@ case $PROJECT in
 				;;
 			amd64*)
 				if [ "${SUBARCH:-}" = "intel-iot" ]; then
-					KERNEL_FLAVOURS=image-intel
+					KERNEL_FLAVOURS=intel-iotg-edge
 					COMPONENTS='main restricted'
 					OPTS="${OPTS:+$OPTS }--initramfs=none"
 				fi
