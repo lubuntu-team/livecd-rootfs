@@ -1012,7 +1012,7 @@ case $PROJECT in
 		case $SUBARCH in
 			intel-iot)
 				COMPONENTS='main restricted'
-				KERNEL_FLAVOURS='image-intel'
+				KERNEL_FLAVOURS='intel-iotg-edge'
 				;;
 		esac
 		;;
