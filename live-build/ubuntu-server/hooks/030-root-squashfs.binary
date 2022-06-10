@@ -15,7 +15,7 @@ case $IMAGE_TARGETS in
 		;;
 esac
 
-if [ -n "$SUBARCH" ]; then
+if [ -n "$SUBARCH" && "$SUBARCH" != "intel-iot" ]; then
 	echo "Skipping rootfs build for subarch flavor build"
 	exit 0
 fi

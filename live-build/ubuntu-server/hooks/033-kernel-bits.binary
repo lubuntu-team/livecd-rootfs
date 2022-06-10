@@ -14,7 +14,7 @@ case ${IMAGE_TARGETS-} in
 		;;
 esac
 
-if [ -n "${SUBARCH-}" ]; then
+if [ -n "${SUBARCH-}" && "$SUBARCH" != "intel-iot" ]; then
 	echo "Skipping rootfs build for subarch flavor build"
 	exit 0
 fi
@@ -27,7 +27,14 @@ INSTALLER_ROOT=binary/boot/installer.squashfs.dir
 KERNEL_BITS_ROOT=binary/boot/kernel-bits.dir
 KERNEL_BITS_OVERLAY=binary/boot/overlay-kernel-bits
 
-variants='ga hwe'
+case ${SUBARCH-} in
+	intel-iot)
+		variants='intel'
+		;;
+	*)
+		variants='ga hwe'
+		;;
+esac
 
 for variant in $variants; do
 	if [ "$variant" = "ga" ]; then
@@ -36,6 +43,9 @@ for variant in $variants; do
 	elif [ "$variant" = "hwe" ]; then
 		kernel_metapkg=linux-generic-hwe-$(lsb_release -sr)
 		flavor=generic-hwe
+	elif [ "$variant" = "intel" ]; then
+		kernel_metapkg=linux-intel-iotg-edge
+		flavor=intel-iotg
 	else
 		echo "bogus variant: $variant"
 		exit 1
