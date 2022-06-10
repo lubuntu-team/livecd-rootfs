@@ -22,6 +22,8 @@ fi
 
 . config/functions
 
+PROJECT=$PROJECT${SUBARCH:+-$SUBARCH}
+
 mkdir binary/boot/squashfs.dir
 cp -a chroot/* binary/boot/squashfs.dir
 

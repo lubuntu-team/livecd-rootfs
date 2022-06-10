@@ -29,6 +29,8 @@ FILESYSTEM_ROOT=binary/boot/squashfs.dir
 INSTALLER_ROOT=binary/boot/installer.squashfs.dir
 OVERLAY_ROOT=binary/overlay
 
+PROJECT=$PROJECT${SUBARCH:+-$SUBARCH}
+
 mkdir -p "$INSTALLER_ROOT" "$OVERLAY_ROOT"
 
 # Create an installer squashfs layer
