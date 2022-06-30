@@ -1,3 +1,10 @@
+livecd-rootfs (2.525.59) UNRELEASED; urgency=medium
+
+  * ubuntu-cpc: Install `shim-signed` and `grub-efi-arm64-signed` to enable
+    secureboot on ARM64 images (LP:#1980358)
+
+ -- Ivan Kapelyukhin <ivan.kapelyukhin@canonical.com>  Thu, 30 Jun 2022 14:10:50 +0200
+
 livecd-rootfs (2.525.58) bionic; urgency=medium
 
   * Split UEFI image out of `disk-image` series file into
