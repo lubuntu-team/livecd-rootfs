@@ -1,4 +1,4 @@
-livecd-rootfs (2.664.42) UNRELEASED; urgency=medium
+livecd-rootfs (2.664.42) focal; urgency=medium
 
   * Switch intel-iot to use intel-iotg-edge, the 5.15 based IOTG kernel
     (LP: #1980065)
