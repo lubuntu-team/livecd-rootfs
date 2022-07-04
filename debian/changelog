@@ -1,3 +1,10 @@
+livecd-rootfs (2.664.42) UNRELEASED; urgency=medium
+
+  * ubuntu-cpc: Install `shim-signed` and `grub-efi-arm64-signed` to enable
+    secureboot on ARM64 images (LP:#1980358)
+
+ -- Ivan Kapelyukhin <ivan.kapelyukhin@canonical.com>  Thu, 30 Jun 2022 14:06:30 +0200
+
 livecd-rootfs (2.664.42) focal; urgency=medium
 
   * Switch intel-iot to use intel-iotg-edge, the 5.15 based IOTG kernel
