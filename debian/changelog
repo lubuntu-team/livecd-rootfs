@@ -1,3 +1,16 @@
+livecd-rootfs (2.769) kinetic; urgency=medium
+
+  [ Alexandre Ghiti ]
+  * Add support for the VisionFive and the Nezha boards (LP: #1980935)
+  * Set FK_FORCE_CONTAINER for RISC-V images build to force flash-kernel
+    to run in a container (LP: #1980929).
+
+  [ Thomas Bechtold ]
+  * Revert "don't modify ssh_config for ubuntu-cpc projects (LP:1968873)"
+    This change triggered a bug in cloud-init (see LP: #1968873).
+
+ -- Thomas Bechtold <thomas.bechtold@canonical.com>  Mon, 11 Jul 2022 14:10:52 +0200
+
 livecd-rootfs (2.768) kinetic; urgency=medium
 
   * Use the new iso-url= parameter in the bootloader configs in the netboot
