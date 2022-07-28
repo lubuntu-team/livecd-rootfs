@@ -1,9 +1,9 @@
-livecd-rootfs (2.525.60) UNRELEASED; urgency=medium
+livecd-rootfs (2.525.60) bionic; urgency=medium
 
   [ Michał Sawicz ]
   * ubuntu-buildd: Add arm64 buildd bootable image. (LP: #1966636)
 
- -- jchittum <john.chittum@canonical.com>  Mon, 18 Jul 2022 10:34:30 -0500
+ -- jchittum <john.chittum@canonical.com>  Fri, 29 Jul 2022 09:55:35 +1200
 
 livecd-rootfs (2.525.59) bionic; urgency=medium
 
