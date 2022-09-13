@@ -1,3 +1,18 @@
+livecd-rootfs (2.777) kinetic; urgency=medium
+
+  * Rename FK_FORCE_CONTAINER into FK_FORCE as its role was extended to also
+    support chroot (LP: #1989194).
+
+ -- Alexandre Ghiti <alexandre.ghiti@canonical.com>  Thu, 08 Sep 2022 16:25:36 +0200
+
+livecd-rootfs (2.776) kinetic; urgency=medium
+
+  * Do not modify /etc/ssh/sshd_config for ubuntu-cpc project
+    builds. (LP: #1968873). The cloud-init bug (LP #1968873) got
+    fixed so using a config snippet now.
+
+ -- Thomas Bechtold <thomas.bechtold@canonical.com>  Tue, 23 Aug 2022 10:45:06 +0200
+
 livecd-rootfs (2.775) kinetic; urgency=medium
 
   [ Rudra Saraswat ]
