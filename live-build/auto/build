@@ -440,7 +440,12 @@ deb file:/var/lib/preinstalled-pool/ $LB_DISTRIBUTION $LB_PARENT_ARCHIVE_AREAS
 		fi
 	fi
 	if [ "$PROJECT" = "ubuntu-oci" ]; then
-	    configure_oci chroot
+	    if [ -n "$BUILDSTAMP" ]; then
+		    configure_oci chroot "$BUILDSTAMP"
+	    else
+		    echo "The \$BUILDSTAMP variable is empty"
+		    exit 1
+	    fi
 	fi
 	if [ "$PROJECT" = "ubuntu-cpc" ]; then
 		if [ "${SUBPROJECT:-}" = minimized ]; then
