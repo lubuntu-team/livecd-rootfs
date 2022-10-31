@@ -1,3 +1,9 @@
+livecd-rootfs (2.791+1) lunar; urgency=medium
+
+  * add lunar
+
+ -- Thomas Bechtold <thomas.bechtold@canonical.com>  Mon, 31 Oct 2022 10:35:03 +0100
+
 livecd-rootfs (2.791) kinetic; urgency=medium
 
   [ Brian Murray ]
