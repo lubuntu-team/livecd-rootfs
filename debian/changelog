@@ -1,8 +1,21 @@
-livecd-rootfs (2.791+1) lunar; urgency=medium
+livecd-rootfs (2.793) lunar; urgency=medium
 
-  * add lunar
+  [ Heinrich Schuchardt ]
+  * riscv64: use efi=debug earlycon. RISC-V boards tend to boot slowly. We
+    should provide progress information when booting.
 
- -- Thomas Bechtold <thomas.bechtold@canonical.com>  Mon, 31 Oct 2022 10:35:03 +0100
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Wed, 16 Nov 2022 13:25:46 +0100
+
+livecd-rootfs (2.792) lunar; urgency=medium
+
+  [ Samir Akarioh ]
+  * feat: Add metadata on ubuntu-oci image.
+  * feat: Add Ubuntu user.
+
+  [ Utkarsh Gupta ]
+  * Remove whitespaces.
+
+ -- Utkarsh Gupta <utkarsh@ubuntu.com>  Mon, 14 Nov 2022 15:26:30 +0530
 
 livecd-rootfs (2.791) kinetic; urgency=medium
 
