@@ -1,3 +1,10 @@
+livecd-rootfs (2.791.1) kinetic; urgency=medium
+
+  [ Samir Akarioh ]
+  * feat: Add metadata on ubuntu-oci image. (LP: #1998229)
+
+ -- Utkarsh Gupta <utkarsh@ubuntu.com>  Fri, 09 Dec 2022 21:19:45 +0530
+
 livecd-rootfs (2.791) kinetic; urgency=medium
 
   [ Brian Murray ]
