@@ -1,3 +1,10 @@
+livecd-rootfs (2.525.61) bionic; urgency=medium
+
+  [ Samir Akarioh ]
+  * feat: Add metadata on ubuntu-oci image. (LP: #1998229)
+
+ -- Utkarsh Gupta <utkarsh@ubuntu.com>  Mon, 12 Dec 2022 15:36:15 +0530
+
 livecd-rootfs (2.525.60) bionic; urgency=medium
 
   [ Michał Sawicz ]
