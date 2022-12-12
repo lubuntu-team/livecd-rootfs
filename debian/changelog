@@ -1,3 +1,10 @@
+livecd-rootfs (2.664.45) focal; urgency=medium
+
+  [ Samir Akarioh ]
+  * feat: Add metadata on ubuntu-oci image. (LP: #1998229)
+
+ -- Utkarsh Gupta <utkarsh@ubuntu.com>  Mon, 12 Dec 2022 15:33:48 +0530
+
 livecd-rootfs (2.664.44) focal; urgency=medium
 
   [ Michał Sawicz ]
