@@ -508,17 +508,7 @@ _snap_post_process() {
             # If the 'core' snap is not present, assume we are coreXX-only and
             # install the snapd snap.
             if [ ! -f ${snaps_dir}/core_[0-9]*.snap ]; then
-                # There is a regression in snapd 2.58 with a fix being worked on @
-                # https://github.com/snapcore/snapd/pull/12483. The regression was
-                # that it was no longer possible to preseed snaps during cloud
-                # image builds. The temporary workaround is to preseed snapd
-                # from a downgraded channel "stable/2.57.x". To do this temporarily
-                # we will carry a patch on CPC's fork of livecd-rootfs on all suites.
-                # Once the fix to snapd snap is rolled out with a new 2.58.1
-                # release then the "stable/2.57.x" will be removed and
-                # all users with snapd from channel "stable/2.57.x" will
-                # fall back to "stable" channel and be upgraded to 2.58.1.
-                _snap_preseed $CHROOT_ROOT snapd "stable/2.57.x"
+                _snap_preseed $CHROOT_ROOT snapd stable
             fi
             ;;
         core)
