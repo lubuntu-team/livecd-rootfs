@@ -653,7 +653,7 @@ case $PROJECT in
 	ubuntu-server)
 		COMPONENTS='main'
 		;;
-	kubuntu|kubuntu-dvd|kubuntu-plasma5|ubuntu-gnome|ubuntu-budgie|ubuntukylin)
+	kubuntu|kubuntu-dvd|kubuntu-plasma5|edubuntu|ubuntu-gnome|ubuntu-budgie|ubuntukylin)
 		COMPONENTS='main restricted universe'
 		;;
 	xubuntu|mythbuntu|lubuntu|ubuntu-mate|ubuntu-unity|ubuntustudio-dvd|ubuntu-unity)
@@ -775,8 +775,20 @@ case $PROJECT in
 		add_chroot_hook remove-gnome-icon-cache
 		;;
 
+	edubuntu)
+		add_task install minimal standard ubuntu-minimal edubuntu-desktop-gnome
+		LIVE_TASK='edubuntu-live'
+		;;
+
 	xubuntu)
-		add_task install minimal standard xubuntu-desktop
+		case ${SUBPROJECT:-} in
+			minimal)
+				add_task install minimal standard xubuntu-desktop-minimal
+				;;
+			*)
+				add_task install minimal standard xubuntu-desktop
+				;;
+		esac
 		add_package install xterm
 		LIVE_TASK='xubuntu-live'
 		case $ARCH in
@@ -916,7 +928,7 @@ case $PROJECT in
 		;;
 
 	ubuntu-wsl)
-		add_task install minimal standard ubuntu-wsl
+		add_task install minimal ubuntu-wsl
 		OPTS="${OPTS:+$OPTS }--linux-packages=none --initramfs=none"
 		KERNEL_FLAVOURS=none
 		BINARY_REMOVE_LINUX=false

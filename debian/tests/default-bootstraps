@@ -13,6 +13,7 @@ fi
 # Listed subprojects can be combined with other projects as well,
 # but this list gives reasonable coverage.
 ALL_TRIPLETS="
+ edubuntu::
  kubuntu::
  kubuntu-dvd::
  kubuntu-plasma5::
@@ -38,7 +39,8 @@ ALL_TRIPLETS="
  ubuntu-mate-live::
  ubuntu-netbook::
  ubuntu-server:live:ubuntu-server
- xubuntu::"
+ xubuntu::
+ xubuntu:minimal:"
 
 if [ -z "$SELECTED_TRIPLETS" ]; then
     SELECTED_TRIPLETS="
