@@ -1,3 +1,45 @@
+livecd-rootfs (2.804) lunar; urgency=medium
+
+  * Clarified with Erich that edubuntu should install ubuntu-desktop-minimal
+    task.
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Fri, 24 Feb 2023 21:11:56 -0800
+
+livecd-rootfs (2.803) lunar; urgency=medium
+
+  * Fix wrong task name for xubuntu-minimal.
+  * Fix edubuntu build: ubuntu-minimal is not a task and minimal is already
+    declared.
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Fri, 24 Feb 2023 21:05:48 -0800
+
+livecd-rootfs (2.802) lunar; urgency=medium
+
+  * Address the fact that debootstrap doesn't follow Recommends and as a
+    result we're missing several Recommends that should be installed by
+    default and are on upgrades but not on new installs.  This is not
+    applied to minimized images, which don't follow Recommends; but does get
+    separately applied to the ubuntu-server full squashfs.
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Fri, 24 Feb 2023 17:47:54 -0800
+
+livecd-rootfs (2.801) lunar; urgency=medium
+
+  [ Heinrich Schuchardt ]
+  * RISC-V: avoid soft lockup Radeon GPUs. With Radeon GPUs and kernel 5.19 a
+    soft lockup was observed. Increase the watchdog threshold.
+
+  [ Łukasz 'sil2100' Zemczak ]
+  * Add ubuntucinnamon to the supported flavours.
+  * Terrible hack workaround for clearing out the non-offline apt cache
+    for desktop related images.
+
+  [ Dimitri John Ledkov ]
+  * ubuntu-cpc: set default ext4 mount option commit=30 (LP: #2006511).
+  * Cherry-pick jammy point release fixes.
+
+ -- Dimitri John Ledkov <dimitri.ledkov@canonical.com>  Fri, 24 Feb 2023 12:20:04 +0000
+
 livecd-rootfs (2.800) lunar; urgency=medium
 
   * WSL: do not depend on standard anymore.
