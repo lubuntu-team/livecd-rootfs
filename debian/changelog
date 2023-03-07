@@ -1,3 +1,25 @@
+livecd-rootfs (2.809) lunar; urgency=medium
+
+  * Do not use the ubuntucinnamon-desktop task for cinnamon builds, it doesn't
+    seem to be present in the archive yet. Use the metapackage instead, which
+    seems like a better way forward anyway. For the live task, temporarily use
+    a hard-coded list of packages.
+  * Explicitly define the kernel flavor for ubuntucinnamon.
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Mon, 06 Mar 2023 11:27:02 +0100
+
+livecd-rootfs (2.808) lunar; urgency=medium
+
+  * Add ubuntucinnamon to the seed-determination switch-case.
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Fri, 03 Mar 2023 15:07:06 +0100
+
+livecd-rootfs (2.807) lunar; urgency=medium
+
+  * auto/config: Add support for ubuntu core arm64 generic images (LP: #2009067)
+
+ -- Dimitri John Ledkov <dimitri.ledkov@canonical.com>  Thu, 02 Mar 2023 18:18:18 +0000
+
 livecd-rootfs (2.806) lunar; urgency=medium
 
   [ Sean Davis ]
