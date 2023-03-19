@@ -342,7 +342,7 @@ if [ -z "${IMAGEFORMAT:-}" ]; then
 					;;
 			esac
 			;;
-		ubuntu-server:live)
+		ubuntu-server:live|ubuntu-mini-iso:)
 			IMAGEFORMAT=plain
 			;;
 	esac
@@ -376,6 +376,8 @@ case $IMAGEFORMAT in
 		case $PROJECT:${SUBPROJECT:-} in
 			ubuntu-server:live)
 	                        touch config/universe-enabled
+				;;
+			ubuntu-mini-iso:)
 				;;
 			*)
 				PREINSTALLED=true
@@ -591,7 +593,7 @@ if [ "$PREINSTALLED" = "true" ]; then
 		ubuntu-server)
 			add_package live oem-config-debconf ubiquity-frontend-debconf
 			;;
-		ubuntu-base|ubuntu-oci|ubuntu-cpc|ubuntu-wsl)
+		ubuntu-base|ubuntu-oci|ubuntu-cpc|ubuntu-wsl|ubuntu-mini-iso)
 			;;
 		ubuntu)
 			add_package live oem-config-gtk ubiquity-frontend-gtk
@@ -655,7 +657,7 @@ case $PROJECT in
 esac
 
 case $PROJECT in
-	ubuntu-server)
+	ubuntu-server|ubuntu-mini-iso)
 		COMPONENTS='main'
 		;;
 	kubuntu|kubuntu-dvd|kubuntu-plasma5|edubuntu|ubuntu-gnome|ubuntu-budgie|ubuntukylin|ubuntucinnamon)
@@ -692,7 +694,7 @@ case $PROJECT in
 				add_task live ubuntu-desktop-minimal-default-languages ubuntu-desktop-default-languages
 				KERNEL_FLAVOURS='generic-hwe-22.04'
 				if [ "$SUBARCH" = "intel-iot" ]; then
-					KERNEL_FLAVOURS='image-intel'
+					KERNEL_FLAVOURS='intel-iotg'
 				fi
 				;;
 			desktop-preinstalled)
@@ -710,7 +712,7 @@ case $PROJECT in
 						OPTS="${OPTS:+$OPTS }--ext-fudge-factor=15"
 						;;
 					intel-iot)
-						KERNEL_FLAVOURS='image-intel'
+						KERNEL_FLAVOURS='intel-iotg'
 						OPTS="${OPTS:+$OPTS }--initramfs=none"
 						OPTS="${OPTS:+$OPTS }--system=normal"
 						OPTS="${OPTS:+$OPTS }--hdd-label=cloudimg-rootfs"
@@ -895,9 +897,15 @@ case $PROJECT in
 				# the GA and HWE kernels (in separate layers) so this code is
 				# written generically to support both even though a lot of the
 				# time only one kernel is offered.
-
-				# variants='ga hwe'
-				variants='ga'
+				case ${SUBARCH:-} in
+					intel-iot)
+						variants='intel'
+						;;
+					*)
+						# variants='ga hwe'
+						variants='ga'
+						;;
+				esac
 
 				for variant in $variants; do
 					if [ "$variant" = "ga" ]; then
@@ -906,6 +914,9 @@ case $PROJECT in
 					elif [ "$variant" = "hwe" ]; then
 						kernel_metapkg=linux-generic-hwe-$(lsb_release -sr)
 						flavor=generic-hwe
+					elif [ "$variant" = "intel" ]; then
+						kernel_metapkg=linux-intel-iotg
+						flavor=intel-iotg
 					else
 						echo "bogus variant: $variant"
 						exit 1
@@ -936,6 +947,25 @@ case $PROJECT in
 				;;
 		esac
 		PREINSTALL_POOL_SEEDS='server-ship'
+		;;
+
+	ubuntu-mini-iso)
+		OPTS="${OPTS:+$OPTS }--bootstrap-flavour=minimal"
+
+		OPTS="${OPTS:+$OPTS }--linux-packages=none --initramfs=none"
+		KERNEL_FLAVOURS=none
+		BINARY_REMOVE_LINUX=false
+
+		add_package install mini-iso-tools openssl ca-certificates isc-dhcp-client linux-generic
+		case $ARCH in
+			amd64)
+				add_package install cd-boot-images-amd64
+				;;
+			*)
+				echo "unexpected architecture for $PROJECT: '$ARCH'"
+				exit 1
+				;;
+		esac
 		;;
 
 	ubuntu-base)
@@ -989,7 +1019,7 @@ case $PROJECT in
 				if [ "${SUBARCH:-}" = "generic" ]; then
 					KERNEL_FLAVOURS=generic
 				elif [ "${SUBARCH:-}" = "intel-iot" ]; then
-					KERNEL_FLAVOURS=image-intel
+					KERNEL_FLAVOURS=intel-iotg
 					OPTS="${OPTS:+$OPTS }--initramfs=none"
 				fi
 				;;
@@ -1064,7 +1094,7 @@ case $PROJECT:${SUBPROJECT:-} in
 	ubuntu-server:live)
 		BASE_SEED='server'
 		;;
-	ubuntu-base:*|ubuntu-core:*)
+	ubuntu-base:*|ubuntu-core:*|ubuntu-mini-iso:)
 		;;
 	ubuntu-oci:*)
 		;;
@@ -1175,7 +1205,7 @@ case $PROJECT in
 		KERNEL_FLAVOURS="${SUBARCH:-$KERNEL_FLAVOURS}"
 		case $SUBARCH in
 			intel-iot)
-				KERNEL_FLAVOURS='image-intel'
+				KERNEL_FLAVOURS='intel-iotg'
 				;;
 		esac
 		;;
@@ -1237,7 +1267,7 @@ if [ "${IMAGE_HAS_HARDCODED_PASSWORD:-}" = "1" ]; then
 fi
 
 case $PROJECT in
-  ubuntu-cpc|ubuntu-core|ubuntu-base|ubuntu-oci|ubuntu-wsl)
+  ubuntu-cpc|ubuntu-core|ubuntu-base|ubuntu-oci|ubuntu-wsl|ubuntu-mini-iso)
     # ubuntu-cpc gets this added in 025-create-groups.chroot, and we do
     # not want this group in projects that are effectively just chroots
     ;;
@@ -1396,7 +1426,7 @@ EOF
 		fi
 		;;
 
-	ubuntu-cpc:*|ubuntu-server:live|ubuntu:desktop-preinstalled|ubuntu-wsl:*)
+	ubuntu-cpc:*|ubuntu-server:live|ubuntu:desktop-preinstalled|ubuntu-wsl:*|ubuntu-mini-iso:*)
 		# Ensure that most things e.g. includes.chroot are copied as is
 		for entry in /usr/share/livecd-rootfs/live-build/${PROJECT}/*; do
 			case $entry in
