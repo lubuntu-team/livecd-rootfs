@@ -23,6 +23,8 @@ esac
 
 if [ "$ARCH" = "riscv64" ] && [ -n "${SUBARCH:-}" ]; then
     IMAGE_SIZE=3758096384 # bump to 3.5G (3584*1024**2), due to linux-generic instead of virtual
+elif [ "$ARCH" = "armhf" ]; then
+    IMAGE_SIZE=3758096384 # bump to 3.5G (3584*1024**2), due to linux-generic instead of virtual
 fi
 
 . config/binary
