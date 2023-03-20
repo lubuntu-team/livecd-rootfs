@@ -1,3 +1,9 @@
+livecd-rootfs (2.664.47) focal; urgency=medium
+
+  * disk-image-uefi: bump armhf size. (LP: #2011739)
+
+ -- Simon Poirier <simon.poirier@canonical.com>  Mon, 20 Mar 2023 19:19:05 -0400
+
 livecd-rootfs (2.664.46) focal; urgency=medium
 
   * Terrible hack workaround for clearing out the non-offline apt cache for
