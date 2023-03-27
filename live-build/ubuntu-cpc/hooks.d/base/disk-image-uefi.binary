@@ -84,12 +84,15 @@ create_partitions() {
                        --new=13:256:25575 \
                        --change-name=13:loader1 \
                        --typecode=13:B161E8AB-7D4B-4DB4-821C-4120A0554A35 \
+                       --attributes=13:set:0 \
                        --new=16:25576:32799 \
                        --change-name=16:loader2b \
                        --typecode=16:F79E76D9-AC98-418B-8F31-E17EA24FF07C \
+                       --attributes=16:set:0 \
                        --new=14:32800:43007 \
                        --change-name=14:loader2 \
                        --typecode=14:F4FA3898-3478-4941-887D-FCEC4E9E3C05 \
+                       --attributes=14:set:0 \
                        --new=15::+106M \
                        --typecode=15:ef00 \
                        --change-name=15:ESP \
@@ -104,6 +107,7 @@ create_partitions() {
                        --new=13:256:25575 \
                        --change-name=13:loader \
                        --typecode=13:ef02 \
+                       --attributes=13:set:0 \
                        --new=15::+106M \
                        --typecode=15:ef00 \
                        --change-name=15:ESP \
@@ -132,9 +136,11 @@ create_partitions() {
                        --new=13:34:2081 \
                        --change-name=13:loader1 \
                        --typecode=13:5B193300-FC78-40CD-8002-E86C45580B47 \
+                       --attributes=13:set:0 \
                        --new=14:2082:10239 \
                        --change-name=14:loader2 \
                        --typecode=14:2E54B353-1271-4842-806F-E436D6AF6985 \
+                       --attributes=14:set:0 \
                        --new=15::+106M \
                        --typecode=15:ef00 \
                        --new=12::+4M \
@@ -243,10 +249,11 @@ install_grub() {
                 local my_d=$(dirname $(readlink -f ${0}))
                 echo "Adjusting GRUB defaults for ${ARCH}"
                 mkdir -p mountpoint/etc/default/grub.d/
-                cp ${my_d}/riscv64/grub/cmdline.cfg mountpoint/etc/default/grub.d/
+                cp ${my_d}/riscv64/grub/10_cmdline.cfg mountpoint/etc/default/grub.d/
                 case "${SUBARCH}" in
                     "icicle")
                         echo "Installing GRUB for ${SUBARCH} board"
+                        cp ${my_d}/riscv64/grub/90_watchdog-thresh.cfg mountpoint/etc/default/grub.d/
                         # flash-kernel is needed to install the dtb for update-grub: it uses the
                         # /proc/device-tree/model value to pick the correct dtb and as we are in a chroot,
                         # the model value is wrong and we need to use /etc/flash-kernel/machine instead.
@@ -298,16 +305,12 @@ install_grub() {
                         chroot mountpoint bash -c 'FK_FORCE=yes apt-get install -qqy grub-efi-riscv64 flash-kernel'
                         efi_target=riscv64-efi
 
-                        # nezha-boot0 is actually compatible with the LicheeRV boards (and probably other D1-based boards)
-                        chroot mountpoint apt-get install -qqy nezha-boot0
-                        # FSBL, which gets U-Boot SPL
-                        loader1="/dev/mapper${loop_device///dev/}p13"
-                        dd if=mountpoint/usr/lib/u-boot/nezha/boot0_sdcard_sun20iw1p1.bin of=$loader1
-                        # The real U-Boot
-                        # u-boot-nezha actually contains both the LicheeRV and the Nezha boards support
+                        # u-boot-nezha supports both the LicheeRV and the Nezha D1.
                         chroot mountpoint apt-get install -qqy u-boot-nezha
-                        loader2="/dev/mapper${loop_device///dev/}p14"
-                        dd if=mountpoint/usr/lib/u-boot/${SUBARCH}/u-boot.toc1 of=$loader2
+                        # Since version 2022.10 U-Boot SPL and U-Boot are installed onto the same partition.
+                        # Package nezha-boot0 is not needed anymore.
+                        loader1="/dev/mapper${loop_device///dev/}p13"
+                        dd if=mountpoint/usr/lib/u-boot/${SUBARCH}/u-boot-sunxi-with-spl.bin of=$loader1
                         # Provide end-user modifyable CIDATA
                         cidata_dev="/dev/mapper${loop_device///dev/}p12"
                         setup_cidata "${cidata_dev}"
@@ -371,7 +374,10 @@ EOF
                         setup_cinocloud mountpoint
                         ;;
                     *)
+                        cp ${my_d}/riscv64/grub/90_watchdog-thresh.cfg mountpoint/etc/default/grub.d/
                         chroot mountpoint apt-get install -qqy u-boot-menu #grub-efi-riscv64
+                        mkdir -p mountpoint/etc/u-boot-menu/conf.d/
+                        cp ${my_d}/riscv64/u-boot-menu/*.conf mountpoint/etc/u-boot-menu/conf.d/
                         efi_target=riscv64-efi
                         chroot mountpoint u-boot-update
                         u_boot_arch="${SUBARCH}"
