@@ -1,3 +1,9 @@
+livecd-rootfs (2.817~ppa4) lunar; urgency=medium
+
+  * Test build of the ubuntu-image 3.0 switch.
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Mon, 27 Mar 2023 10:39:57 +0200
+
 livecd-rootfs (2.816) lunar; urgency=medium
 
   [ Chad Smith ]
