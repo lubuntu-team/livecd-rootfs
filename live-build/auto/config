@@ -491,7 +491,9 @@ case $IMAGEFORMAT in
 		else
 			# classic images
 
-			DEFINITION="$PROJECT-$MODEL.yaml"
+			IMAGE_PROJECT=$PROJECT
+			[ "$IMAGE_PROJECT" = "ubuntu-cpc" ] && IMAGE_PROJECT="ubuntu-server"
+			DEFINITION="$IMAGE_PROJECT-$MODEL.yaml"
 
 			git clone git://git.launchpad.net/ubuntu-images -b $SERIES image-definitions
 			cp image-definitions/$DEFINITION "$PREFIX".yaml
