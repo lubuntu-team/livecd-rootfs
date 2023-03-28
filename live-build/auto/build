@@ -106,7 +106,7 @@ if [ "${IMAGEFORMAT:-}" = "ubuntu-image" ]; then
 		xz -0 -T4 "$PREFIX".img
 		mv output/seed.manifest "$PREFIX".manifest
 	else
-		ubuntu-image --verbose --debug classic $UBUNTU_IMAGE_ARGS \
+		ubuntu-image --debug classic $UBUNTU_IMAGE_ARGS \
 			-O output "$PREFIX".yaml
 		# Since the output of the ubuntu-image call can vary based on what
 		# kind of an image we build, the safest bet is to 'export' all the
