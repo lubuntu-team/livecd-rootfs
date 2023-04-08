@@ -1,3 +1,25 @@
+livecd-rootfs (2.821) lunar; urgency=medium
+
+  [ Chad Smith ]
+  * desktop livecd: allow cloud-init to write netplan config instead of
+    directly to /etc/NetworkManager because ubuntu-desktop-installer
+    will write netplan config in ephemeral boot stage when
+    autoinstall.network is provided. This allows ubuntu-desktop-installer
+    to control all netplan config written and apply to the ephemeral boot
+    as generated from /etc/netplan/*. (LP: #2015605)
+
+  [ Dan Bungert ]
+  * d/control: fix uninstallability of livecd-rootfs due to rsync not being on
+    i386.
+
+ -- Dan Bungert <daniel.bungert@canonical.com>  Fri, 07 Apr 2023 17:24:28 -0600
+
+livecd-rootfs (2.820) lunar; urgency=medium
+
+  * Initial implementation of canary image builds for 23.04.
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Wed, 05 Apr 2023 20:50:35 +0200
+
 livecd-rootfs (2.819) lunar; urgency=medium
 
   [ Heinrich Schuchardt ]
