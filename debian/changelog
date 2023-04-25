@@ -1,3 +1,9 @@
+livecd-rootfs (2.828+1) mantic; urgency=medium
+
+  * Add Mantic
+
+ -- Gauthier Jolly <gauthier.jolly@canonical.com>  Tue, 25 Apr 2023 15:38:08 +0200
+
 livecd-rootfs (2.828) lunar; urgency=medium
 
   * 099-ubuntu-image-customization.chroot: Remove redundant creation of oem
