@@ -1,8 +1,31 @@
-livecd-rootfs (2.828+1) mantic; urgency=medium
+livecd-rootfs (2.832) lunar; urgency=medium
 
-  * Add Mantic
+  * Clean up some remaining references to /dev/mapper.
 
- -- Gauthier Jolly <gauthier.jolly@canonical.com>  Tue, 25 Apr 2023 15:38:08 +0200
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Mon, 17 Apr 2023 18:50:18 -0700
+
+livecd-rootfs (2.831) lunar; urgency=medium
+
+  * Use the correct path for the loop device.
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Mon, 17 Apr 2023 16:11:52 -0700
+
+livecd-rootfs (2.830) lunar; urgency=medium
+
+  * Call losetup -d properly.
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Mon, 17 Apr 2023 12:22:19 -0700
+
+livecd-rootfs (2.829) lunar; urgency=medium
+
+  [ Loïc Minier ]
+  * Initial support for NVIDIA Tegra.  LP: #2015644.
+
+  [ Steve Langasek ]
+  * Use losetup instead of kpartx to try to resolve race conditions in
+    riscv64 image builds.
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Mon, 17 Apr 2023 08:22:21 -0700
 
 livecd-rootfs (2.828) lunar; urgency=medium
 
