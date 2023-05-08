@@ -1,3 +1,9 @@
+livecd-rootfs (2.832+1) mantic; urgency=medium
+
+  * Rebuild mantic
+
+ -- Phil Roche <phil.roche@canonical.com>  Mon, 08 May 2023 15:42:11 +0100
+
 livecd-rootfs (2.832) lunar; urgency=medium
 
   * Clean up some remaining references to /dev/mapper.
