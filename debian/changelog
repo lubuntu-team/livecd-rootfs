@@ -1,8 +1,28 @@
-livecd-rootfs (2.832+1) mantic; urgency=medium
+livecd-rootfs (2.835) mantic; urgency=medium
 
-  * Rebuild mantic
+  * canary: fix the lookup location for 'enhanced-secureboot-desktop'
 
- -- Phil Roche <phil.roche@canonical.com>  Mon, 08 May 2023 15:42:11 +0100
+ -- Dan Bungert <daniel.bungert@canonical.com>  Wed, 10 May 2023 16:01:02 -0600
+
+livecd-rootfs (2.834) mantic; urgency=medium
+
+  * Use the correct seed base for edubuntu.  LP: #2019060.
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Tue, 09 May 2023 19:06:50 -0700
+
+livecd-rootfs (2.833) mantic; urgency=medium
+
+  [ Łukasz 'sil2100' Zemczak ]
+  * Add ubuntucinnamon, ubuntu-unity and edubuntu to the workaround for the
+    invalid apt cache issue we encountered during all of our previous
+    releases.
+  * Switch to use the desktop model for the installer for the canary images.
+
+  [ Steve Langasek ]
+  * Try to use udevadm settle after losetup to resolve race in riscv64 image
+    builds.
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Mon, 08 May 2023 15:47:08 -0700
 
 livecd-rootfs (2.832) lunar; urgency=medium
 
