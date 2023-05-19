@@ -1,4 +1,4 @@
-livecd-rootfs (2.664.48) UNRELEASED; urgency=medium
+livecd-rootfs (2.664.48) focal; urgency=medium
 
   * Drop use of --removable flag to grub-install from
     live-build/buildd/hooks/02-disk-image-uefi.binary, to match the cloud
@@ -6,7 +6,7 @@ livecd-rootfs (2.664.48) UNRELEASED; urgency=medium
     bootloader updates in the buildd images, but also fixes compatibility
     with using devtmpfs for losetup. 
 
- -- Steve Langasek <steve.langasek@ubuntu.com>  Wed, 17 May 2023 09:25:55 -0700
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Fri, 19 May 2023 00:09:01 -0700
 
 livecd-rootfs (2.664.47) focal; urgency=medium
 
