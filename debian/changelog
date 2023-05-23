@@ -1,4 +1,4 @@
-livecd-rootfs (2.765.23) UNRELEASED; urgency=medium
+livecd-rootfs (2.765.23) jammy; urgency=medium
 
   [ Loïc Minier ]
   * Initial support for NVIDIA Tegra (LP: #2015644).
