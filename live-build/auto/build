@@ -91,6 +91,7 @@ if [ "${IMAGEFORMAT:-}" = "ubuntu-image" ]; then
 
 	export SNAPPY_STORE_NO_CDN=1
 	snap install --classic --channel=edge ubuntu-image
+	apt install mtools grub-common
 
 
 	ubuntu-image classic -w workdir $UBUNTU_IMAGE_ARGS --debug \
