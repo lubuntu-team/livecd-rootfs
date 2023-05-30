@@ -89,8 +89,28 @@ PREFIX="livecd.$PROJECT${SUBARCH:+-$SUBARCH}"
 if [ "${IMAGEFORMAT:-}" = "ubuntu-image" ]; then
 	# Use ubuntu-image instead of live-build
 
-	export SNAPPY_STORE_NO_CDN=1
-	snap install --classic --channel=beta/classic-image-redesign ubuntu-image
+	#export SNAPPY_STORE_NO_CDN=1
+	#snap install --classic --channel=candidate ubuntu-image
+
+	wget http://cdimage.ubuntu.com/ubuntu-base/daily/current/mantic-base-amd64.tar.gz
+	mkdir base
+	tar -C base -zxf mantic-base-amd64.tar.gz
+	cp /etc/resolv.conf base/etc/
+	mkdir -p base/sys/kernel/security
+	mkdir -p base/sys/fs/cgroup
+	mount --bind /dev base/dev
+	mount --bind /proc base/proc
+	mount --bind /sys/kernel/security base/sys/kernel/security
+	mount --bind /sys/fs/cgroup/ base/sys/fs/cgroup
+	chroot base apt update
+	chroot base apt install -y snapd
+	chroot base snap download snapd
+        chroot base mount -t fuse.snapfuse -o ro,x-gdu.hide,x-gvfs-hide,allow_other snapd_19122.snap mnt/
+	chroot base ls mnt/
+
+	echo "We got here"
+
+	exit 0
 
 	# TODO: eventually, this should be handled by a single ubuntu-image
 	#  call without having to do a conditional on ubuntu-core/classic.
@@ -106,7 +126,7 @@ if [ "${IMAGEFORMAT:-}" = "ubuntu-image" ]; then
 		xz -0 -T4 "$PREFIX".img
 		mv output/seed.manifest "$PREFIX".manifest
 	else
-		ubuntu-image --debug classic $UBUNTU_IMAGE_ARGS \
+		ubuntu-image classic $UBUNTU_IMAGE_ARGS --debug \
 			-O output "$PREFIX".yaml
 		# Since the output of the ubuntu-image call can vary based on what
 		# kind of an image we build, the safest bet is to 'export' all the
@@ -351,7 +371,7 @@ EOF
 	fi
 
 	if [ -d chroot/etc/apt/preferences.d.save ]; then
-		# https://twitter.com/infinite_scream
+		# https://mastodon.social/@scream@botsin.space
 		mv chroot/etc/apt/preferences.d.save/* chroot/etc/apt/preferences.d/
 		rmdir chroot/etc/apt/preferences.d.save
 	fi
@@ -502,7 +522,7 @@ EOF
 	#  affected by this, we manually clear out the archive-related Packages
 	#  files in the cache.
 	case $PROJECT in
-		ubuntu|xubuntu|kubuntu|ubuntu-budgie|ubuntukylin|ubuntu-mate)
+		ubuntu|xubuntu|kubuntu|ubuntu-budgie|ubuntukylin|ubuntu-mate|ubuntucinnamon|ubuntu-unity|edubuntu)
 			rm -f chroot/var/lib/apt/lists/*ubuntu.com*_Packages
 			;;
 	esac
