@@ -1,5 +1,5 @@
 #! /bin/sh
-set -ex
+set -x
 
 export LC_ALL=C
 
@@ -89,8 +89,20 @@ PREFIX="livecd.$PROJECT${SUBARCH:+-$SUBARCH}"
 if [ "${IMAGEFORMAT:-}" = "ubuntu-image" ]; then
 	# Use ubuntu-image instead of live-build
 
-	#export SNAPPY_STORE_NO_CDN=1
-	#snap install --classic --channel=candidate ubuntu-image
+	export SNAPPY_STORE_NO_CDN=1
+	snap install --classic --channel=edge ubuntu-image
+
+
+	ubuntu-image classic -w workdir $UBUNTU_IMAGE_ARGS --debug \
+		-O output "$PREFIX".yaml
+
+	ls workdir/
+	cd workdir
+	chroot chroot snap download snapd
+        chroot chroot mount -t fuse.snapfuse -o ro,x-gdu.hide,x-gvfs-hide,allow_other snapd_19122.snap mnt/
+	chroot chroot ls mnt/
+
+	echo "Now doing separate chroot tests"
 
 	wget http://cdimage.ubuntu.com/ubuntu-base/daily/current/mantic-base-amd64.tar.gz
 	mkdir base
