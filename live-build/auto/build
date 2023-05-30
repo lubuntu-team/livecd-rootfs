@@ -90,7 +90,7 @@ if [ "${IMAGEFORMAT:-}" = "ubuntu-image" ]; then
 	# Use ubuntu-image instead of live-build
 
 	export SNAPPY_STORE_NO_CDN=1
-	snap install --classic --channel=edge ubuntu-image
+	snap install --classic --channel=stable ubuntu-image
 	apt install mtools grub-common
 
 
