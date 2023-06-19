@@ -1,3 +1,125 @@
+livecd-rootfs (2.890) mantic; urgency=medium
+
+  * Allow choosing installer channels with the CHANNEL variable for
+    subiquity-based installer ISOs.
+
+ -- Dan Bungert <daniel.bungert@canonical.com>  Fri, 16 Jun 2023 09:12:08 -0600
+
+livecd-rootfs (2.849) mantic; urgency=medium
+
+  [ Gauthier Jolly ]
+  * ubuntu-cpc: mount ESP on /boot and bind mount /boot on /boot/efi
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Thu, 15 Jun 2023 12:18:47 -0700
+
+livecd-rootfs (2.848) mantic; urgency=medium
+
+  * Migrate default Ubuntu Budgie image builds to their new
+    ubuntu-budgie-installer, mirroring what has been done for Ubuntu. At the
+    same time, we add support for building legacy ubiquity-based images as
+    well.
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Wed, 07 Jun 2023 13:33:26 +0200
+
+livecd-rootfs (2.847) mantic; urgency=medium
+
+  * canary images: add boot-managed-by-snapd preinstalled by default on the
+    enhanced-secureboot layer. This will make sure that all canary installs
+    will not allow installing non-snap kernels and bootloader packages (as
+    this could break their systems).
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Mon, 05 Jun 2023 16:57:58 +0200
+
+livecd-rootfs (2.846) mantic; urgency=medium
+
+  * Make the newly added mtools dependency arch-specific as it's not
+    installable on i386, causing migration issues.
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Thu, 01 Jun 2023 11:40:52 +0200
+
+livecd-rootfs (2.845) mantic; urgency=medium
+
+  * Add the mtools dependency for ubuntu-image.
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Wed, 31 May 2023 17:08:44 +0200
+
+livecd-rootfs (2.844) mantic; urgency=medium
+
+  * Switch to use ubuntu-image 3.0 for our raspberry pi mantic images.
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Wed, 31 May 2023 15:15:09 +0200
+
+livecd-rootfs (2.843) mantic; urgency=medium
+
+  * Unconditionally enable i386 in the chroot for Ubuntu Desktop; the new
+    installer doesn't handle enabling this at install time, and late
+    enablement also misses us some recommends.
+  * Restore losetup code, the necessary launchpad-buildd changes were being
+    deployed just as this revert landed.
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Fri, 26 May 2023 13:51:18 -0700
+
+livecd-rootfs (2.842) mantic; urgency=medium
+
+  * Revert once again the kpartx->losetup changes as those are causing
+    constant build failures for RISC-V images. This clearly needs some more
+    investigation before proceeding. This means that we're back to using
+    kpartx for loop device setup.
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Wed, 24 May 2023 11:07:21 +0200
+
+livecd-rootfs (2.841) mantic; urgency=medium
+
+  * The base seed for edubuntu is desktop-gnome, not desktop.  LP: #2019060.
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Wed, 17 May 2023 23:50:57 -0700
+
+livecd-rootfs (2.840) mantic; urgency=medium
+
+  * auto/config: switch ubuntucinnamon and ubuntu-unity builds to use add_task
+    to get their desktop packages. Previously most (all?) flavour builds got
+    the snaps from that flavour's "desktop" seed implicitly added, but now an
+    explicit add_task is needed.
+  * auto/config: alter check for unexpectedly seeded snaps in
+    ubuntu-cpc:minimized build. As the build no longer implicitly seeds the
+    snaps from the server seed, we can just assert no snaps are seeded. This
+    fixes an autopkgtest regression but also cleaner.
+
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Thu, 18 May 2023 11:33:59 +1200
+
+livecd-rootfs (2.839) mantic; urgency=medium
+
+  * Drop use of --removable flag to grub-install from
+    live-build/buildd/hooks/02-disk-image-uefi.binary, to match the cloud
+    images (7c760864fdcb278ca37396f06f5e3f297428d63d).  This fixes
+    bootloader updates in the buildd images, but also fixes compatibility
+    with using devtmpfs for losetup. 
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Wed, 17 May 2023 09:27:56 -0700
+
+livecd-rootfs (2.838) mantic; urgency=medium
+
+  * auto/config: Set FLAVOUR appropriately for flavours added since the
+    expand-task branch was created.
+  * live-build/expand-task: Fix expansion of tasks with non-flavour specific
+    name (e.g. "minimal") when building a non-Ubuntu flavour.
+  * auto/config: Do not include the ubuntu-desktop-minimal task in edubuntu.
+    Cross flavour task references do not work with the approach expand-task
+    takes, and the ubuntu-desktop-minimal package is part of the
+    edubuntu-desktop-gnome task already.
+  * live-build/expand-task: handle seeding of classic snaps correctly.
+
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Wed, 17 May 2023 15:53:50 +1200
+
+livecd-rootfs (2.837) mantic; urgency=medium
+
+  * auto/config: Rewrite add_task to use a Python script that cribs the logic
+    from lp:ubuntu-archive-publishing's generate_extra_overrides.py. This
+    means we can avoid some dubious hacks around seeding snaps and no longer
+    depend on the Task headers in the archive. (LP: #2019265)
+
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Mon, 15 May 2023 09:36:29 +1200
+
 livecd-rootfs (2.836) mantic; urgency=medium
 
   * canary: include cryptsetup in the live layer
