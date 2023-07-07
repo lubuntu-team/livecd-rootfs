@@ -332,6 +332,11 @@ if [ -z "${IMAGEFORMAT:-}" ]; then
 					# All raspi images use ubuntu-image.
 					IMAGEFORMAT=ubuntu-image
 					;;
+				arm64+tegra|arm64+tegra-igx)
+					# Pre-installed Tegra images use
+					# ubuntu-image
+					IMAGEFORMAT=ubuntu-image
+					;;
 				*)
 					IMAGEFORMAT=ext4
 					;;
@@ -357,7 +362,7 @@ if [ "$IMAGEFORMAT" = "ext4" ] && [ "$PROJECT" = "ubuntu-cpc" ]; then
 		*:generic)
 			IMAGE_HAS_HARDCODED_PASSWORD=1
 			if [ -z "${IMAGE_TARGETS:-}" ]; then
-				export IMAGE_TARGETS="disk1-img-xz"
+				export IMAGE_TARGETS="disk-image-non-cloud"
 			fi
 			;;
 	esac
@@ -409,6 +414,10 @@ case $IMAGEFORMAT in
 				MODEL=pi3-arm64 ;;
 			armhf+cm3)
 				MODEL=cm3 ;;
+			arm64+tegra)
+				MODEL=tegra ;;
+			arm64+tegra-igx)
+				MODEL=tegra-igx ;;
 			arm64+*)
 				MODEL=pc-arm64 ;;
 			*)
@@ -504,12 +513,14 @@ case $IMAGEFORMAT in
 
 			IMAGE_PROJECT=$PROJECT
 			[ "$IMAGE_PROJECT" = "ubuntu-cpc" ] && IMAGE_PROJECT="ubuntu-server"
-			DEFINITION="$IMAGE_PROJECT-$MODEL.yaml"
 
-			git clone git://git.launchpad.net/ubuntu-images -b $SUITE image-definitions
-			cp image-definitions/$DEFINITION "$PREFIX".yaml
-			echo "Configured ubuntu-image for the following image-definition:"
-			cat "$PREFIX".yaml
+			LB_UBUNTU_IMAGES_REPO="${LB_UBUNTU_IMAGES_REPO:-git://git.launchpad.net/ubuntu-images}"
+			LB_UBUNTU_IMAGES_BRANCH="${LB_UBUNTU_IMAGES_BRANCH:-$SUITE}"
+			git clone "$LB_UBUNTU_IMAGES_REPO" -b "$LB_UBUNTU_IMAGES_BRANCH" image-definitions
+			IMAGE_DEFINITION="image-definitions/$IMAGE_PROJECT-$MODEL.yaml"
+			echo "IMAGE_DEFINITION=$IMAGE_DEFINITION" >> config/common
+			echo "Configured ubuntu-image to use image definition file $IMAGE_DEFINITION which has the following contents:"
+			cat "$IMAGE_DEFINITION"
 			echo "----------------------------------------------------------"
 		fi
 
@@ -986,6 +997,9 @@ case $PROJECT in
 					tegra)
 						variants='tegra'
 						;;
+					tegra-igx)
+						variants='tegra-igx'
+						;;
 					*)
 						# variants='ga hwe'
 						variants='ga'
@@ -1005,6 +1019,9 @@ case $PROJECT in
 					elif [ "$variant" = "tegra" ]; then
 						kernel_metapkg=linux-nvidia-tegra
 						flavor=nvidia-tegra
+					elif [ "$variant" = "tegra-igx" ]; then
+						kernel_metapkg=linux-nvidia-tegra-igx
+						flavor=nvidia-tegra-igx
 					else
 						echo "bogus variant: $variant"
 						exit 1
@@ -1114,9 +1131,6 @@ case $PROJECT in
 			riscv64*)
 				if [ -n "$SUBARCH" ]; then
 					case "${SUBARCH:-}" in
-						nezha|licheerv)
-							KERNEL_FLAVOURS=allwinner
-							;;
 						visionfive)
 							KERNEL_FLAVOURS=starfive
 							;;
@@ -1250,9 +1264,9 @@ case "$ARCH${SUBARCH:++$SUBARCH}" in
 		add_package install linux-firmware-raspi pi-bluetooth u-boot-rpi u-boot-tools
 		BINARY_REMOVE_LINUX=false
 		;;
-	arm64+tegra)
-		# Common configuration for all NVIDIA Tegra image variants (server,
-		# desktop etc.)
+	arm64+tegra|arm64+tegra-igx)
+		# Common configuration for all NVIDIA Tegra image variants
+		# (server, desktop etc.)
 		KERNEL_FLAVOURS="nvidia-$SUBARCH"
 		;;
 	riscv*+*)

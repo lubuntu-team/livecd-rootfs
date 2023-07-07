@@ -1,3 +1,61 @@
+livecd-rootfs (2.896) mantic; urgency=medium
+
+  * live-build/ubuntu/hooks/033-disk-image-uefi.binary: update to point at
+    ubuntu-cpc/hooks.d/base/disk-image-uefi-non-cloud.binary, fixing canary
+    build.
+  * Disable the orphan_file ext4 feature in the canary live environment so
+    that the installed system can be handled by the e2fsck in the extant
+    kernel snap (cf. bug 2025339).
+
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Wed, 05 Jul 2023 13:23:45 +1200
+
+livecd-rootfs (2.895) mantic; urgency=medium
+
+  * live-build/ubuntu-cpc/hooks.d/base/disk-image-uefi.binary: should now
+    only be used for cloud images, so clean up other code.  Thanks,
+    Gauthier Jolly.
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Mon, 03 Jul 2023 12:35:35 -0700
+
+livecd-rootfs (2.894) mantic; urgency=medium
+
+  [ Heinrich Schuchardt ]
+  * RISC-V: sunset allwinner kernel flavour. The Nezha D1 and LicheRV Dock now
+    use the generic kernel.
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Mon, 03 Jul 2023 16:32:25 +0200
+
+livecd-rootfs (2.893) mantic; urgency=medium
+
+  * Add various overrides to make it to develop image definitions:
+    - LB_UBUNTU_IMAGES_REPO and LB_UBUNTU_IMAGES_BRANCH can be used
+      to override the default repository and branch used for official
+      images.
+    - LB_UBUNTU_IMAGE_CHANNEL can be used to install the ubuntu-image
+      snap from another channel than stable (e.g. edge, or a track, or a
+      hotfix branch).
+  * config/build: don't make a copy of the image definition, but rather
+    pass the path to the .yaml file; no functional impact, but could be
+    used to implement support for locating overrides once ubuntu-image
+    knows how to use relative pathnames.
+  * Extend Tegra support to support pre-installed Server images using the
+    usual cpc project and ubuntu-image.
+  * Add support for tegra-igx subarch, much like tegra but with a different
+    kernel flavor.
+
+ -- Loïc Minier <loic.minier@ubuntu.com>  Wed, 28 Jun 2023 10:09:04 +0000
+
+livecd-rootfs (2.892) mantic; urgency=medium
+
+  [ Gauthier Jolly ]
+  * ubuntu-cpc: fix images for hardware devices
+  * ubuntu-cpc: install grub-efi on riscv images
+
+  [ Heinrich Schuchardt ]
+  * RISC-V: use GRUB on Unmatched board. Simplify the code.
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Wed, 28 Jun 2023 10:42:31 +0200
+
 livecd-rootfs (2.891) mantic; urgency=medium
 
   * Follow up fix to the CHANNEL handling for subiquity images: make sure that
@@ -1346,7 +1404,7 @@ livecd-rootfs (2.699) hirsute; urgency=medium
   * hyper-v hook: Fix writing of pkla file out to correct scratch directory
     for image build.
 
- -- Jinming Wu, Patrick <me@patrickwu.space>  Tue, 03 Nov 2020 10:13:53 +0000
+ -- "Jinming Wu, Patrick" <me@patrickwu.space>  Tue, 03 Nov 2020 10:13:53 +0000
 
 livecd-rootfs (2.698) hirsute; urgency=medium
 
