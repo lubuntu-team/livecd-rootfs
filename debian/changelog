@@ -1,3 +1,10 @@
+livecd-rootfs (2.664.49) UNRELEASED; urgency=medium
+
+  * Revert previous change; the image builds did not fail in focal, and this
+    change introduced a regression (LP #2027686).
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Fri, 14 Jul 2023 09:31:55 -0700
+
 livecd-rootfs (2.664.48) focal; urgency=medium
 
   * Drop use of --removable flag to grub-install from
