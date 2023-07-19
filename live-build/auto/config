@@ -1110,6 +1110,7 @@ case $PROJECT in
 
 		if [ "${SUBPROJECT:-}" = minimized ]; then
 			add_package install ubuntu-cloud-minimal
+			add_package install console-setup
 		else
 			add_task install minimal standard cloud-image
 			add_package install ubuntu-minimal
