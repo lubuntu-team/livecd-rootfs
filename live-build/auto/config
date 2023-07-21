@@ -1111,6 +1111,8 @@ case $PROJECT in
 		if [ "${SUBPROJECT:-}" = minimized ]; then
 			add_package install ubuntu-cloud-minimal
 			add_package install console-setup
+			add_package install update-notifier-common
+			add_package install open-iscsi
 		else
 			add_task install minimal standard cloud-image
 			add_package install ubuntu-minimal
