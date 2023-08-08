@@ -1,3 +1,24 @@
+livecd-rootfs (23.10.12) mantic; urgency=medium
+
+  * live-build/auto/build: Avoid purging packages for ubuntu-cpc.
+    With the switch to the ubuntu-cloud-minimal seed, we
+    don't really need to purge anything now. On the contrary,
+    the purging of packages if not installed, fails with the
+    exit code of 100.
+
+ -- Utkarsh Gupta <utkarsh@ubuntu.com>  Tue, 08 Aug 2023 15:44:42 +0530
+
+livecd-rootfs (23.10.11) mantic; urgency=medium
+
+  [ Łukasz 'sil2100' Zemczak ]
+  * canary: enable locale support for canary layers.
+
+  [ Michael Hudson-Doyle ]
+  * Remove additional dependencies from subiquity units as they are now
+    interfering with the boot process. (LP: #2028862)
+
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Tue, 08 Aug 2023 13:57:47 +1200
+
 livecd-rootfs (23.10.10) mantic; urgency=medium
 
   * Revert "desktop, budgie: no need to include the kernel directly, it is
