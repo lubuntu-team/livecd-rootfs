@@ -740,7 +740,7 @@ case $PROJECT in
 				fi
 				# the live layer, contains all packages for the live session installer
 				# TODO: we should probably add the kernel per KERNEL_FLAVOURS
-				add_package minimal.standard.live linux-generic casper lvm2 mdadm cryptsetup
+				add_package minimal.standard.live linux-generic casper lvm2 mdadm cryptsetup dctrl-tools
 				remove_package minimal.standard.live ubiquity-frontend-gtk
 				# the enhanced-secureboot layer, contains all packages for the enhanced secureboot install
 				add_package minimal.standard.enhanced-secureboot cryptsetup boot-managed-by-snapd
@@ -748,20 +748,10 @@ case $PROJECT in
 				# language support
 				seeded_langs="$(get_seeded_languages desktop-minimal desktop)"
 				echo "$seeded_langs" | tr ' ' ',' > config/seeded-languages
-				derive_language_layers minimal desktop-minimal desktop-minimal-default-languages "$seeded_langs"
-				derive_language_layers minimal.standard desktop desktop-default-languages "$seeded_langs"
+				derive_language_layers minimal.standard.classic desktop desktop-default-languages "$seeded_langs"
+				derive_language_layers minimal.standard.enhanced-secureboot desktop desktop-default-languages "$seeded_langs"
 
 				# now let's create the neccessary catalog files
-				# TODO: make sure that we handle locale_support: langpack correctly
-				cat <<-EOF > config/minimal.catalog-in.yaml
-					name: "Ubuntu Desktop (minimized)"
-					description: >-
-					  A minimal but usable Ubuntu Desktop.
-					id: ubuntu-desktop-minimal
-					type: fsimage-layered
-					variant: desktop
-					locale_support: langpack
-				EOF
 				cat <<-EOF > config/minimal.standard.catalog-in.yaml
 					name: "Ubuntu Desktop"
 					description: >-
@@ -776,7 +766,7 @@ case $PROJECT in
 					id: ubuntu-desktop
 					variations:
 					  classic:
-					    path: minimal.standard.squashfs
+					    path: minimal.standard.classic.squashfs
 				EOF
 				cat <<-EOF > config/minimal.standard.enhanced-secureboot.catalog-in.yaml
 					id: ubuntu-desktop
