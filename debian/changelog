@@ -1,3 +1,11 @@
+livecd-rootfs (23.10.17) mantic; urgency=medium
+
+  * Merge the minimal and standard layers on the Ubuntu Desktop images
+    (both daily-live and canary), now that there is no separate minimal
+    install target.
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Thu, 17 Aug 2023 09:39:39 -0700
+
 livecd-rootfs (23.10.16) mantic; urgency=medium
 
   * fix: Do not install recommends for ubuntu-cpc minimized project (LP: #2031640)
