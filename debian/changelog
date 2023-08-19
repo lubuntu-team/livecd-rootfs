@@ -1,3 +1,14 @@
+livecd-rootfs (23.10.18) mantic; urgency=medium
+
+  * Refresh the canary model assertions. The live model now includes all the
+    snaps of the standard installation (including firefox), as we want to offer
+    the same experience in the livefs as in the target installation. We also
+    track other, proper channels for the seeded snaps.
+  * Fix the 020-canary-* hooks referencing the wrong layer names after changes
+    introduced in 23.10.17.
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Fri, 18 Aug 2023 17:58:54 +0200
+
 livecd-rootfs (23.10.17) mantic; urgency=medium
 
   * Merge the minimal and standard layers on the Ubuntu Desktop images
