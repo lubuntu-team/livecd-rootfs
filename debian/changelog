@@ -1,3 +1,16 @@
+livecd-rootfs (23.10.20) mantic; urgency=medium
+
+  * Update canary model assertions to include all the regular seeded snaps,
+    using the right channels for all of them.
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Tue, 22 Aug 2023 17:14:38 +0200
+
+livecd-rootfs (23.10.19) mantic; urgency=medium
+
+  * Add python3-systemd to CPC's minimized builds.
+
+ -- Utkarsh Gupta <utkarsh@ubuntu.com>  Tue, 22 Aug 2023 14:54:57 +0530
+
 livecd-rootfs (23.10.18) mantic; urgency=medium
 
   * Refresh the canary model assertions. The live model now includes all the
