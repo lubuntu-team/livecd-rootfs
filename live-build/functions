@@ -339,7 +339,8 @@ create_squashfs() {
     squashfs_file="$2"
     config_dir="$PWD/config"
     (cd $rootfs_dir &&
-        mksquashfs . $squashfs_file -no-progress -xattrs -comp xz \
+        mksquashfs . $squashfs_file -no-progress -xattrs -comp zstd \
+            -Xcompression-level 19 \
             -ef "$config_dir/squashfs-exclude-files")
 
 }
