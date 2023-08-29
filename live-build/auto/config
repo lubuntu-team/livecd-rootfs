@@ -722,6 +722,7 @@ case $PROJECT in
 				esac
 				;;
 			canary)
+				touch config/universe-enabled
 				PASSES_TO_LAYERS="true"
 				# the standard layer, contains all base common packages for later layers
 				add_task standard minimal standard ubuntu-desktop ubuntu-desktop-default-languages
@@ -730,6 +731,7 @@ case $PROJECT in
 				# TODO: we should probably add the kernel per KERNEL_FLAVOURS
 				add_package standard.live linux-generic casper lvm2 mdadm cryptsetup dctrl-tools
 				remove_package standard.live ubiquity-frontend-gtk
+				add_snap standard.live ubuntu-desktop-installer/classic
 				# the enhanced-secureboot layer, contains all packages for the enhanced secureboot install
 				add_package standard.enhanced-secureboot cryptsetup boot-managed-by-snapd
 
