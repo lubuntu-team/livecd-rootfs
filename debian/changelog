@@ -1,3 +1,10 @@
+livecd-rootfs (23.10.29) mantic; urgency=medium
+
+  * canary: switch to use the live task, try to use KERNEL_FLAVOURS instead
+    of a manual kernel add_package.
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Wed, 31 Aug 2023 11:57:11 +0200
+
 livecd-rootfs (23.10.28) mantic; urgency=medium
 
   * Allow stderr in the autopkgtest.
