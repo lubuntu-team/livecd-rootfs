@@ -15,11 +15,8 @@ fi
 ALL_TRIPLETS="
  edubuntu::
  kubuntu::
- kubuntu-dvd::
- kubuntu-plasma5::
  lubuntu::
  ubuntu-unity::
- mythbuntu::
  ubuntu::
  ubuntu:legacy:
  ubuntu-base::
@@ -38,7 +35,6 @@ ALL_TRIPLETS="
  ubuntu-mate-core::
  ubuntu-mate-desktop::
  ubuntu-mate-live::
- ubuntu-netbook::
  ubuntu-server:live:ubuntu-server
  xubuntu::
  xubuntu:minimal:"

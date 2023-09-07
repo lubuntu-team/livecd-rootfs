@@ -15,16 +15,12 @@ echo "Building on $(hostname --fqdn)"
 SEEDMIRROR=https://ubuntu-archive-team.ubuntu.com/seeds/
 if [ -z "$MIRROR" ]; then
 	case $(hostname --fqdn) in
-		*.ubuntu.com)		MIRROR=http://ftpmaster.internal/ubuntu/
-					SEEDMIRROR=http://archive-team.internal/seeds/
-					;;
-		*.buildd)		MIRROR=http://ftpmaster.internal/ubuntu/
-					SEEDMIRROR=http://archive-team.internal/seeds/
-					;;
-		*.ppa|*.scalingstack)	MIRROR=http://ftpmaster.internal/ubuntu/
-					SEEDMIRROR=http://archive-team.internal/seeds/
-					;;
-		*)	case $ARCH in
+		*.ubuntu.com|*.buildd|*.ppa|*.scalingstack)
+			MIRROR=http://ftpmaster.internal/ubuntu/
+			SEEDMIRROR=http://archive-team.internal/seeds/
+			;;
+		*)
+			case $ARCH in
 				i386|amd64)	MIRROR=http://archive.ubuntu.com/ubuntu/ ;;
 				*)		MIRROR=http://ports.ubuntu.com/ubuntu-ports/ ;;
 			esac
@@ -541,16 +537,12 @@ case $IMAGEFORMAT in
 		;;
 	*)
 		case $PROJECT in
-			ubuntu-server)
-				;;
-			ubuntu-wsl)
+			ubuntu-server|ubuntu-wsl|ubuntu-oem)
 				;;
 			ubuntu|ubuntu-budgie)
 				if [ "$SUBPROJECT" = "legacy" ]; then
 					add_package live casper
 				fi
-				;;
-			ubuntu-oem)
 				;;
 			*)
 				add_package live casper
@@ -657,10 +649,10 @@ case $PROJECT in
 	ubuntu-server|ubuntu-mini-iso)
 		COMPONENTS='main'
 		;;
-	kubuntu|kubuntu-dvd|kubuntu-plasma5|edubuntu|ubuntu-gnome|ubuntu-budgie|ubuntukylin|ubuntucinnamon)
+	edubuntu|kubuntu|ubuntu-budgie|ubuntu-gnome|ubuntucinnamon|ubuntukylin)
 		COMPONENTS='main restricted universe'
 		;;
-	xubuntu|mythbuntu|lubuntu|ubuntu-mate|ubuntu-unity|ubuntustudio-dvd|ubuntu-unity)
+	lubuntu|ubuntu-mate|ubuntu-unity|ubuntustudio-dvd|xubuntu)
 		COMPONENTS='main restricted universe multiverse'
 		;;
 esac
@@ -682,7 +674,7 @@ if ! [ -e config/germinate-output/structure ]; then
 fi
 
 case $PROJECT in
-	ubuntu|ubuntu-dvd)
+	ubuntu)
 
 		case ${SUBPROJECT:-} in
 			legacy)
@@ -791,20 +783,9 @@ case $PROJECT in
 		EOF
 		;;
 
-	kubuntu|kubuntu-dvd)
+	kubuntu)
 		add_task install minimal standard
 		add_task install kubuntu-desktop
-		LIVE_TASK='kubuntu-live'
-		add_chroot_hook remove-gnome-icon-cache
-		;;
-
-	kubuntu-plasma5)
-		add_task install minimal standard
-		add_package install kubuntu-plasma5-desktop
-		# Technically cheating, but PPAs don't have tasks and the
-		# live seed doesn't have a corresponding metapackage.  We'll
-		# get away with this as long as kubuntu-desktop and
-		# kubuntu-plasma5-desktop don't grow too far apart.
 		LIVE_TASK='kubuntu-live'
 		add_chroot_hook remove-gnome-icon-cache
 		;;
@@ -814,17 +795,9 @@ case $PROJECT in
 		LIVE_TASK='edubuntu-live'
 		;;
 
-	ubuntucinnamon)
-		add_task install minimal standard ubuntucinnamon-desktop
-		# XXX: Adding live packages manually temporarily until we have
-		#  the live task for ubuntucinnamon set up properly.
-		add_package live ubiquity-frontend-gtk
-		add_package live ubiquity-ubuntu-artwork ubiquity-slideshow-ubuntu
-		add_package live gtk-im-libthai ibus-hangul ibus-mozc ibus-unikey
-		add_package live zfsutils-linux zfs-initramfs zsys
-		add_package live sssd realmd adcli
-		add_package live gparted cifs-utils
-		KERNEL_FLAVOURS=generic
+	lubuntu|ubuntu-gnome|ubuntu-unity|ubuntucinnamon|ubuntukylin)
+		add_task install minimal standard ${PROJECT}-desktop
+		LIVE_TASK=${PROJECT}-live
 		;;
 
 	xubuntu)
@@ -836,34 +809,7 @@ case $PROJECT in
 				add_task install minimal standard xubuntu-desktop
 				;;
 		esac
-		add_package install xterm
 		LIVE_TASK='xubuntu-live'
-		case $ARCH in
-			amd64)	KERNEL_FLAVOURS=generic ;;
-		esac
-		;;
-
-	ubuntu-netbook)
-		add_task install minimal standard ubuntu-netbook
-		LIVE_TASK='netbook-live'
-		;;
-
-	mythbuntu)
-		add_task install minimal standard mythbuntu-desktop
-		LIVE_TASK='mythbuntu-live'
-		;;
-
-	lubuntu)
-		add_task install minimal standard lubuntu-desktop
-		LIVE_TASK='lubuntu-live'
-		case $ARCH in
-			amd64)	KERNEL_FLAVOURS=generic ;;
-		esac
-		;;
-
-	ubuntu-gnome)
-		add_task install minimal standard ubuntu-gnome-desktop
-		LIVE_TASK='ubuntu-gnome-live'
 		;;
 
 	ubuntu-budgie)
@@ -918,28 +864,9 @@ case $PROJECT in
 		LIVE_TASK='ubuntu-mate-live'
 		;;
 
-	ubuntu-unity)
-		add_task install minimal standard ubuntu-unity-desktop
-		# XXX: Adding live packages manually temporarily until we have
-		#  the live task for ubuntu-unity set up properly.
-		add_package live metacity ubiquity-frontend-gtk
-		add_package live ubiquity-ubuntu-artwork ubiquity-slideshow-ubuntu
-		add_package live a11y-profile-manager
-		add_package live gparted cifs-utils
-		add_package live memtest86+
-		;;
-
 	ubuntustudio-dvd)
 		add_task install minimal standard ubuntustudio-desktop ubuntustudio-audio ubuntustudio-graphics ubuntustudio-video ubuntustudio-photography
-		case $ARCH in
-			amd64)	KERNEL_FLAVOURS=lowlatency ;;
-		esac
-		;;
-
-	ubuntukylin)
-		add_task install minimal standard ubuntukylin-desktop
-		add_package install ubuntukylin-default-settings
-		LIVE_TASK='ubuntukylin-live'
+		KERNEL_FLAVOURS=lowlatency
 		;;
 
 	ubuntu-server)
@@ -1045,11 +972,7 @@ case $PROJECT in
 		esac
 		;;
 
-	ubuntu-base)
-		OPTS="${OPTS:+$OPTS }--bootstrap-flavour=minimal"
-		;;
-
-	ubuntu-oci)
+	ubuntu-base|ubuntu-oci)
 		OPTS="${OPTS:+$OPTS }--bootstrap-flavour=minimal"
 		;;
 
@@ -1186,11 +1109,8 @@ case $PROJECT:${SUBPROJECT:-} in
 	ubuntu-server:live)
 		BASE_SEED='server'
 		;;
-	ubuntu-base:*|ubuntu-core:*|ubuntu-mini-iso:)
-		;;
-	ubuntu-oci:*)
-		;;
-	xubuntu:minimal)
+	ubuntu-base:*|ubuntu-core:*|ubuntu-mini-iso:|ubuntu-oci:*|\
+        xubuntu:minimal)
 		;;
         edubuntu:*)
 		BASE_SEED='desktop-gnome'
@@ -1215,7 +1135,7 @@ fi
 
 # grab a list of packags to remove for a "minimal" installation from the seed
 # mirror for this project
-if [ -n "${BASE_SEED}" ] && [ -n "${BASE_SEED}" ]; then
+if [ -n "${BASE_SEED}" ]; then
 	minimal_packages_url=${SEEDMIRROR}/${SEED}/${BASE_SEED}.minimal-remove
 	echo -n "Checking ${minimal_packages_url} for a minimal installation list... "
 	minimal_packages_remove=$(wget -q -O- ${minimal_packages_url} | sed -e '/\s*#.*$/d' -e '/^\s*$/d')
@@ -1234,11 +1154,6 @@ if [ "$PREINSTALLED" != "true" ] && [ "$PASSES_TO_LAYERS" != "true" ] && [ "$LIV
 fi
 
 case $PROJECT in
-	ubuntu-dvd)
-		add_task install ubuntu-usb
-		add_task live ubuntu-usb-live
-		;;
-
 	*-dvd)
 		add_task live "$PROJECT-live"
 		;;
@@ -1290,14 +1205,6 @@ case $PROJECT in
 	# if any flavours want to strip .pyc files from their live images, add them here
 	_)
 		add_chroot_hook remove-python-py
-		;;
-	amd64)
-		KERNEL_FLAVOURS="${SUBARCH:-$KERNEL_FLAVOURS}"
-		case $SUBARCH in
-			intel-iot)
-				KERNEL_FLAVOURS='intel-iotg'
-				;;
-		esac
 		;;
 esac
 
@@ -1451,13 +1358,6 @@ EOF
 	*)
 		;;
 esac
-
-if [ $PROJECT = ubuntu-server ] && [ "${SUBPROJECT:-}" != live ]; then
-	cat > config/hooks/100-remove-fstab.chroot <<EOF
-#! /bin/sh
-rm -f /etc/fstab
-EOF
-fi
 
 if [ $PROJECT != ubuntu-cpc ]; then
 	cat > config/hooks/100-preserve-apt-prefs.chroot <<\EOF
