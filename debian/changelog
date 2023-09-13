@@ -1,4 +1,4 @@
-livecd-rootfs (2.664.49) UNRELEASED; urgency=medium
+livecd-rootfs (2.664.49) focal; urgency=medium
 
   * Address the missing GRUB_DISTRIBUTOR issue. LP: #2034253
 
