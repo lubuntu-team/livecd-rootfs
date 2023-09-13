@@ -1,12 +1,6 @@
-livecd-rootfs (2.664.50) UNRELEASED; urgency=medium
+livecd-rootfs (2.664.49) UNRELEASED; urgency=medium
 
-  [ Steve Langasek ]
-  * Revert previous change; the image builds did not fail in focal, and this
-    change introduced a regression (LP #2027686).
-
-  [ jchittum ]
-  * bring back --removable, and addresses the missing GRUB_DISTRIBUTOR
-    issue. LP: 2034253
+  * Address the missing GRUB_DISTRIBUTOR issue. LP: #2034253
 
  -- jchittum <john.chittum@canonical.com>  Fri, 08 Sep 2023 08:35:15 -0500
 
