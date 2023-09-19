@@ -1,3 +1,27 @@
+livecd-rootfs (23.10.42) mantic; urgency=medium
+
+  * fix: Fix the missing `fi` with the recent changes in the 
+    `unminimize` script for `ubuntu-cpc` project (LP: #2036591)
+
+ -- Phil Roche <phil.roche@canonical.com>  Tue, 19 Sep 2023 11:30:19 +0100
+ 
+livecd-rootfs (23.10.41) mantic; urgency=medium
+
+  * ubuntu-cpc: create a new boot partition on all UEFI cloud-images
+  * ubuntu-cpc: refactor the logic to define the disk image size for UEFI
+    images
+
+ -- Gauthier Jolly <gauthier.jolly@canonical.com>  Tue, 19 Sep 2023 08:20:00 -0700
+
+livecd-rootfs (23.10.40) mantic; urgency=medium
+
+  * Enhance unminimize to transform into a base image
+    for ubuntu-cpc.
+  * Install linux-virtual to restore the stripped headers
+    for ubuntu-cpc.
+
+ -- Utkarsh Gupta <utkarsh@ubuntu.com>  Tue, 19 Sep 2023 14:05:19 +0530
+
 livecd-rootfs (23.10.39) mantic; urgency=medium
 
   * The chroot tmpfs mount should only be /var/lib/apt/lists, not
