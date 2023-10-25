@@ -1,6 +1,7 @@
 livecd-rootfs (23.10.56~core1) UNRELEASED; urgency=medium
 
   * Experiment with ubuntu-core-desktop livefs builds.
+  * This branch auto-checks-out the related git branch.
 
  -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Wed, 25 Oct 2023 11:20:22 +0200
 
