@@ -1,4 +1,4 @@
-livecd-rootfs (23.10.56~core1) UNRELEASED; urgency=medium
+livecd-rootfs (23.10.56~core1) mantic; urgency=medium
 
   * Experiment with ubuntu-core-desktop livefs builds.
   * This branch auto-checks-out the related git branch.
