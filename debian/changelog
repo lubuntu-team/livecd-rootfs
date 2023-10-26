@@ -1,4 +1,4 @@
-livecd-rootfs (2.829) lunar; urgency=medium
+livecd-rootfs (2.828.1) lunar; urgency=medium
 
   * Fix unminimize to correctly list packages. (LP: #1996489)
   * Install LXD snap from stable/ubuntu-<version> channel. (LP: #2036725)
