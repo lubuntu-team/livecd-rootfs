@@ -507,8 +507,24 @@ case $IMAGEFORMAT in
 		else
 			# classic images
 
+			# Sometimes per-project quirks are necessary
 			IMAGE_PROJECT=$PROJECT
-			[ "$IMAGE_PROJECT" = "ubuntu-cpc" ] && IMAGE_PROJECT="ubuntu-server"
+			case "$IMAGE_PROJECT" in
+				ubuntu-cpc)
+					IMAGE_PROJECT="ubuntu-server"
+					;;
+				ubuntu-core-desktop)
+					# The ubuntu-core-desktop case is special as we need 2 ubuntu-image calls:
+					# one for the payload and one for the actual image
+					UBUNTU_IMAGE_PAYLOAD_ARGS="--image-size 12G"
+					EXTRA_SNAPS="$EXTRA_SNAPS eog evince firefox gnome-calculator gnome-characters gnome-clocks gnome-font-viewer gnome-logs gnome-text-editor gnome-weather ubuntu-core-desktop-init"
+					for snap in $EXTRA_SNAPS; do
+						UBUNTU_IMAGE_PAYLOAD_ARGS="$UBUNTU_IMAGE_PAYLOAD_ARGS --snap $snap"
+					done
+					echo "UBUNTU_IMAGE_PAYLOAD_ARGS=\"$UBUNTU_IMAGE_PAYLOAD_ARGS\"" >> config/common
+					cp -a /usr/share/livecd-rootfs/live-build/$PROJECT/* config/
+					;;
+			esac
 
 			LB_UBUNTU_IMAGES_REPO="${LB_UBUNTU_IMAGES_REPO:-git://git.launchpad.net/ubuntu-images}"
 			LB_UBUNTU_IMAGES_BRANCH="${LB_UBUNTU_IMAGES_BRANCH:-$SUITE}"
