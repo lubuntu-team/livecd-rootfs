@@ -113,7 +113,6 @@ if [ "${IMAGEFORMAT:-}" = "ubuntu-image" ]; then
 			# ubuntu-image twice, once for the core image payload and
 			# then for the actual image.
 			echo "Building the core image payload"
-
 			cd config/
 			/snap/bin/ubuntu-image snap $UBUNTU_IMAGE_PAYLOAD_ARGS \
 				-O output ubuntu-core-desktop*.model-assertion

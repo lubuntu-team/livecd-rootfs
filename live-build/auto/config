@@ -516,6 +516,7 @@ case $IMAGEFORMAT in
 				ubuntu-core-desktop)
 					# The ubuntu-core-desktop case is special as we need 2 ubuntu-image calls:
 					# one for the payload and one for the actual image
+					echo "Configuring for additional payload preparation"
 					UBUNTU_IMAGE_PAYLOAD_ARGS="--image-size 12G"
 					EXTRA_SNAPS="$EXTRA_SNAPS eog evince firefox gnome-calculator gnome-characters gnome-clocks gnome-font-viewer gnome-logs gnome-text-editor gnome-weather ubuntu-core-desktop-init"
 					for snap in $EXTRA_SNAPS; do
