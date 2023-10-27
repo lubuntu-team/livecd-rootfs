@@ -1,3 +1,10 @@
+livecd-rootfs (23.10.56) mantic; urgency=medium
+
+  * Enable snap preseeding with ppc64el images where /boot/vmlinux is used
+    instead of /boot/vmlinuz. (LP: #2038957)
+
+ -- Philip Roche <phil.roche@canonical.com>  Wed, 11 Oct 2023 11:41:00 +0100
+
 livecd-rootfs (23.10.55) mantic; urgency=medium
 
   * fix: add 6.5 kernel appamor features to livecd-rootfs based on
