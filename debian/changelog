@@ -1,8 +1,20 @@
-livecd-rootfs (23.10.55+1) noble; urgency=medium
+livecd-rootfs (24.04.2) noble; urgency=medium
 
-  * Add Noble
+  * Enable snap preseeding with ppc64el images where /boot/vmlinux is used
+    instead of /boot/vmlinuz. (LP: #2038957)
 
- -- Gauthier Jolly <gauthier.jolly@canonical.com>  Fri, 20 Oct 2023 15:39:47 +0200
+ -- Philip Roche <phil.roche@canonical.com>  Thu, 26 Oct 2023 17:56:00 +0100
+ 
+livecd-rootfs (24.04.1) noble; urgency=medium
+
+  [ Steve Langasek ]
+  * call ubuntu-image classic with --debug, because --verbose doesn't give
+    us anything useful in the livefs build logs.
+
+  [ Heinrich Schuchardt ]
+  * arm: fix console parameter for ARM cloud-images (LP: #2036730)
+
+ -- Paride Legovini <paride@ubuntu.com>  Wed, 25 Oct 2023 17:58:13 +0200
 
 livecd-rootfs (23.10.55) mantic; urgency=medium
 
