@@ -126,6 +126,11 @@ if [ "${IMAGEFORMAT:-}" = "ubuntu-image" ]; then
 			mv install-sources.yaml pc.img.xz autoinstall.yaml 99-custom-networking.cfg ../image-definitions/
 			cd ../
 
+			# Also, since we care about the model assertion to be presented,
+			# let's provide the payload assertion here already.
+			mkdir -p output/
+			cp config/ubuntu-core-desktop*.model-assertion output/
+
 			echo "Image payload build completed, continuing"
 		fi
 		/snap/bin/ubuntu-image classic --verbose $UBUNTU_IMAGE_ARGS \
