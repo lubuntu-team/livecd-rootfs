@@ -120,7 +120,7 @@ if [ "${IMAGEFORMAT:-}" = "ubuntu-image" ]; then
 			xz -0 -T4 pc.img
 			rm -rf output/
 			# Prepare the source catalogue
-			cat install-sources.yaml.in | sed "s/@SIZE@/$(shell stat -c%s pc.img.xz)/g" > install-sources.yaml
+			cat install-sources-in.yaml | sed "s/@SIZE@/$(stat -c%s pc.img.xz)/g" > install-sources.yaml
 			# Now move all of the payload to the image-definitions directory,
 			# so that they can be used by the image-definition effectively.
 			mv install-sources.yaml pc.img.xz autoinstall.yaml 99-custom-networking.cfg ../image-definitions/
