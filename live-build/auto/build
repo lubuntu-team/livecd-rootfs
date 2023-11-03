@@ -123,7 +123,7 @@ if [ "${IMAGEFORMAT:-}" = "ubuntu-image" ]; then
 			cat install-sources-in.yaml | sed "s/@SIZE@/$(stat -c%s pc.img.xz)/g" > install-sources.yaml
 			# Now move all of the payload to the image-definitions directory,
 			# so that they can be used by the image-definition effectively.
-			mv install-sources.yaml pc.img.xz autoinstall.yaml 99-custom-networking.cfg ../image-definitions/
+			mv install-sources.yaml pc.img.xz autoinstall.yaml 99-custom-networking.cfg casper* ../image-definitions/
 			cd ../
 
 			# Also, since we care about the model assertion to be presented,
