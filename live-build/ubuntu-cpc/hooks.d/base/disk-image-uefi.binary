@@ -86,6 +86,10 @@ install_grub() {
             efi_target=arm64-efi
             ;;
         amd64)
+            # LP#2045418 - grub-pc-bin is installed as a dependency of grub-pc and is required for grub-install.
+            # However, when grub-efi-amd64 is installed, grub-pc is removed and grub-pc-bin is marked for autoremoval.
+            # This causes grub-install to fail. To avoid this we mark grub-pc-bin as manually installed.
+            chroot mountpoint apt-mark manual grub-pc-bin
             chroot mountpoint apt-get install -qqy grub-efi-amd64-signed grub-efi-amd64 shim-signed
             grub_modules="multiboot serial usb usb_keyboard"
             efi_target=x86_64-efi

@@ -1,3 +1,9 @@
+livecd-rootfs (2.408.70) xenial; urgency=medium
+
+  * Mark grub-pc-bin as manual install to avoid autoremoval (LP: #2045418)
+
+ -- Philip Roche <phil.roche@canonical.com>  Mon, 04 Dec 2023 12:39:49 +0000
+
 livecd-rootfs (2.408.69) xenial; urgency=medium
 
   [Steve Langasek]
