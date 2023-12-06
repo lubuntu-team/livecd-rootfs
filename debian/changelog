@@ -1,9 +1,9 @@
-livecd-rootfs (23.10.57) UNRELEASED; urgency=medium
+livecd-rootfs (23.10.57) mantic; urgency=medium
 
   [ Heinrich Schuchardt ]
   * arm: fix console parameter for ARM cloud-images (LP: #2036730)
 
- -- Brian Murray <brian@ubuntu.com>  Mon, 04 Dec 2023 13:31:38 -0800
+ -- Brian Murray <brian@ubuntu.com>  Wed, 06 Dec 2023 11:30:35 -0800
 
 livecd-rootfs (23.10.56) mantic; urgency=medium
 
