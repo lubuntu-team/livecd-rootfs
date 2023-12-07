@@ -1,3 +1,23 @@
+livecd-rootfs (24.04.7) noble; urgency=medium
+
+  [ Dave Jones ]
+  * Remove more bits related to pre-installed desktop images (LP: #2038098)
+
+  [ Jean-Baptiste Lallement ]
+  * Include -updates when calling germinate.  LP: #1921862.
+
+  [ Dan Bungert ]
+  * cpc/vagrant: fix possible autopkgtest hang on ssh-keygen
+
+  [ Simon Poirier ]
+  * add systemd-resolved back to buildd images.  LP: #2007419.
+
+  [ Steve Langasek ]
+  * live-build/functions: add additional debugging to mount_image() on
+    failure since we again have loop partitions failing to be block devices.
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Sun, 03 Dec 2023 21:38:27 -0800
+
 livecd-rootfs (24.04.6) noble; urgency=medium
 
   * Re-enable universe for pre-installed images (LP: #2044154)
