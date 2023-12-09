@@ -1,6 +1,24 @@
 #! /bin/sh
 set -e
 
+case $ARCH:$SUBARCH in
+	amd64:|amd64:generic|amd64:intel-iot|\
+	arm64:|arm64:generic|arm64:raspi|arm64:snapdragon|\
+	arm64:tegra|arm64:tegra-igx|arm64:x13s|\
+	armhf:|armhf:raspi|\
+	i386:|\
+	ppc64el:|\
+	riscv64:|riscv64:generic|riscv64:icicle|riscv64:licheerv|\
+	riscv64:nezha|riscv64:unmatched|riscv64:visionfive|riscv64:visionfive2|\
+	s390x:|\
+	*appliance*)
+		;;
+	*)
+		echo "Unknown architecture target $ARCH:$SUBARCH"
+		exit 1
+		;;
+esac
+
 if [ -e config/germinate-output ]; then
             mv -T config/germinate-output germ-tmp
             rm -rf config
@@ -538,7 +556,7 @@ case $IMAGEFORMAT in
 	*)
 		case $PROJECT in
 			ubuntu-server|ubuntu-wsl|ubuntu-oem|ubuntu|\
-			ubuntu-budgie)
+			ubuntu-budgie|ubuntustudio-dvd)
 				;;
 			*)
 				add_package live casper
@@ -846,8 +864,25 @@ case $PROJECT in
 		;;
 
 	ubuntustudio-dvd)
-		add_task install minimal standard ubuntustudio-desktop ubuntustudio-audio ubuntustudio-graphics ubuntustudio-video ubuntustudio-photography
+		# By default Ubuntu Studio now ships the new installer.
+		touch config/universe-enabled
+		PASSES_TO_LAYERS="true"
 		KERNEL_FLAVOURS=lowlatency
+		add_task standard minimal standard ubuntustudio-desktop ubuntustudio-audio ubuntustudio-graphics ubuntustudio-video ubuntustudio-photography
+		add_task standard.live ubuntustudio-dvd-live
+		add_package standard.live linux-$KERNEL_FLAVOURS
+		cat <<-EOF > config/standard.catalog-in.yaml
+			name: "Ubuntu Studio Desktop"
+			description: >-
+			  A full featured Ubuntu Studio Desktop.
+			id: ubuntustudio-desktop
+			type: fsimage-layered
+			variant: desktop
+			locale_support: langpack
+			default: yes
+		EOF
+		/usr/share/livecd-rootfs/checkout-translations-branch \
+			https://git.launchpad.net/subiquity po config/catalog-translations
 		;;
 
 	ubuntu-server)
@@ -1128,12 +1163,6 @@ export APT_OPTIONS
 if [ "$PREINSTALLED" != "true" ] && [ "$PASSES_TO_LAYERS" != "true" ] && [ "$LIVE_TASK" ]; then
 	add_task live "$LIVE_TASK"
 fi
-
-case $PROJECT in
-	*-dvd)
-		add_task live "$PROJECT-live"
-		;;
-esac
 
 case "$ARCH${SUBARCH:++$SUBARCH}" in
 	arm*+raspi)
