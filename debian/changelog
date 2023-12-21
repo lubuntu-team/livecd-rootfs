@@ -1,3 +1,24 @@
+livecd-rootfs (24.04.14) noble; urgency=medium
+
+  * When the files we're creating in the live layer have static content,
+    ship them in live-build/ubuntu/includes.chroot.minimal.standard.live
+    instead of generating them from
+    live-build/ubuntu/hooks/020-ubuntu-live.chroot_early.  Also fixes the
+    fact that live-build/ubuntu/hooks/020-ubuntu-live.chroot_early was
+    incorrectly writing to /root in the previous upload instead of /usr.
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Wed, 20 Dec 2023 11:40:02 -0800
+
+livecd-rootfs (24.04.13) noble; urgency=medium
+
+  * Drop support for building armhf+raspi images; as of noble these are
+    arm64-only.
+  * live-build/ubuntu/hooks/020-ubuntu-live.chroot_early: move code here
+    from scripts/casper-bottom/61desktop_canary_tweaks that should be done
+    statically at image build time, not at boot.
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Wed, 20 Dec 2023 08:15:34 -0800
+
 livecd-rootfs (24.04.12) noble; urgency=medium
 
   * Switch Edubuntu to the new installer.
