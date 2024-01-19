@@ -155,6 +155,22 @@ if [ "${IMAGEFORMAT:-}" = "ubuntu-image" ]; then
 	exit 0
 fi
 
+if [ "$PROJECT" = "ubuntu-core-desktop" ]; then
+	# Special case for ubuntu-core-desktop - we need to call
+	# ubuntu-image twice, once for the core image payload and
+	# then for the actual image.
+	echo "Building the core image payload"
+	cd config/
+	/snap/bin/ubuntu-image snap $UBUNTU_IMAGE_PAYLOAD_ARGS \
+		-O output ubuntu-core-desktop*.model-assertion
+	mv output/*.img pc.img
+	xz -0 -T4 pc.img
+	rm -rf output/
+	# We need to rename the image file so that it can be pulled
+	# by the builder.
+	mv pc.img.xz "$PREFIX".img.xz
+fi
+
 # Setup cleanup function
 Setup_cleanup
 

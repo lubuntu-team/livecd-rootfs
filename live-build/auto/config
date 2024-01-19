@@ -810,6 +810,31 @@ case $PROJECT in
 		esac
 		;;
 
+	ubuntu-core-desktop)
+		touch config/universe-enabled
+		KERNEL_FLAVOURS='generic-hwe-22.04'
+		PASSES_TO_LAYERS="true"
+		# the live layer, contains all packages for the live session installer
+		add_task live minimal
+		add_snap live ubuntu-core-desktop-installer/classic core22 snapd
+		add_package live linux-$KERNEL_FLAVOURS plymouth-theme-spinner squashfs-tools snapd cloud-init
+
+		# now let's create the neccessary catalog files
+		cat <<-EOF > config/install-sources-in.yaml
+		- default: true
+		  description:
+		    en: Ubuntu Core Desktop.
+		  id: ubuntu-core-desktop
+		  locale_support: none
+		  name:
+		    en: Ubuntu Core Desktop
+		  path: pc.img.xz
+		  type: dd-xz:file
+		  size: @SIZE@
+		  variant: core 
+		EOF
+		;;
+
 	ubuntu-oem)
 		touch config/universe-enabled
 		PASSES_TO_LAYERS="true"
@@ -1435,7 +1460,7 @@ EOF
 		;;
 
 	ubuntu-cpc:*|ubuntu-server:live|ubuntu:desktop-preinstalled| \
-		ubuntu-wsl:*|ubuntu-mini-iso:*|ubuntu:|ubuntu-oem:*)
+		ubuntu-wsl:*|ubuntu-mini-iso:*|ubuntu:|ubuntu-oem:*|ubuntu-core-desktop:*)
 		# Ensure that most things e.g. includes.chroot are copied as is
 		for entry in /usr/share/livecd-rootfs/live-build/${PROJECT}/*; do
 			case $entry in
