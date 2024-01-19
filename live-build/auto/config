@@ -833,6 +833,10 @@ case $PROJECT in
 		  size: @SIZE@
 		  variant: core 
 		EOF
+
+		# we have to manually mark the live layer as the LIVE_PASS, since it's also
+		# the only layer we build
+		LIVE_PASSES="live"
 		;;
 
 	ubuntu-oem)

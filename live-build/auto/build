@@ -156,6 +156,11 @@ if [ "${IMAGEFORMAT:-}" = "ubuntu-image" ]; then
 fi
 
 if [ "$PROJECT" = "ubuntu-core-desktop" ]; then
+	export SNAPPY_STORE_NO_CDN=1
+	LB_UBUNTU_IMAGE_CHANNEL="${LB_UBUNTU_IMAGE_CHANNEL:-edge}"
+	snap install \
+            --classic --channel="$LB_UBUNTU_IMAGE_CHANNEL" ubuntu-image
+
 	# Special case for ubuntu-core-desktop - we need to call
 	# ubuntu-image twice, once for the core image payload and
 	# then for the actual image.
