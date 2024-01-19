@@ -554,7 +554,7 @@ case $IMAGEFORMAT in
 		;;
 	*)
 		case $PROJECT in
-			ubuntu-server|ubuntu-wsl|ubuntu-oem)
+			ubuntu-server|ubuntu-wsl|ubuntu-oem|ubuntu-core-desktop)
 				;;
 			ubuntu|ubuntu-budgie)
 				if [ "$SUBPROJECT" = "legacy" ]; then
