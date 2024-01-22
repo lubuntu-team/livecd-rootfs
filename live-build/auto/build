@@ -173,7 +173,7 @@ if [ "$PROJECT" = "ubuntu-core-desktop" ]; then
 	rm -rf output/
 	# We need to rename the image file so that it can be pulled
 	# by the builder.
-	mv pc.img.xz "$PREFIX".img.xz
+	mv pc.img.xz ../"$PREFIX".img.xz
 	# Important: return to the previous directory
 	cd ../
 fi
