@@ -735,6 +735,13 @@ snap_preseed() {
         esac
     fi
 
+    # XXX: This is temporary for testing purposes as the ubuntu-core-desktop-installer
+    # snap is not yet published to the right channels.
+    if [ "$SNAP_NAME" = "ubuntu-core-desktop-installer" ]; then
+        echo "WARNING: Overriding ubuntu-core-desktop-installer channel to stable for testing purposes"
+        CHANNEL="stable"
+    fi
+
     # At this point:
     # SNAP_NAME is just the snap name
     # SNAP is either $SNAP_NAME or $SNAP_NAME/classic for classic confined
