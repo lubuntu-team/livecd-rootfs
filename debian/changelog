@@ -1,6 +1,6 @@
 livecd-rootfs (2.664.52) UNRELEASED; urgency=medium
 
-  * fix: use correct sshd_config.d/ ordering. (LP: #459010)
+  * fix: use correct sshd_config.d/ ordering. (LP: #2049860)
 
  -- Thomas Bechtold <thomas.bechtold@canonical.com>  Mon, 22 Jan 2024 17:08:05 +0530
 
