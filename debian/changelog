@@ -1,3 +1,56 @@
+livecd-rootfs (24.04.21) noble; urgency=medium
+
+  * live-build/functions: avoid losetup -P as it appears to race with udev and
+    do it a bit more by-hand instead. (LP: #2045586)
+
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Thu, 25 Jan 2024 10:28:38 +1300
+
+livecd-rootfs (24.04.20) noble; urgency=medium
+
+  * fix: Fix for calling unminimize if lxd-installer package
+    not installed. (LP: #2049723)
+  * Do not exit live image build if PASSES_TO_LAYERS is true and layer
+    is already registered.
+
+ -- Philip Roche <phil.roche@canonical.com>  Thu, 25 Jan 2024 07:57:29 +1300
+
+livecd-rootfs (24.04.19) noble; urgency=medium
+
+  * live-build/auto/config: don't repeatedly add the same pass name to the
+    list of layers.
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Thu, 18 Jan 2024 11:03:55 -0800
+
+livecd-rootfs (24.04.18) noble; urgency=medium
+
+  * update apparmor feature overlay match for target 6.6 kernel.
+
+ -- Thomas Bechtold <thomas.bechtold@canonical.com>  Tue, 16 Jan 2024 13:06:37 +0100
+
+livecd-rootfs (24.04.17) noble; urgency=medium
+
+  * unminimize: Use lxd-installer to install LXD itself. (LP: #2036725)
+
+ -- Utkarsh Gupta <utkarsh@ubuntu.com>  Thu, 11 Jan 2024 15:12:53 +0530
+
+livecd-rootfs (24.04.16) noble; urgency=medium
+
+  * Fix overlooked syntax error in live-build/auto/config.
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Wed, 03 Jan 2024 23:38:53 -0800
+
+livecd-rootfs (24.04.15) noble; urgency=medium
+
+  * live-build/ubuntu/hooks/020-ubuntu-live.chroot_early: apply to any
+    layer ending in .live so this can be reused across flavors
+  * live-build/ubuntu/hooks/020-ubuntu-live.chroot_early: check for
+    glib-compile-schemas presence before calling
+  * live-build/auto/config: include a sanity check that no layered image has
+    more than one "live" layer that would cause undefined behavior with the
+    above hook.
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Wed, 03 Jan 2024 23:26:05 -0800
+
 livecd-rootfs (24.04.14) noble; urgency=medium
 
   * When the files we're creating in the live layer have static content,
