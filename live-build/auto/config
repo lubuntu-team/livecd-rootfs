@@ -815,7 +815,8 @@ case $PROJECT in
 		KERNEL_FLAVOURS='generic-hwe-22.04'
 		PASSES_TO_LAYERS="true"
 		# the live layer, contains all packages for the live session installer
-		add_snap live minimal ubuntu-core-desktop-installer/classic core22 snapd
+		add_task live minimal
+		add_snap live ubuntu-core-desktop-installer/classic core22 snapd
 		add_package live linux-$KERNEL_FLAVOURS plymouth-theme-spinner squashfs-tools snapd cloud-init
 
 		# now let's create the neccessary catalog files
