@@ -814,14 +814,12 @@ case $PROJECT in
 		touch config/universe-enabled
 		KERNEL_FLAVOURS='generic-hwe-22.04'
 		PASSES_TO_LAYERS="true"
-		# the minimal layer
-		add_task minimal minimal
 		# the live layer, contains all packages for the live session installer
-		add_snap minimal.live ubuntu-core-desktop-installer/classic core22 snapd
-		add_package minimal.live linux-$KERNEL_FLAVOURS plymouth-theme-spinner squashfs-tools snapd cloud-init
+		add_snap live minimal ubuntu-core-desktop-installer/classic core22 snapd
+		add_package live linux-$KERNEL_FLAVOURS plymouth-theme-spinner squashfs-tools snapd cloud-init
 
 		# now let's create the neccessary catalog files
-		cat <<-EOF > config/install-sources-in.yaml
+		cat <<-EOF > config/live.catalog-in.yaml
 		- default: true
 		  description:
 		    en: Ubuntu Core Desktop.
@@ -837,6 +835,7 @@ case $PROJECT in
 
 		# we have to manually mark the live layer as the LIVE_PASS, since it's also
 		# the only layer we build
+		LIVE_PASS=live
 		;;
 
 	ubuntu-oem)
