@@ -90,7 +90,7 @@ if [ "${IMAGEFORMAT:-}" = "ubuntu-image" ]; then
 	# Use ubuntu-image instead of live-build
 
 	export SNAPPY_STORE_NO_CDN=1
-	LB_UBUNTU_IMAGE_CHANNEL="${LB_UBUNTU_IMAGE_CHANNEL:-edge}"
+	LB_UBUNTU_IMAGE_CHANNEL="${LB_UBUNTU_IMAGE_CHANNEL:-stable}"
 	snap install \
             --classic --channel="$LB_UBUNTU_IMAGE_CHANNEL" ubuntu-image
 
@@ -157,7 +157,7 @@ fi
 
 if [ "$PROJECT" = "ubuntu-core-desktop" ]; then
 	export SNAPPY_STORE_NO_CDN=1
-	LB_UBUNTU_IMAGE_CHANNEL="${LB_UBUNTU_IMAGE_CHANNEL:-edge}"
+	LB_UBUNTU_IMAGE_CHANNEL="${LB_UBUNTU_IMAGE_CHANNEL:-stable}"
 	snap install \
             --classic --channel="$LB_UBUNTU_IMAGE_CHANNEL" ubuntu-image
 
