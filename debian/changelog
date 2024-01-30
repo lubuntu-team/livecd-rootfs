@@ -1,4 +1,4 @@
-livecd-rootfs (2.664.52) UNRELEASED; urgency=medium
+livecd-rootfs (2.664.52) focal; urgency=medium
 
   * fix: use correct sshd_config.d/ ordering. (LP: #2049860)
 
