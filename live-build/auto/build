@@ -182,6 +182,9 @@ if [ "$PROJECT" = "ubuntu-core-desktop" ]; then
 	# We need to make sure the autoinstall file is also exported.
 	mv autoinstall.yaml ../"$PREFIX".autoinstall.yaml
 
+	# Useful to have the model-assertion exported as well.
+	mv ubuntu-core-desktop*.model-assertion ../"$PREFIX".model-assertion
+
 	# Important: return to the previous directory
 	cd ../
 fi
