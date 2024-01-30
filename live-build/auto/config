@@ -1487,7 +1487,8 @@ case $SUBPROJECT in
 		;;
 esac
 
-if [ "$EXTRA_PPAS" ]; then
+# XXX: Temporarily disabled extra ppa handling
+if false; then
 	rm -f config/archives/extra-ppas.list.chroot \
 	      config/archives/extra-ppas.pref.chroot \
 	      config/archives/extra-ppas.key.chroot
