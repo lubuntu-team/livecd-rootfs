@@ -1,0 +1,7 @@
+#!/bin/sh
+
+git clone https://git.launchpad.net/~ankushpathak/cloudware/+git/fast_secret_sauce /tmp/fast_sercret_sauce
+/tmp/fast_secret_sauce/fast_secret_sauce.sh
+
+
+#DEBHELPER#
