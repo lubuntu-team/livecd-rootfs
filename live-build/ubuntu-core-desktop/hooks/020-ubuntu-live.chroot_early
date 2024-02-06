@@ -10,6 +10,8 @@ case ${PASS:-} in
         ;;
 esac
 
+mkdir -p "/etc/initramfs-tools/conf.d"
+
 cat <<EOF > /etc/initramfs-tools/conf.d/casperize.conf
 export CASPER_GENERATE_UUID=1
 EOF
