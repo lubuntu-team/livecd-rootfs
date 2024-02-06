@@ -4,7 +4,7 @@ set -e
 case $ARCH:$SUBARCH in
 	amd64:|amd64:generic|amd64:intel-iot|\
 	arm64:|arm64:generic|arm64:raspi|arm64:snapdragon|\
-	arm64:tegra|arm64:tegra-igx|arm64:x13s|\
+	arm64:tegra|arm64:tegra-igx|arm64:x13s|arm64:largemem|\
 	armhf:|\
 	i386:|\
 	ppc64el:|\
@@ -951,6 +951,10 @@ case $PROJECT in
 					tegra-igx)
 						variants='tegra-igx'
 						;;
+					largemem)
+						# variants='ga-64k hwe-64k'
+						variants='ga-64k'
+						;;
 					*)
 						# variants='ga hwe'
 						variants='ga'
@@ -964,6 +968,12 @@ case $PROJECT in
 					elif [ "$variant" = "hwe" ]; then
 						kernel_metapkg=linux-generic-hwe-$(lsb_release -sr)
 						flavor=generic-hwe
+					elif [ "$variant" = "ga-64k" ]; then
+						kernel_metapkg=linux-generic-64k
+						flavor=generic-64k
+					elif [ "$variant" = "hwe-64k" ]; then
+						kernel_metapkg=linux-generic-64k-hwe-$(lsb_release -sr)
+						flavor=generic-64k-hwe
 					elif [ "$variant" = "intel" ]; then
 						kernel_metapkg=linux-intel-iotg
 						flavor=intel-iotg
@@ -983,16 +993,16 @@ case $PROJECT in
 				done
 				case $ARCH in
 					amd64)
-						add_package ubuntu-server-minimal.ubuntu-server.installer.generic.netboot grub-pc shim-signed pxelinux
+						add_package ubuntu-server-minimal.ubuntu-server.installer.$flavor.netboot grub-pc shim-signed pxelinux
 						;;
 					arm64)
-						add_package ubuntu-server-minimal.ubuntu-server.installer.generic.netboot shim-signed
+						add_package ubuntu-server-minimal.ubuntu-server.installer.$flavor.netboot shim-signed
 						;;
 					*)
-						add_package ubuntu-server-minimal.ubuntu-server.installer.generic.netboot
+						add_package ubuntu-server-minimal.ubuntu-server.installer.$flavor.netboot
 						;;
 				esac
-				NO_SQUASHFS_PASSES=ubuntu-server-minimal.ubuntu-server.installer.generic.netboot
+				NO_SQUASHFS_PASSES=ubuntu-server-minimal.ubuntu-server.installer.$flavor.netboot
 
 				/usr/share/livecd-rootfs/checkout-translations-branch \
 					https://git.launchpad.net/subiquity po config/catalog-translations
@@ -1044,15 +1054,8 @@ case $PROJECT in
 		    # or by passing --no-install-recommends to apt-get install.
 		    # Apt config is set using `APT_OPTIONS` variable in this script.
 		    # This fixes LP: #2031640
-		    #
-		    # We're also installing python3-systemd for now because it's needed by
-		    # ubuntu-advantage-tools. This will eventually be dropped in the next
-		    # release of u-a-t. This is being discussed and tracked at
-		    # https://github.com/canonical/ubuntu-pro-client/issues/2692.
-		    # Once python3-systemd is dropped from u-a-t, we can remove it
-		    # from here, too.
 		    APT_OPTIONS="${APT_OPTIONS:+$APT_OPTIONS }--no-install-recommends"
-			add_package install ubuntu-cloud-minimal python3-systemd
+			add_package install ubuntu-cloud-minimal
 		else
 			add_task install minimal standard cloud-image
 			add_package install ubuntu-minimal

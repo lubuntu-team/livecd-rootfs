@@ -1,3 +1,47 @@
+livecd-rootfs (24.04.26) noble; urgency=medium
+
+  [ Steve Langasek ]
+  * Share live-build/ubuntu/hooks/020-ubuntu-live.chroot_early across 
+    all flavors using new-style layered squashfs, removing need for 
+    kernel commandline options in debian-cd.
+
+  [ dann frazier ]
+  * Use flock to avoid races with systemd-udevd that cause loop device
+    partitions to briefly disappear.
+
+ -- dann frazier <dann.frazier@canonical.com>  Thu, 01 Feb 2024 09:09:17 -0700
+
+livecd-rootfs (24.04.25) noble; urgency=medium
+
+  * live-build/auto/config: for ubuntu-server, consider the actual kernel
+    flavor when dealing with netboot layers - even if we don't really care.
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Tue, 30 Jan 2024 11:27:46 +0100
+
+livecd-rootfs (24.04.24) noble; urgency=medium
+
+  [ Tomáš Virtus ]
+  * live-build/functions: mount_disk_image: add rootpart parameter
+
+  [ Utkarsh Gupta ]
+  * live-build/auto/config: drop python3-systemd from CPC's minimized builds.
+
+ -- Utkarsh Gupta <utkarsh@ubuntu.com>  Mon, 22 Jan 2024 18:01:53 +0530
+
+livecd-rootfs (24.04.23) noble; urgency=medium
+
+  * Remove magic-proxy and all references to it as it is not used by any
+    builds of any release newer than 18.04.
+
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Mon, 29 Jan 2024 14:53:26 +1300
+
+livecd-rootfs (24.04.22) noble; urgency=medium
+
+  * Add a largemem subarch for ubuntu-server that ships a 64k kernel variant
+    by default (LP: #2050209).
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Thu, 25 Jan 2024 11:01:28 +0100
+
 livecd-rootfs (24.04.21) noble; urgency=medium
 
   * live-build/functions: avoid losetup -P as it appears to race with udev and
