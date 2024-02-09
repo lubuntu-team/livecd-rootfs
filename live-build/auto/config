@@ -819,7 +819,7 @@ case $PROJECT in
 		add_task minimal minimal
 		# the live layer, contains all packages for the live session installer
 		add_snap minimal.live ubuntu-core-desktop-installer/classic core22 snapd
-		add_package minimal.live linux-$KERNEL_FLAVOURS plymouth-theme-spinner squashfs-tools snapd cloud-init
+		add_package minimal.live linux-$KERNEL_FLAVOURS plymouth-theme-spinner squashfs-tools snapd cloud-init gsettings-desktop-schemas yaru-theme-gtk lshw
 		;;
 
 	ubuntu-oem)
