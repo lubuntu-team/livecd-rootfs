@@ -1,7 +1,8 @@
-livecd-rootfs (2.664.53) UNRELEASED; urgency=medium
+livecd-rootfs (2.664.53) focal; urgency=medium
 
   [Catherine Redfield]
-  * add 5.15 apparmor directory for snap preseeding with 5.15 kernel (LP: #2052789)
+  * add 5.15 apparmor directory for snap preseeding with 5.15 kernel
+    (LP: #2052789)
 
  -- Phil Roche <phil.roche@canonical.com>  Fri, 09 Feb 2024 09:41:18 +0000
 
