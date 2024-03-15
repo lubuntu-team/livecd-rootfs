@@ -5,7 +5,7 @@
   locale_support: none
   name:
     en: Ubuntu Core Desktop
-  path: pc.img.xz
+  path: filesystem.img.xz
   type: dd-xz:file
   size: @SIZE@
   variant: core 
