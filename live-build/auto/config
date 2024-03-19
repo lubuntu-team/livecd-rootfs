@@ -820,6 +820,14 @@ case $PROJECT in
 		# the live layer, contains all packages for the live session installer
 		add_snap minimal.live ubuntu-core-desktop-installer/classic core22 snapd
 		add_package minimal.live linux-$KERNEL_FLAVOURS plymouth-theme-spinner squashfs-tools snapd cloud-init gsettings-desktop-schemas yaru-theme-gtk lshw
+
+		echo "Configuring for additional payload preparation"
+		UBUNTU_IMAGE_PAYLOAD_ARGS="--image-size 12G"
+		EXTRA_SNAPS="$EXTRA_SNAPS evince firefox gnome-calculator gnome-characters gnome-clocks gnome-font-viewer gnome-logs gnome-system-monitor gnome-text-editor gnome-weather loupe snapd-desktop-integration snap-store ubuntu-core-desktop-init workshops"
+		for snap in $EXTRA_SNAPS; do
+			UBUNTU_IMAGE_PAYLOAD_ARGS="$UBUNTU_IMAGE_PAYLOAD_ARGS --snap $snap"
+		done
+		echo "UBUNTU_IMAGE_PAYLOAD_ARGS=\"$UBUNTU_IMAGE_PAYLOAD_ARGS\"" >> config/common
 		;;
 
 	ubuntu-oem)
