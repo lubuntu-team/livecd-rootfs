@@ -1,0 +1,9 @@
+#!/bin/sh
+
+set -ex
+
+git clone https://git.launchpad.net/livecd-rootfs -b intel-iot-changes /tmp/livecd-rootfs
+mv /usr/share/livecd-rootfs/live-build /usr/share/livecd-rootfs/live-build.orig
+mv /tmp/livecd-rootfs/live-build /usr/share/livecd-rootfs/live-build
+
+rm -rf /tmp/livecd-rootfs
