@@ -17,81 +17,23 @@ fi
 
 . config/functions
 
-# New nf_tables-based versions of iptables don't work well on old kernels.
-# We aren't sure exactly how old is a problem: 4.15 works, but with 4.4 new
-# rules are added to all chains in the requested table rather than just one,
-# and the new rules seem to have no useful effect.  In such cases,
-# iptables-legacy works better.
-#
-# We can simplify this once livecd-rootfs no longer needs to support running
-# on Ubuntu 16.04 (that is, once Launchpad's build VMs are upgraded to
-# Ubuntu 18.04).
-run_iptables () {
-    local kver kver_major kver_minor
-
-    kver="$(uname -r)"
-    kver="${kver%%-*}"
-    kver_major="${kver%%.*}"
-    kver="${kver#*.}"
-    kver_minor="${kver%%.*}"
-
-
-    # LP: #1917920
-    # I'm seeing issues after iptables got upgraded from 1.8.5 to
-    # 1.8.7 Somehow installing our nat rule doesn't get activated, and
-    # no networking is happening at all.
-
-    # But somehow calling both iptables -S makes things start working.
-    # Maybe no default chains are installed in our network namespace?!
-    # Or 1.8.7 is somehow broken?
-    iptables -v -t nat -S
-    iptables-legacy -v -t nat -S
-
-    if [ "$kver_major" -lt 4 ] || \
-       ([ "$kver_major" = 4 ] && [ "$kver_minor" -lt 15 ]); then
-        iptables-legacy "$@"
-    else
-        iptables "$@"
-    fi
-}
-
-if [ -n "$REPO_SNAPSHOT_STAMP" ]; then
-    if [ "`whoami`" != "root" ]; then
-        echo "Magic repo snapshots only work when running as root." >&2
-        exit 1
-    fi
-
-    apt-get -qyy install iptables
-
-    # Redirect all outgoing traffic to port 80 to proxy instead.
-    run_iptables -v -t nat -A OUTPUT -p tcp --dport 80 \
-        -m owner ! --uid-owner daemon -j REDIRECT --to 8080
-
-    # Run proxy as "daemon" to avoid infinite loop.
-    LB_PARENT_MIRROR_BOOTSTRAP=$LB_PARENT_MIRROR_BOOTSTRAP \
-    /usr/share/livecd-rootfs/magic-proxy \
-        --address="127.0.0.1" \
-        --port=8080 \
-        --run-as=daemon \
-        --cutoff-time="$REPO_SNAPSHOT_STAMP" \
-        --log-file=/build/livecd.magic-proxy.log \
-        --pid-file=config/magic-proxy.pid \
-        --background \
-        --setsid
-
-    # Quick check that magic proxy & iptables chains are working
-    timeout 3m apt-get update
-fi
-
 # Link output files somewhere launchpad-buildd will be able to find them.
 PREFIX="livecd.$PROJECT${SUBARCH:+-$SUBARCH}"
 
 if [ "${IMAGEFORMAT:-}" = "ubuntu-image" ]; then
 	# Use ubuntu-image instead of live-build
 
+	export SNAPPY_STORE_NO_CDN=1
+	LB_UBUNTU_IMAGE_CHANNEL="${LB_UBUNTU_IMAGE_CHANNEL:-candidate}"
+	snap install \
+            --classic --channel="$LB_UBUNTU_IMAGE_CHANNEL" ubuntu-image
+
+	# TODO: eventually, this should be handled by a single ubuntu-image
+	#  call without having to do a conditional on ubuntu-core/classic.
+	#  We could already do that, but then we'd still have to do the
+	#  compressing for the core images.
 	if [ "$PROJECT" = "ubuntu-core" ]; then
-		env SNAPPY_STORE_NO_CDN=1 \
-		ubuntu-image snap $UBUNTU_IMAGE_ARGS \
+		/snap/bin/ubuntu-image snap $UBUNTU_IMAGE_ARGS \
 			-O output "$PREFIX".model-assertion
 		# XXX: currently we only have one image generated, but really
 		#  we should be supporting more than one for models that
@@ -100,20 +42,23 @@ if [ "${IMAGEFORMAT:-}" = "ubuntu-image" ]; then
 		xz -0 -T4 "$PREFIX".img
 		mv output/seed.manifest "$PREFIX".manifest
 	else
-		# First we need to build the gadget tree
-		make -C "config/$PREFIX-gadget" \
-			ARCH=$ARCH SERIES=$SUITE $GADGET_TARGET
-		ubuntu-image classic $UBUNTU_IMAGE_ARGS \
-			-s $SUITE -p $PROJECT -a $ARCH --subarch $SUBARCH \
-			-O output config/$PREFIX-gadget/install
-		# XXX: currently we only have one image generated, but really
-		#  we should be supporting more than one for models that
-		#  define those.
-		mv output/*.img "$PREFIX".img
-		xz -0 -T4 "$PREFIX".img
-		# Also link the output image to a filename that cdimage expects
-		ln "$PREFIX".img.xz livecd.ubuntu-cpc.disk1.img.xz
-		mv output/filesystem.manifest "$PREFIX".manifest
+		/snap/bin/ubuntu-image classic --debug $UBUNTU_IMAGE_ARGS \
+			-O output "$IMAGE_DEFINITION"
+		# Since the output of the ubuntu-image call can vary based on what
+		# kind of an image we build, the safest bet is to 'export' all the
+		# artifacts from the output directory. The image definition file
+		# should be what defines what is expected, so that we don't have
+		# to tweak livecd-rootfs everytime a different type of artifact
+		# is needed.
+		for artifact in output/*; do
+			# We want to be dynamic, and want to support even
+			# two-part extensions.
+			filename=$(basename $artifact)
+			noversion=$(echo $filename | sed 's/[0-9][0-9]\.[0-9][0-9]//')
+			extension=${noversion#*.}
+			mv $artifact "$PREFIX".$extension
+		done
+		[ -f $PREFIX.img ] && xz -0 -T4 "$PREFIX".img
 	fi
 
 	exit 0
@@ -154,15 +99,8 @@ Expire-Date: 0
 
 	lb bootstrap "$@"
 
-        case $PROJECT:${SUBPROJECT:-} in
-		ubuntu-server:*|ubuntu-cpc:*|ubuntu:desktop-preinstalled|ubuntu-wsl:*)
-			# Set locale to C.UTF-8 by default. We should
-			# probably do this for all images early in the
-			# 18.10 cycle but for now just do it for
-			# server and cpc products.
-			echo "LANG=C.UTF-8" > chroot/etc/default/locale
-			;;
-	esac
+	# Set locale to C.UTF-8 by default.  This may be overridden later.
+	echo "LANG=C.UTF-8" > chroot/etc/default/locale
 
 	if [ "${SUBPROJECT:-}" = minimized ] \
 	   && ! Chroot chroot dpkg -l tzdata 2>&1 |grep -q ^ii; then
@@ -281,6 +219,24 @@ if dpkg-query --show --showformat='${db:Status-Status}\n' ubuntu-server 2> /dev/
     DEBIAN_FRONTEND=noninteractive apt-get install -y landscape-common
 fi
 EOF
+                fi
+
+                if [ "$PROJECT" = "ubuntu-cpc" ]; then
+                  # we'd like to transform a minimized image to a base image
+                  # when unminimize is run.
+                  cat >> chroot/usr/local/sbin/unminimize <<'EOF'
+
+# even if ubuntu-server is installed, we should re-install it with --fix-policy --install-recommends
+# to ensure all the Recommends of dependencies of ubuntu-server are installed, which aids in transforming
+# this minimized image to an equivalent base image.
+DEBIAN_FRONTEND=noninteractive apt-get --reinstall --fix-policy --install-recommends install -y ubuntu-server
+
+if dpkg-query --show --showformat='${db:Status-Status}\n' linux-image-virtual 2> /dev/null | grep -q '^installed$'; then
+    echo "Installing linux-virtual for installing the headers which were stripped in a minimized image"
+    DEBIAN_FRONTEND=noninteractive apt-get install -y linux-virtual
+fi
+EOF
+
 fi
 		if [ "$PROJECT" = "ubuntu-cpc" ] || [ "$PROJECT" = "ubuntu-server" ]; then
 			cat >> chroot/usr/local/sbin/unminimize <<'EOF'
@@ -329,6 +285,16 @@ EOF
                 chmod +x chroot/usr/bin/man
 	fi
 
+	if [ "${SUBPROJECT:-}" != minimized ] \
+	   && [ "${PROJECT}" != "ubuntu-server" ]
+	then
+		# debootstrap doesn't handle Recommends and fixing this is
+		# non-trivial, so install missing Recommends here
+		echo "Installing any missing recommends"
+		Chroot chroot "env DEBIAN_FRONTEND=noninteractive \
+			apt-get -y --fix-policy install"
+	fi
+
 	if [ -n "${PASSES}" ]; then
 		PATH="config/:$PATH" lb chroot_layered "$@"
 	else
@@ -340,7 +306,7 @@ EOF
 	fi
 
 	if [ -d chroot/etc/apt/preferences.d.save ]; then
-		# https://twitter.com/infinite_scream
+		# https://mastodon.social/@scream@botsin.space
 		mv chroot/etc/apt/preferences.d.save/* chroot/etc/apt/preferences.d/
 		rmdir chroot/etc/apt/preferences.d.save
 	fi
@@ -350,21 +316,24 @@ EOF
 	# done in chroot hooks.
 	if [ -z "$PASSES" ]; then
 		if [ "${SUBPROJECT:-}" = minimized ]; then
-			# force removal of initramfs-tools, which we assert is not
-			# required for any minimized images but is still pulled in by
-			# default
-			# also remove landscape-common, which is heavyweight and
-			# in the server seed only to provide /etc/motd content which
-			# would only be seen by humans
-			Chroot chroot "env DEBIAN_FRONTEND=noninteractive \
-				apt-get -y purge initramfs-tools busybox-initramfs \
-					landscape-common"
-			# and if initramfs-tools was configured before our kernel,
-			# /etc/kernel/postinst.d/initramfs-tools will have created
-			# an initramfs despite the generic dpkg-divert; so remove it
-			# here.
-			rm -f chroot/boot/initrd.img-*
-
+			# ubuntu-cpc has moved to using ubuntu-cloud-minimal seed
+			# for minimized images, so don't need these purges anymore.
+			if [ "$PROJECT" != ubuntu-cpc ]; then
+				# force removal of initramfs-tools, which we assert is not
+				# required for any minimized images but is still pulled in by
+				# default
+				# also remove landscape-common, which is heavyweight and
+				# in the server seed only to provide /etc/motd content which
+				# would only be seen by humans
+				Chroot chroot "env DEBIAN_FRONTEND=noninteractive \
+					apt-get -y purge initramfs-tools busybox-initramfs \
+						landscape-common"
+				# and if initramfs-tools was configured before our kernel,
+				# /etc/kernel/postinst.d/initramfs-tools will have created
+				# an initramfs despite the generic dpkg-divert; so remove it
+				# here.
+				rm -f chroot/boot/initrd.img-*
+			fi
 			# temporary workaround: don't remove linux-base which
 			# may have no other reverse-depends currently
 			Chroot chroot "env DEBIAN_FRONTEND=noninteractive \
@@ -397,7 +366,7 @@ EOF
 				mkdir -p chroot/var/lib/preinstalled-pool/dists/$LB_DISTRIBUTION/$component/binary-$LB_ARCHITECTURES
 			done
 			apt-ftparchive generate config/indices/apt.conf
-			cat << @@EOF > chroot/etc/apt/sources.list.preinstall
+			cat << @@EOF > chroot/etc/apt/sources.list.d/preinstalled-pool.sources
 # This is a sources.list entry for a small pool of packages
 # provided on your preinstalled filesystem for your convenience.
 #
@@ -405,12 +374,13 @@ EOF
 # it references, should you want to save disk space and fetch the
 # packages remotely instead.
 #
-deb file:/var/lib/preinstalled-pool/ $LB_DISTRIBUTION $LB_PARENT_ARCHIVE_AREAS
-#
+Types: deb
+URIs: file:/var/lib/preinstalled-pool/
+Suites: $LB_DISTRIBUTION
+Components: $LB_PARENT_ARCHIVE_AREAS
+Signed-By: /etc/apt/keyrings/preinstalled-pool.gpg
 @@EOF
 
-			cp chroot/etc/apt/sources.list chroot/etc/apt/sources.list.orig
-			cp chroot/etc/apt/sources.list.preinstall chroot/etc/apt/sources.list
 
 			echo "Waiting on gnupg ("$GPG_PROCESS") to finish generating a key."
 			wait $GPG_PROCESS
@@ -434,13 +404,10 @@ deb file:/var/lib/preinstalled-pool/ $LB_DISTRIBUTION $LB_PARENT_ARCHIVE_AREAS
 				chroot/var/lib/preinstalled-pool/dists/$R_CODENAME/Release
 			mv config/gnupg/Release.asc \
 				chroot/var/lib/preinstalled-pool/dists/$R_CODENAME/Release.gpg
-			apt-key --keyring chroot/etc/apt/trusted.gpg add config/gnupg/pubring.gpg
+			cp config/gnupg/pubring.gpg chroot/etc/apt/keyrings/preinstalled-pool.gpg
 			find chroot/var/lib/preinstalled-pool/ -name Packages | xargs rm
-
-			Chroot chroot "apt-get update"
-			cat chroot/etc/apt/sources.list.preinstall chroot/etc/apt/sources.list.orig \
-				> chroot/etc/apt/sources.list
-			rm chroot/etc/apt/sources.list.preinstall chroot/etc/apt/sources.list.orig
+			# We only want to have a cache for the pre-installed pool at this point
+			Chroot chroot "apt-get update -o Dir::Etc::SourceParts=/dev/null -oDir::Etc::SourceList=etc/apt/sources.list.d/preinstalled-pool.sources"
 		fi
 		case $PROJECT:$SUBPROJECT in
 			*)
@@ -463,9 +430,16 @@ serial: $BUILDSTAMP
 EOF
 		fi
 
-		if [ "$PROJECT" = "ubuntu-oci" ]; then
+		if [ "${PROJECT}" = ubuntu-base ] || [ "${PROJECT}" = "ubuntu-oci" ]; then
 			if [ -n "$BUILDSTAMP" ]; then
-				configure_oci chroot "$BUILDSTAMP"
+				mkdir -p chroot/etc/cloud
+				cat > chroot/etc/cloud/build.info << EOF
+build_name: $PROJECT:${SUBPROJECT:-}
+serial: $BUILDSTAMP
+EOF
+				if [ "${PROJECT}" = "ubuntu-oci" ]; then
+					configure_oci chroot
+				fi
 			else
 				echo "The \$BUILDSTAMP variable is empty"
 				exit 1
@@ -491,7 +465,7 @@ EOF
 	#  affected by this, we manually clear out the archive-related Packages
 	#  files in the cache.
 	case $PROJECT in
-		ubuntu|xubuntu|kubuntu|ubuntu-budgie|ubuntukylin|ubuntu-mate)
+		ubuntu|xubuntu|kubuntu|ubuntu-budgie|ubuntukylin|ubuntu-mate|ubuntucinnamon|ubuntu-unity|edubuntu)
 			rm -f chroot/var/lib/apt/lists/*ubuntu.com*_Packages
 			;;
 	esac
@@ -511,12 +485,6 @@ EOF
 if [ -e binary.success ]; then
 	rm -f binary.success
 else
-	# Dump the magic-proxy log to stdout on failure to aid debugging
-	if [ -f /build/livecd.magic-proxy.log ] ; then
-		echo "================= Magic proxy log (start) ================="
-		cat /build/livecd.magic-proxy.log
-		echo "================== Magic proxy log (end) =================="
-	fi
 	exit 1
 fi
 
@@ -541,10 +509,13 @@ for OUTPUT in ext2 ext3 ext4 manifest manifest-remove size squashfs; do
 done
 
 # we don't need a manifest-remove for a layered-aware installer
-if [ "$PROJECT" = "ubuntu" ] && [ "$SUBPROJECT" = "canary" ]; then
-	rm -f livecd.${PROJECT}-manifest-remove
-	rm -f config/manifest-minimal-remove
-fi
+# here we have a list of all new-installer flavors
+case $PROJECT in
+	ubuntu|ubuntu-budgie)
+		rm -f livecd.${PROJECT}-manifest-remove
+		rm -f config/manifest-minimal-remove
+		;;
+esac
 
 if [ -e config/manifest-minimal-remove ]; then
         cp config/manifest-minimal-remove  "$PREFIX.manifest-minimal-remove"
@@ -570,6 +541,14 @@ if [ -e "binary/$INITFS/filesystem.packages" ]; then
 	ln "binary/$INITFS/filesystem.packages" "$PREFIX.manifest"
 	chmod 644 "$PREFIX.manifest"
 fi
+
+# If a .filelist is present, use it as the filelist for the image by
+# symlinking with expected name and updating permissions
+if [ -e "binary/$INITFS/filesystem.filelist" ]; then
+	ln "binary/$INITFS/filesystem.filelist" "$PREFIX.filelist"
+	chmod 644 "$PREFIX.filelist"
+fi
+
 if [ -e "binary/$INITFS/filesystem.packages-remove" ]; then
 	# Not a typo, empty manifest-remove has a single LF in it. :/
 	if [ $(cat binary/$INITFS/filesystem.packages-remove | wc -c) -gt 1 ]; then
@@ -593,11 +572,11 @@ for FLAVOUR in $LB_LINUX_FLAVOURS; do
 		allwinner|virtual|generic-hwe-*)
 			FLAVOUR="generic"
 			;;
-		lowlatency-hwe-*)
-                        FLAVOUR="lowlatency"
-                        ;;
 		oem-*)
 			FLAVOUR="oem"
+			;;
+		laptop-*)
+			FLAVOUR="laptop"
 			;;
 		image-intel)
 			FLAVOUR="intel"
@@ -650,7 +629,7 @@ if [ "$NUMFLAVOURS" = 1 ] && [ "$LB_LINUX_FLAVOURS" != "none" ]; then
 fi
 
 case $SUBARCH in
-	raspi|raspi2)
+	raspi)
 		# copy the kernel and initrd to a predictable directory for
 		# ubuntu-image consumption.  In some cases, like in pi2/3
 		# u-boot, the bootloader needs to contain the kernel and initrd,
@@ -665,35 +644,6 @@ case $SUBARCH in
 		cp $PREFIX.kernel $UBOOT_BOOT/vmlinuz || true
 		;;
 esac
-
-# LTSP chroot building (only in 32bit and for Edubuntu (DVD))
-case $PROJECT in
-	edubuntu-dvd)
-		if [ "$ARCH" = i386 ]; then
-			echo "Building LTSP chroot"
-			ltsp-build-client --base $(pwd) --mirror $LB_PARENT_MIRROR_BOOTSTRAP --arch $ARCH --dist $LB_PARENT_DISTRIBUTION --chroot ltsp-live --late-packages ldm-edubuntu-theme,plymouth-theme-edubuntu --purge-chroot --skipimage
-			mkdir -p images
-			mksquashfs ltsp-live images/ltsp-live.img -e cdrom
-			rm -Rf ltsp-live
-			if [ -f images/ltsp-live.img ]; then
-				mv images/ltsp-live.img livecd.$PROJECT-ltsp.squashfs
-				chmod 0644 livecd.$PROJECT-ltsp.squashfs
-				rmdir --ignore-fail-on-non-empty images
-			else
-				echo "LTSP: Unable to build the chroot, see above for details."
-			fi
-		fi
-		;;
-esac
-
-if [ -f "config/magic-proxy.pid" ]; then
-    kill -TERM $(cat config/magic-proxy.pid)
-    rm -f config/magic-proxy.pid
-
-    # Remove previously-inserted iptables rule.
-    run_iptables -t nat -D OUTPUT -p tcp --dport 80 \
-        -m owner ! --uid-owner daemon -j REDIRECT --to 8080
-fi
 
 case $PROJECT in
     ubuntu-cpc)
