@@ -730,7 +730,7 @@ snap_preseed() {
                 CHANNEL=${2#*=}
                 ;;
             *)
-                CHANNEL="stable/ubuntu-$(release_ver)"
+                CHANNEL="latest/stable/ubuntu-$(release_ver)"
                 ;;
         esac
     fi

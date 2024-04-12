@@ -1,3 +1,10 @@
+livecd-rootfs (23.10.59) UNRELEASED; urgency=medium
+
+  * Use Ubuntu policy default channel "latest" for preseeded snaps
+    (LP: #2061121)
+
+ -- Philip Roche <phil.roche@canonical.com>  Fri, 12 Apr 2024 12:37:29 +0100
+
 livecd-rootfs (23.10.58) mantic; urgency=medium
 
   [ Simon Poirier ]
