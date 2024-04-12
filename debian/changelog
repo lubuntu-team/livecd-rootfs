@@ -1,4 +1,4 @@
-livecd-rootfs (23.10.59) UNRELEASED; urgency=medium
+livecd-rootfs (23.10.59) mantic; urgency=medium
 
   * Use Ubuntu policy default channel "latest" for preseeded snaps
     (LP: #2061121)
