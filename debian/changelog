@@ -8,7 +8,7 @@ livecd-rootfs (23.10.59) mantic; urgency=medium
 livecd-rootfs (23.10.58) mantic; urgency=medium
 
   [ Simon Poirier ]
-  * fix: add back systemd-resolved to buildd images.
+  * fix: add back systemd-resolved to buildd images (LP: #2007419)
 
  -- Dimitri John Ledkov <dimitri.ledkov@canonical.com>  Wed, 03 Jan 2024 15:17:17 +0000
 
