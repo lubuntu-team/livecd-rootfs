@@ -513,18 +513,6 @@ case $IMAGEFORMAT in
 				ubuntu-cpc)
 					IMAGE_PROJECT="ubuntu-server"
 					;;
-				ubuntu-core-desktop)
-					# The ubuntu-core-desktop case is special as we need 2 ubuntu-image calls:
-					# one for the payload and one for the actual image
-					echo "Configuring for additional payload preparation"
-					UBUNTU_IMAGE_PAYLOAD_ARGS="--image-size 12G"
-					EXTRA_SNAPS="$EXTRA_SNAPS evince firefox gnome-calculator gnome-characters gnome-clocks gnome-font-viewer gnome-logs gnome-system-monitor gnome-text-editor gnome-weather loupe snapd-desktop-integration snap-store ubuntu-core-desktop-init workshops"
-					for snap in $EXTRA_SNAPS; do
-						UBUNTU_IMAGE_PAYLOAD_ARGS="$UBUNTU_IMAGE_PAYLOAD_ARGS --snap $snap"
-					done
-					echo "UBUNTU_IMAGE_PAYLOAD_ARGS=\"$UBUNTU_IMAGE_PAYLOAD_ARGS\"" >> config/common
-					cp -a /usr/share/livecd-rootfs/live-build/$PROJECT/* config/
-					;;
 			esac
 
 			LB_UBUNTU_IMAGES_REPO="${LB_UBUNTU_IMAGES_REPO:-git://git.launchpad.net/ubuntu-images}"
