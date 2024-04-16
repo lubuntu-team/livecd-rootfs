@@ -164,40 +164,6 @@ if [ "${IMAGEFORMAT:-}" = "ubuntu-image" ] \
 	fi
 fi
 
-if [ "$PROJECT" = "ubuntu-core-desktop" ]; then
-	export SNAPPY_STORE_NO_CDN=1
-	LB_UBUNTU_IMAGE_CHANNEL="${LB_UBUNTU_IMAGE_CHANNEL:-stable}"
-	snap install \
-            --classic --channel="$LB_UBUNTU_IMAGE_CHANNEL" ubuntu-image
-
-	# Special case for ubuntu-core-desktop - we need to call
-	# ubuntu-image twice, once for the core image payload and
-	# then for the actual image.
-	echo "Building the core image payload"
-	cd config/
-	/snap/bin/ubuntu-image snap $UBUNTU_IMAGE_PAYLOAD_ARGS \
-		-O output ubuntu-core-desktop*.model-assertion
-	mv output/*.img pc.img
-	xz -0 -T4 pc.img
-	rm -rf output/
-
-	# Prepare the source catalogue
-	cat install-sources-in.yaml | sed "s/@SIZE@/$(stat -c%s pc.img.xz)/g" > ../"$PREFIX".install-sources.yaml
-
-	# We need to rename the image file so that it can be pulled
-	# by the builder.
-	mv pc.img.xz ../"$PREFIX".img.xz
-
-	# We need to make sure the autoinstall file is also exported.
-	mv autoinstall.yaml ../"$PREFIX".autoinstall.yaml
-
-	# Useful to have the model-assertion exported as well.
-	mv ubuntu-core-desktop*.model-assertion ../"$PREFIX".model-assertion
-
-	# Important: return to the previous directory
-	cd ../
-fi
-
 # Setup cleanup function
 Setup_cleanup
 
