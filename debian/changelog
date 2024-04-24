@@ -1,8 +1,12 @@
-livecd-rootfs (24.10.5) UNRELEASED; urgency=medium
+livecd-rootfs (24.10.5ubuntu1) UNRELEASED; urgency=medium
 
+  [ Erich Eickmeyer ]
   * Switch Ubuntu Studio to generic kernel
 
- -- Erich Eickmeyer <eeickmeyer@ubuntu.com>  Wed, 19 Jun 2024 15:52:04 -0700
+  [ Zhaoxuan Zhai ]
+  * support config sector size in ubuntu-image
+
+ -- Zhaoxuan Zhai <zhai.zhaoxuan@canonical.com>  Thu, 27 Jun 2024 09:58:27 +0800
 
 livecd-rootfs (24.10.4) oracular; urgency=medium
 
