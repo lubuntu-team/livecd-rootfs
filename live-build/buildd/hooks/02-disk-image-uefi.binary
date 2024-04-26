@@ -76,15 +76,15 @@ install_grub() {
     # please file a bug against grub2 to include the affected module.
     case $ARCH in
         arm64)
-            chroot mountpoint apt-get -qqy install --no-install-recommends grub-efi-arm64 grub-efi-arm64-bin
+            chroot mountpoint apt-get -qqy install --no-install-recommends grub-efi-arm64 grub-efi-arm64-bin udev
             efi_target=arm64-efi
             ;;
         armhf)
-            chroot mountpoint apt-get -qqy install --no-install-recommends grub-efi-arm grub-efi-arm-bin
+            chroot mountpoint apt-get -qqy install --no-install-recommends grub-efi-arm grub-efi-arm-bin udev
             efi_target=arm-efi
             ;;
         amd64)
-            chroot mountpoint apt-get install -qqy grub-pc shim-signed
+            chroot mountpoint apt-get install -qqy grub-pc shim-signed udev
             efi_target=x86_64-efi
             ;;
     esac
