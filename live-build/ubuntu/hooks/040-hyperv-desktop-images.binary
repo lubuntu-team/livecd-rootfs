@@ -40,7 +40,7 @@ trap cleanup_hyperv EXIT
 # Perform customisations
 
 chroot "${scratch_d}" apt-get update -y
-chroot "${scratch_d}" apt-get -y install xrdp linux-azure linux-tools-azure linux-cloud-tools-azure
+chroot "${scratch_d}" apt-get -y install xrdp linux-azure linux-tools-azure linux-cloud-tools-azure polkitd-pkla oem-config-gtk ubiquity-frontend-gtk  ubiquity-slideshow-ubuntu language-pack-en-base oem-config-slideshow-ubuntu
 
 cat > ${scratch_d}/etc/modules-load.d/hyperv.conf << EOF
 ${IMAGE_STR}
@@ -124,20 +124,19 @@ touch "${scratch_d}/var/lib/oem-config/run"
 
 chroot "${scratch_d}" apt-get clean
 
+raw_img=binary/boot/disk-hyperv-uefi.ext4
+vhd_img=livecd.ubuntu-desktop-hyperv.vhdx
+
+create_manifest "${scratch_d}" "$vhd_img.zip.manifest"
 # End customisations
 
 cleanup_hyperv
 trap - EXIT
 
-raw_img=binary/boot/disk-hyperv-uefi.ext4
-vhd_img=livecd.ubuntu-desktop-hyperv.vhdx
-
 qemu-img convert -O vhdx "$raw_img" "$vhd_img"
 rm "$raw_img"
 
 apt-get install -y zip
-
-create_manifest chroot "$vhd_img.zip.manifest"
 
 zip "$vhd_img.zip" "$vhd_img"
 rm "$vhd_img"
