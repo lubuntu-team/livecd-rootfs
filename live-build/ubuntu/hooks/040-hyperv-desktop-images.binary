@@ -39,6 +39,12 @@ trap cleanup_hyperv EXIT
 
 # Perform customisations
 
+# For Ubuntu 24.04 and later cloud-init is included in desktop images. This is not applicable for Hyperv images so
+# we can disable cloud-init. This leaves the cloud-init package installed but disabled so users can still
+# use it if they want.
+touch "${scratch_d}/etc/cloud/cloud-init.disabled"
+
+
 chroot "${scratch_d}" apt-get update -y
 chroot "${scratch_d}" apt-get -y install xrdp linux-azure linux-tools-azure linux-cloud-tools-azure polkitd-pkla oem-config-gtk ubiquity-frontend-gtk  ubiquity-slideshow-ubuntu language-pack-en-base oem-config-slideshow-ubuntu
 
