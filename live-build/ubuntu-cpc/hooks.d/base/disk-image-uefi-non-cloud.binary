@@ -34,7 +34,7 @@ case ${PROJECT:-}:${SUBPROJECT:-} in
         echo "We don't create EFI images for Ubuntu Desktop."
         exit 0
         ;;
-    ubuntu|ubuntu:desktop-preinstalled)
+    ubuntu:desktop-preinstalled)
         IMAGE_STR="# DESKTOP_IMG: This file was created/modified by the Desktop Image build process"
         FS_LABEL="desktop-rootfs"
         IMAGE_SIZE=12884901888 # 12G
