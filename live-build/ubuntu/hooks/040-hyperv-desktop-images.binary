@@ -46,7 +46,7 @@ touch "${scratch_d}/etc/cloud/cloud-init.disabled"
 
 
 chroot "${scratch_d}" apt-get update -y
-chroot "${scratch_d}" apt-get -y install xrdp linux-azure linux-tools-azure linux-cloud-tools-azure polkitd-pkla oem-config-gtk ubiquity-slideshow-ubuntu language-pack-en-base oem-config-slideshow-ubuntu
+chroot "${scratch_d}" apt-get -y install xrdp linux-azure linux-tools-azure linux-cloud-tools-azure polkitd-pkla oem-config-gtk language-pack-en-base oem-config-slideshow-ubuntu
 
 cat > ${scratch_d}/etc/modules-load.d/hyperv.conf << EOF
 ${IMAGE_STR}
