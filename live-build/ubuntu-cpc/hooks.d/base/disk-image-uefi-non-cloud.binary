@@ -9,21 +9,6 @@ case $ARCH in
         ;;
 esac
 
-case ${PROJECT:-}:${SUBPROJECT:-} in
-    ubuntu:)
-        echo "We don't create EFI images for Ubuntu Desktop."
-        exit 0
-        ;;
-    ubuntu)
-        IMAGE_STR="# DESKTOP_IMG: This file was created/modified by the Desktop Image build process"
-        FS_LABEL="desktop-rootfs"
-        IMAGE_SIZE=12884901888 # 12G
-        ;;
-    *)
-        IMAGE_STR="# CLOUD_IMG: This file was created/modified by the Cloud Image build process"
-        FS_LABEL="cloudimg-rootfs"
-        ;;
-esac
 
 if [ "$ARCH" = "amd64" ]; then
     IMAGE_SIZE=3758096384 # bump to 3.5G (3584*1024**2); Since Kinetic amd64 need more then the default 2.2G
@@ -43,6 +28,22 @@ fi
 if [ "$ARCH" = "riscv64" ]; then
     IMAGE_SIZE=4831838208 # bump to 4.5G (4608*1024**2); initrd creation fails with "No space left" with 3.5G
 fi
+
+case ${PROJECT:-}:${SUBPROJECT:-} in
+    ubuntu:)
+        echo "We don't create EFI images for Ubuntu Desktop."
+        exit 0
+        ;;
+    ubuntu:desktop-preinstalled)
+        IMAGE_STR="# DESKTOP_IMG: This file was created/modified by the Desktop Image build process"
+        FS_LABEL="desktop-rootfs"
+        IMAGE_SIZE=12884901888 # 12G
+        ;;
+    *)
+        IMAGE_STR="# CLOUD_IMG: This file was created/modified by the Cloud Image build process"
+        FS_LABEL="cloudimg-rootfs"
+        ;;
+esac
 
 . config/binary
 
