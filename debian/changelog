@@ -1,4 +1,4 @@
-livecd-rootfs (24.04.70) UNRELEASED; urgency=medium
+livecd-rootfs (24.10.1) UNRELEASED; urgency=medium
 
   [ Łukasz 'sil2100' Zemczak ]
   * Add experimental support for building ubuntu-core-desktop installer images
