@@ -634,7 +634,7 @@ case $PROJECT in
 	edubuntu|ubuntu-budgie|ubuntucinnamon|ubuntukylin)
 		COMPONENTS='main restricted universe'
 		;;
-	lubuntu|kubuntu|ubuntu-mate|ubuntu-unity|ubuntustudio-dvd|xubuntu)
+	lubuntu|kubuntu|ubuntu-mate|ubuntu-unity|ubuntustudio|xubuntu)
 		COMPONENTS='main restricted universe multiverse'
 		;;
 esac
@@ -947,11 +947,10 @@ case $PROJECT in
 		do_layered_desktop_image
 		;;
 
-	ubuntustudio-dvd)
+	ubuntustudio)
 		# By default Ubuntu Studio now ships the new installer.
 		UCFLAVOUR="Ubuntu Studio"
 		STANDARD_TASKS="ubuntustudio-desktop ubuntustudio-audio ubuntustudio-graphics ubuntustudio-video ubuntustudio-photography"
-		LIVE_TASK=ubuntustudio-dvd-live
 		KERNEL_FLAVOURS=lowlatency
 		do_layered_desktop_image
 		;;
@@ -1418,26 +1417,9 @@ EOF
 fi
 
 case $PROJECT:${SUBPROJECT:-} in
-	*-dvd:*)
-		. config/bootstrap
-
-		cat > config/archives/dvd.list.binary << EOF
-deb $LB_PARENT_MIRROR_BINARY $SUITE universe multiverse
-deb $LB_PARENT_MIRROR_BINARY_VOLATILE $SUITE-updates universe multiverse
-deb $LB_PARENT_MIRROR_BINARY_SECURITY $SUITE-security universe multiverse
-EOF
-		if [ "$PROPOSED" ]; then
-			cat >> config/archives/dvd.list.binary << EOF
-deb $LB_PARENT_MIRROR_BINARY_VOLATILE $SUITE-proposed universe multiverse
-EOF
-		fi
-		;;
-esac
-
-case $PROJECT:${SUBPROJECT:-} in
 	ubuntu-cpc:*|ubuntu-server:live|ubuntu:desktop-preinstalled| \
 		ubuntu-wsl:*|ubuntu-mini-iso:*|ubuntu:|ubuntu-oem:*| \
-		ubuntustudio-dvd:*|edubuntu:*|ubuntu-budgie:*|ubuntucinnamon:*|xubuntu:*| \
+		ubuntustudio:*|edubuntu:*|ubuntu-budgie:*|ubuntucinnamon:*|xubuntu:*| \
 	        ubuntukylin:*|ubuntu-mate:*|ubuntu-core-desktop:*)
 		# Ensure that most things e.g. includes.chroot are copied as is
 		for entry in /usr/share/livecd-rootfs/live-build/${PROJECT}/*; do
@@ -1473,7 +1455,7 @@ case $PROJECT:${SUBPROJECT:-} in
 esac
 
 case $PROJECT in
-	ubuntu-oem|ubuntustudio-dvd|edubuntu|ubuntu-budgie|ubuntucinnamon| \
+	ubuntu-oem|ubuntustudio|edubuntu|ubuntu-budgie|ubuntucinnamon| \
 	xubuntu|ubuntukylin|ubuntu-mate)
 		cp -af /usr/share/livecd-rootfs/live-build/ubuntu/includes.chroot \
 			config/includes.chroot
