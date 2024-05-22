@@ -1,8 +1,9 @@
 livecd-rootfs (2.765.42) jammy; urgency=medium
 
+  [ Ankush Pathak ]
   * Add policy:unconfined_restrictions feature to 6.5 kernel (LP: #2062929)
 
- -- Ankush Pathak<ankush.pathak@canonical.com>  Thu, 18 Apr 2024 21:47:13 -0500
+ -- Philip Roche <phil.roche@canonical.com>  Wed, 22 May 2024 12:39:15 +0100
 
 livecd-rootfs (2.765.41) jammy; urgency=medium
 
