@@ -1,0 +1,17 @@
+#!/bin/bash -eux
+# vi: ts=4 noexpandtab
+
+case $PASS in
+    base.live)
+        ;;
+    *)
+        exit 0
+        ;;
+esac
+
+PROJECT=$PROJECT${SUBARCH:+-$SUBARCH}
+
+# Fish out generated kernel image and initrd
+mv chroot/boot/initrd.img-* ${PWD}/livecd.${PROJECT}.initrd-generic
+mv chroot/boot/vmlinu?-* ${PWD}/livecd.${PROJECT}.kernel-generic
+chmod a+r ${PWD}/livecd.${PROJECT}.initrd-generic ${PWD}/livecd.${PROJECT}.kernel-generic
