@@ -1048,12 +1048,9 @@ case $PROJECT in
 	ubuntu-core-installer)
 	    OPTS="${OPTS:+$OPTS }--bootstrap-flavour=minimal"
 	    PASSES_TO_LAYERS=true
-	    add_task base server
-	    add_package base.live cloud-init
-
+	    add_task base server-minimal server
 	    add_task base.live server-live
-
-	    add_package base.live linux-generic
+	    add_package base.live linux-image-generic
 
 	    /usr/share/livecd-rootfs/checkout-translations-branch \
 		https://git.launchpad.net/subiquity po config/catalog-translations
