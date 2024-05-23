@@ -1,3 +1,9 @@
+livecd-rootfs (24.04.75) UNRELEASED; urgency=medium
+
+  * Add 'ubuntu-core-installer' project.
+
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Thu, 25 Jul 2024 17:26:08 +1200
+
 livecd-rootfs (24.04.74) noble; urgency=medium
 
   * riscv64: preinstalled server image for Microchip PIC64GX Curiosity Kit
