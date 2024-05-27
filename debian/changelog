@@ -2,7 +2,7 @@ livecd-rootfs (24.04.71) noble; urgency=medium
 
   * Re-enable ability to build HyperV desktop images (LP: #2064280)
 
- -- Philip Roche <phil.roche@canonical.com>  Fri, 24 May 2024 15:47:48 +0100
+ -- Philip Roche <phil.roche@canonical.com>  Mon, 27 May 2024 12:05:33 +0100
  
 livecd-rootfs (24.04.70) noble; urgency=medium
 
