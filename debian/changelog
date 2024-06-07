@@ -1,3 +1,10 @@
+livecd-rootfs (2.765.43) jammy; urgency=medium
+
+  * buildd/02-disk-image-uefi add udev early hook to satisfy grub-probe
+    and grub-install. (LP: #2064175)
+
+ -- Simon Poirier <simon.poirier@canonical.com>  Fri, 07 Jun 2024 12:27:04 -0400
+
 livecd-rootfs (2.765.42) jammy; urgency=medium
 
   [ Ankush Pathak ]
