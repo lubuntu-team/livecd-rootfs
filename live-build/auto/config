@@ -1046,6 +1046,11 @@ case $PROJECT in
 		;;
 
 	ubuntu-core-installer)
+	    # The ubuntu-core-installer image is an installer that installs ubuntu
+	    # core. The environment the installer runs in is similar to the server
+	    # installer but it has a source catalog entry that points to the model
+	    # created in ubuntu-core-installer/hooks/05-prepare-image.binary, which
+	    # subiquity knows how to install.
 	    OPTS="${OPTS:+$OPTS }--bootstrap-flavour=minimal"
 	    PASSES_TO_LAYERS=true
 	    add_task base server-minimal server
