@@ -10,9 +10,9 @@ import yaml
 parser = argparse.ArgumentParser()
 parser.add_argument('--output', required=True)
 parser.add_argument('--size', required=True)
-parser.add_argument('--squashfs', required=True)
-parser.add_argument('--translations', required=True)
-parser.add_argument('--template', required=True)
+parser.add_argument('--squashfs', default='')
+parser.add_argument('--translations')
+parser.add_argument('--template')
 parser.add_argument('--langs', default=None)
 
 opts = parser.parse_args(sys.argv[1:])
@@ -58,19 +58,20 @@ else:
     template['name'] = {'en': en_name}
     template['description'] = {'en': en_description}
 
-    for mo in glob.glob(os.path.join(opts.translations, '*.mo')):
-        with open(mo, 'rb') as fp:
-            t = gettext.GNUTranslations(fp=fp)
-        t_name = t.gettext(en_name)
-        if t_name != en_name:
-            lang = os.path.splitext(os.path.basename(mo))[0]
-            template['name'][lang] = t_name
-        t_description = t.gettext(en_description)
-        if t_description != en_description:
-            lang = os.path.splitext(os.path.basedescription(mo))[0]
-            template['description'][lang] = t_description
-        if opts.langs is not None:
-            template['preinstalled_langs'] = opts.langs.split(',')
+    if opts.translations:
+        for mo in glob.glob(os.path.join(opts.translations, '*.mo')):
+            with open(mo, 'rb') as fp:
+                t = gettext.GNUTranslations(fp=fp)
+            t_name = t.gettext(en_name)
+            if t_name != en_name:
+                lang = os.path.splitext(os.path.basename(mo))[0]
+                template['name'][lang] = t_name
+            t_description = t.gettext(en_description)
+            if t_description != en_description:
+                lang = os.path.splitext(os.path.basedescription(mo))[0]
+                template['description'][lang] = t_description
+            if opts.langs is not None:
+                template['preinstalled_langs'] = opts.langs.split(',')
 
     output.append(template)
 
