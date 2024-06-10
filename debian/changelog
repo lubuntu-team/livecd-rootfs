@@ -1,4 +1,4 @@
-livecd-rootfs (24.10.3) UNRELEASED; urgency=medium
+livecd-rootfs (24.10.3) oracular; urgency=medium
 
   [ Heinrich Schuchardt ]
   * riscv64: use earlycon=sbi on command line
@@ -6,7 +6,7 @@ livecd-rootfs (24.10.3) UNRELEASED; urgency=medium
   [ Michael Hudson-Doyle ]
   * Add 'ubuntu-core-installer' project.
 
- -- Brian Murray <brian@ubuntu.com>  Thu, 06 Jun 2024 14:03:48 -0700
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Tue, 11 Jun 2024 11:51:14 +1200
 
 livecd-rootfs (24.10.2) oracular; urgency=medium
 
