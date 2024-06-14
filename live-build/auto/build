@@ -87,11 +87,16 @@ fi
 PREFIX="livecd.$PROJECT${SUBARCH:+-$SUBARCH}"
 
 if [ "${IMAGEFORMAT:-}" = "ubuntu-image" ]; then
-	# Use ubuntu-image instead of live-build
+	# Use ubuntu-image instead (or as part) of live-build
+
+	export SNAPPY_STORE_NO_CDN=1
+	LB_UBUNTU_IMAGE_CHANNEL="${LB_UBUNTU_IMAGE_CHANNEL:-stable}"
+	snap install \
+            --classic --channel="$LB_UBUNTU_IMAGE_CHANNEL" ubuntu-image
 
 	if [ "$PROJECT" = "ubuntu-core" ]; then
-		env SNAPPY_STORE_NO_CDN=1 \
-		ubuntu-image snap $UBUNTU_IMAGE_ARGS \
+		# Ubuntu Core images
+		/snap/bin/ubuntu-image snap $UBUNTU_IMAGE_ARGS \
 			-O output "$PREFIX".model-assertion
 		# XXX: currently we only have one image generated, but really
 		#  we should be supporting more than one for models that
@@ -99,24 +104,32 @@ if [ "${IMAGEFORMAT:-}" = "ubuntu-image" ]; then
 		mv output/*.img "$PREFIX".img
 		xz -0 -T4 "$PREFIX".img
 		mv output/seed.manifest "$PREFIX".manifest
-	else
-		# First we need to build the gadget tree
-		make -C "config/$PREFIX-gadget" \
-			ARCH=$ARCH SERIES=$SUITE $GADGET_TARGET
-		ubuntu-image classic $UBUNTU_IMAGE_ARGS \
-			-s $SUITE -p $PROJECT -a $ARCH --subarch $SUBARCH \
-			-O output config/$PREFIX-gadget/install
-		# XXX: currently we only have one image generated, but really
-		#  we should be supporting more than one for models that
-		#  define those.
-		mv output/*.img "$PREFIX".img
-		xz -0 -T4 "$PREFIX".img
-		# Also link the output image to a filename that cdimage expects
-		ln "$PREFIX".img.xz livecd.ubuntu-cpc.disk1.img.xz
-		mv output/filesystem.manifest "$PREFIX".manifest
-	fi
 
-	exit 0
+		# All the builds are finished now, exit
+		exit 0
+	else
+		# Ubuntu classic preinstalled images
+		/snap/bin/ubuntu-image classic --verbose $UBUNTU_IMAGE_ARGS \
+			-O output "$IMAGE_DEFINITION"
+		# Since the output of the ubuntu-image call can vary based on what
+		# kind of an image we build, the safest bet is to 'export' all the
+		# artifacts from the output directory. The image definition file
+		# should be what defines what is expected, so that we don't have
+		# to tweak livecd-rootfs everytime a different type of artifact
+		# is needed.
+		for artifact in output/*; do
+			# We want to be dynamic, and want to support even
+			# two-part extensions.
+			filename=$(basename $artifact)
+			noversion=$(echo $filename | sed 's/[0-9][0-9]\.[0-9][0-9]//')
+			extension=${noversion#*.}
+			mv $artifact "$PREFIX".$extension
+		done
+		[ -f $PREFIX.img ] && xz -0 -T4 "$PREFIX".img
+
+		# All the builds are finished now, exit
+		exit 0
+	fi
 fi
 
 # Setup cleanup function

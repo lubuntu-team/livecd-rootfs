@@ -493,38 +493,22 @@ case $IMAGEFORMAT in
 		else
 			# classic images
 
-			# Certain models have different names but are built from the same source gadget tree
-			BRANCH="classic"
-			case $MODEL in
-				pi|pi-arm64|pi3-arm64)
-					MODEL=pi
-					BRANCH="classic-22.04"
-					;;
-				intel-iot)
-					MODEL=pc
+			# Sometimes per-project quirks are necessary
+			IMAGE_PROJECT=$PROJECT
+			case "$IMAGE_PROJECT" in
+				ubuntu-cpc)
+					IMAGE_PROJECT="ubuntu-server"
 					;;
 			esac
 
-			GADGET_TARGET="server"
-			if [ "$SUBPROJECT" = "desktop-preinstalled" ]; then
-				GADGET_TARGET="desktop"
-			fi
-
-			UBUNTU_IMAGE_ARGS="$UBUNTU_IMAGE_ARGS${SUBPROJECT:+ --subproject \"$SUBPROJECT\"}"
-			UBUNTU_IMAGE_ARGS="$UBUNTU_IMAGE_ARGS${PROPOSED:+ --with-proposed}"
-			UBUNTU_IMAGE_ARGS="$UBUNTU_IMAGE_ARGS${EXTRA_PPAS:+ --extra-ppas \"$EXTRA_PPAS\"}"
-
-			# We need to look in two places for the gadget tree:
-			# - Launchpad hosted gadgets will be in the snap-gadget repo
-			# - Github hosted gadgets are mirrored into a github-mirror repo
-			git clone git://git.launchpad.net/~canonical-foundations/snap-$MODEL/+git/snap-$MODEL -b $BRANCH config/$PREFIX-gadget || git clone git://git.launchpad.net/~canonical-foundations/snap-$MODEL/+git/github-mirror -b $BRANCH config/$PREFIX-gadget || git clone git://git.launchpad.net/~canonical-foundations/snap-$MODEL/+git/github-mirror-$ARCH -b $BRANCH config/$PREFIX-gadget
-
-			echo "IMAGEFORMAT=$IMAGEFORMAT" >> config/common
-			echo "SUITE=$SUITE" >> config/common
-			echo "GADGET_TARGET=$GADGET_TARGET" >> config/common
-			echo "UBUNTU_IMAGE_ARGS=\"$UBUNTU_IMAGE_ARGS\"" >> config/common
-
-			echo "Configured ubuntu-image for the following gadget model: $MODEL"
+			LB_UBUNTU_IMAGES_REPO="${LB_UBUNTU_IMAGES_REPO:-git://git.launchpad.net/ubuntu-images}"
+			LB_UBUNTU_IMAGES_BRANCH="${LB_UBUNTU_IMAGES_BRANCH:-$SUITE}"
+			git clone "$LB_UBUNTU_IMAGES_REPO" -b "$LB_UBUNTU_IMAGES_BRANCH" image-definitions
+			IMAGE_DEFINITION="image-definitions/$IMAGE_PROJECT-$MODEL.yaml"
+			echo "IMAGE_DEFINITION=$IMAGE_DEFINITION" >> config/common
+			echo "Configured ubuntu-image to use image definition file $IMAGE_DEFINITION which has the following contents:"
+			cat "$IMAGE_DEFINITION"
+			echo "----------------------------------------------------------"
 		fi
 
 		# Save the model name used for building, mostly for any model-specific hook execution
