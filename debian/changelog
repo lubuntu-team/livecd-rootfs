@@ -1,3 +1,9 @@
+livecd-rootfs (24.10.4) UNRELEASED; urgency=medium
+
+  * Revert removal of unminimize call in server builds (LP: #2069828)
+
+ -- Philip Roche <phil.roche@canonical.com>  Wed, 19 Jun 2024 15:17:52 +0100
+
 livecd-rootfs (24.10.3) oracular; urgency=medium
 
   [ Heinrich Schuchardt ]
