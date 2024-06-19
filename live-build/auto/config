@@ -951,7 +951,7 @@ case $PROJECT in
 		# By default Ubuntu Studio now ships the new installer.
 		UCFLAVOUR="Ubuntu Studio"
 		STANDARD_TASKS="ubuntustudio-desktop ubuntustudio-audio ubuntustudio-graphics ubuntustudio-video ubuntustudio-photography"
-		KERNEL_FLAVOURS=lowlatency
+		KERNEL_FLAVOURS=generic
 		do_layered_desktop_image
 		;;
 
