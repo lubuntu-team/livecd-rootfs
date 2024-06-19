@@ -1,8 +1,13 @@
-livecd-rootfs (24.10.4) UNRELEASED; urgency=medium
+livecd-rootfs (24.10.4) oracular; urgency=medium
 
-  * Revert removal of unminimize call in server builds (LP: #2069828)
+  [ Philip Roche ]
+  * Revert removal of unminimize call in server builds. (LP: #2069828)
 
- -- Philip Roche <phil.roche@canonical.com>  Wed, 19 Jun 2024 15:17:52 +0100
+  [ Utkarsh Gupta ]
+  * Use packaged unminimize in the ubuntu-server images.
+  * Drop unminimize spit out by livecd-rootfs.
+
+ -- Utkarsh Gupta <utkarsh@ubuntu.com>  Wed, 19 Jun 2024 22:02:39 +0530
 
 livecd-rootfs (24.10.3) oracular; urgency=medium
 
