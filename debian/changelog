@@ -1,3 +1,11 @@
+livecd-rootfs (2.765.44) jammy; urgency=medium
+
+  [ Rémy Martin ]
+  * Backport support for building tegra-igx Server and Core images;
+    LP: #2070070.
+
+ -- Loïc Minier <loic.minier@ubuntu.com>  Fri, 21 Jun 2024 18:42:58 +0000
+
 livecd-rootfs (2.765.43) jammy; urgency=medium
 
   * buildd/02-disk-image-uefi add udev early hook to satisfy grub-probe
