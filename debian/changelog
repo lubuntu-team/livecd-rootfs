@@ -1,14 +1,12 @@
-livecd-rootfs (24.04.73) UNRELEASED; urgency=medium
+livecd-rootfs (24.04.72) noble; urgency=medium
 
+  [ Heinrich Schuchardt ]
+  * riscv64: use earlycon=sbi on command line (LP: #2068739)
+
+  [ Philip Roche ]
   * Revert removal of unminimize call in server builds (LP: #2069828)
 
  -- Philip Roche <phil.roche@canonical.com>  Mon, 24 Jun 2024 14:24:52 +0100
-
-livecd-rootfs (24.04.72) UNRELEASED; urgency=medium
-
-  * riscv64: use earlycon=sbi on command line (LP: #2068739)
-
- -- Heinrich Schuchardt <heinrich.schuchardt@canonical.com>  Fri, 07 Jun 2024 13:58:34 +0200
 
 livecd-rootfs (24.04.71) noble; urgency=medium
 
