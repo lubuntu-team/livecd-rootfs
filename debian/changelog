@@ -4,7 +4,7 @@ livecd-rootfs (2.765.44) jammy; urgency=medium
   * Backport support for building tegra-igx Server and Core images;
     LP: #2070070.
 
- -- Loïc Minier <loic.minier@ubuntu.com>  Fri, 21 Jun 2024 18:42:58 +0000
+ -- Philip Roche <phil.roche@canonical.com>  Thu, 27 Jun 2024 14:11:06 +0100
 
 livecd-rootfs (2.765.43) jammy; urgency=medium
 
