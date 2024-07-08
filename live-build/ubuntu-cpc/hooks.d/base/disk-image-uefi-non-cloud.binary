@@ -105,7 +105,7 @@ create_partitions() {
                        --change-name=12:CIDATA \
                        --new=1:: \
                        --attributes=1:set:2
-            elif [ "${SUBARCH:-}" = "icicle" ]; then
+            elif [ "${SUBARCH:-}" = "icicle" ] || [ "${SUBARCH:-}" = "pic64gx" ]; then
                 # Microchip Icicle Kit
                 sgdisk "${disk_image}" \
                        --set-alignment=2 \
@@ -327,6 +327,17 @@ install_grub() {
                         # Package nezha-boot0 is not needed anymore.
                         loader1="${loop_device}p13"
                         dd if=mountpoint/usr/lib/u-boot/${SUBARCH}/u-boot-sunxi-with-spl.bin of=$loader1
+                        ;;
+                    "pic64gx")
+                        cp ${my_d}/riscv64/grub/90_watchdog-thresh.cfg mountpoint/etc/default/grub.d/
+                        # flash-kernel is needed to install the dtb for update-grub: it uses the
+                        # /proc/device-tree/model value to pick the correct dtb and as we are in a chroot,
+                        # the model value is wrong and we need to use /etc/flash-kernel/machine instead.
+                        chroot mountpoint bash -c "echo 'Microchip PIC64GX Curiosity Kit' > /etc/flash-kernel/machine"
+                        # u-boot-pic64gx contains the vendor U-Boot
+                        chroot mountpoint apt-get install -qqy u-boot-pic64gx
+                        loader="${loop_device}p13"
+                        dd if=mountpoint/usr/lib/u-boot-pic64gx/u-boot.payload of=$loader
                         ;;
                     "visionfive")
                         # flash-kernel is needed to install the dtb for update-grub: it uses the
