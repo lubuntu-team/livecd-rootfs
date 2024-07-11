@@ -6,7 +6,10 @@ livecd-rootfs (24.10.5) UNRELEASED; urgency=medium
   [ Zhaoxuan Zhai ]
   * support config sector size in ubuntu-image
 
- -- Zhaoxuan Zhai <zhai.zhaoxuan@canonical.com>  Thu, 27 Jun 2024 09:58:27 +0800
+  [ Łukasz 'sil2100' Zemczak ]
+  * Build qcow2 images for ubuntu-core LXD support.
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Thu, 11 Jul 2024 12:57:54 +0200
 
 livecd-rootfs (24.10.4) oracular; urgency=medium
 

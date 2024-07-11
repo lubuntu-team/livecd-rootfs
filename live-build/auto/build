@@ -40,7 +40,7 @@ if [ "${IMAGEFORMAT:-}" = "ubuntu-image" ] \
 		# For standard, non-platform-specific core images, prepare a
 		# qcow2 image as well for LXD consumption.
 		if [ -z "${SUBARCH:-}" ]; then
-			convert_to_qcow2 "$PREFIX".img "$PREFIX".qcow2 ;;
+			convert_to_qcow2 "$PREFIX".img "$PREFIX".qcow2
 		fi
 		xz -0 -T4 "$PREFIX".img
 		mv output/seed.manifest "$PREFIX".manifest
