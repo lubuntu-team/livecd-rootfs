@@ -1044,35 +1044,42 @@ EOF
         # any previous 50-cloud-init.yaml will be rendered inert.
 
         # Position cloud-init.service After=NetworkManager.service.
-        # (LP: #2008952).
-        # We override the entire cloud-init.service definition because
-        # systemd drop-in files only allow adding Before/After constraints
-        # yet we are dropping the Before=sysinit.target from the upstream
-        # cloud-init.service.
+        # (LP: #2008952. Drop-in systemd files cannot redact existing
+        # dependencies (Before= or After=). So, replace the entire unit
+        # with an override in /etc/systemd/system/cloud-init.service.
+        # Avoid issues reported by debsums (LP: #2069391) by not overwriting
+        # unit files delivered by the cloud-init deb.
+        # This drop-in will need to track any changes introduced by cloud-init
+        # SRUs which alter the cloud-init.service unit values.
         # This override can be dropped when NetworkManager.service can run
         # Before=sysinit.target when it drops strict dbus.service dependency.
-        cat <<EOF > chroot/lib/systemd/system/cloud-init.service
+        mkdir -p chroot/etc/systemd/system/
+        cat <<EOF > chroot/etc/systemd/system/cloud-init.service
 ${AUTOMATION_HEADER}
-# Based on cloud-init 23.1 for Desktop LiveCD
+# Based on cloud-init 24.2 for Desktop LiveCD
+# Redact sysinit.target from Before, add After=NetworkManager*.service
+# (LP: #2008952)
 [Unit]
-Description=Initial cloud-init job (metadata service crawler)
+# https://cloudinit.readthedocs.io/en/latest/explanation/boot.html
+Description=Cloud-init: Network Stage
 DefaultDependencies=no
 Wants=cloud-init-local.service
 Wants=sshd-keygen.service
 Wants=sshd.service
 After=cloud-init-local.service
 After=systemd-networkd-wait-online.service
-# Installer Added After=NetworkManager* ordering
-After=NetworkManager.service
-After=NetworkManager-wait-online.service
 After=networking.service
+After=NetworkManager.service NetworkManager-wait-online.service
 Before=network-online.target
 Before=sshd-keygen.service
 Before=sshd.service
-# Before=sysinit.target  Installer removed to allow for NM dependency
+Before=systemd-user-sessions.service
+# Before=sysinit.target Redacted due to NetworkManager.service dbus depends
 Before=shutdown.target
 Conflicts=shutdown.target
-Before=systemd-user-sessions.service
+ConditionPathExists=!/etc/cloud/cloud-init.disabled
+ConditionKernelCommandLine=!cloud-init=disabled
+ConditionEnvironment=!KERNEL_CMDLINE=cloud-init=disabled
 
 [Service]
 Type=oneshot
