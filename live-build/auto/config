@@ -850,8 +850,8 @@ case $PROJECT in
 		# the minimal layer, for minimal installs
 		add_task minimal minimal
 		# the live layer, contains all packages for the live session installer
-		add_snap minimal.live ubuntu-core-desktop-installer/classic core22 snapd
-		add_package minimal.live linux-$KERNEL_FLAVOURS plymouth-theme-spinner squashfs-tools snapd cloud-init gsettings-desktop-schemas yaru-theme-gtk lshw
+		add_snap minimal.live subiquity/classic core22 snapd
+		add_package minimal.live linux-$KERNEL_FLAVOURS squashfs-tools snapd cloud-init lshw bzip2 tar lvm2 parted dosfstools xz-utils console-setup-linux whois mdadm
 
 		echo "Configuring for additional payload preparation"
 		UBUNTU_IMAGE_PAYLOAD_ARGS="--image-size 12G"
