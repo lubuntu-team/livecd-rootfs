@@ -237,10 +237,13 @@ mount_disk_image() {
     mount_image ${disk_image} "${rootpart}"
     mount_partition "${rootfs_dev_mapper}" $mountpoint
 
-    local boot_dev="${loop_device}p16"
+    local boot_dev="${loop_device}p13"
     if flock -x ${loop_device} \
         [ -b ${boot_dev} -a -e $mountpoint/boot ]; then
-        flock -x ${loop_device} mount "${boot_dev}" $mountpoint/boot
+        # Only mount if assumed boot_dev is XBOOTLDR type
+        if sgdisk -i13 "${loop_device}" | grep -i BC13C2FF-59E6-4262-A352-B275FD6F7172 ; then
+            flock -x ${loop_device} mount "${boot_dev}" $mountpoint/boot
+        fi
     fi
 
     # Having one partition mounted should avoid udev-triggered partition
