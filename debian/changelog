@@ -1,3 +1,10 @@
+livecd-rootfs (24.10.10) oracular; urgency=medium
+
+  * disk-image-uefi.binary: Shift down boot partition to 13 to support systems
+    which don't handle partition numbers higher than 15. (LP: #2072929)
+
+ -- Simon Poirier <simon.poirier@canonical.com>  Tue, 20 Aug 2024 18:57:57 -0400
+
 livecd-rootfs (24.10.9) oracular; urgency=medium
 
   [ Cody Shepherd ]
