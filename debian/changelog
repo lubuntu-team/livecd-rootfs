@@ -1,4 +1,4 @@
-livecd-rootfs (24.10.7) UNRELEASED; urgency=medium
+livecd-rootfs (24.10.7) oracular; urgency=medium
 
   * riscv64: preinstalled server image for Microchip PIC64GX Curiosity Kit
     (LP: #2072956)
