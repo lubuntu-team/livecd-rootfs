@@ -954,7 +954,10 @@ case $PROJECT in
 	ubuntustudio)
 		# By default Ubuntu Studio now ships the new installer.
 		UCFLAVOUR="Ubuntu Studio"
-		STANDARD_TASKS="ubuntustudio-desktop ubuntustudio-audio ubuntustudio-graphics ubuntustudio-video ubuntustudio-photography"
+		HAS_MINIMAL=yes
+		MINIMAL_TASKS=ubuntustudio-desktop-core
+		MINIMAL_DESC="A minimal installation of $UCFLAVOUR. Customize afterwards with $UCFLAVOUR Installer."
+		STANDARD_DESC="A full installation of $UCFLAVOUR."
 		KERNEL_FLAVOURS=generic
 		do_layered_desktop_image
 		;;
