@@ -1,3 +1,10 @@
+livecd-rootfs (2.765.45) jammy; urgency=medium
+
+  * Remove openssh-server and ssh-import-id from the ubuntu-server
+    minimal and full layers (LP: #1974483).
+
+ -- Chris Peterson <chris.peterson@canonical.com>  Tue, 30 Jul 2024 13:58:15 -0700
+
 livecd-rootfs (2.765.44) jammy; urgency=medium
 
   [ Rémy Martin ]
