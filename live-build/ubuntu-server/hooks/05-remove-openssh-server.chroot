@@ -1,0 +1,30 @@
+#!/bin/bash -ex
+
+# LP: #1974483
+# We want to make sure that openssh-server is not installed by default.
+# Due to ssh-import-id being part of the server-minimal task, and the fact
+# task headers can't be updated post-release, we need to do clean-up
+# of the layers to ensure openssh-server is not part of a layer that curtin
+# will copy to the target.
+#
+# In practice this means ubuntu-server-minimal (minimal) and
+# ubuntu-server-minimal.ubuntu-server (full) need to be cleaned up.
+# ubuntu-server-minimal.ubuntu-server.installer (live) _needs_ these
+# packages so Subiquity can utilize them, so don't modify that layer.
+
+case ${PASS} in
+    ubuntu-server-minimal)
+        ;;
+    ubuntu-server-minimal.ubuntu-server)
+        ;;
+    *)
+        exit 0
+        ;;
+esac
+
+
+# Remove openssh-server packages and ssh-import-id
+apt-get remove --purge --yes openssh-server openssh-sftp-server ssh-import-id
+# Chroot hooks are run after autoremove step, re-run autoremove to get rid
+# of openssh-server dependencies
+apt-get autoremove --purge --yes
