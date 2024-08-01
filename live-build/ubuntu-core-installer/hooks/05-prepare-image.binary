@@ -13,15 +13,29 @@ esac
 . config/binary
 . config/functions
 
-env SNAPPY_STORE_NO_CDN=1 snap known --remote model series=16 brand-id=canonical model=ubuntu-core-24-amd64 > config/ubuntu-core-24-amd64.model
+case ${SUBPROJECT} in
+    desktop)
+        env SNAPPY_STORE_NO_CDN=1 snap prepare-image \
+        config/ubuntu-core-desktop-24-amd64.model-assertion --snap firefox chroot
 
-env SNAPPY_STORE_NO_CDN=1 snap prepare-image \
-    config/ubuntu-core-24-amd64.model --snap console-conf chroot
-mv chroot/system-seed/systems/* chroot/system-seed/systems/ubuntu-core-24-amd64
-rsync -av chroot/system-seed/{systems,snaps} chroot/var/lib/snapd/seed
-rm -rf chroot/system-seed
+        cat <<-EOF > config/edge.catalog-in.yaml
+name: "Ubuntu Core Desktop 24"
+description: >-
+  Ubuntu Core Desktop.
+id: ubuntu-core-desktop
+type: null
+variant: core
+locale_support: none
+snapd_system_label: ubuntu-core-desktop-24-amd64
+EOF
+        mv chroot/system-seed/systems/* chroot/system-seed/systems/ubuntu-core-desktop-24-amd64
+        ;;
+    *)
+        env SNAPPY_STORE_NO_CDN=1 snap known --remote model series=16 brand-id=canonical model=ubuntu-core-24-amd64 > config/ubuntu-core-24-amd64.model
+        env SNAPPY_STORE_NO_CDN=1 snap prepare-image \
+            config/ubuntu-core-24-amd64.model --snap console-conf chroot
 
-cat <<-EOF > config/edge.catalog-in.yaml
+        cat <<-EOF > config/edge.catalog-in.yaml
 name: "Ubuntu Core 24"
 description: >-
   Ubuntu Core.
@@ -31,8 +45,15 @@ variant: core
 locale_support: none
 snapd_system_label: ubuntu-core-24-amd64
 EOF
+        mv chroot/system-seed/systems/* chroot/system-seed/systems/ubuntu-core-24-amd64
+        ;;
+esac
+
+rsync -av chroot/system-seed/{systems,snaps} chroot/var/lib/snapd/seed
+rm -rf chroot/system-seed
+
 PROJECT_FULL=$PROJECT${SUBARCH:+-$SUBARCH}
 usc_opts="--output livecd.${PROJECT_FULL}.install-sources.yaml \
-	  --template config/edge.catalog-in.yaml \
-	  --size 0"
+          --template config/edge.catalog-in.yaml \
+          --size 0"
 /usr/share/livecd-rootfs/update-source-catalog $usc_opts

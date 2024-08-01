@@ -382,7 +382,7 @@ if [ -z "${IMAGEFORMAT:-}" ]; then
 					;;
 			esac
 			;;
-		ubuntu-server:live|ubuntu-mini-iso:|ubuntu-core-installer:)
+		ubuntu-server:live|ubuntu-mini-iso:|ubuntu-core-installer:*)
 			IMAGEFORMAT=plain
 			;;
 	esac
@@ -422,7 +422,7 @@ case $IMAGEFORMAT in
 		;;
 	plain)
 		case $PROJECT:${SUBPROJECT:-} in
-			ubuntu-server:live|ubuntu-core-installer:)
+			ubuntu-server:live|ubuntu-core-installer:*)
 	                        touch config/universe-enabled
 				;;
 			ubuntu-mini-iso:)
@@ -843,26 +843,6 @@ case $PROJECT in
 		esac
 		;;
 
-	ubuntu-core-desktop)
-		touch config/universe-enabled
-		KERNEL_FLAVOURS='generic-hwe-22.04'
-		PASSES_TO_LAYERS="true"
-
-		# the minimal layer, for minimal installs
-		add_task minimal minimal
-		# the live layer, contains all packages for the live session installer
-		add_snap minimal.live ubuntu-core-desktop-installer/classic core22 snapd
-		add_package minimal.live linux-$KERNEL_FLAVOURS plymouth-theme-spinner squashfs-tools snapd cloud-init gsettings-desktop-schemas yaru-theme-gtk lshw
-
-		echo "Configuring for additional payload preparation"
-		UBUNTU_IMAGE_PAYLOAD_ARGS="--image-size 12G"
-		EXTRA_SNAPS="$EXTRA_SNAPS evince firefox gnome-calculator gnome-characters gnome-clocks gnome-font-viewer gnome-logs gnome-system-monitor gnome-text-editor gnome-weather loupe snapd-desktop-integration snap-store ubuntu-core-desktop-init workshops"
-		for snap in $EXTRA_SNAPS; do
-			UBUNTU_IMAGE_PAYLOAD_ARGS="$UBUNTU_IMAGE_PAYLOAD_ARGS --snap $snap"
-		done
-		echo "UBUNTU_IMAGE_PAYLOAD_ARGS=\"$UBUNTU_IMAGE_PAYLOAD_ARGS\"" >> config/common
-		;;
-
 	ubuntu-oem)
 		HAS_MINIMAL=yes
 		MINIMAL_NAME="Ubuntu Desktop for OEM (minimal)"
@@ -1058,6 +1038,9 @@ case $PROJECT in
 	    # installer but it has a source catalog entry that points to the model
 	    # created in ubuntu-core-installer/hooks/05-prepare-image.binary, which
 	    # subiquity knows how to install.
+	    if [ ${SUBPROJECT} == "desktop" ]; then
+		cp /usr/share/livecd-rootfs/live-build/${PROJECT}/ubuntu-core-desktop-24-amd64.model-assertion config/
+	    fi
 	    OPTS="${OPTS:+$OPTS }--bootstrap-flavour=minimal"
 	    PASSES_TO_LAYERS=true
 	    add_task base server-minimal server
@@ -1443,7 +1426,7 @@ case $PROJECT:${SUBPROJECT:-} in
 	ubuntu-cpc:*|ubuntu-server:live|ubuntu:desktop-preinstalled| \
 		ubuntu-wsl:*|ubuntu-mini-iso:*|ubuntu:|ubuntu-oem:*| \
 		ubuntustudio:*|edubuntu:*|ubuntu-budgie:*|ubuntucinnamon:*|xubuntu:*| \
-	        ubuntukylin:*|ubuntu-mate:*|ubuntu-core-desktop:*|ubuntu-core-installer:*)
+	        ubuntukylin:*|ubuntu-mate:*|ubuntu-core-installer:*)
 		# Ensure that most things e.g. includes.chroot are copied as is
 		for entry in /usr/share/livecd-rootfs/live-build/${PROJECT}/*; do
 			case $entry in
