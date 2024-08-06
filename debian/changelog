@@ -1,5 +1,11 @@
 livecd-rootfs (2.765.45) jammy; urgency=medium
 
+  * Add 6.8 kernel apparmor features' preseeds (LP: #2074204)
+
+ -- Ankush Pathak <ankush.pathak@canonical.com>  Fri, 26 Jul 2024 19:59:25 +0530
+
+livecd-rootfs (2.765.45) jammy; urgency=medium
+
   * Remove openssh-server and ssh-import-id from the ubuntu-server
     minimal and full layers (LP: #1974483).
 
