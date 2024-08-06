@@ -1,6 +1,6 @@
-livecd-rootfs (2.765.45) jammy; urgency=medium
+livecd-rootfs (2.765.46) jammy; urgency=medium
 
-  * Add 6.8 kernel apparmor features' preseeds (LP: #2074204)
+  * Add 6.8 kernel apparmor features' preseeds. (LP: #2074204)
 
  -- Ankush Pathak <ankush.pathak@canonical.com>  Fri, 26 Jul 2024 19:59:25 +0530
 
