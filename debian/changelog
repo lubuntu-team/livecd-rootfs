@@ -1,6 +1,6 @@
 livecd-rootfs (24.04.75) noble; urgency=medium
 
-  * Add 'ubuntu-core-installer' project.
+  * Add 'ubuntu-core-installer' project. (LP: #2076307)
 
  -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Tue, 30 Jul 2024 16:35:31 +1200
 
