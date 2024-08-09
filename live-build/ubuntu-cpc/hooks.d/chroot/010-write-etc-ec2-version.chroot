@@ -1,4 +1,0 @@
-#!/bin/bash -eux
-
-. /etc/os-release
-echo "Ubuntu $VERSION" > /etc/ec2_version
