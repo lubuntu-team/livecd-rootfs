@@ -3,3 +3,6 @@ base/vmdk-image.binary
 base/vmdk-ova-image.binary
 provides livecd.ubuntu-cpc.vmdk
 provides livecd.ubuntu-cpc.ova
+provides livecd.ubuntu-cpc.vmdk.manifest
+provides livecd.ubuntu-cpc.vmdk.filelist
+provides livecd.ubuntu-cpc.vmdk.spdx

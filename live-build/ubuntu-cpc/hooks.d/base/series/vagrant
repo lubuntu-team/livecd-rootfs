@@ -1,3 +1,6 @@
 depends disk-image
 base/vagrant.binary
 provides livecd.ubuntu-cpc.vagrant.box
+provides livecd.ubuntu-cpc.vagrant.manifest
+provides livecd.ubuntu-cpc.vagrant.filelist
+provides livecd.ubuntu-cpc.vagrant.spdx
