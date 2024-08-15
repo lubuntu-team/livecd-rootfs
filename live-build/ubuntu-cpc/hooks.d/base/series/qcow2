@@ -1,3 +1,6 @@
 depends disk-image
 base/qcow2-image.binary
 provides livecd.ubuntu-cpc.img
+provides livecd.ubuntu-cpc.qcow.manifest
+provides livecd.ubuntu-cpc.qcow.filelist
+provides livecd.ubuntu-cpc.qcow.spdx

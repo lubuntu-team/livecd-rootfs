@@ -75,6 +75,10 @@ make_ext4_partition "${rootfs_dev_mapper}"
 mkdir mountpoint
 mount "${rootfs_dev_mapper}" mountpoint
 cp -a chroot/* mountpoint/
+
+# the image has been modified from its disk-image-uefi base so the manifest and filelist should be regenerated
+create_manifest  "mountpoint/" "$PWD/livecd.ubuntu-cpc.disk-image.manifest" "$PWD/livecd.ubuntu-cpc.disk-image.spdx"  "cloud-image-$ARCH-$(date +Y%m%dT%H:%M:%S)"
+
 umount mountpoint
 rmdir mountpoint
 
