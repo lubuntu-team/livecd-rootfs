@@ -158,6 +158,8 @@ EOF
         $ZIPL_EXTRA_PARAMS
 fi
 
+create_manifest  "mountpoint/" "$PWD/livecd.ubuntu-cpc.disk-image.manifest" "$PWD/livecd.ubuntu-cpc.disk-image.spdx"  "cloud-image-$ARCH-$(date +%Y%m%dT%H:%M:%S)"
+
 if [ -n "$BOOT_MOUNTPOINT" ]; then
 	umount "mountpoint/$BOOT_MOUNTPOINT"
 fi

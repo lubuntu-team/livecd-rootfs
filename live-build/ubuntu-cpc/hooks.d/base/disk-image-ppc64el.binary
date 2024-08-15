@@ -80,6 +80,8 @@ cp -a chroot/* mountpoint/
 chroot mountpoint dpkg-query -W > binary/boot/filesystem.packages
 (cd mountpoint && find -xdev) | sort > binary/boot/filesystem.filelist
 
+create_manifest  "mountpoint/" "$PWD/livecd.ubuntu-cpc.disk-image.manifest" "$PWD/livecd.ubuntu-cpc.disk-image.spdx"  "cloud-image-$ARCH-$(date +Y%m%dT%H:%M:%S)"
+
 umount mountpoint
 rmdir mountpoint
 

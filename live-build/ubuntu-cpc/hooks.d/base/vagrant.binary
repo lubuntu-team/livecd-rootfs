@@ -93,6 +93,8 @@ EOF
 chroot ${mount_d} chown -R vagrant:vagrant /home/vagrant/.ssh
 chroot ${mount_d} chmod 700 /home/vagrant/.ssh
 
+create_manifest $mount_d "livecd.ubuntu-cpc.vagrant.manifest" "livecd.ubuntu-cpc.vagrant.spdx"  "cloud-image-vagrant-$ARCH-$(date +%Y%m%dT%H:%M:%S)"
+
 umount_disk_image "$mount_d"
 rmdir "$mount_d"
 

@@ -184,7 +184,8 @@ install_grub() {
     mount
 
     # create sorted filelist as the very last step before unmounting
-    (cd mountpoint && find -xdev) | sort > binary/boot/filesystem.filelist
+    # explicitly generate manifest and sbom
+    create_manifest  "mountpoint/" "$PWD/livecd.ubuntu-cpc.disk-uefi.manifest" "$PWD/livecd.ubuntu-cpc.disk-uefi.spdx"  "cloud-image-$ARCH-$(date +%Y%m%dT%H:%M:%S)"
 
     umount_partition mountpoint
     rmdir mountpoint
@@ -201,6 +202,7 @@ make_ext4_partition "${rootfs_dev_mapper}"
 mkdir mountpoint
 mount "${rootfs_dev_mapper}" mountpoint
 cp -a chroot/* mountpoint/
+
 umount mountpoint
 rmdir mountpoint
 

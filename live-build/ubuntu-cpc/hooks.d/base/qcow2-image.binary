@@ -2,8 +2,17 @@
 
 . config/functions
 
+qcow_file=${PWD}/livecd.ubuntu-cpc.qcow
 if [ -f binary/boot/disk-uefi.ext4 ]; then
     convert_to_qcow2 binary/boot/disk-uefi.ext4 livecd.ubuntu-cpc.img
+    uefi_file="livecd.ubuntu-cpc.disk-uefi"
+    cp ${uefi_file}.manifest ${qcow_file}.manifest
+    cp ${uefi_file}.filelist ${qcow_file}.filelist
+    cp ${uefi_file}.spdx ${qcow_file}.spdx
 elif [ -f binary/boot/disk.ext4 ]; then
     convert_to_qcow2 binary/boot/disk.ext4 livecd.ubuntu-cpc.img
+    disk_file="livecd.ubuntu-cpc.disk-image"
+    cp ${disk_file}.manifest ${qcow_file}.manifest
+    cp ${disk_file}.filelist ${qcow_file}.filelist
+    cp ${disk_file}.spdx ${qcow_file}.spdx
 fi
