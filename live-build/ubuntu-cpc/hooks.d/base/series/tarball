@@ -3,3 +3,4 @@ base/root-xz.binary
 provides livecd.ubuntu-cpc.rootfs.tar.xz
 provides livecd.ubuntu-cpc.rootfs.manifest
 provides livecd.ubuntu-cpc.rootfs.filelist
+provides livecd.ubuntu-cpc.rootfs.spdx

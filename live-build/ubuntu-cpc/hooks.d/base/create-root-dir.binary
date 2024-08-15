@@ -24,6 +24,6 @@ rm -rf $rootfs_dir/boot/grub
 # Keep this as some derivatives mount a tempfs here
 mkdir -p $rootfs_dir/lib/modules
 
-teardown_mountpoint $rootfs_dir
+create_manifest $rootfs_dir "livecd.ubuntu-cpc.rootfs.manifest" "livecd.ubuntu-cpc.rootfs.spdx"  "cloud-image-rootfs-$ARCH-$(date +%Y%m%dT%H:%M:%S)"
 
-create_manifest "${rootfs_dir}" "${rootfs_dir}.manifest"
+teardown_mountpoint $rootfs_dir

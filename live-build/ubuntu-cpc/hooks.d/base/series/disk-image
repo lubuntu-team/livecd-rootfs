@@ -6,3 +6,6 @@ provides livecd.ubuntu-cpc.initrd-generic
 provides livecd.ubuntu-cpc.kernel-generic
 provides livecd.ubuntu-cpc.manifest
 provides livecd.ubuntu-cpc.filelist
+provides livecd.ubuntu-cpc.disk-image.manifest
+provides livecd.ubuntu-cpc.disk-image.filelist
+provides livecd.ubuntu-cpc.disk-image.spdx

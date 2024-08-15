@@ -20,8 +20,18 @@ esac
 
 . config/functions
 
+vmdk_file="$PWD/livecd.ubuntu-cpc.vmdk"
+
 if [ -e binary/boot/disk-uefi.ext4 ]; then
     create_vmdk binary/boot/disk-uefi.ext4 livecd.ubuntu-cpc.vmdk
+    uefi_file="livecd.ubuntu-cpc.disk-uefi"
+    cp ${uefi_file}.manifest ${vmdk_file}.manifest
+    cp ${uefi_file}.filelist ${vmdk_file}.filelist
+    cp ${uefi_file}.spdx ${vmdk_file}.spdx
 elif [ -f binary/boot/disk.ext4 ]; then
     create_vmdk binary/boot/disk.ext4 livecd.ubuntu-cpc.vmdk
+    disk_file="livecd.ubuntu-cpc.disk-image"
+    cp ${disk_file}.manifest ${vmdk_file}.manifest
+    cp ${disk_file}.filelist ${vmdk_file}.filelist
+    cp ${disk_file}.spdx ${vmdk_file}.spdx
 fi
