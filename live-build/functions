@@ -778,6 +778,12 @@ snap_preseed() {
         exit 1
     fi
 
+    if [ $PROJECT = ubuntu-core-installer ] && [ $SNAP_NAME = subiquity ]; then
+       # The ubuntu-core-installer project requires features not yet
+       # present in the latest/ubuntu/stable-24.04 or stable branches.
+       CHANNEL=latest/ubuntu/stable-24.10
+    fi
+
     _snap_preseed $CHROOT_ROOT $SNAP $CHANNEL
 
     # Mark this image as having snapd installed explicitly.

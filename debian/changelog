@@ -1,3 +1,10 @@
+livecd-rootfs (24.04.76) UNRELEASED; urgency=medium
+
+  * Force latest/stable/ubuntu-24.10 subiquity onto the ubuntu-core-installer
+    ISO for now. (LP: #2077495)
+
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Mon, 19 Aug 2024 14:37:14 +1200
+
 livecd-rootfs (24.04.75) noble; urgency=medium
 
   * Add 'ubuntu-core-installer' project. (LP: #2076307)
