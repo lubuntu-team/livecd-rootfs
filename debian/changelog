@@ -1,3 +1,10 @@
+livecd-rootfs (24.10.11) oracular; urgency=medium
+
+  [ Simon Poirier ]
+  * disk-image-uefi: Fix regression with partition sizing on arm.
+
+ -- Utkarsh Gupta <utkarsh@ubuntu.com>  Thu, 22 Aug 2024 04:58:46 +0530
+
 livecd-rootfs (24.10.10) oracular; urgency=medium
 
   * disk-image-uefi.binary: Shift down boot partition to 13 to support systems
