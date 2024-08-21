@@ -37,10 +37,10 @@ create_partitions() {
     case $ARCH in
         arm64|armhf)
             sgdisk "${disk_image}" \
-                   --new=13::1G \
-                   --typecode=13:ea00 \
                    --new=15:0:204800 \
                    --typecode=15:ef00 \
+                   --new=13::1G \
+                   --typecode=13:ea00 \
                    --new=1:
             ;;
         riscv64)
