@@ -1,6 +1,6 @@
 livecd-rootfs (24.04.77) noble; urgency=medium
 
-  * Drop unminimize spit out by livecd-rootfs.
+  * Drop unminimize spit out by livecd-rootfs. (LP: #2077695)
   * Use packaged unminimize in the ubuntu-server images.
 
  -- Utkarsh Gupta <utkarsh@ubuntu.com>  Wed, 21 Aug 2024 12:08:44 +0530
