@@ -1,8 +1,8 @@
-livecd-rootfs (24.10.12) UNRELEASED; urgency=medium
+livecd-rootfs (24.10.12) oracular; urgency=medium
 
   * Update ubuntu-classic-2404-amd64 model in ubuntu hooks. (LP: #2077899)
 
- -- Chris Peterson <chris.peterson@canonical.com>  Mon, 26 Aug 2024 12:38:55 -0700
+ -- Chris Peterson <chris.peterson@canonical.com>  Mon, 26 Aug 2024 17:03:28 -0700
 
 livecd-rootfs (24.10.11) oracular; urgency=medium
 
