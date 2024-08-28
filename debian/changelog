@@ -1,3 +1,9 @@
+livecd-rootfs (2.664.54) focal; urgency=medium
+
+  * add cpc-sbom to create_manifest calls to generate sboms (LP: #2077105) 
+
+ -- jchittum <john.chittum@canonical.com>  Wed, 28 Aug 2024 09:30:19 -0400
+
 livecd-rootfs (2.664.53) focal; urgency=medium
 
   [Catherine Redfield]
