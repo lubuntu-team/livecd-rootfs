@@ -78,7 +78,8 @@ live_build_rootfs() {
     echo ""
 }
 
-WORKDIR=$(mktemp -d)
+[ -d /adt ] || mkdir /adt
+WORKDIR=$(mktemp -d -p /adt)
 trap "RET=\$?; rm -rf $WORKDIR; exit \$RET" 0 INT QUIT ABRT PIPE TERM
 cd $WORKDIR
 
