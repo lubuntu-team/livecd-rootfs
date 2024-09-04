@@ -1,3 +1,11 @@
+livecd-rootfs (24.10.13) oracular; urgency=medium
+
+  * Fix autopkgtest issue where /tmp mounted with nodev is used as a working
+    directory, which understandably causes problems for device node creation.
+    (LP: #2078980)
+
+ -- Dan Bungert <daniel.bungert@canonical.com>  Wed, 04 Sep 2024 14:27:27 -0600
+
 livecd-rootfs (24.10.12) oracular; urgency=medium
 
   * Update ubuntu-classic-2404-amd64 model in ubuntu hooks. (LP: #2077899)
