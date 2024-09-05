@@ -15,6 +15,9 @@ esac
 
 PROJECT=$PROJECT${SUBARCH:+-$SUBARCH}
 
+# ensure this initrd is casperized
+chroot chroot update-initramfs -u
+
 # Fish out generated kernel image and initrd
 mv chroot/boot/initrd.img-* ${PWD}/livecd.${PROJECT}.initrd-$flavor
 mv chroot/boot/vmlinu?-* ${PWD}/livecd.${PROJECT}.kernel-$flavor

@@ -1005,7 +1005,14 @@ case $PROJECT in
 						exit 1
 					fi
 
-					add_package ubuntu-server-minimal.ubuntu-server.installer.$flavor $kernel_metapkg
+					add_pass ubuntu-server-minimal.ubuntu-server.installer.$flavor
+					if [ $flavor == ga ]; then
+						kernel_layer=ubuntu-server-minimal
+					else
+						kernel_layer=ubuntu-server-minimal.ubuntu-server.installer.$flavor
+					fi
+					add_package $kernel_layer $kernel_metapkg
+
 					LIVE_PASSES="${LIVE_PASSES:+$LIVE_PASSES }ubuntu-server-minimal.ubuntu-server.installer.$flavor"
 				done
 				case $ARCH in
