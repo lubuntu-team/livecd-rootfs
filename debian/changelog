@@ -1,4 +1,4 @@
-livecd-rootfs (2.765.47) UNRELEASED; urgency=medium
+livecd-rootfs (2.765.47) jammy; urgency=medium
 
   * Explicitly remove v4l2loopback packages to workaround issue with tasks
     and seeds. Should fix build failure (LP: #2079803).
