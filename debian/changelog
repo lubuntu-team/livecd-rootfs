@@ -1,3 +1,10 @@
+livecd-rootfs (2.765.47) UNRELEASED; urgency=medium
+
+  * Explicitly remove v4l2loopback packages to workaround issue with tasks
+    and seeds. Should fix build failure (LP: #2079803).
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Fri, 06 Sep 2024 10:50:02 +0200
+
 livecd-rootfs (2.765.46) jammy; urgency=medium
 
   * Add 6.8 kernel apparmor features' preseeds. (LP: #2074204)

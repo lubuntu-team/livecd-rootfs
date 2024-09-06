@@ -823,6 +823,9 @@ case $PROJECT in
 
 	ubuntustudio-dvd)
 		add_task install minimal standard ubuntustudio-desktop ubuntustudio-audio ubuntustudio-graphics ubuntustudio-video ubuntustudio-photography
+		# To work around the fact that v4l2loopback-dkms is still pulled in (via tasks) even though no longer present in the seeds
+		# Fixes build failure
+		remove_package install v4l2loopback-utils v4l2loopback-dkms
 		COMPONENTS='main restricted universe multiverse'
 		case $ARCH in
 			amd64|i386)	KERNEL_FLAVOURS='lowlatency-hwe-22.04' ;;
