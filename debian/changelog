@@ -1,10 +1,10 @@
-livecd-rootfs (24.10.14) UNRELEASED; urgency=medium
+livecd-rootfs (24.10.14) oracular; urgency=medium
 
   [ Sergio Costas ]
   * Switch ubuntu-core-desktop project to be a subproject of the
     ubuntu-core-installer project.
 
- -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Tue, 10 Sep 2024 16:09:34 +1200
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Tue, 10 Sep 2024 16:11:32 +1200
 
 livecd-rootfs (24.10.13) oracular; urgency=medium
 
