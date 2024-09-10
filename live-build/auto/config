@@ -673,6 +673,7 @@ do_layered_desktop_image() {
 		add_task minimal minimal standard $MINIMAL_TASKS
 		# fixme: this should go in seeds, not be in code here
 		add_package minimal cloud-init
+		add_package minimal linux-$KERNEL_FLAVOURS
 		MINIMAL_PREFIX=minimal.
 	fi
 
@@ -688,6 +689,7 @@ do_layered_desktop_image() {
 		if [ -z "$HAS_MINIMAL" ]; then
 			STANDARD_TASKS="minimal standard $STANDARD_TASKS"
 			add_package standard cloud-init
+			add_package standard linux-$KERNEL_FLAVOURS
 		fi
 		add_task ${MINIMAL_PREFIX}standard $STANDARD_TASKS
 		LIVE_PREFIX="${LIVE_PREFIX}standard."
@@ -696,7 +698,7 @@ do_layered_desktop_image() {
 	# the live layer, contains all packages for the live session installer
 	[ -n "$LIVE_TASK" ] || LIVE_TASK=${FLAVOUR}-live
 	add_task ${LIVE_PREFIX}live "$LIVE_TASK"
-	add_package ${LIVE_PREFIX}live linux-$KERNEL_FLAVOURS casper
+	add_package ${LIVE_PREFIX}live casper
 
 	if [ -n "$LANGUAGE_BASE" ]; then
 		# language support
