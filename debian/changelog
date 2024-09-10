@@ -1,3 +1,12 @@
+livecd-rootfs (2.765.50) UNRELEASED; urgency=medium
+
+  * Replace some functionalities done by the windows launcher (which will
+    going to be retired) to rootfs build side: (LP: #2080223)
+    - enable systemd by default
+    - ship up to 3 rootfs tarballs, differentiating by the upgrade policy
+
+ -- Didier Roche-Tolomelli <didrocks@ubuntu.com>  Tue, 10 Sep 2024 15:41:48 +0200
+
 livecd-rootfs (2.765.49) jammy; urgency=medium
 
   * The package-lists for tasks are shell lines, so to remove the unwanted
