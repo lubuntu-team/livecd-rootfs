@@ -1,4 +1,4 @@
-livecd-rootfs (2.765.49) UNRELEASED; urgency=medium
+livecd-rootfs (2.765.49) jammy; urgency=medium
 
   * The package-lists for tasks are shell lines, so to remove the unwanted
     packages, we need to be a bit more creative.
