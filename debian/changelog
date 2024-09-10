@@ -1,3 +1,12 @@
+livecd-rootfs (2.765.49) UNRELEASED; urgency=medium
+
+  * The package-lists for tasks are shell lines, so to remove the unwanted
+    packages, we need to be a bit more creative.
+  * Remove the late hook that was removing v4l2loopback packages - as those
+    are no longer installed in the first place.
+
+ -- Łukasz 'sil2100' Zemczak <lukasz.zemczak@ubuntu.com>  Tue, 10 Sep 2024 12:25:44 +0200
+
 livecd-rootfs (2.765.48) jammy; urgency=medium
 
   [ Łukasz 'sil2100' Zemczak ]

@@ -825,9 +825,9 @@ case $PROJECT in
 		add_task install minimal standard ubuntustudio-desktop ubuntustudio-audio ubuntustudio-graphics ubuntustudio-video ubuntustudio-photography
 		# To work around the fact that v4l2loopback-dkms is still pulled in (via tasks) even though no longer present in the seeds
 		# Fixes build failure (LP: #2079803)
-		# We need to do it by hand as we can't use remove_package here
-		sed -i '/v4l2loopback-utils/d' config/package-lists/livecd-rootfs.list.chroot_install
-		sed -i '/v4l2loopback-dkms/d' config/package-lists/livecd-rootfs.list.chroot_install
+		# We need to do it in a very hacky way, as the package-list files contain shell lines to execute to extract the needed
+		# packages. So to filter out the unneeded packages we hack in a sed filter for the respective task.
+		sed -i '/ubuntustudio-video/s/$/ | sed "\/^v4l2loopback-\/d" /' config/package-lists/livecd-rootfs.list.chroot_install
 		COMPONENTS='main restricted universe multiverse'
 		case $ARCH in
 			amd64|i386)	KERNEL_FLAVOURS='lowlatency-hwe-22.04' ;;
@@ -1351,18 +1351,6 @@ if [ -x \$HOOK ]; then
 fi
 exit 0
 EOF
-fi
-
-if [ "$PROJECT" = "ubuntustudio-dvd" ]; then
-        cat > config/hooks/100-ubuntustudio-dkms.chroot <<EOF
-#!/bin/bash
-set -e
-
-env DEBIAN_FRONTEND=noninteractive \
-       apt-get -y autoremove --purge v4l2loopback-dkms v4l2loopback-utils
-
-EOF
-	chmod +x config/hooks/100-ubuntustudio-dkms.chroot
 fi
 
 if $BINARY_REMOVE_LINUX; then
