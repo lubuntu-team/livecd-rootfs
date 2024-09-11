@@ -1,3 +1,10 @@
+livecd-rootfs (24.10.18) oracular; urgency=medium
+
+  * live-server and desktop: disable kdump-tools in the minimal layer
+    to allow the installer to decide when to enable it (LP: #2077990).
+
+ -- Chris Peterson <chris.peterson@canonical.com>  Fri, 13 Sep 2024 09:08:33 -0700
+
 livecd-rootfs (24.10.17) oracular; urgency=medium
 
   * desktop and subiquity-using flavors: install the kernel in the minimal
