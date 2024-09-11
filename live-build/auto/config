@@ -1006,7 +1006,7 @@ case $PROJECT in
 					fi
 
 					add_pass ubuntu-server-minimal.ubuntu-server.installer.$flavor
-					if [ $flavor == ga ]; then
+					if [ "$variant" = "ga" ]; then
 						kernel_layer=ubuntu-server-minimal
 					else
 						kernel_layer=ubuntu-server-minimal.ubuntu-server.installer.$flavor
