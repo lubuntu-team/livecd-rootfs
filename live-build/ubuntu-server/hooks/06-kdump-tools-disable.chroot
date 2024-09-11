@@ -1,0 +1,19 @@
+#!/bin/bash -ex
+
+# We install kdump-tools in the minimal layer but it's enabled by default.
+# We disable it here and let subiquity/curtin decide when to enable it later.
+# This is also important so that it's not in some semi-enabled state in the
+# live system where USE_KDUMP=1 but it's missing the crashkernel parameter on
+# the kernel command line. Let's be doubly sure and set USE_KDUMP=0.
+
+case ${PASS} in
+    ubuntu-server-minimal)
+        ;;
+    *)
+        exit 0
+        ;;
+esac
+
+# kdump-tools relies on USE_KDUMP=1 to be enabled, set to USE_KDUMP=0 for off.
+sed -i 's/USE_KDUMP=1/USE_KDUMP=0/' /etc/default/kdump-tools
+
