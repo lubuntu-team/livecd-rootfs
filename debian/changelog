@@ -1,3 +1,10 @@
+livecd-rootfs (24.10.17) oracular; urgency=medium
+
+  * desktop and subiquity-using flavors: install the kernel in the minimal
+    layer (LP 2080272)
+
+ -- Dan Bungert <daniel.bungert@canonical.com>  Thu, 12 Sep 2024 15:30:34 -0600
+
 livecd-rootfs (24.10.16) oracular; urgency=medium
 
   * live-server: fix issue where the kernel was not actually placed in the
