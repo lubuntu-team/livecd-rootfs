@@ -1,4 +1,4 @@
-livecd-rootfs (2.765.50) UNRELEASED; urgency=medium
+livecd-rootfs (2.765.50) jammy; urgency=medium
 
   * Replace some functionalities done by the windows launcher (which will
     going to be retired) to rootfs build side: (LP: #2080223)
