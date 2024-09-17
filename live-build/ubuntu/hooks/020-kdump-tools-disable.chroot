@@ -3,19 +3,28 @@
 set -eux
 
 # We install kdump-tools in the minimal layer but it's enabled by default.
-# We disable it here and let subiquity/curtin decide when to enable it later.
-# This is also important so that it's not in some semi-enabled state in the
-# live system where USE_KDUMP=1 but it's missing the crashkernel parameter on
-# the kernel command line. Let's be doubly sure and set USE_KDUMP=0.
+# subiquity/curtin will later decide to either keep it enabled or disable it
+# in the target system, but let's ensure it's disabled in the live layer.
+# We do this by manually modifying /etc/default/kdump-tools to use USE_KDUMP=0.
+# Without this, kdump-tools is still technically disabled since it requires both:
+#  1. crashkernel on the kernel command line
+#  2. USE_KDUMP=1 in /etc/default/kdump-tools
+# and the kernel command line in the live layer doesn't have the crashkernel
+# parameter in the kernel command line, but this semi-disabled state isn't
+# ideal. So let's be doubly sure and set USE_KDUMP=0.
+#
+# Note that kdump-tools relies on ucf for configuration file management. So
+# while we could modify the value in the minimal layer, doing so in a way that
+# doesn't make future dpkg-reconfigures hard is a huge hassle. You also have
+# to make sure to do the same steps to every layer it may get included.
 
 case ${PASS:-} in
-    minimal)
+    *.live)
         ;;
     *)
         exit 0
         ;;
 esac
 
-# kdump-tools relies on USE_KDUMP=1 to be enabled, set to USE_KDUMP=0 for off.
 sed -i 's/USE_KDUMP=1/USE_KDUMP=0/' /etc/default/kdump-tools
 
