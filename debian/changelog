@@ -1,8 +1,12 @@
-livecd-rootfs (24.10.21) UNRELEASED; urgency=medium
+livecd-rootfs (24.10.21) oracular; urgency=medium
 
+  [ Utkarsh Gupta ]
+  * Add 6.11 kernel apparmor features' preseeds.
+
+  [ Michael Hudson-Doyle ]
   * Update the model used for TPM FDE installs.
 
- -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Wed, 25 Sep 2024 13:50:52 +1200
+ -- Utkarsh Gupta <utkarsh@ubuntu.com>  Thu, 19 Sep 2024 19:42:24 +0530
 
 livecd-rootfs (24.10.20) oracular; urgency=medium
 
