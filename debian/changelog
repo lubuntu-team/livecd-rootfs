@@ -1,3 +1,11 @@
+livecd-rootfs (24.10.20) oracular; urgency=medium
+
+  [ Chad Smith ]
+  * Refresh cloud-init service override for updated service file name and
+    ordering fix. (LP: #2081325)
+
+ -- Dan Bungert <daniel.bungert@canonical.com>  Fri, 20 Sep 2024 12:36:12 -0600
+
 livecd-rootfs (24.10.19) oracular; urgency=medium
 
   * live-server and desktop: disable kdump-tools only in the live layer.
