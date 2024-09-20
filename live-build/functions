@@ -1046,20 +1046,22 @@ EOF
         # it disables all previous network config in /etc/netplan so
         # any previous 50-cloud-init.yaml will be rendered inert.
 
-        # Position cloud-init.service After=NetworkManager.service.
+        # Position cloud-init-network.service After=NetworkManager.service.
         # (LP: #2008952. Drop-in systemd files cannot redact existing
         # dependencies (Before= or After=). So, replace the entire unit
-        # with an override in /etc/systemd/system/cloud-init.service.
+        # with an override in /etc/systemd/system/cloud-init-network.service.
         # Avoid issues reported by debsums (LP: #2069391) by not overwriting
         # unit files delivered by the cloud-init deb.
         # This drop-in will need to track any changes introduced by cloud-init
-        # SRUs which alter the cloud-init.service unit values.
+        # SRUs which alter the cloud-init-network.service unit values.
         # This override can be dropped when NetworkManager.service can run
         # Before=sysinit.target when it drops strict dbus.service dependency.
+        # 24.3 renamed cloud-init.service to cloud-init-network.service for
+        # single process mode
         mkdir -p chroot/etc/systemd/system/
-        cat <<EOF > chroot/etc/systemd/system/cloud-init.service
+        cat <<EOF > chroot/etc/systemd/system/cloud-init-network.service
 ${AUTOMATION_HEADER}
-# Based on cloud-init 24.2 for Desktop LiveCD
+# Based on cloud-init 24.3 for Desktop LiveCD
 # Redact sysinit.target from Before, add After=NetworkManager*.service
 # (LP: #2008952)
 [Unit]
@@ -1086,7 +1088,14 @@ ConditionEnvironment=!KERNEL_CMDLINE=cloud-init=disabled
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/cloud-init init
+# This service is a shim which preserves systemd ordering while allowing a
+# single Python process to run cloud-init's logic. This works by communicating
+# with the cloud-init process over a unix socket to tell the process that this
+# stage can start, and then wait on a return socket until the cloud-init
+# process has completed this stage. The output from the return socket is piped
+# into a shell so that the process can send a completion message (defaults to
+# "done", otherwise includes an error message) and an exit code to systemd.
+ExecStart=sh -c 'echo "start" | netcat -Uu -W1 /run/cloud-init/share/network.sock -s /run/cloud-init/share/network-return.sock | sh'
 RemainAfterExit=yes
 TimeoutSec=0
 
