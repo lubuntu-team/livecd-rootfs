@@ -1,3 +1,9 @@
+livecd-rootfs (24.10.21) UNRELEASED; urgency=medium
+
+  * Update the model used for TPM FDE installs.
+
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Wed, 25 Sep 2024 13:50:52 +1200
+
 livecd-rootfs (24.10.20) oracular; urgency=medium
 
   [ Chad Smith ]
