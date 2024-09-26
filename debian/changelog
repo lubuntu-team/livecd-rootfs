@@ -1,4 +1,4 @@
-livecd-rootfs (2.765.47) jammy; urgency=medium
+livecd-rootfs (2.765.51) jammy; urgency=medium
 
   * add cpc-sbom to create_manifest calls to generate sboms (LP: #2077105) 
 
