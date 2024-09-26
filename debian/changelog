@@ -1,3 +1,10 @@
+livecd-rootfs (24.04.77.1) noble; urgency=medium
+
+  * Hotfix upload outside of git history, real change from 24.04.79.
+  * Update ubuntu-classic-2404-amd64 model in ubuntu hooks. (LP: #2077899)
+
+ -- Chris Peterson <chris.peterson@canonical.com>  Mon, 26 Aug 2024 16:57:12 -0700
+
 livecd-rootfs (24.04.77) noble; urgency=medium
 
   * Drop unminimize spit out by livecd-rootfs. (LP: #2077695)
