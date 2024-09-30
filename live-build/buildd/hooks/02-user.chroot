@@ -4,6 +4,7 @@ set -e
 # Create the buildd user and group.
 addgroup --gid 2501 buildd
 adduser --system --disabled-password --gecos 'Build Daemon user' \
-	--ingroup buildd --uid 2001 --shell /bin/bash buildd
+	--ingroup buildd --uid 2001 --shell /bin/bash --home /home/buildd \
+	buildd
 mkdir -p /build/buildd
 chown buildd:buildd /build/buildd
