@@ -1,0 +1,3 @@
+# Required drivers to boot off MMC
+mmc-block
+sunxi-mmc
