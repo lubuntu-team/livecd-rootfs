@@ -120,6 +120,8 @@ fi
 
 reset_snapd_state chroot
 
+# Set UBUNTU_STORE_COHORT_KEY="+" to force prepare-image to fetch the latest
+# snap versions regardless of phasing status
 env SNAPPY_STORE_NO_CDN=1 UBUNTU_STORE_COHORT_KEY="+" snap prepare-image \
     --classic config/classic-model.model $channel chroot
 mv chroot/system-seed/systems/* chroot/system-seed/systems/enhanced-secureboot-desktop
