@@ -120,7 +120,7 @@ fi
 
 reset_snapd_state chroot
 
-env SNAPPY_STORE_NO_CDN=1 snap prepare-image \
+env SNAPPY_STORE_NO_CDN=1 UBUNTU_STORE_COHORT_KEY="+" snap prepare-image \
     --classic config/classic-model.model $channel chroot
 mv chroot/system-seed/systems/* chroot/system-seed/systems/enhanced-secureboot-desktop
 rm -rf chroot/var/lib/snapd/seed
