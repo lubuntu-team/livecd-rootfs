@@ -1,3 +1,9 @@
+livecd-rootfs (25.04.1) UNRELEASED; urgency=medium
+
+  * Add support for install-sources version: 2, which handles bridge kernels.
+
+ -- Dan Bungert <daniel.bungert@canonical.com>  Mon, 14 Oct 2024 17:45:02 -0600
+
 livecd-rootfs (24.10.27) oracular; urgency=medium
 
   * Set UBUNTU_STORE_COHORT_KEY="+" to prepare-image to make sure we simply
