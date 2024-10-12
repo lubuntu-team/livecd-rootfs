@@ -7,82 +7,113 @@ import os
 import sys
 import yaml
 
-parser = argparse.ArgumentParser()
-parser.add_argument('--output', required=True)
-parser.add_argument('--size', required=True)
-parser.add_argument('--squashfs', default='')
-parser.add_argument('--translations')
-parser.add_argument('--template')
-parser.add_argument('--langs', default=None)
 
-opts = parser.parse_args(sys.argv[1:])
+def get_opts():
+    parser = argparse.ArgumentParser()
+    subparsers = parser.add_subparsers(dest="subcommand")
 
-if os.path.exists(opts.output):
-    with open(opts.output) as fp:
-        output = yaml.safe_load(fp)
-else:
-    output = []
+    parser_source = subparsers.add_parser('source')
+    parser_source.add_argument('--output', required=True)
+    parser_source.add_argument('--template', required=True)
+    parser_source.add_argument('--size', required=True)
+    parser_source.add_argument('--squashfs', default='')
+    parser_source.add_argument('--translations')
+    parser_source.add_argument('--langs')
+    parser_source.set_defaults(func=on_source)
+
+    parser_merge = subparsers.add_parser('merge')
+    parser_merge.add_argument('--output', required=True)
+    parser_merge.add_argument('--template', required=True)
+    parser_merge.set_defaults(func=on_merge)
+
+    return parser.parse_args()
 
 
-with open(opts.template) as fp:
-    template = yaml.safe_load(fp)
+def yaml_load(filename):
+    with open(filename) as fp:
+        return yaml.safe_load(fp)
 
 
-id = template['id']
-for entry in output:
-    # First, look if this source catalogue template id is already present.
-    # If so, use the template to extend the existing entry with additional
-    # variations.
-    if entry['id'] == id:
-        if 'variations' not in template:
-            print("Non unique id in source catalog but no variations!")
-            sys.exit(1)
-        for variation in template['variations'].values():
-            variation['size'] = int(opts.size)
-        entry.setdefault('variations', {}).update(template['variations'])
-        break
-else:
-    # No entry with this id found, so add a new one.
+def yaml_dump(filename, content):
+    with open(filename, 'w') as fp:
+        yaml.dump(content, fp)
 
-    if 'variations' in template:
-        for variation in template['variations'].values():
-            if variation['path'] == opts.squashfs:
+
+def on_source(opts, output):
+    template = yaml_load(opts.template)
+
+    id = template['id']
+    for entry in output["sources"]:
+        # First, look if this source catalogue template id is already present.
+        # If so, use the template to extend the existing entry with additional
+        # variations.
+        if entry['id'] == id:
+            if 'variations' not in template:
+                print("Non unique id in source catalog but no variations!")
+                sys.exit(1)
+            for variation in template['variations'].values():
                 variation['size'] = int(opts.size)
+            entry.setdefault('variations', {}).update(template['variations'])
+            break
+    else:
+        # No entry with this id found, so add a new one.
 
-    template['size'] = int(opts.size)
-    template['path'] = opts.squashfs
+        if 'variations' in template:
+            for variation in template['variations'].values():
+                if variation['path'] == opts.squashfs:
+                    variation['size'] = int(opts.size)
 
-    en_name = template['name']
-    en_description = template['description']
+        template['size'] = int(opts.size)
+        template['path'] = opts.squashfs
 
-    template['name'] = {'en': en_name}
-    template['description'] = {'en': en_description}
+        en_name = template['name']
+        en_description = template['description']
 
-    if opts.translations:
-        for mo in glob.glob(os.path.join(opts.translations, '*.mo')):
-            with open(mo, 'rb') as fp:
-                t = gettext.GNUTranslations(fp=fp)
-            t_name = t.gettext(en_name)
-            if t_name != en_name:
-                lang = os.path.splitext(os.path.basename(mo))[0]
-                template['name'][lang] = t_name
-            t_description = t.gettext(en_description)
-            if t_description != en_description:
-                lang = os.path.splitext(os.path.basedescription(mo))[0]
-                template['description'][lang] = t_description
-            if opts.langs is not None:
-                template['preinstalled_langs'] = opts.langs.split(',')
+        template['name'] = {'en': en_name}
+        template['description'] = {'en': en_description}
 
-    output.append(template)
+        if opts.translations:
+            for mo in glob.glob(os.path.join(opts.translations, '*.mo')):
+                with open(mo, 'rb') as fp:
+                    t = gettext.GNUTranslations(fp=fp)
+                t_name = t.gettext(en_name)
+                if t_name != en_name:
+                    lang = os.path.splitext(os.path.basename(mo))[0]
+                    template['name'][lang] = t_name
+                t_description = t.gettext(en_description)
+                if t_description != en_description:
+                    lang = os.path.splitext(os.path.basedescription(mo))[0]
+                    template['description'][lang] = t_description
+                if opts.langs is not None:
+                    template['preinstalled_langs'] = opts.langs.split(',')
 
-default_count = 0
-for entry in output:
-    if entry.get('default', False):
-        default_count += 1
+        output["sources"].append(template)
 
-if default_count > 1:
-    print("Too many defaults in source catalog!")
-    sys.exit(1)
+        default_count = 0
+        for entry in output["sources"]:
+            if entry.get('default', False):
+                default_count += 1
 
-with open(opts.output, 'w') as fp:
-    yaml.dump(output, fp)
+        if default_count > 1:
+            print("Too many defaults in source catalog!")
+            sys.exit(1)
+
+
+def on_merge(opts, output):
+    output.update(yaml_load(opts.template))
+
+
+if __name__ == "__main__":
+    opts = get_opts()
+
+    if os.path.exists(opts.output):
+        output = yaml_load(opts.output)
+    else:
+        output = {
+            "version": 2,
+            "sources": [],
+        }
+
+    opts.func(opts, output)
+
+    yaml_dump(opts.output, output)

@@ -56,4 +56,4 @@ PROJECT_FULL=$PROJECT${SUBARCH:+-$SUBARCH}
 usc_opts="--output livecd.${PROJECT_FULL}.install-sources.yaml \
           --template config/edge.catalog-in.yaml \
           --size 0"
-/usr/share/livecd-rootfs/update-source-catalog $usc_opts
+/usr/share/livecd-rootfs/update-source-catalog source $usc_opts

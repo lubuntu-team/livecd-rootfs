@@ -185,7 +185,7 @@ build_layered_squashfs () {
 			if [ -f config/seeded-languages ]; then
 				usc_opts="$usc_opts --langs $(cat config/seeded-languages)"
 			fi
-			/usr/share/livecd-rootfs/update-source-catalog $usc_opts
+			/usr/share/livecd-rootfs/update-source-catalog source $usc_opts
 		else
 			echo "No catalog entry template for $pass"
 		fi
