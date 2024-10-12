@@ -239,6 +239,28 @@ add_snap ()
 	done
 }
 
+write_kernel_yaml () {
+	# Generate the kernel.yaml fragment used as input for
+	# update-source-catalog.  Handles default kernel specification.
+	# $1 kernel metapackage name
+	local metapkg="$1"
+	cat <<-EOF > config/kernel.yaml
+		kernel:
+		  default: $metapkg
+	EOF
+
+	# To specify fallback to a bridge kernel, construct a kernel.yaml
+	# with the following:
+	#
+	# kernel:
+	#   default: foo
+	#   bridge: bar
+	#   bridge_reasons: [zfs, drivers]
+	#
+	# If an install is using zfs or "drivers", use the bridge kernel, else
+	# use the default kernel.
+}
+
 get_seeded_languages () {
 	# We assume any seed name of the form ${no_lang_seed}-${foo} where
 	# ${foo} is only two or three characters long is a default language
@@ -765,6 +787,7 @@ do_layered_desktop_image() {
 			locale_support: $LOCALE_SUPPORT
 		EOF
 	fi
+	write_kernel_yaml linux-$KERNEL_FLAVOURS
 
 	if [ "$LOCALE_SUPPORT" != none ]; then
 		/usr/share/livecd-rootfs/checkout-translations-branch \
@@ -1030,6 +1053,7 @@ case $PROJECT in
 				esac
 				NO_SQUASHFS_PASSES=ubuntu-server-minimal.ubuntu-server.installer.$flavor.netboot
 
+				write_kernel_yaml $kernel_metapkg
 				/usr/share/livecd-rootfs/checkout-translations-branch \
 					https://git.launchpad.net/subiquity po config/catalog-translations
 				;;
