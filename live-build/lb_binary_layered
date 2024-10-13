@@ -204,6 +204,12 @@ do
 	build_layered_squashfs "${_PASS}" ${*}
 done
 
+if [ -f config/kernel.yaml ]; then
+	/usr/share/livecd-rootfs/update-source-catalog merge \
+		--output livecd.${PROJECT_FULL}.install-sources.yaml \
+		--template config/kernel.yaml
+fi
+
 # Ubiquity-compatible removal manifest for ISO not using a layered-aware installer
 if [ -n "$(ls livecd.${PROJECT_FULL}.*install.live.manifest.full 2>/dev/null)" ] && \
    [ -n "$(ls livecd.${PROJECT_FULL}.*install.manifest.full 2>/dev/null)" ]; then
