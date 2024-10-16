@@ -1,3 +1,9 @@
+livecd-rootfs (2.765.52) jammy; urgency=medium
+
+  *  Add apparmor policy permstable32 missing component (LP: #2084698)
+
+ -- Jess Jang <jess.jang@canonical>  Wed, 16 Oct 2024 10:48:13 -0500
+
 livecd-rootfs (2.765.51) jammy; urgency=medium
 
   * add cpc-sbom to create_manifest calls to generate sboms (LP: #2077105) 
