@@ -400,6 +400,8 @@ EOF
 
             if [ "${SUBARCH:-}" != "visionfive" ] && [ "${SUBARCH:-}" != "nezha" ] && [ "${SUBARCH:-}" != "licheerv" ] && [ "${SUBARCH:-}" != "icicle" ]; then
                 ## TODO remove below once we have grub-efi-riscv64 for the platforms
+                chroot mountpoint dpkg-query -W > binary/boot/filesystem.packages
+                create_manifest  "mountpoint/" "$PWD/livecd.ubuntu-cpc.disk-uefi.manifest" "$PWD/livecd.ubuntu-cpc.disk-uefi.spdx"  "cloud-image-$ARCH-$(date +%Y%m%dT%H:%M:%S)"
                 rm mountpoint/tmp/device.map
                 umount mountpoint/boot/efi
                 mount
