@@ -1,3 +1,10 @@
+livecd-rootfs (24.10.28) oracular; urgency=medium
+
+  * Explicitly create home directory for buildd system user to avoid issues
+    with installing and running snaps. (LP: #2083240) 
+
+ -- jchittum <john.chittum@canonical.com>  Wed, 06 Nov 2024 07:42:15 -0500
+
 livecd-rootfs (24.10.27) oracular; urgency=medium
 
   * Set UBUNTU_STORE_COHORT_KEY="+" to prepare-image to make sure we simply
