@@ -1,3 +1,10 @@
+livecd-rootfs (24.04.80) noble; urgency=medium
+
+  * Explicitly create home directory for buildd system user to avoid issues
+    with installing and running snaps. (LP: #2083240) 
+
+ -- jchittum <john.chittum@canonical.com>  Wed, 06 Nov 2024 07:43:40 -0500
+
 livecd-rootfs (24.04.79) noble; urgency=medium
 
   * Add apparmor policy permstable32 missing component (LP: #2084698)
