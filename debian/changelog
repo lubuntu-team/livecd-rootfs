@@ -1,4 +1,4 @@
-livecd-rootfs (24.10.28) UNRELEASED; urgency=medium
+livecd-rootfs (24.10.28) oracular; urgency=medium
 
   [ jchittum ]
   * Explicitly create home directory for buildd system user to avoid issues
@@ -7,7 +7,7 @@ livecd-rootfs (24.10.28) UNRELEASED; urgency=medium
   [ Łukasz 'sil2100' Zemczak ]
   * Add comment re: the cohort key in prepare-image.
 
- -- jchittum <john.chittum@canonical.com>  Wed, 06 Nov 2024 07:42:15 -0500
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Fri, 08 Nov 2024 11:46:38 +1300
 
 livecd-rootfs (24.10.27) oracular; urgency=medium
 
