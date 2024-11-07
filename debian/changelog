@@ -1,7 +1,11 @@
-livecd-rootfs (24.10.28) oracular; urgency=medium
+livecd-rootfs (24.10.28) UNRELEASED; urgency=medium
 
+  [ jchittum ]
   * Explicitly create home directory for buildd system user to avoid issues
-    with installing and running snaps. (LP: #2083240) 
+    with installing and running snaps. (LP: #2083240)
+
+  [ Łukasz 'sil2100' Zemczak ]
+  * Add comment re: the cohort key in prepare-image.
 
  -- jchittum <john.chittum@canonical.com>  Wed, 06 Nov 2024 07:42:15 -0500
 
