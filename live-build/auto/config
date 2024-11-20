@@ -1082,8 +1082,19 @@ case $PROJECT in
 		esac
 		;;
 
-	ubuntu-base|ubuntu-oci)
+	ubuntu-base)
 		OPTS="${OPTS:+$OPTS }--bootstrap-flavour=minimal"
+		;;
+
+	ubuntu-oci)
+		OPTS="${OPTS:+$OPTS }--bootstrap-flavour=minimal"
+		if [ "${SUBPROJECT:-}" = minimized ]; then
+			# As unminimize has been spit out from livecd-rootfs into a new
+			# separate pacakge, users have been reporting this as a regression for
+			# Noble. So we'd like to add the unminimize package; cf: LP: #2078583.
+			APT_OPTIONS="${APT_OPTIONS:+$APT_OPTIONS }--no-install-recommends"
+			add_package install unminimize
+		fi
 		;;
 
 	ubuntu-wsl)
