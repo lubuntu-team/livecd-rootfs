@@ -1,3 +1,9 @@
+livecd-rootfs (24.04.81) noble; urgency=medium
+
+  * Introduce unminimize as a package in OCI images. (LP: #2078583)
+
+ -- Utkarsh Gupta <utkarsh@ubuntu.com>  Wed, 20 Nov 2024 15:43:55 +0530
+
 livecd-rootfs (24.04.80) noble; urgency=medium
 
   * Explicitly create home directory for buildd system user to avoid issues
