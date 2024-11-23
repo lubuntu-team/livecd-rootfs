@@ -695,6 +695,10 @@ common_layered_desktop_image() {
 		fi
 		# the minimal layer, for minimal installs
 		add_task minimal minimal standard $MINIMAL_TASKS
+		# If Dracut is enabled, include it early
+		if [ -n "$NEEDS_DRACUT" ]; then
+			add_package minimal dracut
+		fi
 		# fixme: this should go in seeds, not be in code here
 		add_package minimal cloud-init
 		add_package minimal linux-$KERNEL_FLAVOURS
@@ -723,6 +727,13 @@ common_layered_desktop_image() {
 	[ -n "$LIVE_TASK" ] || LIVE_TASK=${FLAVOUR}-live
 	add_task ${LIVE_PREFIX}live "$LIVE_TASK"
 	add_package ${LIVE_PREFIX}live casper
+
+	# If Dracut is enabled, ensure it is removed in the live layer
+	# casper still depends on initramfs-tools
+	if [ -n "$NEEDS_DRACUT" ]; then
+		remove_package ${LIVE_PREFIX}live dracut
+		add_package ${LIVE_PREFIX}live initramfs-tools
+	fi
 
 	if [ -n "$LANGUAGE_BASE" ]; then
 		# language support
@@ -927,6 +938,7 @@ case $PROJECT in
 		MINIMAL_TASKS=lubuntu-desktop-minimal
 		MINIMAL_DESC="A minimal installation of the $UCFLAVOUR Desktop."
 		KERNEL_FLAVOURS=generic
+		NEEDS_DRACUT=yes
 		common_layered_desktop_image
 		;;
 

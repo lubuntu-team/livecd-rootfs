@@ -1154,9 +1154,14 @@ divert_update_initramfs () {
 		--divert /usr/sbin/update-initramfs.REAL --rename \
 		/usr/sbin/update-initramfs"
 	cat > chroot/usr/sbin/update-initramfs <<'EOF'
-#! /bin/sh
+#!/bin/sh
 if [ $# != 1 ] || [ "$1" != -u ]; then
-	exec update-initramfs.REAL "$@"
+	if [ -x /usr/sbin/update-initramfs.REAL ]; then
+		exec /usr/sbin/update-initramfs.REAL "$@"
+	else
+		echo "update-initramfs.REAL not found. Skipping execution." >&2
+		exit 0
+	fi
 fi
 echo "update-initramfs: diverted by livecd-rootfs (will be called later)" >&2
 
