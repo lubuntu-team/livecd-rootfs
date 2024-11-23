@@ -362,7 +362,7 @@ EOF
 	#  affected by this, we manually clear out the archive-related Packages
 	#  files in the cache.
 	case $PROJECT in
-		ubuntu|xubuntu|kubuntu|ubuntu-budgie|ubuntukylin|ubuntu-mate|ubuntucinnamon|ubuntu-unity|edubuntu)
+		ubuntu|xubuntu|kubuntu|ubuntu-budgie|ubuntukylin|ubuntu-mate|ubuntucinnamon|ubuntu-unity|edubuntu|lubuntu)
 			rm -f chroot/var/lib/apt/lists/*ubuntu.com*_Packages
 			;;
 	esac
@@ -408,7 +408,7 @@ done
 # we don't need a manifest-remove for a layered-aware installer
 # here we have a list of all new-installer flavors
 case $PROJECT in
-	ubuntu|ubuntu-budgie)
+	ubuntu|ubuntu-budgie|lubuntu)
 		rm -f livecd.${PROJECT}-manifest-remove
 		rm -f config/manifest-minimal-remove
 		;;

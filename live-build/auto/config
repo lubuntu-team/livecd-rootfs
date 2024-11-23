@@ -591,7 +591,7 @@ case $IMAGEFORMAT in
 		;;
 	*)
 		case $PROJECT in
-			kubuntu|lubuntu|ubuntu-unity)
+			kubuntu|ubuntu-unity)
 				add_package live casper
 				;;
 		esac
@@ -681,9 +681,11 @@ if ! [ -e config/germinate-output/structure ]; then
                 -s $FLAVOUR.$SUITE $GERMINATE_ARG -a $ARCH)
 fi
 
-do_layered_desktop_image() {
+# Common functionality for layered desktop images
+common_layered_desktop_image() {
 	touch config/universe-enabled
 	PASSES_TO_LAYERS="true"
+
 	if [ -n "$HAS_MINIMAL" ]; then
 		if [ -z "$MINIMAL_TASKS" ]; then
 			MINIMAL_TASKS="${FLAVOUR}-desktop-minimal"
@@ -759,6 +761,11 @@ do_layered_desktop_image() {
 	else
 		STANDARD_IS_DEFAULT=yes
 	fi
+}
+
+# Function for standard layered desktop image
+do_layered_desktop_image() {
+	common_layered_desktop_image
 
 	if [ -n "$HAS_MINIMAL" ]; then
 		[ -n "$MINIMAL_NAME" ] \
@@ -787,7 +794,8 @@ do_layered_desktop_image() {
 			locale_support: $LOCALE_SUPPORT
 		EOF
 	fi
-	write_kernel_yaml linux-$KERNEL_FLAVOURS
+
+	write_kernel_yaml "linux-$KERNEL_FLAVOURS"
 
 	if [ "$LOCALE_SUPPORT" != none ]; then
 		/usr/share/livecd-rootfs/checkout-translations-branch \
@@ -907,11 +915,22 @@ case $PROJECT in
 		do_layered_desktop_image
 		;;
 
-	lubuntu|ubuntu-unity)
+	ubuntu-unity)
 		add_task install minimal standard ${PROJECT}-desktop
 		LIVE_TASK=${PROJECT}-live
 		;;
-        ubuntukylin)
+
+	lubuntu)
+		UCFLAVOUR="Lubuntu"
+		HAS_MINIMAL=yes
+		PASSES_TO_LAYERS="true"
+		MINIMAL_TASKS=lubuntu-desktop-minimal
+		MINIMAL_DESC="A minimal installation of the $UCFLAVOUR Desktop."
+		KERNEL_FLAVOURS=generic
+		common_layered_desktop_image
+		;;
+
+	ubuntukylin)
 		# Ubuntu Kylin now ships the new installer.
 		UCFLAVOUR="Ubuntu Kylin"
 		HAS_MINIMAL=yes
@@ -1456,7 +1475,7 @@ case $PROJECT:${SUBPROJECT:-} in
 	ubuntu-cpc:*|ubuntu-server:live|ubuntu:desktop-preinstalled| \
 		ubuntu-wsl:*|ubuntu-mini-iso:*|ubuntu:|ubuntu-oem:*| \
 		ubuntustudio:*|edubuntu:*|ubuntu-budgie:*|ubuntucinnamon:*|xubuntu:*| \
-	        ubuntukylin:*|ubuntu-mate:*|ubuntu-core-installer:*)
+	        ubuntukylin:*|ubuntu-mate:*|ubuntu-core-installer:*|lubuntu:*)
 		# Ensure that most things e.g. includes.chroot are copied as is
 		for entry in /usr/share/livecd-rootfs/live-build/${PROJECT}/*; do
 			case $entry in
@@ -1492,7 +1511,7 @@ esac
 
 case $PROJECT in
 	ubuntu-oem|ubuntustudio|edubuntu|ubuntu-budgie|ubuntucinnamon| \
-	xubuntu|ubuntukylin|ubuntu-mate)
+	xubuntu|ubuntukylin|ubuntu-mate|lubuntu)
 		cp -af /usr/share/livecd-rootfs/live-build/ubuntu/includes.chroot \
 			config/includes.chroot
 
