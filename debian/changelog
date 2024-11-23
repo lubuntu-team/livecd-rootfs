@@ -1,10 +1,10 @@
-livecd-rootfs (25.04.3) UNRELEASED; urgency=medium
+livecd-rootfs (25.04.3) plucky; urgency=medium
 
   * Switch Lubuntu to stacked squashfses, and split apart the common
     functionality to avoid Subiquity-specific commands.
   * Add optional Dracut support for installed images, enable it for Lubuntu.
 
- -- Simon Quigley <tsimonq2@ubuntu.com>  Sat, 23 Nov 2024 13:44:46 -0600
+ -- Simon Quigley <tsimonq2@ubuntu.com>  Sat, 23 Nov 2024 13:52:09 -0600
 
 livecd-rootfs (25.04.2) plucky; urgency=medium
 
