@@ -22,15 +22,20 @@ EOF
 
 chroot chroot update-initramfs -u
 
+git clone https://git.launchpad.net/~ubuntu-cdimage/debian-cd/+git/ubuntu debian-cd
+export BASEDIR=$(readlink -f debian-cd) DIST=$SUITE
+
+cat > apt.conf <<EOF
+Dir "$(pwd)/chroot";
+EOF
+
 case $ARCH in
     amd64)
-        mkdir -p "ubuntu-mini-iso/amd64"
-        cp -a chroot/usr/share/cd-boot-images-amd64/tree ubuntu-mini-iso/amd64/tree
-        cp -a chroot/usr/share/cd-boot-images-amd64/images ubuntu-mini-iso/amd64/images
         mkdir -p "ubuntu-mini-iso/amd64/tree/casper"
-        cp "$KERNEL" ubuntu-mini-iso/amd64/tree/casper/vmlinuz
-        cp "$INITRD" ubuntu-mini-iso/amd64/tree/casper/initrd
-        mkdir -p "ubuntu-mini-iso/amd64/tree/boot/grub"
+        cp "$KERNEL" ubuntu-mini-iso/amd64/tree/casper/filesystem.kernel-generic
+        cp "$INITRD" ubuntu-mini-iso/amd64/tree/casper/filesystem.initrd-generic
+        APT_CONFIG_amd64=$(pwd)/apt.conf $BASEDIR/tools/boot/$SUITE/boot-amd64 1 $(readlink -f ubuntu-mini-iso/amd64/tree)
+        # Overwrite the grub.cfg that debian-cd generates by default
         cat > ubuntu-mini-iso/amd64/tree/boot/grub/grub.cfg <<EOF
 menuentry "Choose an Ubuntu version to install" {
         set gfxpayload=keep
@@ -38,6 +43,7 @@ menuentry "Choose an Ubuntu version to install" {
         initrd /casper/initrd
 }
 EOF
+        rm -f ubuntu-mini-iso/amd64/tree/boot/grub/loopback.cfg ubuntu-mini-iso/amd64/tree/boot/memtest*.bin
         ;;
 esac
 
@@ -70,10 +76,9 @@ $version - $ARCH ($BUILDSTAMP)
 EOF
 
 dest="${PWD}/livecd.${PROJECT}.iso"
-xorriso="$(cat chroot/usr/share/cd-boot-images-amd64/xorriso-cmd.txt)"
 
 cd ubuntu-mini-iso/$ARCH
-$xorriso -o $dest
+xorriso -as mkisofs $(cat 1.mkisofs_opts) tree -o $dest
 cd ../..
 
 rm -rf ubuntu-mini-iso
