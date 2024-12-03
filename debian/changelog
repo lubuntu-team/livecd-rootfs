@@ -1,3 +1,10 @@
+livecd-rootfs (2.765.53) UNRELEASED; urgency=medium
+
+  * live-build/ubuntu-cpc/hooks.d/base/disk-image-uefi.binary: ensure
+    install_gub always creates a manifest before returning. (LP: #2086455)
+
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Wed, 04 Dec 2024 05:53:31 +1300
+
 livecd-rootfs (2.765.52) jammy; urgency=medium
 
   *  Add apparmor policy permstable32 missing component (LP: #2084698)
