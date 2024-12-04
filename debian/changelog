@@ -1,9 +1,9 @@
-livecd-rootfs (25.04.5) UNRELEASED; urgency=medium
+livecd-rootfs (25.04.5) plucky; urgency=medium
 
   * Fix ubuntu-mini-iso build, by using script from debian-cd to create a
     bootable ISO rather than the now deleted cd-boot-images-amd64 package.
 
- -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Tue, 03 Dec 2024 08:57:34 +1300
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Wed, 04 Dec 2024 13:33:53 +1300
 
 livecd-rootfs (25.04.4) plucky; urgency=medium
 
