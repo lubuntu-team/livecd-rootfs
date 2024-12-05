@@ -1,0 +1,20 @@
+#!/bin/bash -eu
+# vi: ts=4 expandtab
+#
+#	Create wsl-distribution.conf for WSL setup
+#
+
+source /etc/os-release
+
+cat <<EOF >/etc/wsl-distribution.conf
+[oobe]
+command = /usr/libexec/wsl-setup
+defaultUid = 1000
+defaultName = ${NAME}-${VERSION_ID}
+
+[shortcut]
+icon = /usr/share/wsl/ubuntu.ico
+
+[windowsterminal]
+ProfileTemplate = /usr/share/wsl/terminal-profile.json
+EOF
