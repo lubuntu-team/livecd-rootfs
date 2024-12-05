@@ -23,7 +23,7 @@ EOF
 chroot chroot update-initramfs -u
 
 git clone https://git.launchpad.net/~ubuntu-cdimage/debian-cd/+git/ubuntu debian-cd
-export BASEDIR=$(readlink -f debian-cd) DIST=$SUITE
+export BASEDIR=$(readlink -f debian-cd) DIST=$LB_DISTRIBUTION
 
 cat > apt.conf <<EOF
 Dir "$(pwd)/chroot";
@@ -34,7 +34,7 @@ case $ARCH in
         mkdir -p "ubuntu-mini-iso/amd64/tree/casper"
         cp "$KERNEL" ubuntu-mini-iso/amd64/tree/casper/filesystem.kernel-generic
         cp "$INITRD" ubuntu-mini-iso/amd64/tree/casper/filesystem.initrd-generic
-        APT_CONFIG_amd64=$(pwd)/apt.conf $BASEDIR/tools/boot/$SUITE/boot-amd64 1 $(readlink -f ubuntu-mini-iso/amd64/tree)
+        APT_CONFIG_amd64=$(pwd)/apt.conf $BASEDIR/tools/boot/$LB_DISTRIBUTION/boot-amd64 1 $(readlink -f ubuntu-mini-iso/amd64/tree)
         # Overwrite the grub.cfg that debian-cd generates by default
         cat > ubuntu-mini-iso/amd64/tree/boot/grub/grub.cfg <<EOF
 menuentry "Choose an Ubuntu version to install" {

@@ -1,3 +1,9 @@
+livecd-rootfs (25.04.6) UNRELEASED; urgency=medium
+
+  * Refer to LB_DISTRIBUTION, not SUITE, in the ubuntu-mini-iso binary hook.
+
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Fri, 06 Dec 2024 09:56:21 +1300
+
 livecd-rootfs (25.04.5) plucky; urgency=medium
 
   * Fix ubuntu-mini-iso build, by using script from debian-cd to create a
