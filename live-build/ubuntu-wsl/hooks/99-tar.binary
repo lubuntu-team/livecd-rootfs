@@ -16,5 +16,10 @@ esac
 setfattr -x system.posix_acl_access chroot/var/log/journal
 setfattr -x system.posix_acl_default chroot/var/log/journal
 
+# Create the rootfs as a .wsl extension
+cd chroot
+tar --xattrs --sort=name -czf ../livecd.$PROJECT${SUBARCH:+-$SUBARCH}.wsl *
+cd ..
+
 # Remove initial ext4-formatted fs
 rm -f binary/boot/filesystem.ext4
