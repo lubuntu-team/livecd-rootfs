@@ -1,3 +1,14 @@
+livecd-rootfs (25.04.7) UNRELEASED; urgency=medium
+
+  [ Carlos Nihelton ]
+  [ Didier Roche-Tolomelli ]
+  * Adapt to new Microsoft package format: (LP: #2091293)
+    - Keep a single wsl rootfs upgrade policy
+    - Create livecd-roots tarball as a .wsl extension
+    - Create wsl-distribution.conf for WSL images
+
+ -- Didier Roche-Tolomelli <didrocks@ubuntu.com>  Mon, 09 Dec 2024 14:29:37 +0100
+
 livecd-rootfs (25.04.6) plucky; urgency=medium
 
   * Refer to LB_DISTRIBUTION, not SUITE, in the ubuntu-mini-iso binary hook.
