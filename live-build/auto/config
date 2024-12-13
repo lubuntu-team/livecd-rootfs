@@ -404,6 +404,8 @@ case $IMAGEFORMAT in
 				MODEL=tegra ;;
 			arm64+tegra-igx)
 				MODEL=tegra-igx ;;
+			arm64+tegra-jetson)
+				MODEL=tegra-jetson ;;
 			arm64+*)
 				MODEL=pc-arm64 ;;
 			*)
@@ -875,6 +877,9 @@ case $PROJECT in
 					arm64+tegra-igx)
 						variants='tegra-igx'
 						;;
+					arm64+tegra-jetson)
+						variants='tegra-jetson'
+						;;
 					riscv64*)
 						# However, for RISC-V we only offer one kernel
 						variants='ga'
@@ -909,6 +914,9 @@ case $PROJECT in
 					elif [ "$variant" = "tegra-igx" ]; then
 						kernel_metapkg=linux-nvidia-tegra-igx
 						flavor=nvidia-tegra-igx
+					elif [ "$variant" = "tegra-jetson" ]; then
+						kernel_metapkg=linux-nvidia-tegra-jetson
+						flavor=nvidia-tegra-jetson
 					else
 						echo "bogus variant: $variant"
 						exit 1
@@ -1128,7 +1136,7 @@ case "$ARCH${SUBARCH:++$SUBARCH}" in
 		add_package install linux-firmware-raspi2 pi-bluetooth u-boot-rpi u-boot-tools
 		BINARY_REMOVE_LINUX=false
 		;;
-	arm64+tegra|arm64+tegra-igx)
+	arm64+tegra|arm64+tegra-igx|arm64+tegra-jetson)
 		# Common configuration for all NVIDIA Tegra image variants
 		# (server, desktop etc.)
 		KERNEL_FLAVOURS="nvidia-$SUBARCH"
