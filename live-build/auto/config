@@ -4,7 +4,8 @@ set -e
 case $ARCH:$SUBARCH in
 	amd64:|amd64:generic|amd64:intel-iot|\
 	arm64:|arm64:generic|arm64:raspi|arm64:snapdragon|\
-	arm64:tegra|arm64:tegra-igx|arm64:x13s|arm64:largemem|\
+	arm64:tegra|arm64:tegra-igx|arm64:tegra-jetson|\
+	arm64:x13s|arm64:largemem|\
 	armhf:|\
 	i386:|\
 	ppc64el:|\
@@ -372,7 +373,7 @@ if [ -z "${IMAGEFORMAT:-}" ]; then
 					# All raspi images use ubuntu-image.
 					IMAGEFORMAT=ubuntu-image
 					;;
-				arm64+tegra|arm64+tegra-igx)
+				arm64+tegra|arm64+tegra-igx|arm64+tegra-jetson)
 					# Pre-installed Tegra images use
 					# ubuntu-image
 					IMAGEFORMAT=ubuntu-image
@@ -451,6 +452,8 @@ case $IMAGEFORMAT in
 				MODEL=tegra ;;
 			arm64+tegra-igx)
 				MODEL=tegra-igx ;;
+			arm64+tegra-jetson)
+				MODEL=tegra-jetson ;;
 			arm64+*)
 				MODEL=pc-arm64 ;;
 			*)
@@ -983,6 +986,9 @@ case $PROJECT in
 					tegra-igx)
 						variants='tegra-igx'
 						;;
+					tegra-jetson)
+						variants='tegra-jetson'
+						;;
 					largemem)
 						# variants='ga-64k hwe-64k'
 						variants='ga-64k'
@@ -1015,6 +1021,9 @@ case $PROJECT in
 					elif [ "$variant" = "tegra-igx" ]; then
 						kernel_metapkg=linux-nvidia-tegra-igx
 						flavor=nvidia-tegra-igx
+					elif [ "$variant" = "tegra-jetson" ]; then
+						kernel_metapkg=linux-nvidia-tegra-jetson
+						flavor=nvidia-tegra-jetson
 					else
 						echo "bogus variant: $variant"
 						exit 1
@@ -1257,7 +1266,7 @@ case "$ARCH${SUBARCH:++$SUBARCH}" in
 		add_package install linux-firmware-raspi pi-bluetooth u-boot-rpi u-boot-tools
 		BINARY_REMOVE_LINUX=false
 		;;
-	arm64+tegra|arm64+tegra-igx)
+	arm64+tegra|arm64+tegra-igx|arm64+tegra-jetson)
 		# Common configuration for all NVIDIA Tegra image variants
 		# (server, desktop etc.)
 		KERNEL_FLAVOURS="nvidia-$SUBARCH"

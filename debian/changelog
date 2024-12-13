@@ -1,3 +1,9 @@
+livecd-rootfs (24.04.82) noble; urgency=medium
+
+  * Add support for arm64+tegra-jetson flavor. (LP: #2091392)
+
+ -- Remy Martin <remy.martin@canonical.com>  Fri, 13 Dec 2024 11:53:08 +0100
+
 livecd-rootfs (24.04.81) noble; urgency=medium
 
   * Introduce unminimize as a package in OCI images. (LP: #2078583)
