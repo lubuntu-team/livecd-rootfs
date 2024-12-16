@@ -1,3 +1,9 @@
+livecd-rootfs (25.04.8) plucky; urgency=medium
+
+  * risc-v: directly copy device trees to /boot/dtbs (LP: #2092205)
+
+ -- Adriano Cordova <adriano.cordova@canonical.com>  Thu, 19 Dec 2024 10:42:57 -0300
+
 livecd-rootfs (25.04.7) plucky; urgency=medium
 
   [ Carlos Nihelton ]

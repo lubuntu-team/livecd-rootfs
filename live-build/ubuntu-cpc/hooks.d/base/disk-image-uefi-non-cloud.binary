@@ -272,34 +272,13 @@ install_grub() {
                 mkdir -p mountpoint/etc/default/grub.d/
                 cp ${my_d}/riscv64/grub/10_cmdline.cfg mountpoint/etc/default/grub.d/
                 echo "Installing GRUB for ${SUBARCH} board"
-                mkdir -p mountpoint/etc/flash-kernel/
                 case "${SUBARCH}" in
                     "icicle")
                         cp ${my_d}/riscv64/grub/90_watchdog-thresh.cfg mountpoint/etc/default/grub.d/
-                        # flash-kernel is needed to install the dtb for update-grub: it uses the
-                        # /proc/device-tree/model value to pick the correct dtb and as we are in a chroot,
-                        # the model value is wrong and we need to use /etc/flash-kernel/machine instead.
-                        # This explains why we install flash-kernel here.
-                        chroot mountpoint bash -c "echo 'Microchip PolarFire-SoC Icicle Kit' > /etc/flash-kernel/machine"
                         # The real U-Boot
                         chroot mountpoint apt-get install -qqy u-boot-microchip
                         loader="${loop_device}p13"
                         dd if=mountpoint/usr/lib/u-boot/microchip_icicle/u-boot.payload of=$loader
-                        ;;
-                    "milkvmars")
-                        cp ${my_d}/riscv64/grub/90_watchdog-thresh.cfg mountpoint/etc/default/grub.d/
-                        # flash-kernel is needed to install the dtb for update-grub: it uses the
-                        # /proc/device-tree/model value to pick the correct dtb and as we are in a chroot,
-                        # the model value is wrong and we need to use /etc/flash-kernel/machine instead.
-                        # This explains why we install flash-kernel here.
-                        chroot mountpoint bash -c "echo 'Milk-V Mars' > /etc/flash-kernel/machine"
-                        chroot mountpoint apt-get install -qqy u-boot-starfive
-                        # U-Boot SPL
-                        loader1="${loop_device}p13"
-                        # Main U-Boot
-                        loader2="${loop_device}p2"
-                        dd if=mountpoint/usr/lib/u-boot/starfive_visionfive2/u-boot-spl.bin.normal.out of=$loader1
-                        dd if=mountpoint/usr/lib/u-boot/starfive_visionfive2/u-boot.itb of=$loader2
                         ;;
                     "nezha"|"licheerv")
                         echo "Reducing initramfs size for ${SUBARCH} board"
@@ -308,14 +287,7 @@ install_grub() {
                         cat ${my_d}/riscv64/initramfs-tools/allwinner >> mountpoint/etc/initramfs-tools/modules
                         chroot mountpoint update-initramfs -c -v -k all
                         echo "Installing U-Boot for ${SUBARCH} board"
-                        # flash-kernel is needed to install the dtb for update-grub: it uses the
-                        # /proc/device-tree/model value to pick the correct dtb and as we are in a chroot,
-                        # the model value is wrong and we need to use /etc/flash-kernel/machine instead.
-                        # This explains why we install flash-kernel here.
-                        if [ "$SUBARCH" = "nezha" ]; then
-                            chroot mountpoint bash -c "echo 'Allwinner D1 Nezha' > /etc/flash-kernel/machine"
-                        elif [ "$SUBARCH" = "licheerv" ]; then
-                            chroot mountpoint bash -c "echo 'Sipeed Lichee RV Dock' > /etc/flash-kernel/machine"
+                        if [ "$SUBARCH" = "licheerv" ]; then
                             # cryptsetup-initramfs is a large contributor of the initrd size: we have to
                             # remove it for the LicheeRV board, otherwise it fails to boot. cryptsetup-initramfs
                             # needs to embed plymouth (and then the drm/gpu stuff) for interacting with the user
@@ -331,22 +303,12 @@ install_grub() {
                         ;;
                     "pic64gx")
                         cp ${my_d}/riscv64/grub/90_watchdog-thresh.cfg mountpoint/etc/default/grub.d/
-                        # flash-kernel is needed to install the dtb for update-grub: it uses the
-                        # /proc/device-tree/model value to pick the correct dtb and as we are in a chroot,
-                        # the model value is wrong and we need to use /etc/flash-kernel/machine instead.
-                        # This explains why we install flash-kernel here.
-                        chroot mountpoint bash -c "echo 'Microchip PIC64GX Curiosity Kit' > /etc/flash-kernel/machine"
                         # u-boot-pic64gx contains the vendor U-Boot
                         chroot mountpoint apt-get install -qqy u-boot-pic64gx
                         loader="${loop_device}p13"
                         dd if=mountpoint/usr/lib/u-boot-pic64gx/u-boot.payload of=$loader
                         ;;
                     "visionfive")
-                        # flash-kernel is needed to install the dtb for update-grub: it uses the
-                        # /proc/device-tree/model value to pick the correct dtb and as we are in a chroot,
-                        # the model value is wrong and we need to use /etc/flash-kernel/machine instead.
-                        # This explains why we install flash-kernel here.
-                        chroot mountpoint bash -c "echo 'StarFive VisionFive V1' > /etc/flash-kernel/machine"
                         # factory u-boot requires a p3 partition with /boot/uEnv.txt file
                         uenv_dev="${loop_device}p3"
                         mkfs.ext4 "${uenv_dev}"
@@ -376,13 +338,8 @@ EOF
                         umount "${uenv_mnt_dir}"
                         rmdir "${uenv_mnt_dir}"
                         ;;
-                    "visionfive2")
+                    "visionfive2"|"milkvmars")
                         cp ${my_d}/riscv64/grub/90_watchdog-thresh.cfg mountpoint/etc/default/grub.d/
-                        # flash-kernel is needed to install the dtb for update-grub: it uses the
-                        # /proc/device-tree/model value to pick the correct dtb and as we are in a chroot,
-                        # the model value is wrong and we need to use /etc/flash-kernel/machine instead.
-                        # This explains why we install flash-kernel here.
-                        chroot mountpoint bash -c "echo 'StarFive VisionFive 2 v1.3B' > /etc/flash-kernel/machine"
                         chroot mountpoint apt-get install -qqy u-boot-starfive
                         # U-Boot SPL
                         loader1="${loop_device}p13"
@@ -393,7 +350,6 @@ EOF
                         ;;
 		    unmatched)
                         cp ${my_d}/riscv64/grub/90_watchdog-thresh.cfg mountpoint/etc/default/grub.d/
-                        chroot mountpoint bash -c "echo 'SiFive HiFive Unmatched A00' > /etc/flash-kernel/machine"
                         chroot mountpoint apt-get install -qqy u-boot-sifive
                         # U-Boot SPL
                         loader1="${loop_device}p13"
@@ -403,6 +359,17 @@ EOF
                         dd if=mountpoint/usr/lib/u-boot/sifive_unmatched/u-boot.itb of=$loader2
                         ;;
                 esac
+                echo "Copying device trees"
+                kver=$(ls mountpoint/lib/modules | sort -V | tail -n 1)
+                dtb_src_dirs=(
+                    "mountpoint/usr/lib/linux-image-$kver"
+                    "mountpoint/lib/firmware/$kver/device-tree"
+                )
+                dtb_tgt_dir="mountpoint/boot/dtbs/$kver/"
+                mkdir -p "$dtb_tgt_dir"
+                for src_dir in "${dtb_src_dirs[@]}"; do
+                    [ -d "$src_dir" ] && cp -r -v "$src_dir"/* "$dtb_tgt_dir" || echo "Skipping missing: $src_dir"
+                done
                 chroot mountpoint bash -c 'FK_FORCE=yes apt-get install -qqy grub-efi-riscv64 flash-kernel'
                 efi_target=riscv64-efi
                 # Provide end-user modifyable CIDATA
@@ -411,12 +378,6 @@ EOF
                 # Provide stock nocloud datasource
                 # Allow interactive login without a cloud datasource.
                 setup_cinocloud mountpoint
-                # u-boot-${SUBARCH} will boot using UEFI if it does not find
-                # any extlinux.conf or boot.scr: but flash-kernel will
-                # install a boot.scr if it believes it did not boot in
-                # EFI mode, so make sure we don't leave a boot.scr
-                # behind.
-                chroot mountpoint rm -f /boot/boot.scr
             else
                 # Other images e.g. cloud images
                 chroot mountpoint apt-get install -qqy u-boot-menu grub-efi-riscv64
