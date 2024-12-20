@@ -1,3 +1,9 @@
+livecd-rootfs (25.04.12) UNRELEASED; urgency=medium
+
+  * Stop producing a rootfs tarball for the ubuntu-mini-iso builds.
+
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Wed, 05 Feb 2025 11:20:05 +1300
+
 livecd-rootfs (25.04.11) plucky; urgency=medium
 
   [ Heinrich Schuchardt ]

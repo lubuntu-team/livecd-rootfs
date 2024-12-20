@@ -444,17 +444,19 @@ case $IMAGEFORMAT in
 		PREINSTALLED=true
 		;;
 	plain)
+		fs=$IMAGEFORMAT
 		case $PROJECT:${SUBPROJECT:-} in
 			ubuntu-server:live|ubuntu-core-installer:*)
-	                        touch config/universe-enabled
+				touch config/universe-enabled
 				;;
 			ubuntu-mini-iso:)
+				fs=none
 				;;
 			*)
 				PREINSTALLED=true
 				;;
 		esac
-		OPTS="${OPTS:+$OPTS }--initramfs none --chroot-filesystem $IMAGEFORMAT"
+		OPTS="${OPTS:+$OPTS }--initramfs none --chroot-filesystem $fs"
 		;;
 
 	ubuntu-image)
