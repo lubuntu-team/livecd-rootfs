@@ -1,3 +1,9 @@
+livecd-rootfs (25.04.10) plucky; urgency=medium
+
+  * riscv: copy device trees to the ESP. Fixes (LP: #2095415)
+
+ -- Adriano Cordova <adriano.cordova@canonical.com>  Tue, 21 Jan 2025 10:38:54 -0300
+
 livecd-rootfs (25.04.9) plucky; urgency=medium
 
   * Move reference wsl-setup script to /usr/lib/wsl/
