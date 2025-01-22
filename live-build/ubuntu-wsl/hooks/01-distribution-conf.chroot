@@ -8,7 +8,7 @@ source /etc/os-release
 
 cat <<EOF >/etc/wsl-distribution.conf
 [oobe]
-command = /usr/libexec/wsl-setup
+command = /usr/lib/wsl/wsl-setup
 defaultUid = 1000
 defaultName = ${NAME}-${VERSION_ID}
 
