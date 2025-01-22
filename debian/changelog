@@ -1,3 +1,9 @@
+livecd-rootfs (25.04.9) plucky; urgency=medium
+
+  * Move reference wsl-setup script to /usr/lib/wsl/
+
+ -- Didier Roche-Tolomelli <didrocks@ubuntu.com>  Wed, 22 Jan 2025 10:17:56 +0100
+
 livecd-rootfs (25.04.8) plucky; urgency=medium
 
   * risc-v: directly copy device trees to /boot/dtbs (LP: #2092205)
