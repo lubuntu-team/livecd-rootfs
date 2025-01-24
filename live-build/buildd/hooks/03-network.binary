@@ -1,0 +1,12 @@
+#!/bin/bash -eux
+
+. config/functions
+
+chroot_dir=chroot
+
+# Networking interface configuration relies udev.
+# In normal LXD images, it's a transitive depends of ubuntu-cloud-minimal
+# seed, which isn't present in buildd images.
+chroot "$chroot_dir"  apt-get -y update
+env DEBIAN_FRONTEND=noninteractive chroot "$chroot_dir"  apt-get -y install udev
+chroot "$chroot_dir"  apt-get -y clean
