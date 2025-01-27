@@ -365,7 +365,7 @@ EOF
                     "mountpoint/usr/lib/linux-image-$kver"
                     "mountpoint/lib/firmware/$kver/device-tree"
                 )
-                dtb_tgt_dir="mountpoint/boot/efi/dtbs/"
+                dtb_tgt_dir="mountpoint/boot/efi/dtb/"
                 mkdir -p "$dtb_tgt_dir"
                 for src_dir in "${dtb_src_dirs[@]}"; do
                     [ -d "$src_dir" ] && cp -r -v "$src_dir"/* "$dtb_tgt_dir" || echo "Skipping missing: $src_dir"
