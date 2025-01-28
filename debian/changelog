@@ -1,6 +1,12 @@
 livecd-rootfs (25.04.11) UNRELEASED; urgency=medium
 
+  [ Heinrich Schuchardt ]
   * riscv: copy device trees dtb/ in ESP
+
+  [ Michael Hudson-Doyle ]
+  * Allow snapd to re-exec in installer environment (the issues between snapd,
+    overlayfs and apparmer that meant re-execing caused problems were fixed in
+    snapd a long time ago).
 
  -- Heinrich Schuchardt <heinrich.schuchardt@canonical.com>  Mon, 27 Jan 2025 13:42:35 +0100
 
