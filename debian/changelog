@@ -1,6 +1,7 @@
 livecd-rootfs (25.04.13) UNRELEASED; urgency=medium
 
   * install-sources: quote default kernel argument.
+  * ubuntu-core-installer: update install-sources.yaml with kernel.
 
  -- Chris Peterson <chris.peterson@canonical.com>  Fri, 31 Jan 2025 11:57:07 -0800
 

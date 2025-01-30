@@ -1122,6 +1122,9 @@ case $PROJECT in
 	    add_task base.live server-live
 	    add_package base.live linux-image-generic
 
+	    # Core installer images use the pc-kernel snap for its kernel
+	    write_kernel_yaml "snap:pc-kernel"
+
 	    /usr/share/livecd-rootfs/checkout-translations-branch \
 		https://git.launchpad.net/subiquity po config/catalog-translations
 	    ;;
