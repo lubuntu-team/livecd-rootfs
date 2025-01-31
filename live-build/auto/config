@@ -247,7 +247,7 @@ write_kernel_yaml () {
 	local metapkg="$1"
 	cat <<-EOF > config/kernel.yaml
 		kernel:
-		  default: $metapkg
+		  default: "$metapkg"
 	EOF
 
 	# To specify fallback to a bridge kernel, construct a kernel.yaml

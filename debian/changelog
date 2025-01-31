@@ -1,3 +1,9 @@
+livecd-rootfs (25.04.13) UNRELEASED; urgency=medium
+
+  * install-sources: quote default kernel argument.
+
+ -- Chris Peterson <chris.peterson@canonical.com>  Fri, 31 Jan 2025 11:57:07 -0800
+
 livecd-rootfs (25.04.12) plucky; urgency=medium
 
   * Stop producing a rootfs tarball for the ubuntu-mini-iso builds.
