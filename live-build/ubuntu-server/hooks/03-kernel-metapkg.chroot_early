@@ -12,10 +12,6 @@ case $PASS in
         ;;
 esac
 
-cat <<EOF > /etc/initramfs-tools/conf.d/casperize.conf
-export CASPER_GENERATE_UUID=1
-EOF
-
 cat <<EOF > /etc/initramfs-tools/conf.d/default-layer.conf
 LAYERFS_PATH=${PASS}.squashfs
 EOF
