@@ -5,6 +5,7 @@ livecd-rootfs (25.04.12) UNRELEASED; urgency=medium
     early" hook for the installer layer and remove the now unnecessary
     update-initramfs from the binary hook that breaks because mkinitramfs
     now requires that /sys is mounted. (LP: #2097280)
+  * Similar changes for ubuntu-mini-iso build.
 
  -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Wed, 05 Feb 2025 11:20:05 +1300
 

@@ -15,13 +15,6 @@ esac
 KERNEL=chroot/boot/vmlinuz
 INITRD=chroot/boot/initrd.img
 
-mkdir -p "chroot/etc/initramfs-tools/conf.d"
-cat > chroot/etc/initramfs-tools/conf.d/casperize.conf <<EOF
-export CASPER_GENERATE_UUID=1
-EOF
-
-chroot chroot update-initramfs -u
-
 git clone https://git.launchpad.net/~ubuntu-cdimage/debian-cd/+git/ubuntu debian-cd
 export BASEDIR=$(readlink -f debian-cd) DIST=$LB_DISTRIBUTION
 
