@@ -1,3 +1,9 @@
+livecd-rootfs (24.04.88) noble; urgency=medium
+
+  * risc-v: directly copy device trees to /boot/dtb. (LP: #2092205)
+
+ -- Adriano Cordova <adriano.cordova@canonical.com>  Mon, 10 Feb 2025 10:40:23 -0300
+
 livecd-rootfs (24.04.87) noble; urgency=medium
 
   * Add 6.11 kernel apparmor features' preseeds. (LP: #2098306)
