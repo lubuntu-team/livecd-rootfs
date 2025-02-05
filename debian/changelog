@@ -1,4 +1,4 @@
-livecd-rootfs (25.04.12) UNRELEASED; urgency=medium
+livecd-rootfs (25.04.12) plucky; urgency=medium
 
   * Stop producing a rootfs tarball for the ubuntu-mini-iso builds.
   * Move configuration of casper in ubuntu-serve:live builds to a "chroot
@@ -7,7 +7,7 @@ livecd-rootfs (25.04.12) UNRELEASED; urgency=medium
     now requires that /sys is mounted. (LP: #2097280)
   * Similar changes for ubuntu-mini-iso build.
 
- -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Wed, 05 Feb 2025 11:20:05 +1300
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Wed, 05 Feb 2025 15:26:13 +1300
 
 livecd-rootfs (25.04.11) plucky; urgency=medium
 
