@@ -8,6 +8,8 @@ livecd-rootfs (25.04.17) UNRELEASED; urgency=medium
   * live-build/ubuntu-mini-iso/hooks/01-mini-iso.binary: Drop the
     assumption that the uncompressed part of the initrd is unpacked to a
     directory called "main".
+  * live-build/ubuntu-mini-iso/hooks/01-mini-iso.chroot_early: Fix paths that
+    should have been adjusted when code moved from binary to chroot hook.
 
  -- Dan Bungert <daniel.bungert@canonical.com>  Thu, 13 Feb 2025 13:10:24 -0700
 
