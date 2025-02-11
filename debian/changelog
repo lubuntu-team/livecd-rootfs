@@ -1,3 +1,9 @@
+livecd-rootfs (25.04.14) plucky; urgency=medium
+
+  * Restore the default-layer.conf file in the initrd (LP: #2097838)
+
+ -- Dan Bungert <daniel.bungert@canonical.com>  Tue, 11 Feb 2025 08:21:56 -0700
+
 livecd-rootfs (25.04.13) plucky; urgency=medium
 
   * install-sources: quote default kernel argument.
