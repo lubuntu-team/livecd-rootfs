@@ -46,15 +46,15 @@ touch ubuntu-mini-iso/$ARCH/tree/.disk/base_installable
 
 tmpdir=$(mktemp -d)
 unmkinitramfs $INITRD $tmpdir
-if [ -e "$tmpdir/main/conf/uuid.conf" ]; then
-    uuid_conf="$tmpdir/main/conf/uuid.conf"
+if [ -e $tmpdir/*/conf/uuid.conf ]; then
+    uuid_conf=$tmpdir/*/conf/uuid.conf
 elif [ -e "$tmpdir/conf/uuid.conf" ]; then
     uuid_conf="$tmpdir/conf/uuid.conf"
 else
     echo "uuid.conf not found"
     exit 1
 fi
-cp "$uuid_conf" ubuntu-mini-iso/$ARCH/tree/.disk/casper-uuid-generic
+cp $uuid_conf ubuntu-mini-iso/$ARCH/tree/.disk/casper-uuid-generic
 rm -fr $tmpdir
 
 cat > ubuntu-mini-iso/$ARCH/tree/.disk/cd_type <<EOF

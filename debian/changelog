@@ -1,7 +1,13 @@
 livecd-rootfs (25.04.17) UNRELEASED; urgency=medium
 
+  [ Dan Bungert ]
   * Fix build failure when using lowlatency-hwe-24.04, as ubuntustudio does.
     (LP: #2098105)
+
+  [ Michael Hudson-Doyle ]
+  * live-build/ubuntu-mini-iso/hooks/01-mini-iso.binary: Drop the
+    assumption that the uncompressed part of the initrd is unpacked to a
+    directory called "main".
 
  -- Dan Bungert <daniel.bungert@canonical.com>  Thu, 13 Feb 2025 13:10:24 -0700
 
