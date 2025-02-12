@@ -880,6 +880,7 @@ case $PROJECT in
 		add_task install minimal standard
 		add_task install kubuntu-desktop
 		LIVE_TASK='kubuntu-live'
+		KERNEL_FLAVOURS='generic-hwe-24.04'
 		add_chroot_hook remove-gnome-icon-cache
 		;;
 
@@ -889,7 +890,7 @@ case $PROJECT in
 		MINIMAL_TASKS=edubuntu-desktop-gnome-minimal
 		MINIMAL_DESC="A minimal installation of the Edubuntu Desktop."
 		STANDARD_TASKS=edubuntu-desktop-gnome
-		KERNEL_FLAVOURS=generic
+		KERNEL_FLAVOURS='generic-hwe-24.04'
 		do_layered_desktop_image
 		;;
 
@@ -898,20 +899,21 @@ case $PROJECT in
 		UCFLAVOUR="Ubuntu Cinnamon"
 		HAS_MINIMAL=yes
 		MINIMAL_DESC="A minimal installation of the $UCFLAVOUR Desktop."
-		KERNEL_FLAVOURS=generic
+		KERNEL_FLAVOURS='generic-hwe-24.04'
 		do_layered_desktop_image
 		;;
 
 	lubuntu|ubuntu-unity)
 		add_task install minimal standard ${PROJECT}-desktop
 		LIVE_TASK=${PROJECT}-live
+		KERNEL_FLAVOURS='generic-hwe-24.04'
 		;;
 	ubuntukylin)
 		# Ubuntu Kylin now ships the new installer.
 		UCFLAVOUR="Ubuntu Kylin"
 		HAS_MINIMAL=yes
 		MINIMAL_DESC="A minimal installation of the $UCFLAVOUR Desktop."
-		KERNEL_FLAVOURS=generic
+		KERNEL_FLAVOURS='generic-hwe-24.04'
 		do_layered_desktop_image
 		;;
 
@@ -921,7 +923,7 @@ case $PROJECT in
 		MINIMAL_TASKS=xubuntu-minimal
 		MINIMAL_NAME="Xubuntu Minimal"
 		MINIMAL_DESC="A minimal installation of the Xubuntu Desktop."
-		KERNEL_FLAVOURS=generic
+		KERNEL_FLAVOURS='generic-hwe-24.04'
 		case ${SUBPROJECT:-} in
 			minimal)
 				HAS_STANDARD=no
@@ -947,7 +949,7 @@ case $PROJECT in
 		HAS_MINIMAL=yes
 		MINIMAL_TASKS=ubuntu-mate-core
 		MINIMAL_DESC="A minimal installation of the $UCFLAVOUR Desktop."
-		KERNEL_FLAVOURS=generic
+		KERNEL_FLAVOURS='generic-hwe-24.04'
 		do_layered_desktop_image
 		;;
 
@@ -956,7 +958,7 @@ case $PROJECT in
 		UCFLAVOUR="Ubuntu Studio"
 		STANDARD_TASKS="ubuntustudio-desktop ubuntustudio-audio ubuntustudio-graphics ubuntustudio-video ubuntustudio-photography"
 		LIVE_TASK=ubuntustudio-dvd-live
-		KERNEL_FLAVOURS=lowlatency
+		KERNEL_FLAVOURS='lowlatency-hwe-24.04'
 		do_layered_desktop_image
 		;;
 
@@ -990,12 +992,10 @@ case $PROJECT in
 						variants='tegra-jetson'
 						;;
 					largemem)
-						# variants='ga-64k hwe-64k'
-						variants='ga-64k'
+						variants='ga-64k hwe-64k'
 						;;
 					*)
-						# variants='ga hwe'
-						variants='ga'
+						variants='ga hwe'
 						;;
 				esac
 
