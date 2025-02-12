@@ -906,7 +906,7 @@ case $PROJECT in
 		add_task install minimal standard ${PROJECT}-desktop
 		LIVE_TASK=${PROJECT}-live
 		;;
-        ubuntukylin)
+	ubuntukylin)
 		# Ubuntu Kylin now ships the new installer.
 		UCFLAVOUR="Ubuntu Kylin"
 		HAS_MINIMAL=yes
