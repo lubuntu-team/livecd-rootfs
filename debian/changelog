@@ -1,3 +1,13 @@
+livecd-rootfs (24.04.84) noble; urgency=medium
+
+  [ Florent 'Skia' Jacquet ]
+  * Enable the HWE stack for 24.04.2. (LP: #2098105)
+
+  [ Utkarsh Gupta ]
+  * Bump HWE kernel track to 24.04 for ubuntu-core-desktop.
+
+ -- Utkarsh Gupta <utkarsh@ubuntu.com>  Thu, 13 Feb 2025 03:15:12 +0530
+
 livecd-rootfs (24.04.83) noble; urgency=medium
 
   [ Carlos Nihelton ]
