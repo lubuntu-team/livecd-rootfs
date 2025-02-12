@@ -845,7 +845,7 @@ case $PROJECT in
 
 	ubuntu-core-desktop)
 		touch config/universe-enabled
-		KERNEL_FLAVOURS='generic-hwe-22.04'
+		KERNEL_FLAVOURS='generic-hwe-24.04'
 		PASSES_TO_LAYERS="true"
 
 		# the minimal layer, for minimal installs
