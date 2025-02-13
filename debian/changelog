@@ -1,3 +1,9 @@
+livecd-rootfs (24.04.85) noble; urgency=medium
+
+  * Add 6.11 kernel apparmor features' preseeds. (LP: #2098306)
+
+ -- Thomas Bechtold <thomas.bechtold@canonical.com>  Thu, 13 Feb 2025 12:22:41 +0100
+
 livecd-rootfs (24.04.84) noble; urgency=medium
 
   [ Florent 'Skia' Jacquet ]
