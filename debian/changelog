@@ -1,3 +1,9 @@
+livecd-rootfs (25.04.15) plucky; urgency=medium
+
+  * Add 6.12 kernel apparmor features' preseeds.
+
+ -- Thomas Bechtold <thomas.bechtold@canonical.com>  Thu, 13 Feb 2025 12:14:33 +0100
+
 livecd-rootfs (25.04.14) plucky; urgency=medium
 
   * Restore the default-layer.conf file in the initrd (LP: #2097838)
