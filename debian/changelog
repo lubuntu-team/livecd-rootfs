@@ -1,3 +1,10 @@
+livecd-rootfs (25.04.18) UNRELEASED; urgency=medium
+
+  * Pre-emptively include the override to not try to build HWE kernel layer in
+    post .2 server riscv64 ISOs.
+
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Mon, 17 Feb 2025 11:12:00 +1300
+
 livecd-rootfs (25.04.17) plucky; urgency=medium
 
   [ Dan Bungert ]

@@ -1042,6 +1042,11 @@ case $PROJECT in
 						;;
 				esac
 
+				if [ $ARCH = "riscv64" ]; then
+					# For RISC-V we only offer one kernel
+					variants='ga'
+				fi
+
 				for variant in $variants; do
 					if [ "$variant" = "ga" ]; then
 						kernel_metapkg=linux-generic
