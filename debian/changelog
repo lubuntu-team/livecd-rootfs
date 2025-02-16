@@ -1,9 +1,9 @@
-livecd-rootfs (24.04.86) UNRELEASED; urgency=medium
+livecd-rootfs (24.04.86) noble; urgency=medium
 
   * Do not build HWE kernel layer on RISC-V as there is no HWE kernel there.
     (LP: #2098622)
 
- -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Mon, 17 Feb 2025 11:12:00 +1300
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Mon, 17 Feb 2025 11:32:19 +1300
 
 livecd-rootfs (24.04.85) noble; urgency=medium
 
