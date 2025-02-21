@@ -1,4 +1,4 @@
-livecd-rootfs (24.04.85) noble; urgency=medium
+livecd-rootfs (24.04.87) noble; urgency=medium
 
   * Add 6.11 kernel apparmor features' preseeds. (LP: #2098306)
 
