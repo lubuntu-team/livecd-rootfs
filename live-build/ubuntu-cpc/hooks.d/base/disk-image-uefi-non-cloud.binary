@@ -133,8 +133,8 @@ create_partitions() {
                         --change-name=3:uEnv \
                         --new=1:: \
                         --attributes=1:set:2
-            elif [ "${SUBARCH:-}" = "visionfive2" ] || [ "${SUBARCH:-}" = "milkvmars" ]; then
-                # VisionFive 2, Milk-V Mars
+            elif [ "${SUBARCH:-}" = "visionfive2" ] || [ "${SUBARCH:-}" = "milkvmars" ] || [ "${SUBARCH:-}" = "jh7110" ]; then
+                # JH7110 chips: VisionFive 2, Milk-V Mars
                 sgdisk "${disk_image}" \
                         --set-alignment=4096 \
 			--new=13:4096:8191 \
@@ -337,7 +337,7 @@ EOF
                         umount "${uenv_mnt_dir}"
                         rmdir "${uenv_mnt_dir}"
                         ;;
-                    "visionfive2"|"milkvmars")
+                    "visionfive2"|"milkvmars"|"jh7110")
                         cp ${my_d}/riscv64/grub/90_watchdog-thresh.cfg mountpoint/etc/default/grub.d/
                         chroot mountpoint apt-get install -qqy u-boot-starfive
                         # U-Boot SPL
