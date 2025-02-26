@@ -1,3 +1,9 @@
+livecd-rootfs (24.10.29) oracular; urgency=medium
+
+  * add cpc-sbom to create_manifest calls to generate sboms (LP: #2077105)
+
+ -- Thomas Bechtold <thomasbechtold@jpberlin.de>  Wed, 26 Feb 2025 14:02:13 +0100
+
 livecd-rootfs (24.10.28) oracular; urgency=medium
 
   [ jchittum ]
