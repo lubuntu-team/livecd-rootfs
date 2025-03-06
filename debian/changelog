@@ -1,12 +1,7 @@
-livecd-rootfs (25.04.89) noble; urgency=medium
-
-  * riscv: add SUBARCH 'jh7110'. (LP: #2099993)
-
- -- Adriano Cordova <adriano.cordova@canonical.com>  Tue, 25 Feb 2025 09:47:54 -0300
-
 livecd-rootfs (25.04.88) noble; urgency=medium
 
   * risc-v: directly copy device trees to /boot/dtb. (LP: #2092205)
+  * riscv: add SUBARCH 'jh7110'. (LP: #2099993)
 
  -- Adriano Cordova <adriano.cordova@canonical.com>  Mon, 10 Feb 2025 10:40:23 -0300
 
