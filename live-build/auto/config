@@ -175,8 +175,8 @@ add_task ()
         fi
 
 	for task; do
-		./config/expand-task config/germinate-output $FLAVOUR $task packages >> "$pkg_file"
-		./config/expand-task config/germinate-output $FLAVOUR $task snaps >> "$snap_file"
+		./config/expand-task config/germinate-output $FLAVOUR $task packages $ARCH >> "$pkg_file"
+		./config/expand-task config/germinate-output $FLAVOUR $task snaps $ARCH >> "$snap_file"
 	done
 
 	for file in $pkg_file $snap_file; do
@@ -185,6 +185,52 @@ add_task ()
 		else
 			rm -f $file
 		fi
+	done
+}
+
+add_task_pool ()
+{
+	local pass="$1"
+	local task="$2"
+	shift
+	local task_pkgs
+
+	if [ ! -e config/germinate-output/structure ]; then
+		echo "add_task_pool too soon" >&2
+		exit 1
+	fi
+
+	mkdir -pv config/{gnupg,indices,hooks}
+	for component in $COMPONENTS; do
+		(cd config/indices && \
+		 wget $MIRROR/indices/override.$SUITE.$component && \
+		 wget $MIRROR/indices/override.$SUITE.extra.$component \
+		)
+	done
+
+	for task; do
+		task_pkgs=$(./config/expand-task config/germinate-output $FLAVOUR $task packages $ARCH)
+		echo "!!!!!" >&2
+		echo $FLAVOUR >&2
+		echo $task >&2
+		echo $task_pkgs >&2
+		cat > config/hooks/100-livefs-pool.chroot <<EOF
+#!/bin/sh
+case \${PASS:-} in
+	*.live)
+		;;
+	*)
+		exit 0
+		;;
+esac
+
+mkdir -p /var/lib/livefs-pool/pool/ &&
+cd /var/lib/livefs-pool/pool/ &&
+echo "Downloading $task_pkgs" &&
+apt-get -y download $task_pkgs &&
+echo "Download of pool complete"
+EOF
+		chmod +x config/hooks/100-livefs-pool.chroot
 	done
 }
 
@@ -719,6 +765,9 @@ common_layered_desktop_image() {
 	[ -n "$LIVE_TASK" ] || LIVE_TASK=${FLAVOUR}-live
 	add_task ${LIVE_PREFIX}live "$LIVE_TASK"
 	add_package ${LIVE_PREFIX}live casper
+
+	# Add the ship-live seed to /var/lib/livefs-pool
+	add_task_pool ${LIVE_PREFIX}live ship-live
 
 	# If Dracut is enabled, ensure it is removed in the live layer
 	# casper still depends on initramfs-tools

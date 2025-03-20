@@ -10,6 +10,7 @@ p.add_argument('output_dir')
 p.add_argument('flavour')
 p.add_argument('task')
 p.add_argument('what', choices=['packages', 'snaps'])
+p.add_argument('arch', default='amd64')
 args = p.parse_args()
 
 if args.what == 'snaps':
@@ -66,7 +67,27 @@ def getTaskName(task_headers, flavour, seedname):
         return seedname
 
 
-for seedtext in glob.glob(f'{args.output_dir}/*.seedtext'):
+# An item in a Germinate seed
+packages = set()
+seed_pattern = re.compile(r'^\s*\*\s+(?P<raw_pkg>.+?)(?=\s+(?:\[[^\]]+\]|#)|\s*$)(?:\s+\[(?P<arch>[^\]]+)\])?(?:\s+#.*)?\s*$')
+def print_seed_item(line):
+    m = seed_pattern.match(line)
+
+    if m:
+        arch_tag = m.group("arch")
+        if arch_tag and args.arch not in arch_tag.split():
+            return
+
+        raw_pkg = m.group("raw_pkg")
+        if args.what == "snaps" and "(classic)" in raw_pkg:
+            raw_pkg += "/classic"
+
+        # Remove e.g. surrounding slashes from entries
+        printable_m = re.match(r"^/\^(.*)\$/?$", raw_pkg)
+        packages.add(m.group(1) if printable_m else raw_pkg)
+
+passed = False
+for seedtext in glob.glob(f"{args.output_dir}/*.seedtext"):
     hs = parseTaskHeaders(open(seedtext))
     if not hs:
         continue
@@ -75,12 +96,16 @@ for seedtext in glob.glob(f'{args.output_dir}/*.seedtext'):
     if tn != args.task:
         continue
     for seed in getTaskSeeds(hs, seedname):
-        for line in open(f'{args.output_dir}/{seed}{ext}'):
-            if re.match('^[a-z0-9]', line):
-                name = line.split()[0]
-                if args.what == 'snaps' and '(classic)' in line:
-                    name += '/classic'
-                print(name)
+        for line in open(f"{args.output_dir}/{seed}{ext}"):
+             print_seed_item(line)
+    passed = True
     break
-else:
-    raise Exception("did not find task %r" % (args.task,))
+
+if not passed and not packages:
+    if args.task != "ship-live" or not os.path.exists(f"{args.output_dir}/{args.task}.seedtext"):
+        raise Exception(f"Unable to find {args.task}")
+
+    for line in open(f"{args.output_dir}/{args.task}.seedtext"):
+        print_seed_item(line)
+
+print(" ".join(packages))
