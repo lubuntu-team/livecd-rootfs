@@ -1,3 +1,15 @@
+livecd-rootfs (2.765.55) jammy; urgency=medium
+
+  [ Carlos Nihelton ]
+  [ Didier Roche-Tolomelli ]
+  * Adapt to new Microsoft package format: (LP: #2091293)
+    - Follows the same recipe already applied to Noble and later.
+    - Keep a single wsl rootfs upgrade policy
+    - Create livecd-roots tarball as a .wsl extension
+    - Create wsl-distribution.conf for WSL images
+
+ -- Carlos Nihelton <cnihelton@ubuntu.com>  Tue, 29 Apr 2025 17:33:15 -0300
+
 livecd-rootfs (2.765.54) jammy; urgency=medium
 
   * Add support for arm64+tegra-jetson flavor. (LP: #2091392)
