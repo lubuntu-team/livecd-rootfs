@@ -3,7 +3,7 @@ set -e
 
 case $ARCH:$SUBARCH in
 	amd64:|amd64:generic|amd64:intel-iot|\
-	arm64:|arm64:generic|arm64:raspi|arm64:snapdragon|\
+	arm64:|arm64:generic|arm64:raspi|arm64:snapdragon|arm64:nvidia|\
 	arm64:tegra|arm64:tegra-igx|arm64:tegra-jetson|arm64:x13s|\
 	arm64:largemem|\
 	armhf:|\
@@ -844,6 +844,16 @@ case $PROJECT in
 				HAS_DEFAULT_LANGUAGES=yes
 				LANGUAGE_BASE=desktop
 				KERNEL_FLAVOURS='generic-hwe-24.04'
+
+				case $SUBARCH in
+					nvidia)
+						KERNEL_FLAVOURS="nvidia-hwe-24.04"
+						;;
+					*)
+						# nothing to do here.
+						;;
+				esac
+				
 				do_layered_desktop_image
 
 				# Enchanced secureboot stuff
@@ -1023,6 +1033,9 @@ case $PROJECT in
 						# variants='ga-64k hwe-64k'
 						variants='ga-64k'
 						;;
+					nvidia)
+						variants='nvidia'
+						;;
 					*)
 						# variants='ga hwe'
 						variants='ga'
@@ -1060,6 +1073,9 @@ case $PROJECT in
 					elif [ "$variant" = "tegra-jetson" ]; then
 						kernel_metapkg=linux-nvidia-tegra-jetson
 						flavor=nvidia-tegra-jetson
+					elif [ "$variant" = "nvidia" ]; then
+						kernel_metapkg=linux-nvidia-hwe-$(lsb_release -sr)
+						flavor=nvidia
 					else
 						echo "bogus variant: $variant"
 						exit 1
