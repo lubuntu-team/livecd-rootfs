@@ -1,4 +1,4 @@
-livecd-rootfs (25.10.8) UNRELEASED; urgency=medium
+livecd-rootfs (25.10.8) questing; urgency=medium
 
   [ Didier Roche-Tolomelli ]
   * desktop: use snapd from edge
@@ -9,8 +9,10 @@ livecd-rootfs (25.10.8) UNRELEASED; urgency=medium
   * lb_binary_layered: try #2 to fix mtimes in layered squashfses. (LP2107332)
     Constrain mtime sync to the current upperdir so that files in lower layers
     are not redundantly included.
+  * server: fix failure to process the hwe kernel layer due to multiple
+    kernels being present (LP: #2112501)
 
- -- Dan Bungert <daniel.bungert@canonical.com>  Fri, 13 Jun 2025 10:54:25 -0600
+ -- Dan Bungert <daniel.bungert@canonical.com>  Fri, 13 Jun 2025 12:00:20 -0600
 
 livecd-rootfs (25.10.7) questing; urgency=medium
 
