@@ -1065,16 +1065,12 @@ case $PROJECT in
 						exit 1
 					fi
 
-					add_pass ubuntu-server-minimal.ubuntu-server.installer.$flavor
 					if [ "$first_kernel" = "y" ]; then
 						# Put the first kernel offered into the base layer
-						kernel_layer=ubuntu-server-minimal
 						first_kernel=n
-					else
-						# and subsequent ones into their own layer
-						kernel_layer=ubuntu-server-minimal.ubuntu-server.installer.$flavor
+						add_package ubuntu-server-minimal $kernel_metapkg
 					fi
-					add_package $kernel_layer $kernel_metapkg
+					add_package ubuntu-server-minimal.ubuntu-server.installer.$flavor $kernel_metapkg
 
 					LIVE_PASSES="${LIVE_PASSES:+$LIVE_PASSES }ubuntu-server-minimal.ubuntu-server.installer.$flavor"
 				done

@@ -1,0 +1,18 @@
+#!/bin/bash -eux
+# vi: ts=4 noexpandtab
+
+case $PASS in
+    ubuntu-server-minimal.ubuntu-server.installer.*.*)
+        exit 0
+        ;;
+    ubuntu-server-minimal.ubuntu-server.installer.*)
+        ;;
+    *)
+        exit 0
+        ;;
+esac
+
+# remove excess kernels.  auto/config arranges for the correct one to be
+# installed.
+
+apt-get --yes remove --purge 'linux-image*'
