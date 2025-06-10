@@ -5,6 +5,11 @@ livecd-rootfs (25.10.8) UNRELEASED; urgency=medium
   * desktop: tpmfde image use desktop-security-center and firmware-updater
     from edge
 
+  [ Dan Bungert ]
+  * lb_binary_layered: try #2 to fix mtimes in layered squashfses. (LP2107332)
+    Constrain mtime sync to the current upperdir so that files in lower layers
+    are not redundantly included.
+
  -- Dan Bungert <daniel.bungert@canonical.com>  Fri, 13 Jun 2025 10:54:25 -0600
 
 livecd-rootfs (25.10.7) questing; urgency=medium
