@@ -1,0 +1,38 @@
+#!/usr/bin/python3
+
+# usage: sync-mtime src dst
+#
+# synchronize atime/mtime on files between src and dst.
+#
+# src and dst are directories, where dst is expected to contain a subset of the
+# files found in src. for each file present in dst or a subdirectory thereof,
+# if atime/mtime differ between the same file in src and that file in dst,
+# update atime/mtime on the file in dst.
+
+import os
+import sys
+from pathlib import Path
+
+
+def time_eq(a: os.stat_result, b: os.stat_result) -> bool:
+    return (
+        (a.st_mtime_ns == b.st_mtime_ns) and
+        (a.st_atime_ns == b.st_atime_ns)
+    )
+
+
+src, dst = sys.argv[1:]
+for dirpath, dirnames, filenames in Path(dst).walk():
+    for filename in filenames:
+        dst_file = dirpath / filename
+        if not dst_file.is_file():
+            continue
+        src_file = src / dst_file.relative_to(dst)
+
+        src_stat = src_file.stat(follow_symlinks=False)
+        dst_stat = dst_file.stat(follow_symlinks=False)
+        if time_eq(src_stat, dst_stat):
+            continue
+
+        ns = (src_stat.st_atime_ns, src_stat.st_mtime_ns)
+        os.utime(dst_file, ns=ns, follow_symlinks=False)

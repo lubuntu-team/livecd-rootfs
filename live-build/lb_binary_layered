@@ -163,15 +163,24 @@ build_layered_squashfs () {
 			#    (rather than the default which is to skip copies based
 			#    on size + mtime)
 			#  --no-times to not copy mtimes from source to dest (we
-			#    don't care about mtime in the image and want to
+			#    do care about mtime in the image but want to
 			#    deduplicate files that have indentical contents but
-			#    different mtimes)
+			#    different mtimes, and mtime will be fixed below)
 			#  --del because we want to remove files that have been
 			#    deleted in this layer.
 			rsync -aXHAS --checksum --no-times --del chroot/ chroot-2/
 			umount chroot-2
 			rmdir chroot-2
 			overlay_dir="$overlay_dir-2"
+			# We use rsync with --no-times rsync (see above)
+			# for the absolute best size reduction.  But there are
+			# cases where we want mtime preservation to match what
+			# was found in the original archive packages, such as
+			# keeping .py mtime in sync with the matching .pyc.
+			# Operate on the upperdir directly, so that we are only
+			# modifying mtime on files that are actually changed in
+			# this layer. LP: #2107332
+			/usr/share/livecd-rootfs/sync-mtime chroot "$overlay_dir"
 		fi
 
 		create_squashfs "${overlay_dir}" ${squashfs_f}
