@@ -1,3 +1,10 @@
+livecd-rootfs (25.10.8) UNRELEASED; urgency=medium
+
+  [ Didier Roche-Tolomelli ]
+  * desktop: use snapd from edge
+
+ -- Dan Bungert <daniel.bungert@canonical.com>  Fri, 13 Jun 2025 10:38:01 -0600
+
 livecd-rootfs (25.10.7) questing; urgency=medium
 
   * revert 25.10.6 due to duplicated snaps
