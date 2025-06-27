@@ -1,3 +1,17 @@
+livecd-rootfs (2.664.55) focal; urgency=medium
+
+  * Adapt WSL images in the new Microsoft package format: (LP: #2115536)
+    - Making it possible to distribute Focal for WSL without the MS Store.
+    - Separate them from CPC's.
+    - Requires a WSL-specific seed for Focal.
+    - Remove attributes not supported by WSL's tar.
+    - Creates missing groups in chroot.
+    - Keep a single wsl rootfs upgrade policy.
+    - Create livecd-roots tarball as a .wsl extension.
+    - Create wsl-distribution.conf for WSL images.
+
+ -- Carlos Nihelton <cnihelton@ubuntu.com>  Fri, 27 Jun 2025 17:31:55 -0300
+
 livecd-rootfs (2.664.54) focal; urgency=medium
 
   * add cpc-sbom to create_manifest calls to generate sboms (LP: #2077105) 
