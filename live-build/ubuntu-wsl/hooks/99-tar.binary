@@ -1,0 +1,25 @@
+#!/bin/bash -eu
+# vi: ts=4 expandtab
+#
+# Generate the compressed root directory for WSL manually.
+# Type "plain" unfortunately does not execute lb_binary_* helpers.
+
+case $ARCH in
+    amd64|arm64)
+        ;;
+    *)
+        echo "WSL root tarballs are not generated for $ARCH."
+        exit 0;;
+esac
+
+## remove attributes not supported by WSL's tar
+setfattr -x system.posix_acl_access chroot/var/log/journal
+setfattr -x system.posix_acl_default chroot/var/log/journal
+
+# Create the rootfs as a .wsl extension
+cd chroot
+tar --xattrs --sort=name -czf ../livecd.$PROJECT${SUBARCH:+-$SUBARCH}.wsl *
+cd ..
+
+# Remove initial ext4-formatted fs
+rm -f binary/boot/filesystem.ext4
