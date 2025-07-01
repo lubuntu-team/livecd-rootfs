@@ -1,3 +1,9 @@
+livecd-rootfs (25.10.10) questing; urgency=medium
+
+  * risc-v cloud images: enable cpc fixes for riscv64
+
+ -- Adriano Cordova <adriano.cordova@canonical.com>  Tue, 01 Jul 2025 09:11:16 -0400
+
 livecd-rootfs (25.10.9) questing; urgency=medium
 
   * desktop and server: read $SUBARCH to allow the use of nvidia's kernel
