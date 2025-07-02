@@ -14,6 +14,10 @@ ROOTPART_START=1
 
 my_d=$(dirname $(readlink -f ${0}))
 
+# NEW CPC default imagesize is 2.5G [2684354560 bytes] to avail of the slow increase in pkg sizes
+# This value will be passed into live-build/functions as an override
+imagesize=2684354560
+
 case $ARCH:$SUBARCH in
 	ppc64el:*|powerpc:*)
 		echo "POWER disk images are handled separately"
@@ -95,6 +99,7 @@ if [ "${should_install_grub}" -eq 1 ]; then
     echo "(hd0) ${loop_device}" > mountpoint/tmp/device.map
     # install the required package to get the grub-install command
     chroot mountpoint apt-get -qqy install --no-install-recommends grub-pc grub2-common
+    chroot mountpoint df --all --human-readable --print-type
     chroot mountpoint grub-install ${loop_device}
     chroot mountpoint grub-bios-setup \
         --boot-image=i386-pc/boot.img \
