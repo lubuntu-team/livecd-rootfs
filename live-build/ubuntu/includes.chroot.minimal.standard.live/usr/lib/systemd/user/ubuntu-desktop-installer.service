@@ -4,6 +4,8 @@
 Description=Ubuntu Desktop Installer
 PartOf=graphical-session.target
 After=graphical-session.target
+# Make sure that the system was seeded to access the snap
+After=snapd.seeded.service
 
 # Never run in GDM
 Conflicts=gnome-session@gnome-login.target
