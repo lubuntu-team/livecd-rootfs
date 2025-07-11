@@ -1,4 +1,4 @@
-livecd-rootfs (25.10.11) UNRELEASED; urgency=medium
+livecd-rootfs (25.10.11) questing; urgency=medium
 
   * Fix installer startup to wait for snapd to be preseeded first
     (LP: #2114923)
