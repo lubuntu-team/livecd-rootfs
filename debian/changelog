@@ -1,3 +1,10 @@
+livecd-rootfs (25.10.11) UNRELEASED; urgency=medium
+
+  * Fix installer startup to wait for snapd to be preseeded first
+    (LP: #2114923)
+
+ -- Didier Roche-Tolomelli <didrocks@ubuntu.com>  Fri, 11 Jul 2025 14:57:56 +0200
+
 livecd-rootfs (25.10.10) questing; urgency=medium
 
   * risc-v cloud images: enable cpc fixes for riscv64
