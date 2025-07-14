@@ -4,14 +4,14 @@
 Description=Ubuntu Desktop Installer
 PartOf=graphical-session.target
 After=graphical-session.target
-# Make sure that the system was seeded to access the snap
-After=snapd.seeded.service
 
 # Never run in GDM
 Conflicts=gnome-session@gnome-login.target
 
 [Service]
 Type=oneshot
+# Make sure that the system was seeded to access the snap
+ExecStartPre=/usr/bin/snap wait system seed.loaded
 ExecStart=/snap/bin/ubuntu-desktop-bootstrap --try-or-install
 ExecStopPost=sh -c "gsettings set org.gnome.shell.extensions.dash-to-dock dock-fixed true; gsettings set org.gnome.shell.extensions.dash-to-dock intellihide true; gnome-extensions enable ding@rastersoft.com"
 Restart=no
