@@ -1,0 +1,13 @@
+// -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+//
+// THIS FILE IS ONLY AVAILABLE ON THE LIVE SYSTEM
+//
+// Allow the ubuntu-desktop-installer to request snap seeding state
+// used before starting.
+
+polkit.addRule(function(action, subject) {
+    if (action.id == "io.snapcraft.snapd.manage-configuration") {
+            return polkit.Result.YES;
+    }
+});
+
