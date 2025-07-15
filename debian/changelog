@@ -1,3 +1,14 @@
+livecd-rootfs (25.10.12) questing; urgency=medium
+
+  [ Zygmunt Krynicki ]
+  * Use snap wait system seed.loaded to wait for snapd (LP: #2114923)
+
+  [ Dennis Loose ]
+  [ Didier Roche-Tolomelli ]
+  * Allow the ubuntu-desktop-installer to request snap seeding state
+
+ -- Didier Roche-Tolomelli <didrocks@ubuntu.com>  Tue, 15 Jul 2025 16:30:41 +0200
+
 livecd-rootfs (25.10.11) questing; urgency=medium
 
   * Fix installer startup to wait for snapd to be preseeded first
