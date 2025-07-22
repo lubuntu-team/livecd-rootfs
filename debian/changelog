@@ -1,3 +1,12 @@
+livecd-rootfs (24.04.90) noble; urgency=medium
+
+  [ Chad Smith ]
+  * Override cloud-init.service in /etc so as to not invalidate debsums
+    (LP: #2069391)
+  * Update the overridden copy of cloud-init.service
+
+ -- Dan Bungert <daniel.bungert@canonical.com>  Tue, 22 Jul 2025 15:50:34 -0600
+
 livecd-rootfs (24.04.89) noble; urgency=medium
 
   * desktop: Remove some cruft referencing the subiquity snap, which can
