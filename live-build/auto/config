@@ -1009,6 +1009,14 @@ case $PROJECT in
 				add_package ubuntu-server-minimal lxd-installer
 				add_task ubuntu-server-minimal.ubuntu-server minimal standard server
 				add_package ubuntu-server-minimal.ubuntu-server cloud-init
+				# If we have a multipath disk with LVM on top, we want to give
+				# multipath a chance to create the /dev/mapper/mpatha entry
+				# during the initramfs phase. Otherwise LVM will "steal" the
+				# device (e.g., /dev/sda2) and prevent multipath from using it
+				# after pivoting to the root filesystem of the live
+				# environment.
+				# See LP: #2080474 and LP: #1480399.
+				add_package ubuntu-server-minimal.ubuntu-server.installer multipath-tools-boot
 
 				add_task ubuntu-server-minimal.ubuntu-server.installer server-live
 
