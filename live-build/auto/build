@@ -498,7 +498,7 @@ for FLAVOUR in $LB_LINUX_FLAVOURS; do
 		continue
 	fi
 	case $FLAVOUR in
-		allwinner|virtual|generic-hwe-*)
+		allwinner|virtual|generic-hwe-*|lowlatency-hwe-*)
 			FLAVOUR="generic"
 			;;
 		oem-*)
@@ -509,9 +509,6 @@ for FLAVOUR in $LB_LINUX_FLAVOURS; do
 			;;
 		intel-iotg*)
 			FLAVOUR="intel-iotg"
-			;;
-		lowlatency-hwe-*)
-			FLAVOUR="lowlatency"
 			;;
 	esac
 	KVERS="$( (cd "binary/$INITFS"; ls vmlinu?-* 2>/dev/null || true) | (fgrep -v .efi || true) | sed -n "s/^vmlinu.-\\([^-]*-[^-]*-$FLAVOUR\\)$/\\1/p" )"
