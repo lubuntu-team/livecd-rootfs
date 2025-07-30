@@ -566,10 +566,11 @@ _snap_post_process() {
             # If the 'core' snap is not present, assume we are coreXX-only and
             # install the snapd snap.
             channel=stable
-            # FIXME: TPM-FDE spike, to be removed after the spike is over.
-            if [ $PROJECT = "ubuntu" ]; then
-                channel=edge
-            fi
+            # FIXME: This can be commented and uncommented to enable snaps from
+            # edge for development spikes.
+            # if [ $PROJECT = "ubuntu" ]; then
+            #     channel=edge
+            # fi
             if [ ! -f ${snaps_dir}/core_[0-9]*.snap ]; then
                 _snap_preseed $CHROOT_ROOT snapd "$channel"
             fi

@@ -60,10 +60,10 @@ reset_snapd_state chroot
 # everything but pc-kernel.
 env SNAPPY_STORE_NO_CDN=1 UBUNTU_STORE_COHORT_KEY="+" snap prepare-image \
     --classic $model $channel \
-    --snap=pc-kernel=25.10/candidate \
-    --snap=snapd=latest/edge \
-    --snap=desktop-security-center=1/edge \
-    --snap=firmware-updater=1/edge \
+    --snap=pc-kernel=25.10/stable \
+    --snap=snapd=latest/stable \
+    --snap=desktop-security-center=1/stable \
+    --snap=firmware-updater=1/stable \
     chroot
 
 mv chroot/system-seed/systems/* chroot/system-seed/systems/enhanced-secureboot-desktop
