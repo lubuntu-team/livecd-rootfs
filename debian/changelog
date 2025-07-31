@@ -1,3 +1,10 @@
+livecd-rootfs (24.04.92) noble; urgency=medium
+
+  * Temporarily revert the 24.04.90 changes.  We wish to validate only
+    24.04.91 for Ubuntu 24.04.3 point release.
+
+ -- Dan Bungert <daniel.bungert@canonical.com>  Thu, 31 Jul 2025 11:27:41 -0600
+
 livecd-rootfs (24.04.91) noble; urgency=medium
 
   * Fix lowlatency kernel flavour name (LP: #2119012)
