@@ -53,17 +53,22 @@ reset_snapd_state chroot
 
 # this is the normal prepare-image invocation.  This is not used right now as
 # the model in question is the "dangerous" model so that we can override the
-# channel of pc-kernel to get a matching set of snaps.
+# channel of pc-kernel and others to get a matching set of snaps.
 #   env SNAPPY_STORE_NO_CDN=1 UBUNTU_STORE_COHORT_KEY="+" snap prepare-image \
 #       --classic $model $channel chroot
-# so instead we're doing this, including forcing channel to stable for
-# everything but pc-kernel.
+# FIXME - go back to the stable model and remove all the `--snap` overrides
 env SNAPPY_STORE_NO_CDN=1 UBUNTU_STORE_COHORT_KEY="+" snap prepare-image \
     --classic $model $channel \
-    --snap=pc-kernel=25.10/stable \
-    --snap=snapd=latest/stable \
-    --snap=desktop-security-center=1/stable \
-    --snap=firmware-updater=1/stable \
+    --snap=pc=classic-25.10/stable \
+    --snap=pc-kernel=25.10/candidate \
+    --snap=firmware-updater=1/stable/ubuntu-25.10 \
+    --snap=desktop-security-center=1/stable/ubuntu-25.10 \
+    --snap=prompting-client=1/stable/ubuntu-25.10 \
+    --snap=snap-store=2/stable/ubuntu-25.10 \
+    --snap=gtk-common-themes=latest/stable/ubuntu-25.10 \
+    --snap=firefox=latest/stable/ubuntu-25.10 \
+    --snap=gnome-42-2204=latest/stable/ubuntu-25.10 \
+    --snap=snapd-desktop-integration=latest/stable/ubuntu-25.10 \
     chroot
 
 mv chroot/system-seed/systems/* chroot/system-seed/systems/enhanced-secureboot-desktop
