@@ -1,3 +1,12 @@
+livecd-rootfs (25.10.14) questing; urgency=medium
+
+  [ Didier Roche-Tolomelli ]
+  [ Tim Andersson ]
+  [ Daniel Bungert ]
+  * desktop TPMFDE: move snaps back to stable channels
+
+ -- Dan Bungert <daniel.bungert@canonical.com>  Thu, 07 Aug 2025 16:21:32 -0600
+
 livecd-rootfs (25.10.13) questing; urgency=medium
 
   [ Olivier Gayot ]
