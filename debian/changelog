@@ -1,3 +1,9 @@
+livecd-rootfs (25.10.16) UNRELEASED; urgency=medium
+
+  * Put the uc20-style system seed for TPM backed FDE in the live layer.
+
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Wed, 13 Aug 2025 10:31:45 +1200
+
 livecd-rootfs (25.10.15) questing; urgency=medium
 
   * Add missing components to 6.14 kernel apparmor features' preseeds.
