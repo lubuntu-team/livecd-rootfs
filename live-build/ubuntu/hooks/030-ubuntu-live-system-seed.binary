@@ -1,0 +1,74 @@
+#!/bin/bash
+
+# create the system seed for TPM-backed FDE in the live layer of the installer.
+
+set -eux
+
+case ${PASS:-} in
+    *.live)
+        ;;
+    *)
+        exit 0
+        ;;
+esac
+
+if [ -n "${SUBPROJECT:-}" ]; then
+    echo "We don't run Ubuntu Desktop hooks for this project."
+    exit 0
+fi
+
+. config/binary
+. config/functions
+
+# Generation of the model:
+# * At https://github.com/canonical/models one can find a repo of raw,
+#   unsigned, input .json files, and their signed .model equivalents.
+# * At least once per cycle, update the json for the new Ubuntu version.
+#   To do this, take the previous cycle ubuntu-classic-$ver-amd64.json file,
+#   rename for the new version, and do any necessary updates including fixing
+#   the versions of tracks.
+# * When this is done, the json needs to be signed.  This needs to be done by
+#   a Canonical employee - try asking someone who has recently opened PRs on
+#   https://github.com/canonical/models with the signed models.
+# * Ensure the signed and unsigned version of the models are updated in the
+#   models repo.
+# * The signed model can then be placed here in livecd-rootfs at
+#   live-build/${PROJECT}/ubuntu-classic-amd64.model
+
+# env SNAPPY_STORE_NO_CDN=1 snap known --remote model series=16 brand-id=canonical model=ubuntu-classic-2410-amd64 > config/classic-model.model
+model=/usr/share/livecd-rootfs/live-build/${PROJECT}/ubuntu-classic-amd64.model
+
+# see below note about "dangerous" model
+CHANNEL=${CHANNEL:-stable}
+
+channel=""
+if [ -n "${CHANNEL:-}" ]; then
+    channel="--channel $CHANNEL"
+fi
+
+# Set UBUNTU_STORE_COHORT_KEY="+" to force prepare-image to fetch the latest
+# snap versions regardless of phasing status
+
+# this is the normal prepare-image invocation.  This is not used right now as
+# the model in question is the "dangerous" model so that we can override the
+# channel of pc-kernel and others to get a matching set of snaps.
+#   env SNAPPY_STORE_NO_CDN=1 UBUNTU_STORE_COHORT_KEY="+" snap prepare-image \
+#       --classic $model $channel chroot
+# FIXME - go back to the stable model and remove all the `--snap` overrides
+env SNAPPY_STORE_NO_CDN=1 UBUNTU_STORE_COHORT_KEY="+" snap prepare-image \
+    --classic $model $channel \
+    --snap=pc=classic-25.10/stable \
+    --snap=pc-kernel=25.10/candidate \
+    --snap=firmware-updater=1/stable/ubuntu-25.10 \
+    --snap=desktop-security-center=1/stable/ubuntu-25.10 \
+    --snap=prompting-client=1/stable/ubuntu-25.10 \
+    --snap=snap-store=2/stable/ubuntu-25.10 \
+    --snap=gtk-common-themes=latest/stable/ubuntu-25.10 \
+    --snap=firefox=latest/stable/ubuntu-25.10 \
+    --snap=gnome-42-2204=latest/stable/ubuntu-25.10 \
+    --snap=snapd-desktop-integration=latest/stable/ubuntu-25.10 \
+    chroot
+
+mv chroot/system-seed/systems/* chroot/system-seed/systems/enhanced-secureboot-desktop
+rm -rf chroot/var/lib/snapd/seed
+mv chroot/system-seed chroot/var/lib/snapd/seed

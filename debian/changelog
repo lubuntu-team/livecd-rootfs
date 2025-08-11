@@ -1,3 +1,9 @@
+livecd-rootfs (25.10.15) UNRELEASED; urgency=medium
+
+  * Put the uc20-style system seed for TPM backed FDE in the live layer.
+
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Mon, 11 Aug 2025 13:06:09 +1200
+
 livecd-rootfs (25.10.14) questing; urgency=medium
 
   [ Didier Roche-Tolomelli ]
