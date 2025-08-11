@@ -70,5 +70,5 @@ env SNAPPY_STORE_NO_CDN=1 UBUNTU_STORE_COHORT_KEY="+" snap prepare-image \
     chroot
 
 mv chroot/system-seed/systems/* chroot/system-seed/systems/enhanced-secureboot-desktop
-rm -rf chroot/var/lib/snapd/seed
-mv chroot/system-seed chroot/var/lib/snapd/seed
+rsync -av chroot/system-seed/{systems,snaps} chroot/var/lib/snapd/seed
+rm -rf chroot/system-seed/
