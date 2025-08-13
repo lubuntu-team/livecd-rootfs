@@ -1,3 +1,11 @@
+livecd-rootfs (25.10.17) questing; urgency=medium
+  [ Tim Andersson ]
+  * Remove temporary snap overrides. Relates to LP: #2120473
+  * Enable ubuntu-dangerous desktop builds (desktop images
+    with all snaps on edge).
+  * Import latest 25.10 classic model
+  * Import 25.10 dangerous model with all snap channels corrected
+
 livecd-rootfs (25.10.16) questing; urgency=medium
 
   * Put the uc20-style system seed for TPM backed FDE in the live layer.
