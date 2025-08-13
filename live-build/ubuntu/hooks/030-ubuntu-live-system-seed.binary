@@ -41,6 +41,11 @@ model=/usr/share/livecd-rootfs/live-build/${PROJECT}/ubuntu-classic-amd64.model
 # see below note about "dangerous" model
 CHANNEL=${CHANNEL:-stable}
 
+# for the dangerous subproject, we need the dangerous model!
+if [ $SUBPROJECT = "dangerous" ]; then
+    model=/usr/share/livecd-rootfs/live-build/${PROJECT}/ubuntu-classic-amd64-dangerous.model
+fi
+
 channel=""
 if [ -n "${CHANNEL:-}" ]; then
     channel="--channel $CHANNEL"
