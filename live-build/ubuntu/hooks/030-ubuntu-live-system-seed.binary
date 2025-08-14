@@ -38,9 +38,6 @@ fi
 # env SNAPPY_STORE_NO_CDN=1 snap known --remote model series=16 brand-id=canonical model=ubuntu-classic-2410-amd64 > config/classic-model.model
 model=/usr/share/livecd-rootfs/live-build/${PROJECT}/ubuntu-classic-amd64.model
 
-# see below note about "dangerous" model
-CHANNEL=${CHANNEL:-stable}
-
 # for the dangerous subproject, we need the dangerous model!
 if [ $SUBPROJECT = "dangerous" ]; then
     model=/usr/share/livecd-rootfs/live-build/${PROJECT}/ubuntu-classic-amd64-dangerous.model
@@ -54,25 +51,8 @@ fi
 # Set UBUNTU_STORE_COHORT_KEY="+" to force prepare-image to fetch the latest
 # snap versions regardless of phasing status
 
-# this is the normal prepare-image invocation.  This is not used right now as
-# the model in question is the "dangerous" model so that we can override the
-# channel of pc-kernel and others to get a matching set of snaps.
-#   env SNAPPY_STORE_NO_CDN=1 UBUNTU_STORE_COHORT_KEY="+" snap prepare-image \
-#       --classic $model $channel chroot
-# FIXME - go back to the stable model and remove all the `--snap` overrides
 env SNAPPY_STORE_NO_CDN=1 UBUNTU_STORE_COHORT_KEY="+" snap prepare-image \
-    --classic $model $channel \
-    --snap=pc=classic-25.10/stable \
-    --snap=pc-kernel=25.10/candidate \
-    --snap=firmware-updater=1/stable/ubuntu-25.10 \
-    --snap=desktop-security-center=1/stable/ubuntu-25.10 \
-    --snap=prompting-client=1/stable/ubuntu-25.10 \
-    --snap=snap-store=2/stable/ubuntu-25.10 \
-    --snap=gtk-common-themes=latest/stable/ubuntu-25.10 \
-    --snap=firefox=latest/stable/ubuntu-25.10 \
-    --snap=gnome-42-2204=latest/stable/ubuntu-25.10 \
-    --snap=snapd-desktop-integration=latest/stable/ubuntu-25.10 \
-    chroot
+    --classic $model $channel chroot
 
 mv chroot/system-seed/systems/* chroot/system-seed/systems/enhanced-secureboot-desktop
 rsync -av chroot/system-seed/{systems,snaps} chroot/var/lib/snapd/seed
