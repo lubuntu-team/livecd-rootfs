@@ -1,3 +1,13 @@
+livecd-rootfs (24.04.94) noble; urgency=medium
+
+  [ Chad Smith ]
+  * Override cloud-init.service in /etc so as to not invalidate debsums
+    (LP: #2069391)
+  * Update the overridden copy of cloud-init.service
+  * These changes were introduced in 24.04.90 first, then reverted.
+
+ -- Antoine Lassagne <antoine.lassagne@canonical.com>  Thu, 21 Aug 2025 14:17:08 +0200
+
 livecd-rootfs (24.04.93) noble; urgency=medium
 
   * Add 6.14 kernel apparmor features' preseeds. (LP: #2116199)
