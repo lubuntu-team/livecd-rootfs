@@ -1,10 +1,13 @@
 livecd-rootfs (25.10.17) questing; urgency=medium
+
   [ Tim Andersson ]
-  * Remove temporary snap overrides. Relates to LP: #2120473
   * Enable ubuntu-dangerous desktop builds (desktop images
     with all snaps on edge).
-  * Import latest 25.10 classic model
-  * Import 25.10 dangerous model with all snap channels corrected
+  * Remove temporary snap overrides.
+  * Import latest 25.10 classic model (LP: #2120473)
+  * Import 25.10 dangerous model with all snap channels corrected.
+
+ -- Utkarsh Gupta <utkarsh@ubuntu.com>  Wed, 27 Aug 2025 18:57:13 +0530
 
 livecd-rootfs (25.10.16) questing; urgency=medium
 
