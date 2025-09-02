@@ -137,7 +137,9 @@ EOF
 
 disk_image=binary/boot/disk-uefi.ext4
 
-create_empty_disk_image "${disk_image}"
+# Adjust the image size to accomodate increasing package sizes
+size=$(( imagesize*115/100 ))
+create_empty_disk_image "${disk_image}" "${size}"
 create_partitions "${disk_image}"
 mount_image "${disk_image}" 1
 
