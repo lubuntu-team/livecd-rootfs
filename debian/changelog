@@ -1,3 +1,9 @@
+livecd-rootfs (25.10.18) questing; urgency=medium
+
+  * Increase default image size for buildd.
+
+ -- Denis Lalaj <denis.lalaj@canonical.com>  Tue, 02 Sep 2025 15:37:34 -0700
+
 livecd-rootfs (25.10.17) questing; urgency=medium
 
   [ Tim Andersson ]
