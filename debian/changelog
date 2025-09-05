@@ -1,3 +1,9 @@
+livecd-rootfs (25.10.18) questing; urgency=medium
+
+  * desktop: use dracut
+
+ -- Dan Bungert <daniel.bungert@canonical.com>  Mon, 08 Sep 2025 17:00:46 -0600
+
 livecd-rootfs (25.10.17) questing; urgency=medium
 
   [ Tim Andersson ]
