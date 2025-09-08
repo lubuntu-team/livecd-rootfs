@@ -844,6 +844,7 @@ case $PROJECT in
 				HAS_DEFAULT_LANGUAGES=yes
 				LANGUAGE_BASE=desktop
 				KERNEL_FLAVOURS='generic-hwe-24.04'
+				NEEDS_DRACUT=yes
 
 				case $SUBARCH in
 					nvidia)
