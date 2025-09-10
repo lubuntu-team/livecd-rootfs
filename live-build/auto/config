@@ -917,6 +917,7 @@ case $PROJECT in
 		MINIMAL_DESC="A minimal installation of the Edubuntu Desktop."
 		STANDARD_TASKS=edubuntu-desktop-gnome
 		KERNEL_FLAVOURS=generic
+		NEEDS_DRACUT=yes
 		do_layered_desktop_image
 		;;
 
