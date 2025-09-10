@@ -1,3 +1,9 @@
+livecd-rootfs (25.10.20) questing; urgency=medium
+
+  * edubuntu: use dracut
+
+ -- Dan Bungert <daniel.bungert@canonical.com>  Wed, 10 Sep 2025 17:15:45 -0600
+
 livecd-rootfs (25.10.19) questing; urgency=medium
 
   * Increase default image size for buildd.
