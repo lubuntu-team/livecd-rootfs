@@ -30,7 +30,7 @@ if [ "$ARCH" = "riscv64" ]; then
 fi
 
 case ${PROJECT:-}:${SUBPROJECT:-} in
-    ubuntu:)
+    ubuntu:|ubuntu:dangerous)
         echo "We don't create EFI images for Ubuntu Desktop."
         exit 0
         ;;

@@ -12,11 +12,6 @@ case ${PASS:-} in
         ;;
 esac
 
-if [ -n "${SUBPROJECT:-}" ]; then
-    echo "We don't run Ubuntu Desktop hooks for this project."
-    exit 0
-fi
-
 . config/binary
 . config/functions
 
@@ -38,9 +33,18 @@ fi
 # env SNAPPY_STORE_NO_CDN=1 snap known --remote model series=16 brand-id=canonical model=ubuntu-classic-2410-amd64 > config/classic-model.model
 model=/usr/share/livecd-rootfs/live-build/${PROJECT}/ubuntu-classic-amd64.model
 
+prepare_args=
+
 # for the dangerous subproject, we need the dangerous model!
 if [ $SUBPROJECT = "dangerous" ]; then
+    # As with the "classically" seeded snaps, snaps from the edge channel may
+    # require different content snaps to be installed, so they must be
+    # included in the system as well. We just use the same list as was
+    # computed in snap_validate_seed.
     model=/usr/share/livecd-rootfs/live-build/${PROJECT}/ubuntu-classic-amd64-dangerous.model
+    while read snap; do
+        prepare_args="$prepare_args --snap=${snap}=edge"
+    done < config/missing-providers
 fi
 
 channel=""
@@ -52,7 +56,7 @@ fi
 # snap versions regardless of phasing status
 
 env SNAPPY_STORE_NO_CDN=1 UBUNTU_STORE_COHORT_KEY="+" snap prepare-image \
-    --classic $model $channel chroot
+    --classic $model $channel ${prepare_args:+$prepare_args} chroot
 
 mv chroot/system-seed/systems/* chroot/system-seed/systems/enhanced-secureboot-desktop
 rsync -av chroot/system-seed/{systems,snaps} chroot/var/lib/snapd/seed

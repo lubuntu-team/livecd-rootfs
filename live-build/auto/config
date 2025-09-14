@@ -52,6 +52,7 @@ mkdir -p config
 cp -af /usr/share/livecd-rootfs/live-build/functions config/functions
 cp -af /usr/share/livecd-rootfs/live-build/lb_*_layered config/
 cp -af /usr/share/livecd-rootfs/live-build/snap-seed-parse.py config/snap-seed-parse
+cp -af /usr/share/livecd-rootfs/live-build/snap-seed-missing-providers.py config/snap-seed-missing-providers
 cp -af /usr/share/livecd-rootfs/live-build/expand-task config/expand-task
 cp -af /usr/share/livecd-rootfs/live-build/squashfs-exclude-files config/
 
@@ -1520,7 +1521,7 @@ fi
 
 case $PROJECT:${SUBPROJECT:-} in
 	ubuntu-cpc:*|ubuntu-server:live|ubuntu:desktop-preinstalled| \
-		ubuntu-wsl:*|ubuntu-mini-iso:*|ubuntu:|ubuntu-oem:*| \
+		ubuntu-wsl:*|ubuntu-mini-iso:*|ubuntu:|ubuntu:dangerous|ubuntu-oem:*| \
 		ubuntustudio:*|edubuntu:*|ubuntu-budgie:*|ubuntucinnamon:*|xubuntu:*| \
 	        ubuntukylin:*|ubuntu-mate:*|ubuntu-core-installer:*|lubuntu:*)
 		# Ensure that most things e.g. includes.chroot are copied as is

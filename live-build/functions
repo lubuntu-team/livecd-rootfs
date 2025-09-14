@@ -567,8 +567,8 @@ _snap_post_process() {
             # If the 'core' snap is not present, assume we are coreXX-only and
             # install the snapd snap.
             channel=stable
-            if [ $SUBPROJECT = "dangerous" ]; then
-                channel=$CHANNEL
+            if [ "$SUBPROJECT" = "dangerous" ]; then
+                channel=edge
             fi
             if [ ! -f ${snaps_dir}/core_[0-9]*.snap ]; then
                 _snap_preseed $CHROOT_ROOT snapd "$channel"
@@ -667,7 +667,12 @@ _snap_preseed() {
 		    fi
                 fi
 
-                _snap_preseed $CHROOT_ROOT $core_snap stable
+                local core_channel=stable
+                if [ "$SUBPROJECT" = "dangerous" ]; then
+                    core_channel=edge
+                fi
+
+                _snap_preseed $CHROOT_ROOT $core_snap $core_channel
             fi
             ;;
     esac
@@ -796,6 +801,14 @@ snap_preseed() {
         esac
     fi
 
+    if [ "$SUBPROJECT" = "dangerous" ]; then
+       # For the dangerous ISOs we want to include edge versions of all the
+       # snaps. Many snaps have a channel like "1/stable/ubuntu-X.Y" in the
+       # seed but the ubuntu-X.Y branches don't usually exist in the edge
+       # channel so strip that off as well.
+       CHANNEL=$(echo $CHANNEL | sed -e s/stable.*/edge/)
+    fi
+
     # At this point:
     # SNAP_NAME is just the snap name
     # SNAP is either $SNAP_NAME or $SNAP_NAME/classic for classic confined
@@ -854,6 +867,17 @@ snap_validate_seed() {
     fi
 
     if [ -e "${CHROOT_ROOT}/var/lib/snapd/seed/seed.yaml" ]; then
+        if [ "${SUBPROJECT}" = "dangerous" ]; then
+            # When we include a snap from edge instead of stable, it may have
+            # require different content provider snaps to be installed and it
+            # is not reasonable to have the seed contain this. So run this
+            # script which figures out which content provider snaps are
+            # missing and include them.
+            ./config/snap-seed-missing-providers "${CHROOT_ROOT}/var/lib/snapd/seed/" >> config/missing-providers
+            while read snap; do
+                _snap_preseed chroot "${snap}" edge
+            done < config/missing-providers
+        fi
         snap debug validate-seed "${CHROOT_ROOT}/var/lib/snapd/seed/seed.yaml"
         /usr/lib/snapd/snap-preseed --reset $(realpath "${CHROOT_ROOT}")
         /usr/lib/snapd/snap-preseed $(realpath "${CHROOT_ROOT}")
