@@ -1,9 +1,9 @@
-livecd-rootfs (25.10.22) UNRELEASED; urgency=medium
+livecd-rootfs (25.10.22) questing; urgency=medium
 
   * Disable apparmor_restrict_unprivileged_userns in the live layers.
     (LP: #2122675)
 
- -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Mon, 15 Sep 2025 12:26:52 +1200
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Tue, 16 Sep 2025 08:51:02 +1200
 
 livecd-rootfs (25.10.21) questing; urgency=medium
 
