@@ -1,3 +1,9 @@
+livecd-rootfs (2.765.56) jammy; urgency=medium
+
+  * Backporting generation of /etc/cloud/build.info. (LP: #2124984)
+
+ -- Allen Abraham <allen.abraham@canonical.com>  Wed, 17 Sep 2025 14:32:04 -0400
+
 livecd-rootfs (2.765.55) jammy; urgency=medium
 
   [ Carlos Nihelton ]
