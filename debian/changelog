@@ -1,3 +1,9 @@
+livecd-rootfs (25.10.23) questing; urgency=medium
+
+  * Add 6.17 kernel apparmor features' preseeds.
+
+ -- Thomas Bechtold <thomasbechtold@jpberlin.de>  Thu, 18 Sep 2025 13:29:42 +0200
+
 livecd-rootfs (25.10.22) questing; urgency=medium
 
   * Disable apparmor_restrict_unprivileged_userns in the live layers.
