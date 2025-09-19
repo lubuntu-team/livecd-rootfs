@@ -1,3 +1,16 @@
+livecd-rootfs (25.10.24) questing; urgency=medium
+
+  * Increase CPC disk-image base imagesize to 2.5GB
+    * In the ubuntu-cpc disk-image binary we need to avail of the ever increasing size
+      of packages. 2.2GB is now just a bit too small leading to `No space
+      left on device` errors when the binary hits `grub-install`. This change
+      increases $imagesize to 2.5GB (in the binary as an override, initially
+      implemented in ecaaf0484 by dlalaj). Also now run `df` just after the
+      grub-pc && grub2-common installs to make for easier debugging in the future.
+      (LP: #2115811)
+
+ -- Chloé 'kajiya' Smith <chloe.smith@canonical.com>  Fri, 19 Sep 2025 13:07:00 +0100
+
 livecd-rootfs (25.10.23) questing; urgency=medium
 
   * Add 6.17 kernel apparmor features' preseeds.
