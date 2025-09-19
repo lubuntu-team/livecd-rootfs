@@ -1082,6 +1082,7 @@ network:
   version: 2
   renderer: NetworkManager
 EOF
+        chmod 600 chroot/etc/netplan/01-network-manager-all.yaml
         # Do not limit cloud-init renderers to network-manager as suggested
         # in LP: #1982855 because subiquity needs to render full networking
         # in ephemeral boot time when autoinstall.network is provided.
