@@ -1,4 +1,4 @@
-livecd-rootfs (25.10.24) UNRELEASED; urgency=medium
+livecd-rootfs (25.10.24) questing; urgency=medium
 
   [ Chad Smith ]
   * Limit permissions for /etc/netplan/01-network-manager.yaml to
@@ -14,7 +14,7 @@ livecd-rootfs (25.10.24) UNRELEASED; urgency=medium
       grub-pc && grub2-common installs to make for easier debugging in the future.
       (LP: #2115811)
 
- -- Chloé 'kajiya' Smith <chloe.smith@canonical.com>  Fri, 19 Sep 2025 13:07:00 +0100
+ -- Dan Bungert <daniel.bungert@canonical.com>  Fri, 19 Sep 2025 13:47:20 -0600
 
 livecd-rootfs (25.10.23) questing; urgency=medium
 
