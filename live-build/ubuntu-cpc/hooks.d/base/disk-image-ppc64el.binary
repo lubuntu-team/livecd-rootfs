@@ -24,7 +24,9 @@ create_partitions() {
     sgdisk "${disk_image}" \
         --new=2::+8M \
         --new=1:
-    sgdisk "${disk_image}" -t 2:4100
+    sgdisk "${disk_image}" \
+        -t 2:4100 \
+        -t 1:"$(gpt_root_partition_uuid $ARCH)"
     sgdisk "${disk_image}" \
         --print
 }
