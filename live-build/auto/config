@@ -9,9 +9,7 @@ case $ARCH:$SUBARCH in
 	armhf:|\
 	i386:|\
 	ppc64el:|\
-	riscv64:|riscv64:generic|riscv64:icicle|riscv64:jh7110|riscv64:licheerv|\
-	riscv64:milkvmars|riscv64:nezha|riscv64:pic64gx|riscv64:unmatched|\
-	riscv64:visionfive|riscv64:visionfive2|\
+	riscv64:|riscv64:generic|\
 	s390x:|\
 	*appliance*)
 		;;
@@ -402,15 +400,6 @@ fi
 # one also must request disk1-img-xz image format
 if [ "$IMAGEFORMAT" = "ext4" ] && [ "$PROJECT" = "ubuntu-cpc" ]; then
 	case $ARCH:$SUBARCH in
-		riscv64:icicle | \
-		riscv64:jh7110 | \
-		riscv64:licheerv | \
-		riscv64:milkvmars | \
-		riscv64:nezha | \
-		riscv64:pic64gx | \
-		riscv64:unmatched | \
-		riscv64:visionfive | \
-		riscv64:visionfive2 | \
 		*:generic)
 			IMAGE_HAS_HARDCODED_PASSWORD=1
 			if [ -z "${IMAGE_TARGETS:-}" ]; then
@@ -1220,14 +1209,7 @@ case $PROJECT in
 				;;
 			riscv64*)
 				if [ -n "$SUBARCH" ]; then
-					case "${SUBARCH:-}" in
-						visionfive)
-							KERNEL_FLAVOURS=starfive
-							;;
-						*)
-							KERNEL_FLAVOURS=generic
-							;;
-					esac
+					KERNEL_FLAVOURS=generic
 				fi
 				;;
 		esac
