@@ -1,8 +1,14 @@
-livecd-rootfs (26.04.1) UNRELEASED; urgency=medium
+livecd-rootfs (26.04.1) resolute; urgency=medium
 
+  [ Heinrich Schuchardt ]
   * Remove unused riscv64 SUBARCHs
 
- -- Heinrich Schuchardt <heinrich.schuchardt@canonical.com>  Fri, 10 Oct 2025 14:57:45 +0200
+  [ Gauthier Jolly ]
+  * ubuntu-cpc:
+    - Use the right specific UUID type for the root filesystem partition.
+    - Set a PARTLABEL (cloudimg-rootfs) on the root filesystem partition.
+
+ -- Gauthier Jolly <gauthier.jolly@canonical.com>  Mon, 20 Oct 2025 08:55:25 +0200
 
 livecd-rootfs (25.10.24) questing; urgency=medium
 
