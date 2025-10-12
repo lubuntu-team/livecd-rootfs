@@ -176,6 +176,7 @@ install_grub() {
             local my_d=$(dirname $(readlink -f ${0}))
             echo "Adjusting GRUB defaults for ${ARCH}/${SUBARCH}"
             mkdir -p mountpoint/etc/default/grub.d/
+            rm -rf mountpoint/etc/default/grub.d/*
             cp ${my_d}/riscv64/grub/10_cmdline.cfg mountpoint/etc/default/grub.d/
             echo "Copying device trees"
             kver=$(ls mountpoint/lib/modules | sort -V | tail -n 1)
