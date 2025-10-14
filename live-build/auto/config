@@ -660,7 +660,7 @@ if ! [ -e config/germinate-output/structure ]; then
 	fi
         (cd config/germinate-output && germinate --no-rdepends --no-installer \
                 -S $SEEDMIRROR -m $MIRROR -d $SUITE,$SUITE-updates \
-                -s $FLAVOUR.$SUITE $GERMINATE_ARG -a $ARCH)
+                -s $FLAVOUR.$SUITE $GERMINATE_ARG -a ${ARCH_VARIANT:-$ARCH})
 fi
 
 # Common functionality for layered desktop images
@@ -1365,6 +1365,7 @@ lb config noauto \
 	--checksums none \
 	--cache false \
 	${BOOTAPPEND_LIVE:+--bootappend-live "$BOOTAPPEND_LIVE"} \
+	${ARCH_VARIANT:+--bootstrap-arch "$ARCH_VARIANT"} \
 	$OPTS \
 	"$@"
 

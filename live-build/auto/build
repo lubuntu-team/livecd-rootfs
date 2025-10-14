@@ -119,6 +119,12 @@ Expire-Date: 0
 		exit $ec
 	fi
 
+	if [ -n "${ARCH_VARIANT:-}" ]; then
+		cat > chroot/etc/apt/apt.conf.d/90arch-variant <<EOF
+APT::Architecture-Variants "${ARCH_VARIANT}";
+EOF
+	fi
+
 	# Set locale to C.UTF-8 by default.  This may be overridden later.
 	echo "LANG=C.UTF-8" > chroot/etc/default/locale
 
