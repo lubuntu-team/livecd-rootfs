@@ -1112,11 +1112,11 @@ EOF
         mkdir -p chroot/etc/systemd/system/
         cat <<EOF > chroot/etc/systemd/system/cloud-init-network.service
 ${AUTOMATION_HEADER}
-# Based on cloud-init 24.3 for Desktop LiveCD
+# Based on cloud-init 25.3 for Desktop LiveCD (LP: #2128887)
 # Redact sysinit.target from Before, add After=NetworkManager*.service
 # (LP: #2008952)
 [Unit]
-# https://cloudinit.readthedocs.io/en/latest/explanation/boot.html
+# https://docs.cloud-init.io/en/latest/explanation/boot.html
 Description=Cloud-init: Network Stage
 DefaultDependencies=no
 Wants=cloud-init-local.service
@@ -1146,7 +1146,7 @@ Type=oneshot
 # process has completed this stage. The output from the return socket is piped
 # into a shell so that the process can send a completion message (defaults to
 # "done", otherwise includes an error message) and an exit code to systemd.
-ExecStart=sh -c 'echo "start" | netcat -Uu -W1 /run/cloud-init/share/network.sock -s /run/cloud-init/share/network-return.sock | sh'
+ExecStart=sh -c 'echo "start" | nc -U /run/cloud-init/share/network.sock | sh'
 RemainAfterExit=yes
 TimeoutSec=0
 
