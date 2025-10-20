@@ -1,8 +1,13 @@
-livecd-rootfs (26.04.1) UNRELEASED; urgency=medium
+livecd-rootfs (26.04.1) resolute; urgency=medium
 
+  [ Heinrich Schuchardt ]
   * Remove unused riscv64 SUBARCHs
 
- -- Heinrich Schuchardt <heinrich.schuchardt@canonical.com>  Fri, 10 Oct 2025 14:57:45 +0200
+  [ Chad Smith ]
+  * Refresh cloud-init service override for updated service netcat invocation
+    to cloud-init 25.3. (LP: #2128887)
+
+ -- Chad Smith <chad.smith@canonical.com>  Mon, 20 Oct 2025 16:32:36 -0600
 
 livecd-rootfs (25.10.24) questing; urgency=medium
 
