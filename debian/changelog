@@ -1,9 +1,9 @@
-livecd-rootfs (2.765.57) UNRELEASED; urgency=medium
+livecd-rootfs (2.765.57) jammy; urgency=medium
 
   * Cherry-pick fix for autopkgtests from ubuntu/master: (LP: #2124984)
     - Add NOW env variable in autopkgtest.
 
- -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Thu, 23 Oct 2025 12:36:22 +1300
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Thu, 23 Oct 2025 12:38:06 +1300
 
 livecd-rootfs (2.765.56) jammy; urgency=medium
 
