@@ -1,7 +1,4 @@
-livecd-rootfs (26.04.1) resolute; urgency=medium
-
-  [ Heinrich Schuchardt ]
-  * Remove unused riscv64 SUBARCHs
+livecd-rootfs (26.04.2) UNRELEASED; urgency=medium
 
   [ Gauthier Jolly ]
   * ubuntu-cpc:
