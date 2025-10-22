@@ -1,3 +1,12 @@
+livecd-rootfs (26.04.2) UNRELEASED; urgency=medium
+
+  [ Gauthier Jolly ]
+  * ubuntu-cpc:
+    - Use the right specific UUID type for the root filesystem partition.
+    - Set a PARTLABEL (cloudimg-rootfs) on the root filesystem partition.
+
+ -- Gauthier Jolly <gauthier.jolly@canonical.com>  Mon, 20 Oct 2025 08:55:25 +0200
+
 livecd-rootfs (26.04.1) resolute; urgency=medium
 
   [ Heinrich Schuchardt ]

@@ -1404,3 +1404,43 @@ EOF
 EOF
     fi
 }
+
+# Determine the appropriate partition type UUID for the root filesystem
+# based on the architecture.
+# Please see https://uapi-group.org/specifications/specs/discoverable_partitions_specification/
+# for where the GUIDs come from.
+gpt_root_partition_uuid() {
+    local ARCH="$1"
+
+    if [ -z "${ARCH:-}" ]; then
+        echo "usage: gpt_root_partition_uuid <arch>"
+        exit 1
+    fi
+
+    case "${ARCH}" in
+        "amd64")
+            ROOTFS_PARTITION_TYPE="4f68bce3-e8cd-4db1-96e7-fbcaf984b709"
+            ;;
+        "arm64")
+            ROOTFS_PARTITION_TYPE="b921b045-1df0-41c3-af44-4c6f280d3fae"
+            ;;
+        "armhf")
+            ROOTFS_PARTITION_TYPE="69dad710-2ce4-4e3c-b16c-21a1d49abed3"
+            ;;
+        "riscv64")
+            ROOTFS_PARTITION_TYPE="72ec70a6-cf74-40e6-bd49-4bda08e8f224"
+            ;;
+        "ppc64el")
+            ROOTFS_PARTITION_TYPE="c31c45e6-3f39-412e-80fb-4809c4980599"
+            ;;
+        "s390x")
+            ROOTFS_PARTITION_TYPE="5eead9a9-fe09-4a1e-a1d7-520d00531306"
+            ;;
+        *)
+            echo "Unsupported architecture: ${ARCH}"
+            exit 1
+            ;;
+    esac
+
+    echo "${ROOTFS_PARTITION_TYPE}"
+}
