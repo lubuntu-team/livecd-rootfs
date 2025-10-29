@@ -1,3 +1,11 @@
+livecd-rootfs (26.04.3) resolute; urgency=medium
+
+  * desktop: use dangerous model for TPMFDE bits until snaps are available on
+    stable channels.
+  * desktop: use snapd from edge.
+
+ -- Dan Bungert <daniel.bungert@canonical.com>  Wed, 29 Oct 2025 10:58:00 +0100
+
 livecd-rootfs (26.04.2) resolute; urgency=medium
 
   [ Gauthier Jolly ]
