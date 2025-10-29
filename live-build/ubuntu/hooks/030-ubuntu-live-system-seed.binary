@@ -31,7 +31,11 @@ esac
 #   live-build/${PROJECT}/ubuntu-classic-amd64.model
 
 # env SNAPPY_STORE_NO_CDN=1 snap known --remote model series=16 brand-id=canonical model=ubuntu-classic-2410-amd64 > config/classic-model.model
-model=/usr/share/livecd-rootfs/live-build/${PROJECT}/ubuntu-classic-amd64.model
+#
+# model=/usr/share/livecd-rootfs/live-build/${PROJECT}/ubuntu-classic-amd64.model
+# Normally we use the non-dangerous model here.  Use the dangerous one for now
+# until we get snaps on stable 26.04 tracks and channels.
+model=/usr/share/livecd-rootfs/live-build/${PROJECT}/ubuntu-classic-amd64-dangerous.model
 
 prepare_args=
 
