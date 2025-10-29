@@ -568,7 +568,7 @@ _snap_post_process() {
             # If the 'core' snap is not present, assume we are coreXX-only and
             # install the snapd snap.
             channel=stable
-            if [ "$SUBPROJECT" = "dangerous" ]; then
+            if [ "$PROJECT" = "ubuntu" -o "$SUBPROJECT" = "dangerous" ]; then
                 channel=edge
             fi
             if [ ! -f ${snaps_dir}/core_[0-9]*.snap ]; then
