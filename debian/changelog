@@ -1,3 +1,9 @@
+livecd-rootfs (26.04.4) resolute; urgency=medium
+
+  * desktop: update dangerous model for 26.04
+
+ -- Dan Bungert <daniel.bungert@canonical.com>  Fri, 31 Oct 2025 11:13:53 +0100
+
 livecd-rootfs (26.04.3) resolute; urgency=medium
 
   * desktop: use dangerous model for TPMFDE bits until snaps are available on
