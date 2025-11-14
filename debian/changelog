@@ -1,3 +1,9 @@
+livecd-rootfs (26.04.5) UNRELEASED; urgency=medium
+
+  * desktop: fix build error when SUBPROJECT is unset
+
+ -- Dan Bungert <daniel.bungert@canonical.com>  Fri, 14 Nov 2025 07:44:52 -0700
+
 livecd-rootfs (26.04.4) resolute; urgency=medium
 
   * desktop: update dangerous model for 26.04
