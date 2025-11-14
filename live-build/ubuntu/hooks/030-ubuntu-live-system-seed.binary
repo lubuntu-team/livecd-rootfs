@@ -40,7 +40,7 @@ model=/usr/share/livecd-rootfs/live-build/${PROJECT}/ubuntu-classic-amd64-danger
 prepare_args=
 
 # for the dangerous subproject, we need the dangerous model!
-if [ $SUBPROJECT = "dangerous" ]; then
+if [ "$SUBPROJECT" = "dangerous" ]; then
     # As with the "classically" seeded snaps, snaps from the edge channel may
     # require different content snaps to be installed, so they must be
     # included in the system as well. We just use the same list as was
