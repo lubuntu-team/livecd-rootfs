@@ -15,6 +15,33 @@ esac
 . config/binary
 . config/functions
 
+
+# Naive conversion from YAML to JSON. This is needed because yq is in universe
+# (but jq is not).
+yaml_to_json()
+{
+    python3 -c '
+import json
+import sys
+import yaml
+
+json.dump(yaml.safe_load(sys.stdin), sys.stdout, default=str)
+'
+}
+
+
+# Use jq to retrieve a list of --snap options from a given *signed* model.
+get_snaps_args()
+{
+    model=$1
+
+    # The model is signed and is not valid YAML unless we get rid of the
+    # signature. Here we assume the only blank line is before the signature.
+    sed '/^$/,$d' -- "$model" \
+     | yaml_to_json \
+     | jq --raw-output '.snaps[] | "--snap=" + .name + "=" + .["default-channel"]'
+}
+
 # Generation of the model:
 # * At https://github.com/canonical/models one can find a repo of raw,
 #   unsigned, input .json files, and their signed .model equivalents.
@@ -49,6 +76,14 @@ if [ "$SUBPROJECT" = "dangerous" ]; then
     while read snap; do
         prepare_args="$prepare_args --snap=${snap}=edge"
     done < config/missing-providers
+else
+    # We're currently using the dangerous model for the non-dangerous ISO
+    # because it allows us to override snaps. But we don't want all snaps from
+    # edge like the dangerous model has, we want most of them from stable
+    # (excluding pc-kernel).
+    while read -r snap_arg; do
+        prepare_args="$prepare_args $snap_arg"
+    done < <(get_snaps_args /usr/share/livecd-rootfs/live-build/"${PROJECT}"/ubuntu-classic-amd64.model | grep -v -F pc-kernel)
 fi
 
 channel=""
