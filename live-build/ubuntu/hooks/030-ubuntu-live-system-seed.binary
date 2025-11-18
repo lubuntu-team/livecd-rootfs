@@ -64,7 +64,7 @@ get_snaps_args()
 # until we get snaps on stable 26.04 tracks and channels.
 model=/usr/share/livecd-rootfs/live-build/${PROJECT}/ubuntu-classic-amd64-dangerous.model
 
-prepare_args=
+prepare_args=()
 
 # for the dangerous subproject, we need the dangerous model!
 if [ "$SUBPROJECT" = "dangerous" ]; then
@@ -74,7 +74,7 @@ if [ "$SUBPROJECT" = "dangerous" ]; then
     # computed in snap_validate_seed.
     model=/usr/share/livecd-rootfs/live-build/${PROJECT}/ubuntu-classic-amd64-dangerous.model
     while read snap; do
-        prepare_args="$prepare_args --snap=${snap}=edge"
+        prepare_args+=("--snap=${snap}=edge")
     done < config/missing-providers
 else
     # We're currently using the dangerous model for the non-dangerous ISO
@@ -82,7 +82,7 @@ else
     # edge like the dangerous model has, we want most of them from stable
     # (excluding pc-kernel).
     while read -r snap_arg; do
-        prepare_args="$prepare_args $snap_arg"
+        prepare_args+=("$snap_arg")
     done < <(get_snaps_args /usr/share/livecd-rootfs/live-build/"${PROJECT}"/ubuntu-classic-amd64.model | grep -v -F pc-kernel)
 fi
 
@@ -95,7 +95,7 @@ fi
 # snap versions regardless of phasing status
 
 env SNAPPY_STORE_NO_CDN=1 UBUNTU_STORE_COHORT_KEY="+" snap prepare-image \
-    --classic $model $channel ${prepare_args:+$prepare_args} chroot
+    --classic $model $channel "${prepare_args[@]}" chroot
 
 mv chroot/system-seed/systems/* chroot/system-seed/systems/enhanced-secureboot-desktop
 rsync -av chroot/system-seed/{systems,snaps} chroot/var/lib/snapd/seed
