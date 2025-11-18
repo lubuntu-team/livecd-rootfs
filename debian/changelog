@@ -1,4 +1,4 @@
-livecd-rootfs (26.04.6) UNRELEASED; urgency=medium
+livecd-rootfs (26.04.6) resolute; urgency=medium
 
   * desktop: build classic ISO with "grade: dangerous" and pull pc-kernel from
     edge to workaround unavailability of pc-kernel in the stable 26.04 channel.
