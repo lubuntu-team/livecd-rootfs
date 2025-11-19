@@ -80,10 +80,15 @@ else
     # We're currently using the dangerous model for the non-dangerous ISO
     # because it allows us to override snaps. But we don't want all snaps from
     # edge like the dangerous model has, we want most of them from stable
-    # (excluding pc-kernel).
+    # excluding:
+    # * pc-kernel - which currently does not exist on stable
+    # * snapd (for TPM/FDE)
+    # * firmware-updater (for TPM/FDE)
+    # * desktop-security-center-center (for TPM/FDE)
     while read -r snap_arg; do
         prepare_args+=("$snap_arg")
-    done < <(get_snaps_args /usr/share/livecd-rootfs/live-build/"${PROJECT}"/ubuntu-classic-amd64.model | grep -v -F pc-kernel)
+    done < <(get_snaps_args /usr/share/livecd-rootfs/live-build/"${PROJECT}"/ubuntu-classic-amd64.model \
+    | grep -v -F -e pc-kernel -e snapd -e firmware-updater -e desktop-security-center)
 fi
 
 channel=""
