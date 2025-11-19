@@ -1,9 +1,9 @@
-livecd-rootfs (26.04.7) UNRELEASED; urgency=medium
+livecd-rootfs (26.04.7) resolute; urgency=medium
 
   * desktop: build both ISOs with snapd, firmware-updater and
     desktop-security-center from edge for TPM/FDE.
 
- -- Olivier Gayot <olivier.gayot@canonical.com>  Wed, 19 Nov 2025 10:35:36 +0100
+ -- Olivier Gayot <olivier.gayot@canonical.com>  Wed, 19 Nov 2025 10:41:17 +0100
 
 livecd-rootfs (26.04.6) resolute; urgency=medium
 
