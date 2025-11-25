@@ -1,3 +1,10 @@
+livecd-rootfs (26.04.8) resolute; urgency=medium
+
+  * desktop: update TPM/FDE ubuntu model to use a GNOME platform snap
+    compatible with core24.
+
+ -- Didier Roche-Tolomelli <didrocks@ubuntu.com>  Tue, 25 Nov 2025 11:38:59 +0100
+
 livecd-rootfs (26.04.7) resolute; urgency=medium
 
   * desktop: build both ISOs with snapd, firmware-updater and
