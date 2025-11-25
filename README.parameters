@@ -1,0 +1,180 @@
+Understanding the parameters used by livecd-rootfs
+==================================================
+
+livecd-rootfs is a confusing codebase. One of the confusing things is
+how information flows into and around the image build process. There
+is IMAGEFORMAT and IMAGE_TARGETS and PROJECT and many other
+variables. It is not obvious when looking at the code if a given
+variable is something passed as a parameter or something derived from
+it.
+
+All (or almost all) production use of livecd-rootfs is via
+launchpad-buildd so the set of potential parameters is limited by the
+set of environment variables launchpad-build can set in response to
+the build request. These variables can be set for both lb config and
+lb build:
+
+ PROJECT
+ ARCH
+ SUBPROJECT
+ SUBARCH
+ CHANNEL
+ IMAGE_TARGETS
+ REPO_SNAPSHOT_STAMP
+ SNAPSHOT_SERVICE_TIMESTAMP
+ COHORT_KEY
+ http_proxy / HTTP_PROXY / LB_APT_HTTP_PROXY
+
+In addition the following variables can be set for lb config only (why
+are some things set for lb config only? no idea):
+
+ SUITE
+ NOW
+ IMAGEFORMAT
+ PROPOSED
+ EXTRA_PPAS
+ EXTRA_SNAPS
+
+Here is an opinionated and slightly angry attempt to describe what
+each of these is for:
+
+PROJECT
+-------
+
+This is the big one, the main variable that defines what is being
+built. It can be ubuntu, ubuntu-server, xubuntu, ubuntu-mini-iso, that
+sort of thing. Generally PROJECT determines the set of packages
+installed but it (unfortunately?) has a bit more impact than that.
+
+It's unarguable that we need a parameter like this.
+
+ARCH
+----
+
+The architecture being built for. This is always the same as `dpkg
+--print-architecture` for us, we don't do any cross builds.
+
+It's kind of redundant but it's not really a problem that this exists.
+
+SUBPROJECT
+----------
+
+This is used for some builds to build a different sort of build of the
+project. It can be set to:
+
+ * "minimized" for ubuntu-cpc builds to make a minimal cloud image
+ * "minimal" for xubuntu builds to make a smaller ISO
+ * "desktop-preinstalled" for ubuntu builds to make a preinstalled
+   image instead of the parts for an installer.
+ * "buildd" for images to be used as build images by craft tools, and also
+   buildd chroots used on launchpad builders?
+ * "live" for ubuntu-server builds, historically to distinguish d-i
+   style installers from subiquity style installers
+ * "desktop" for ubuntu-core-installer builds, to influence which
+   model is use to build the ubuntu core system that will be
+   installed.
+
+_This_ parameter is a total mess. The desktop-preinstalled use feels
+particularly egregious.
+
+SUBARCH
+-------
+
+This identifies the target machine more specifically than ARCH,
+e.g. "tegra-jetson" or "licheerv". Used mostly but not exclusively for
+preinstalled builds.
+
+We probably do need something like this.
+
+CHANNEL
+-------
+
+Influences which channel snaps included in the build are taken from
+(via a few different mechanisms).
+
+IMAGE_TARGETS
+-------------
+
+Passed for CPC (and ubuntu-oem, for some reason) builds to
+`config/hooks.d/make-hooks` which uses it to select which binary hooks
+to run (and so determines which artifacts get produced).
+
+It is probably reasonable that this exists.
+
+REPO_SNAPSHOT_STAMP
+-------------------
+
+Currently unused.
+
+SNAPSHOT_SERVICE_TIMESTAMP
+--------------------------
+
+Also currently unused, and unclear how it differs from
+REPO_SNAPSHOT_STAMP.
+
+COHORT_KEY
+----------
+
+Used to make sure that different builds run at the same time don't get
+different versions of snaps due to phasing differences.
+
+This is a totally valid thing to need to supply.
+
+http_proxy / HTTP_PROXY / LB_APT_HTTP_PROXY
+-------------------------------------------
+
+Nothing complex here!
+
+SUITE
+-----
+
+This is the series being built (e.g. noble, questing). It is misnamed
+really -- a suite is usually a combination of a series and a pocket
+(noble-proposed, questing-security).
+
+As with ARCH this is sort of redundant as we do builds in a chroot of
+the series being built but OTOH it is definitely information the
+build needs to know!
+
+NOW
+---
+
+The serial for the build, e.g. 20250519 or 20240418.4.
+
+It is a totally reasonable parameter.
+
+IMAGEFORMAT
+-----------
+
+This is one of the more incoherently handled parameters. In rough
+outline it is the filesystem of the image we produce, but relatively
+few builds produce raw images so _mostly_ it is set to 'plain' (which
+causes live-build to just leave the rootfs as a directory tree) or
+'none' (which causes live-build to do roughly the same thing but in a
+different way?).
+
+It can be set when starting an image build, but most builds do not and
+the behavior when it is not set explicitly is pretty confusing.
+
+This place is not a place of honor.
+
+PROPOSED
+--------
+
+Should packages from proposed by included?
+
+This is not really as useful as it used to be for a bunch of reasons
+but it conceptually makes sense.
+
+EXTRA_PPAS
+----------
+
+Extra archives to get packages from.
+
+Production builds shouldn't really use this but it's definitely useful
+for development.
+
+EXTRA_SNAPS
+-----------
+
+Extra snaps to include (but only for ubuntu-image based builds).
