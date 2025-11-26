@@ -1,3 +1,9 @@
+livecd-rootfs (26.04.9) resolute; urgency=medium
+
+  * desktop: Add mesa to the hybrid model required by core24 apps.
+
+ -- Didier Roche-Tolomelli <didrocks@ubuntu.com>  Wed, 26 Nov 2025 08:51:24 +0100
+
 livecd-rootfs (26.04.8) resolute; urgency=medium
 
   * desktop: update TPM/FDE ubuntu model to use a GNOME platform snap
