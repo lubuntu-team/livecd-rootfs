@@ -49,6 +49,11 @@ snaps:
     name: bare
     type: base
   -
+    default-channel: latest/edge
+    id: HyhSEBPv3vHsW6uOHkQR384NgI7S6zpj
+    name: mesa-2404
+    type: app
+  -
     default-channel: 1/edge
     id: EI0D1KHjP8XiwMZKqSjuh6W8zvcowUVP
     name: firmware-updater
@@ -91,13 +96,13 @@ snaps:
 timestamp: 2025-11-06T12:00:00.0Z
 sign-key-sha3-384: 9tydnLa6MTJ-jaQTFUXEwHl1yRx7ZS4K5cyFDhYDcPzhS7uyEkDxdUjg9g08BtNn
 
-AcLBXAQAAQoABgUCaSV5DwAKCRDgT5vottzAEsNXEACEiapXIv77EkQkJBF88Psv8p8x3Y/xxPsj
-GdIqOzGK4fqX+WMecVlOTQAGSE20/vAgwY03WANYazQoLu4d5TbG0WzUKJXraah43NgvsX6vloq/
-XMMZo9xrK2RBE+ZqFZCbx2dnWpisNwHUl5BtI9R3yM5mqew/Kn/Titzjg3mFrxpPKi4dko0+0rf4
-JNlsncj172m6MRB4mTMQt7YHj2eQiITomUf54SAQzZ1iI4Tk5dWWSx/xU78VcOoP+iSu8QB9opkk
-kDMZ+g+Sfypw6GcwfrTYhS517TCdytmTzXg0DTZNEor5rqp6bQr+FyT/GIaK6lV82+oi9xoy6xiM
-UX8GdfliTApbwH0yySBIAVApM3B2mheLIslEX7BG/JR3FB67xpggCVPMW36ibWDhWXohfD9+Gu3a
-lvh/v1OIzDPnpqvwDsqbQuZEbIXPBgAciUahkKBBJMoQQdgjJ8CXZwBNVHdNNl+fnJTPIReF8O0c
-D6KiL5X0UL8G/RBTXpStyS6HjqXeginvhYm9y/PeNfAMOpEP70dba2DqX4vNhNE9oAneQo9UUfiI
-FRHUtXgqnkIMJeWGsWK+ErMeTRfQ45SJbnvSGJgxXl+CO30iYZY7sPRoJFEwW/8FwbWzHS4GwzhS
-tsvbojAlMAbGWxUXtFXJFMzbjnGC+5qodVsqcpOOnA==
+AcLBXAQAAQoABgUCaSatwAAKCRDgT5vottzAEtItEACX3Ks4EJiFMUFAilxJNGL1SK02OdxOMJZ9
+78FYP/pANI37Y+sPOrybHFkcbI21S6VaeFJTfJxE/tl7TbzYA9KBbi6MUKu7/r5mYIO/ylOFBGKI
+iqI0gFOl0KovUiG2PtgfJiy+qnFBsPy47z6rADGUJYya5sKyrjll9hCriqxrQhBCYIkVlryheryk
+Uy48RuEDCjbqeqnyOWCCGRFzsV4wl+u6VeDNgAR4rYHfX1ObwkktyTb6rd2Pt0yW9XijnAVwA9Dw
+scAXsoGtkXoAl2lGed0xOE//n7MQVk/2420tHw6KR84k/oB2uuMSkEEFh0grKOw0zPTzMEkQupLN
+jjqJileKkZFmCPo/ArTTSGIhFDjv3DDuRX5UbwIKlShyRGwjbjAhKz4GdiZ9TWyvzYV/+Tv9dlCo
++a1kX9aE4hy1wkxkGmYWH0sAgQfG1btLr2dc0YHTPZH4z2j5ExbxJ+sP+6vEJX6lINZlFyHyna3+
+yU34ERrohYe6LWLwT9LwUzjN+ejZOqO2oJ/DPAnT0TaseTqDt3j1S1/37PzoULFml7YZPl7qlgf4
+y8zFGye5yINN8z0WaofuDT22g+up2aRVs39cCCQ/7VhPiMXGtT1Z5j0kND234KbvMLsNesPfV64b
+kFDviVkYhU7JFCaeLZAh1hbFHX2gSggV1zvCq/6Tsw==

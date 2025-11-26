@@ -49,6 +49,11 @@ snaps:
     name: bare
     type: base
   -
+    default-channel: latest/stable/ubuntu-26.04
+    id: HyhSEBPv3vHsW6uOHkQR384NgI7S6zpj
+    name: mesa-2404
+    type: app
+  -
     default-channel: 1/stable/ubuntu-26.04
     id: EI0D1KHjP8XiwMZKqSjuh6W8zvcowUVP
     name: firmware-updater
@@ -91,13 +96,13 @@ snaps:
 timestamp: 2025-11-06T12:00:00.0Z
 sign-key-sha3-384: 9tydnLa6MTJ-jaQTFUXEwHl1yRx7ZS4K5cyFDhYDcPzhS7uyEkDxdUjg9g08BtNn
 
-AcLBXAQAAQoABgUCaSV5EAAKCRDgT5vottzAEm9XEACAJggqNYeA+2EMcEtHqUzXXrsqSMRC1Z/1
-+jzXBo4/Ozb0SOgatsrKmw3wDqnglxzPukiVtHdASIbbCIZ3KF0p8c3/tprnFzyeJWwvFny/NiIp
-rvFsDqcFaP6lXhPecuoTEHJ3xZb4fJNkeCRFuB1mKu/UJoGqef3jyOEtnLYPy2LW8wsIPzJ+kdb9
-r2udo/Z71a9xZGX4xd+mejRTnMzwyeFhwxzYp9xxturOYZWPCvP+CWmtshS5sOoSOKXeuCeQG2ll
-yZOWTeZpjRSiYr/SqpKYZDcgNR7j1ivERY/CbVavvmQyYhLBWcf5hsZmguHeRQZ0gNXYTI5u3DL/
-cuLqav203m3MczAV3RaJouohYTAXJFNKpup17iv4HjHAt7Tx+/gr+ky9GRarMj6LxWHc+HSCTl8C
-tlyHCZzmihrpEa4zoaaqz2FRGV3b9UrVHXBi9iis7OV39VsZmDRhUlQVl1gnoZsyvDj11Ui0/gOp
-4nd4NZPwQe4jmOwex21135yeRZ0F1Dm9Nj6GTsWs+XHK/PHSkdxdI+sDqBuAlfZs2mUI5eXSgcs/
-5bcZXIHS44S2k5yrGDGtKAiPXjgUhlwtVX+jm7XEF/MUwOqJlk8m1NCRiGfBKY7NxIl1juApzuJY
-x6lJUpHJIETALQwivpUik5kn55hhIxph3KBSMK2OWw==
+AcLBXAQAAQoABgUCaSatwAAKCRDgT5vottzAElN8EAC81ZgmWYxnh9l2UrGl8I3WIa2yPrblQB4m
+2qdfj35umxfNtZdhBux74g6UpXttX5djcf2qfrK2VAk0tf3lolSprAfPeIoBxthl2Ig0CfWOD7Qa
+sJAiUZ2CVY0gX53tTxc+Lsaj2CCdmEVnlG5Lbzk6DDr6OYQ1jf+SyntSlaB4mvuy+YO89sA/E8X9
+xaYhZpS7NU+J5nfc9hB8xf/f7UvXVrcRmkX1t5Pra1T/eQ+3hgLzp+fLvFbwMRcEGqwE2KXTWwm1
+F191SI2UazuS4lWv0yJ40uljd26q53E8edKPmtPlmWEY0GwbofvcXKM3tw8gf9ZwZMlewjNYYHGu
+V1FsI+6GdULFPMoQptmEhQmZNOiAE706D+HVTgDvWfv/yw1fOmTUbFaT/dmUb8dSmndouRt2AF0c
+WivlBgo3fKjRZg/sPyZX3FwhggglmuCRiiYK9xu1b4wsplv090fAF3q33o9wLB+G6A4DE9QDzhfu
+7y5ABm/cG15nKDkanpbCFWwYEq7ANlzz3y6/KctQnFms3+qa5p5bdd+Q4mpqcJcNXMWFnb3b+lSp
+TITMdTf9afNKHFTbwBABoNVLDYelkNCYD99ukuSIS8MeiIHEXxUV9lNaEPTKoXgv3LETI8Wd43Qs
+Msb1UuoDShZo2gfDOlb8P0W7gxz79QbjMcSBBoqVew==
