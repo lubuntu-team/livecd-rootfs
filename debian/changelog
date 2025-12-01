@@ -1,3 +1,10 @@
+livecd-rootfs (26.04.10) UNRELEASED; urgency=medium
+
+  [ Olivier Gayot ]
+  * desktop: fix a comment typo
+
+ -- Dan Bungert <daniel.bungert@canonical.com>  Mon, 01 Dec 2025 12:51:15 -0700
+
 livecd-rootfs (26.04.9) resolute; urgency=medium
 
   * desktop: Add mesa to the hybrid model required by core24 apps.
