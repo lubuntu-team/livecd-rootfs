@@ -42,6 +42,25 @@ get_snaps_args()
      | jq --raw-output '.snaps[] | "--snap=" + .name + "=" + .["default-channel"]'
 }
 
+get_all_components()
+{
+    # Get list of all components in every snaps
+    local model=$1
+    local jq_filter='
+# Find all snaps that have components
+ .snaps[] | select(.components)
+# Then save the name of each snap in a variable
+ | .name as $snap
+# Then for each entry that has "optional"
+ | .components | to_entries | map(select(.value.presence == "optional"))
+# Output its name with the snap name prepended
+ | "\($snap)" + "+" + .[].key'
+
+    sed '/^$/,$d' -- "$model" \
+     | yaml_to_json \
+     | jq --raw-output "$jq_filter"
+}
+
 # Generation of the model:
 # * At https://github.com/canonical/models one can find a repo of raw,
 #   unsigned, input .json files, and their signed .model equivalents.
@@ -90,6 +109,10 @@ else
     done < <(get_snaps_args /usr/share/livecd-rootfs/live-build/"${PROJECT}"/ubuntu-classic-amd64.model \
     | grep -v -F -e pc-kernel -e snapd -e firmware-updater -e desktop-security-center)
 fi
+
+for comp in $(get_all_components "$model"); do
+    prepare_args+=(--comp "$comp")
+done
 
 channel=""
 if [ -n "${CHANNEL:-}" ]; then
