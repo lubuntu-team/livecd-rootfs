@@ -33,7 +33,7 @@ json.dump(yaml.safe_load(sys.stdin), sys.stdout, default=str)
 # Use jq to retrieve a list of --snap options from a given *signed* model.
 get_snaps_args()
 {
-    model=$1
+    local model=$1
 
     # The model is signed and is not valid YAML unless we get rid of the
     # signature. Here we assume the only blank line is before the signature.
