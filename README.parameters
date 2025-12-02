@@ -147,11 +147,21 @@ IMAGEFORMAT
 -----------
 
 This is one of the more incoherently handled parameters. In rough
-outline it is the filesystem of the image we produce, but relatively
-few builds produce raw images so _mostly_ it is set to 'plain' (which
-causes live-build to just leave the rootfs as a directory tree) or
-'none' (which causes live-build to do roughly the same thing but in a
-different way?).
+outline it is the filesystem of the image we produce.
+
+Installer builds do not produce raw images, so this ends up being set
+to 'plain' (which causes live-build to just leave the rootfs as a
+directory tree) or 'none' (which causes live-build to do roughly the
+same thing but in a different way?).
+
+Image builds that use ubuntu-image set it to "ubuntu-image". These
+builds do not call 'lb build' or 'lb binary'.
+
+Other preinstalled images (mostly cpc images) set it to ext4 (but then
+use live-build/ubuntu-cpc/hooks.d/remove-implicit-artifacts to remove
+the output file that this causes live-build to produce...). Some
+projects rely on this being set via metadata when building the project
+it seems.
 
 It can be set when starting an image build, but most builds do not and
 the behavior when it is not set explicitly is pretty confusing.
