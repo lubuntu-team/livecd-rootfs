@@ -636,7 +636,7 @@ case $PROJECT in
 esac
 
 case $PROJECT in
-	ubuntu-server|ubuntu-mini-iso)
+	ubuntu-mini-iso)
 		COMPONENTS='main'
 		;;
 	edubuntu|ubuntu-budgie|ubuntucinnamon|ubuntukylin)

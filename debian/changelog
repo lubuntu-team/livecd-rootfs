@@ -3,6 +3,9 @@ livecd-rootfs (26.04.10) UNRELEASED; urgency=medium
   [ Olivier Gayot ]
   * desktop: fix a comment typo
 
+  [ Michael Hudson-Doyle ]
+  * Build Ubuntu Server images with the 'restricted' component enabled.
+
  -- Dan Bungert <daniel.bungert@canonical.com>  Mon, 01 Dec 2025 12:51:15 -0700
 
 livecd-rootfs (26.04.9) resolute; urgency=medium
