@@ -11,29 +11,69 @@ it.
 All (or almost all) production use of livecd-rootfs is via
 launchpad-buildd so the set of potential parameters is limited by the
 set of environment variables launchpad-build can set in response to
-the build request. These variables can be set for both lb config and
-lb build:
+the build request.
 
- PROJECT
- ARCH
- SUBPROJECT
- SUBARCH
- CHANNEL
- IMAGE_TARGETS
+The process from build request to environment live-build is run is a
+little convoluted. The build request takes:
+
+ an archive -- where to get livecd-rootfs from
+ a distro_arch_series -- the series to get livecd-rootfs and build
+ a pocket -- pocket to get livecd-rootfs from, also influences if proposed is
+             used as a package source for the image being built
+ unique_key -- you cannot have more than one pending livefs build with the same
+               unique_key. does not affect the build at all.
+ version -- optional version string, see below. often a serial like 20250525.1
+ metadata_override -- combined with the metadata on the livefs itself to make
+                      the metadata for this build.
+
+(ref: https://launchpad.net/+apidoc/devel.html#livefs-requestBuild)
+
+These parameters are stored on the livefsbuild object (ref:
+https://git.launchpad.net/launchpad/tree/lib/lp/soyuz/model/livefsbuild.py#n372)
+and converted into a set of args passed to launchpad-build by the
+LiveFSBuildBehaviour class (ref:
+https://git.launchpad.net/launchpad/tree/lib/lp/soyuz/model/livefsbuildbehaviour.py#n99).
+
+Inside launchpad-build, these arguments are inspected by the
+LiveFilesystemBuildManager.initiate method (ref:
+https://git.launchpad.net/launchpad-buildd/tree/lpbuildd/livefs.py#n24)
+which turns them into arguments for the BuildLiveFS lpbuild
+"operation" which is what creates the environment live-build runs in
+(ref:
+https://git.launchpad.net/launchpad-buildd/tree/lpbuildd/target/build_livefs.py#n167).
+
+These variables can be set for both lb config and lb build:
+
+ PROJECT       (mandatory, comes from "project" in the metadata)
+ ARCH          (set to the abi tag of the distroarchseries being built for)
+ SUBPROJECT    (optional, comes from "subproject" in the metadata)
+ SUBARCH       (optional, comes from "subarch" in the metadata)
+ CHANNEL       (optional, comes from "subarch" in the metadata)
+ IMAGE_TARGETS (optional, comes from "image_targets" in the metadata
+                "image_targets" is a list. IMAGE_TARGETS is set to " ".join(image_targets))
  REPO_SNAPSHOT_STAMP
+               (optional, comes from "repo_snapshot_stamp" in the metadata)
  SNAPSHOT_SERVICE_TIMESTAMP
+               (optional, comes from "snapshot_snapshot_stamp" in the metadata)
  COHORT_KEY
- http_proxy / HTTP_PROXY / LB_APT_HTTP_PROXY
+               (optional, comes from "cohort-key" in the metadata)
+
+launchpad-buildd also contains code to set http_proxy / HTTP_PROXY /
+LB_APT_HTTP_PROXY but there does not appear to be any way to trigger
+this when requesting a build.
 
 In addition the following variables can be set for lb config only (why
 are some things set for lb config only? no idea):
 
- SUITE
- NOW
- IMAGEFORMAT
- PROPOSED
- EXTRA_PPAS
- EXTRA_SNAPS
+ SUITE         (set to the name of the distroarchseries being built for)
+ NOW           (set to value of the 'version' argument to the build request,
+                defaults to strftime("%Y%m%d-%H%M%S"))
+ IMAGEFORMAT   (optional, comes from "image_format" in the metadata)
+ PROPOSED      (set to "1" if the pocket passed to the build request is proposed)
+ EXTRA_PPAS    (optional, comes from "extra_ppas" in the metadata
+                "extra_ppas" is a list. EXTRA_PPAS is set to " ".join(extra_ppas))
+ EXTRA_SNAPS   (optional, comes from "extra_snaps" in the metadata
+                "extra_snaps" is a list. EXTRA_SNAPS is set to " ".join(extra_snaps))
 
 Here is an opinionated and slightly angry attempt to describe what
 each of these is for:
