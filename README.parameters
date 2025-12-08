@@ -221,6 +221,12 @@ EXTRA_PPAS
 
 Extra archives to get packages from.
 
+This is a space separated list by the time it gets to
+livecd-rootfs. Each element of the list is of the form USER/NAME[:PIN]
+where user is a Launchpad user/team name, NAME is the name of the ppa
+to add and the optional colon-PIN at the end is the value to pin (in
+the "man 5 apt_preferences: sense) packages from this PPA at.
+
 Production builds shouldn't really use this but it's definitely useful
 for development.
 
