@@ -125,6 +125,19 @@ LABEL install
   append=ip=dhcp iso-url=#ISOURL# ---
 EOF
         ;;
+
+    riscv64)
+        mv chroot/usr/lib/grub/riscv64-efi/monolithic/grubnetriscv64.efi tarball/riscv64/grubriscv64.efi
+
+        mkdir tarball/riscv64/grub
+        cat > tarball/riscv64/grub/grub.cfg.in <<EOF
+menuentry "Install Ubuntu Server" {
+        set gfxpayload=keep
+        linux   linux iso-url=#ISOURL# ip=dhcp ---
+        initrd  initrd
+}
+EOF
+        ;;
 esac
 
 tar -C tarball -czf livecd.${PROJECT}.netboot.tar.gz .

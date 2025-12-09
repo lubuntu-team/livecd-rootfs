@@ -1097,6 +1097,9 @@ case $PROJECT in
 					arm64)
 						add_package ubuntu-server-minimal.ubuntu-server.installer.$flavor.netboot shim-signed
 						;;
+					riscv64)
+						add_package ubuntu-server-minimal.ubuntu-server.installer.$flavor.netboot grub-efi-riscv64 grub-efi-riscv64-unsigned
+						;;
 					*)
 						add_package ubuntu-server-minimal.ubuntu-server.installer.$flavor.netboot
 						;;
