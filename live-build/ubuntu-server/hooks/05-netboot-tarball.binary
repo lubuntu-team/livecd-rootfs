@@ -1,5 +1,18 @@
 #!/bin/sh
 
+generate_grub_config ()
+{
+    # Generate the grub config file for netboot tarballs
+    # $1 Generated file path
+    cat > "${1}" <<EOF
+menuentry "Install Ubuntu Server" {
+        set gfxpayload=keep
+        linux   linux iso-url=#ISOURL# ip=dhcp ---
+        initrd  initrd
+}
+EOF
+}
+
 case $PASS in
     ubuntu-server-minimal.ubuntu-server.installer.generic*.netboot)
         ;;
@@ -46,13 +59,7 @@ case $ARCH in
         mv chroot/usr/lib/grub/x86_64-efi-signed/grubnetx64.efi.signed tarball/amd64/grubx64.efi
 
         mkdir tarball/amd64/grub tarball/amd64/pxelinux.cfg
-        cat > tarball/amd64/grub/grub.cfg.in <<EOF
-menuentry "Install Ubuntu Server" {
-        set gfxpayload=keep
-        linux   linux iso-url=#ISOURL# ip=dhcp ---
-        initrd  initrd
-}
-EOF
+        generate_grub_config tarball/amd64/grub/grub.cfg.in
         cat > tarball/amd64/pxelinux.cfg/default.in <<EOF
 DEFAULT install
 LABEL install
@@ -72,13 +79,7 @@ EOF
         mv chroot/usr/lib/grub/arm64-efi-signed/grubnetaa64.efi.signed tarball/arm64/grubaa64.efi
 
         mkdir tarball/arm64/grub
-        cat > tarball/arm64/grub/grub.cfg.in <<EOF
-menuentry "Install Ubuntu Server" {
-        set gfxpayload=keep
-        linux   linux iso-url=#ISOURL# ip=dhcp ---
-        initrd  initrd
-}
-EOF
+        generate_grub_config tarball/arm64/grub/grub.cfg.in
         ;;
 
     s390x)
@@ -130,13 +131,7 @@ EOF
         mv chroot/usr/lib/grub/riscv64-efi/monolithic/grubnetriscv64.efi tarball/riscv64/grubriscv64.efi
 
         mkdir tarball/riscv64/grub
-        cat > tarball/riscv64/grub/grub.cfg.in <<EOF
-menuentry "Install Ubuntu Server" {
-        set gfxpayload=keep
-        linux   linux iso-url=#ISOURL# ip=dhcp ---
-        initrd  initrd
-}
-EOF
+        generate_grub_config tarball/riscv64/grub/grub.cfg.in
         ;;
 esac
 
