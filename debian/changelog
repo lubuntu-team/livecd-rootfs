@@ -1,3 +1,10 @@
+livecd-rootfs (26.04.11) UNRELEASED; urgency=medium
+
+  * refactor: added a function to generate grub config for netboot
+  * riscv/server: add grub efi bootloader in netboot tarballs
+
+ -- Valentin Haudiquet <valentin.haudiquet@canonical.com>  Thu, 11 Dec 2025 09:28:37 +0100
+
 livecd-rootfs (26.04.10) resolute; urgency=medium
 
   [ Olivier Gayot ]
