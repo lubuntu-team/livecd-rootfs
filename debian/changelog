@@ -1,11 +1,12 @@
-livecd-rootfs (26.04.11) UNRELEASED; urgency=medium
+livecd-rootfs (26.04.11) resolute; urgency=medium
 
+  [ Valentin Haudiquet ]
   * refactor: added a function to generate grub config for netboot
   * riscv/server: add grub efi bootloader in netboot tarballs
 
   [ Olivier Gayot ]
   * desktop: build with optional components included
-  * desktop: don't build the stable image with pc-kernel from 26.04/edge
+  * desktop: don't build the stable image with pc-kernel from 26.04/beta
     - This was needed before because there was pc-kernel in 26.04/stable but
       now there is one and it matches the components definition from the model.
 
