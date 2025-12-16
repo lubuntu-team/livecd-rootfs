@@ -34,6 +34,13 @@ json.dump(yaml.safe_load(sys.stdin), sys.stdout, default=str)
 get_snaps_args_excluding()
 {
     local model=$1
+    local jq_filter='
+# Find all snaps that are not filtered out.
+# The filtered out snaps are passed as positional arguments so they end up in
+# the $ARGS.positional array.
+.snaps[] | select(.name | IN($ARGS.positional[]) | not)
+# Then forge the --snap option.
+ | "--snap=" + .name + "=" + .["default-channel"]'
 
     shift
 
@@ -41,13 +48,14 @@ get_snaps_args_excluding()
     # signature. Here we assume the only blank line is before the signature.
     sed '/^$/,$d' -- "$model" \
      | yaml_to_json \
-     | jq --raw-output '.snaps[] | select(.name | IN($ARGS.positional[]) | not) | "--snap=" + .name + "=" + .["default-channel"]' --args "$@"
+     | jq --raw-output "$jq_filter" --args "$@"
 }
 
 # Use jq to retrieve a list of --snap options from a given *signed* model.
 get_snaps_args()
 {
-    get_snaps_args_excluding "$1"
+    local model=$1
+    get_snaps_args_excluding "$model"
 }
 
 _get_components_filtered()
@@ -152,9 +160,9 @@ else
     # * firmware-updater (for TPM/FDE)
     # * desktop-security-center (for TPM/FDE)
     snaps_from_dangerous=(snapd snapd-desktop-integration firmware-updater desktop-security-center)
-    while read -r snap_arg; do
+    for snap_arg in $(get_snaps_args_excluding "$stable_model" "${snaps_from_dangerous[@]}"); do
         prepare_args+=("$snap_arg")
-    done < <(get_snaps_args_excluding "$stable_model" "${snaps_from_dangerous[@]}")
+    done
 
     for comp in $(get_components_excluding "$stable_model" "${snaps_from_dangerous[@]}"); do
         components+=("$comp")
