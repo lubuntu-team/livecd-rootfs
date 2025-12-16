@@ -1,4 +1,4 @@
-livecd-rootfs (26.04.12) UNRELEASED; urgency=medium
+livecd-rootfs (26.04.12) resolute; urgency=medium
 
   * desktop: add variables pointing to the different models (stable & dangerous).
   * desktop: fix snap components taken from original model when overriding a
@@ -7,6 +7,8 @@ livecd-rootfs (26.04.12) UNRELEASED; urgency=medium
       from a different model), we also need to override the definition of its
       components.
   * desktop: refactor how we filter the snaps when overriding
+  * desktop: update the dangerous model so that it includes core26 and the 6.17
+    kernel and components.
 
  -- Olivier Gayot <olivier.gayot@canonical.com>  Tue, 16 Dec 2025 14:54:17 +0100
 
