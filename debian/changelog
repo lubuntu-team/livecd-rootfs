@@ -1,3 +1,9 @@
+livecd-rootfs (26.04.12) UNRELEASED; urgency=medium
+
+  * desktop: add variables pointing to the different models (stable & dangerous).
+
+ -- Olivier Gayot <olivier.gayot@canonical.com>  Tue, 16 Dec 2025 14:54:17 +0100
+
 livecd-rootfs (26.04.11) resolute; urgency=medium
 
   [ Valentin Haudiquet ]

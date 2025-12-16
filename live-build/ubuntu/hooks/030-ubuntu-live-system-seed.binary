@@ -78,10 +78,8 @@ get_all_components()
 
 # env SNAPPY_STORE_NO_CDN=1 snap known --remote model series=16 brand-id=canonical model=ubuntu-classic-2410-amd64 > config/classic-model.model
 #
-# model=/usr/share/livecd-rootfs/live-build/${PROJECT}/ubuntu-classic-amd64.model
-# Normally we use the non-dangerous model here.  Use the dangerous one for now
-# until we get snaps on stable 26.04 tracks and channels.
-model=/usr/share/livecd-rootfs/live-build/${PROJECT}/ubuntu-classic-amd64-dangerous.model
+dangerous_model=/usr/share/livecd-rootfs/live-build/${PROJECT}/ubuntu-classic-amd64-dangerous.model
+stable_model=/usr/share/livecd-rootfs/live-build/${PROJECT}/ubuntu-classic-amd64.model
 
 prepare_args=()
 
@@ -91,21 +89,24 @@ if [ "$SUBPROJECT" = "dangerous" ]; then
     # require different content snaps to be installed, so they must be
     # included in the system as well. We just use the same list as was
     # computed in snap_validate_seed.
-    model=/usr/share/livecd-rootfs/live-build/${PROJECT}/ubuntu-classic-amd64-dangerous.model
+    model="${dangerous_model}"
     while read snap; do
         prepare_args+=("--snap=${snap}=edge")
     done < config/missing-providers
 else
-    # We're currently using the dangerous model for the non-dangerous ISO
-    # because it allows us to override snaps. But we don't want all snaps from
-    # edge like the dangerous model has, we want most of them from stable
-    # excluding:
+    # Normally we use the stable model here.  Use the dangerous one for now
+    # until we get snaps on stable 26.04 tracks and channels.
+    #model="${stable_model}"
+    model="${dangerous_model}"
+    # We're currently using the dangerous model for the stable image because it
+    # allows us to override snaps. But we don't want all snaps from edge like
+    # the dangerous model has, we want most of them from stable excluding:
     # * snapd (for TPM/FDE)
     # * firmware-updater (for TPM/FDE)
     # * desktop-security-center (for TPM/FDE)
     while read -r snap_arg; do
         prepare_args+=("$snap_arg")
-    done < <(get_snaps_args /usr/share/livecd-rootfs/live-build/"${PROJECT}"/ubuntu-classic-amd64.model \
+    done < <(get_snaps_args "$stable_model" \
     | grep -v -F -e snapd -e firmware-updater -e desktop-security-center)
 fi
 
