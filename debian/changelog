@@ -1,6 +1,11 @@
 livecd-rootfs (26.04.12) UNRELEASED; urgency=medium
 
   * desktop: add variables pointing to the different models (stable & dangerous).
+  * desktop: fix snap components taken from original model when overriding a
+    snap with another model.
+    - if we decide to override the definition of a snap (i.e., by taking in
+      from a different model), we also need to override the definition of its
+      components.
 
  -- Olivier Gayot <olivier.gayot@canonical.com>  Tue, 16 Dec 2025 14:54:17 +0100
 

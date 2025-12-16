@@ -42,13 +42,19 @@ get_snaps_args()
      | jq --raw-output '.snaps[] | "--snap=" + .name + "=" + .["default-channel"]'
 }
 
-get_all_components()
+_get_components_filtered()
 {
-    # Get list of all components in every snaps
-    local model=$1
+    local excluded=$1
+    local model=$2
     local jq_filter='
-# Find all snaps that have components
- .snaps[] | select(.components)
+# Find all snaps that are either filtered in or filtered out
+# The filtered in (or out) snaps are passed as positional arguments so they end up in
+# the $ARGS.positional array.  The excluded variable is passed separately and
+# tells if we want to filter in (i.e., excluded=false) or filter out (i.e.,
+# excluded=true).
+ .snaps[] | select(.name | IN($ARGS.positional[]) | if $excluded then not else . end)
+# and have components
+ | select(.components)
 # Then save the name of each snap in a variable
  | .name as $snap
 # Then for each entry that has "optional"
@@ -56,9 +62,35 @@ get_all_components()
 # Output its name with the snap name prepended
  | "\($snap)" + "+" + .[].key'
 
+    shift 2
+
     sed '/^$/,$d' -- "$model" \
      | yaml_to_json \
-     | jq --raw-output "$jq_filter"
+     | jq --raw-output "$jq_filter" --argjson excluded "$excluded" --args "$@"
+}
+
+# Get list of all components for all snaps
+get_all_components()
+{
+    local model=$1
+    # Provide an exclusion list but empty
+    _get_components_filtered true "$model"
+}
+
+# Get list of all components for all snaps except the ones specified.
+get_components_excluding()
+{
+    local model=$1
+    shift
+    _get_components_filtered true "$model" "$@"
+}
+
+# Get list of all components for the snaps specified.
+get_components()
+{
+    local model=$1
+    shift
+    _get_components_filtered false "$model" "$@"
 }
 
 # Generation of the model:
@@ -83,6 +115,8 @@ stable_model=/usr/share/livecd-rootfs/live-build/${PROJECT}/ubuntu-classic-amd64
 
 prepare_args=()
 
+components=()
+
 # for the dangerous subproject, we need the dangerous model!
 if [ "$SUBPROJECT" = "dangerous" ]; then
     # As with the "classically" seeded snaps, snaps from the edge channel may
@@ -93,6 +127,10 @@ if [ "$SUBPROJECT" = "dangerous" ]; then
     while read snap; do
         prepare_args+=("--snap=${snap}=edge")
     done < config/missing-providers
+
+    for comp in $(get_all_components "$model"); do
+        components+=("$comp")
+    done
 else
     # Normally we use the stable model here.  Use the dangerous one for now
     # until we get snaps on stable 26.04 tracks and channels.
@@ -104,13 +142,21 @@ else
     # * snapd (for TPM/FDE)
     # * firmware-updater (for TPM/FDE)
     # * desktop-security-center (for TPM/FDE)
+    snaps_from_dangerous=(snapd firmware-updater desktop-security-center)
     while read -r snap_arg; do
         prepare_args+=("$snap_arg")
     done < <(get_snaps_args "$stable_model" \
     | grep -v -F -e snapd -e firmware-updater -e desktop-security-center)
+
+    for comp in $(get_components_excluding "$stable_model" "${snaps_from_dangerous[@]}"); do
+        components+=("$comp")
+    done
+    for comp in $(get_components "$dangerous_model" "${snaps_from_dangerous[@]}"); do
+        components+=("$comp")
+    done
 fi
 
-for comp in $(get_all_components "$model"); do
+for comp in "${components[@]}"; do
     prepare_args+=(--comp "$comp")
 done
 
