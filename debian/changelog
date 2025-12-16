@@ -6,6 +6,7 @@ livecd-rootfs (26.04.12) UNRELEASED; urgency=medium
     - if we decide to override the definition of a snap (i.e., by taking in
       from a different model), we also need to override the definition of its
       components.
+  * desktop: refactor how we filter the snaps when overriding
 
  -- Olivier Gayot <olivier.gayot@canonical.com>  Tue, 16 Dec 2025 14:54:17 +0100
 

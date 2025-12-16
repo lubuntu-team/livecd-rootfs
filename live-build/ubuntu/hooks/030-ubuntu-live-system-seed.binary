@@ -31,15 +31,23 @@ json.dump(yaml.safe_load(sys.stdin), sys.stdout, default=str)
 
 
 # Use jq to retrieve a list of --snap options from a given *signed* model.
-get_snaps_args()
+get_snaps_args_excluding()
 {
     local model=$1
+
+    shift
 
     # The model is signed and is not valid YAML unless we get rid of the
     # signature. Here we assume the only blank line is before the signature.
     sed '/^$/,$d' -- "$model" \
      | yaml_to_json \
-     | jq --raw-output '.snaps[] | "--snap=" + .name + "=" + .["default-channel"]'
+     | jq --raw-output '.snaps[] | select(.name | IN($ARGS.positional[]) | not) | "--snap=" + .name + "=" + .["default-channel"]' --args "$@"
+}
+
+# Use jq to retrieve a list of --snap options from a given *signed* model.
+get_snaps_args()
+{
+    get_snaps_args_excluding "$1"
 }
 
 _get_components_filtered()
@@ -140,13 +148,13 @@ else
     # allows us to override snaps. But we don't want all snaps from edge like
     # the dangerous model has, we want most of them from stable excluding:
     # * snapd (for TPM/FDE)
+    # * snapd-desktop-integration (for TPM/FDE)
     # * firmware-updater (for TPM/FDE)
     # * desktop-security-center (for TPM/FDE)
-    snaps_from_dangerous=(snapd firmware-updater desktop-security-center)
+    snaps_from_dangerous=(snapd snapd-desktop-integration firmware-updater desktop-security-center)
     while read -r snap_arg; do
         prepare_args+=("$snap_arg")
-    done < <(get_snaps_args "$stable_model" \
-    | grep -v -F -e snapd -e firmware-updater -e desktop-security-center)
+    done < <(get_snaps_args_excluding "$stable_model" "${snaps_from_dangerous[@]}")
 
     for comp in $(get_components_excluding "$stable_model" "${snaps_from_dangerous[@]}"); do
         components+=("$comp")
