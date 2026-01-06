@@ -1,8 +1,8 @@
-livecd-rootfs (26.04.13) UNRELEASED; urgency=medium
+livecd-rootfs (26.04.13) resolute; urgency=medium
 
   * Bootstrap and install variant packages if ARCH_VARIANT is set.
 
- -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Tue, 06 Jan 2026 21:26:27 +1300
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Tue, 06 Jan 2026 22:03:15 +1300
 
 livecd-rootfs (26.04.12) resolute; urgency=medium
 
