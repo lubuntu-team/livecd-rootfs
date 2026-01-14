@@ -56,8 +56,7 @@ class AptStateManager:
 
         The `fields` set (derived from PackageInfo's dataclass fields) acts as
         a filter - we only extract fields we care about, ignoring others like
-        Description. This provides some forward-compatibility if apt-cache
-        output format changes.
+        Description.
         """
         proc = subprocess.Popen(
             ["apt-cache", "-o", "APT::Cache::AllVersions=0", "show"] + pkgs,

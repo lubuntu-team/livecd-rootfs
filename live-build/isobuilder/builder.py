@@ -252,7 +252,7 @@ class ISOBuilder:
         #   for-iso.base.squashfs -> base.squashfs
         #   for-iso.kernel-generic -> filesystem.kernel-generic
         #
-        # Kernel and initrd get the extra "filesystem." prefix because casper
+        # Kernel and initrd get the extra "filesystem." prefix because debian-cd
         # expects names like filesystem.kernel-* and filesystem.initrd-*.
         casper_dir = self.iso_root.joinpath("casper")
         artifact_dir = artifact_prefix.parent
@@ -298,8 +298,8 @@ class ISOBuilder:
                 ],
             )
         # Override apt-selection to use our ISO's apt configuration instead of
-        # debian-cd's default. This ensures the boot scripts query packages from
-        # the correct repository (our pool) when determining boot requirements.
+        # debian-cd's default. This ensures the boot scripts get packages from
+        # the correct repository when installing boot packages.
         apt_selection = debian_cd_dir.joinpath("tools/apt-selection")
         with self.logger.logged("overwriting apt-selection"):
             apt_selection.write_text(
@@ -329,7 +329,7 @@ class ISOBuilder:
         # - Symlinks are excluded because their targets are already checksummed
         # - Files are sorted for deterministic, reproducible output across builds
         # - Paths use "./" prefix and we run md5sum from iso_root so the output
-        #   matches what users get when they verify with "md5sum -c" from the ISO
+        #   matches what casper-md5check expects.
         all_files = []
         for dirpath, dirnames, filenames in self.iso_root.walk():
             filepaths = [dirpath.joinpath(filename) for filename in filenames]
