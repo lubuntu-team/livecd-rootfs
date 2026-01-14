@@ -1,0 +1,11 @@
+#!/bin/sh
+
+set -eux
+
+export MYPYPATH=live-build
+mypy live-build/isobuilder live-build/isobuild
+mypy live-build/gen-iso-ids
+
+black --check live-build/isobuilder live-build/isobuild live-build/gen-iso-ids
+
+python3 -m flake8 --max-line-length 88 --ignore E203 live-build/isobuilder live-build/isobuild live-build/gen-iso-ids

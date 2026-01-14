@@ -1,0 +1,12 @@
+pipeline:
+  - [lint]
+
+jobs:
+  lint:
+    series: noble
+    architectures: amd64
+    packages:
+      - black
+      - mypy
+      - python3-flake8
+    run: ./check-lint
