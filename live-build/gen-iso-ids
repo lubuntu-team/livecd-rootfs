@@ -1,0 +1,197 @@
+#!/usr/bin/python3
+
+# Compute various slightly obscure IDs and labels used by ISO builds.
+#
+#  * ISO9660 images have a "volume id".
+#  * Our ISOs contain a ".disk/info" file that is read by various
+#    other things (casper, the installer) and is generally used as a
+#    record of where an installation came from.
+#  * The code that sets up grub for the ISO needs a "capitalized
+#    project name" or capproject.
+#
+# All of these are derived from other build parameters (and/or
+# information in etc/os-release) in slightly non-obvious ways so the
+# logic to do so is confined to this file to avoid it cluttering
+# anywhere else.
+
+import pathlib
+import platform
+import time
+
+import click
+
+
+# Be careful about the values here. They end up in .disk/info, which is read by
+# casper to create the live session user, so if there is a space in the
+# capproject things go a bit wonky.
+#
+# It will also be used by make_vol_id to construct an ISO9660 volume ID as
+#
+#    "$(CAPPROJECT) $(DEBVERSION) $(ARCH)",
+#
+# e.g. "Ubuntu 14.10 amd64". The volume ID is limited to 32 characters. This
+# therefore imposes a limit on the length of project_map values of 25 - (length
+# of longest relevant architecture name).
+project_to_capproject_map = {
+    "edubuntu": "Edubuntu",
+    "kubuntu": "Kubuntu",
+    "lubuntu": "Lubuntu",
+    "ubuntu": "Ubuntu",
+    "ubuntu-base": "Ubuntu-Base",
+    "ubuntu-budgie": "Ubuntu-Budgie",
+    "ubuntu-core-installer": "Ubuntu-Core-Installer",
+    "ubuntu-mate": "Ubuntu-MATE",
+    "ubuntu-mini-iso": "Ubuntu-Mini-ISO",
+    "ubuntu-oem": "Ubuntu OEM",
+    "ubuntu-server": "Ubuntu-Server",
+    "ubuntu-unity": "Ubuntu-Unity",
+    "ubuntu-wsl": "Ubuntu WSL",
+    "ubuntucinnamon": "Ubuntu-Cinnamon",
+    "ubuntukylin": "Ubuntu-Kylin",
+    "ubuntustudio": "Ubuntu-Studio",
+    "xubuntu": "Xubuntu",
+}
+
+
+def make_disk_info(
+    os_release: dict[str, str],
+    arch: str,
+    subarch: str,
+    capproject: str,
+    subproject: str,
+    official: str,
+    serial: str,
+) -> str:
+    # os-release VERSION is _almost_ what goes into .disk/info...
+    # it can be
+    # VERSION="24.04.3 LTS (Noble Numbat)"
+    # or
+    # VERSION="25.10 (Questing Quokka)"
+    # We want the Adjective Animal to be in quotes, not parentheses, e.g.
+    # 'Ubuntu 24.04.3 LTS "Noble Numbat"'. This format is expected by casper
+    # (which parses .disk/info to set up the live session) and the installer.
+    version = os_release["VERSION"]
+    version = version.replace("(", '"')
+    version = version.replace(")", '"')
+
+    capsubproject = ""
+    if subproject == "minimal":
+        capsubproject = " Minimal"
+
+    fullarch = arch
+    if subarch:
+        fullarch += "+" + subarch
+
+    return f"{capproject}{capsubproject} {version} - {official} {fullarch} ({serial})"
+
+
+def make_vol_id(os_release: dict[str, str], arch: str, capproject: str) -> str:
+    # ISO9660 volume IDs are limited to 32 characters. The volume ID format is
+    # "CAPPROJECT VERSION ARCH", e.g. "Ubuntu 24.04.3 LTS amd64". Longer arch
+    # names like ppc64el and riscv64 can push us over the limit, so we shorten
+    # them here. This is why capproject names are also kept short (see the
+    # comment above project_to_capproject_map).
+    arch_for_volid_map = {
+        "ppc64el": "ppc64",
+        "riscv64": "riscv",
+    }
+    arch_for_volid = arch_for_volid_map.get(arch, arch)
+
+    # from
+    # VERSION="24.04.3 LTS (Noble Numbat)"
+    # or
+    # VERSION="25.10 (Questing Quokka)"
+    # we want "24.04.3 LTS" or "25.10", i.e. everything up to the first "(" (apart
+    # from the whitespace).
+    version = os_release["VERSION"].split("(")[0].strip()
+
+    volid = f"{capproject} {version} {arch_for_volid}"
+
+    # If still over 32 characters (e.g. long capproject + LTS version), fall
+    # back to shorter forms. amd64 gets "x64" since it's widely recognized and
+    # fits; other architectures just drop the arch entirely since multi-arch
+    # ISOs are less common for non-amd64 platforms.
+    if len(volid) > 32:
+        if arch == "amd64":
+            volid = f"{capproject} {version} x64"
+        else:
+            volid = f"{capproject} {version}"
+    return volid
+
+
+@click.command()
+@click.option(
+    "--project",
+    type=str,
+    required=True,
+)
+@click.option(
+    "--subproject",
+    type=str,
+    default=None,
+)
+@click.option(
+    "--arch",
+    type=str,
+    required=True,
+)
+@click.option(
+    "--subarch",
+    type=str,
+    default=None,
+)
+@click.option(
+    "--serial",
+    type=str,
+    default=time.strftime("%Y%m%d"),
+)
+@click.option(
+    "--official",
+    type=str,
+    default="Daily",
+)
+@click.option(
+    "--output-dir",
+    type=click.Path(file_okay=False, resolve_path=True, path_type=pathlib.Path),
+    required=True,
+    help="working directory",
+)
+def main(
+    project: str,
+    subproject: str,
+    arch: str,
+    subarch: str,
+    serial: str,
+    official: str,
+    output_dir: pathlib.Path,
+):
+    output_dir.mkdir(exist_ok=True)
+    capproject = project_to_capproject_map[project]
+
+    os_release = platform.freedesktop_os_release()
+
+    with output_dir.joinpath("disk-info").open("w") as fp:
+        disk_info = make_disk_info(
+            os_release,
+            arch,
+            subarch,
+            capproject,
+            subproject,
+            official,
+            serial,
+        )
+        print(f"disk_info: {disk_info!r}")
+        fp.write(disk_info)
+
+    with output_dir.joinpath("vol-id").open("w") as fp:
+        vol_id = make_vol_id(os_release, arch, capproject)
+        print(f"vol_id: {vol_id!r} {len(vol_id)}")
+        fp.write(vol_id)
+
+    with output_dir.joinpath("capproject").open("w") as fp:
+        print(f"capproject: {capproject!r}")
+        fp.write(capproject)
+
+
+if __name__ == "__main__":
+    main()
