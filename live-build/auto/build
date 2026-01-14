@@ -208,6 +208,22 @@ EOF
 		undivert_update_initramfs
 		undivert_grub chroot
 	fi
+	if [ "${MAKE_ISO}" = yes ]; then
+		isobuild init --disk-info "$(cat config/iso-ids/disk-info)" --series "${LB_DISTRIBUTION}" --arch "${ARCH}"
+		# Determine which chroot directory has the apt configuration to use.
+		# Layered builds (PASSES set) create overlay directories named
+		# "overlay.base", "overlay.live", etc. - we use the first one (base).
+		# Single-pass builds use the "chroot" directory directly.
+		if [ "${PASSES}" ]; then
+			CHROOT="overlay.$(set -- $PASSES; echo $1)"
+		else
+			CHROOT=chroot
+		fi
+		isobuild setup-apt --chroot $CHROOT
+		if [ -n "${POOL_SEED_NAME}" ]; then
+			isobuild generate-pool --package-list-file "config/germinate-output/${POOL_SEED_NAME}"
+		fi
+	fi
 
 	if [ -d chroot/etc/apt/preferences.d.save ]; then
 		# https://mastodon.social/@scream@botsin.space
@@ -427,13 +443,6 @@ if [ -e config/manifest-minimal-remove ]; then
         cp config/manifest-minimal-remove  "$PREFIX.manifest-minimal-remove"
 fi
 
-for ISO in binary.iso binary.hybrid.iso; do
-	[ -e "$ISO" ] || continue
-	ln "$ISO" "$PREFIX.iso"
-	chmod 644 "$PREFIX.iso"
-	break
-done
-
 if [ -e "binary/$INITFS/filesystem.dir" ]; then
 	(cd "binary/$INITFS/filesystem.dir/" && tar -c --sort=name --xattrs *) | \
 		gzip -9 --rsyncable > "$PREFIX.rootfs.tar.gz"
@@ -558,3 +567,23 @@ case $PROJECT in
     ubuntu-cpc)
         config/hooks.d/remove-implicit-artifacts
 esac
+
+if [ "${MAKE_ISO}" = "yes" ]; then
+	# Link build artifacts with "for-iso." prefix for isobuild to consume.
+	# Layered builds create squashfs via lb_binary_layered (which already
+	# creates for-iso.*.squashfs files). Single-pass builds only have
+	# ${PREFIX}.squashfs, so we link it here.
+	if [ -z "$PASSES" ]; then
+		ln ${PREFIX}.squashfs for-iso.filesystem.squashfs
+	fi
+	# Link kernel and initrd files. The ${thing#${PREFIX}} expansion strips
+	# the PREFIX, so "livecd.ubuntu-server.kernel-generic" becomes
+	# "for-iso.kernel-generic".
+	for thing in ${PREFIX}.kernel-* ${PREFIX}.initrd-*; do
+		ln $thing for-iso${thing#${PREFIX}}
+	done
+	isobuild add-live-filesystem --artifact-prefix for-iso.
+	isobuild make-bootable --project "${PROJECT}" --capproject "$(cat config/iso-ids/capproject)" \
+		${SUBARCH:+--subarch "${SUBARCH}"}
+	isobuild make-iso --volid "$(cat config/iso-ids/vol-id)" --dest ${PREFIX}.iso
+fi

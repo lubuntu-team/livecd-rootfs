@@ -184,6 +184,20 @@ build_layered_squashfs () {
 		fi
 
 		create_squashfs "${overlay_dir}" ${squashfs_f}
+		# Create a "for-iso" variant of the squashfs for ISO builds. For
+		# the root layer (the base system) when building with a pool, we
+		# need to include cdrom.sources so casper can access the ISO's
+		# package repository. This requires regenerating the squashfs with
+		# that file included, then removing it (so it doesn't pollute the
+		# regular squashfs). Non-root layers (desktop environment, etc.)
+		# and builds without pools can just hardlink to the regular squashfs.
+		if [ -n "${POOL_SEED_NAME}" ] && $(is_root_layer $pass); then
+			isobuild generate-sources --mountpoint=/cdrom > ${overlay_dir}/etc/apt/sources.list.d/cdrom.sources
+			create_squashfs "${overlay_dir}" ${PWD}/for-iso.${pass}.squashfs
+			rm ${overlay_dir}/etc/apt/sources.list.d/cdrom.sources
+		else
+			ln ${squashfs_f} ${PWD}/for-iso.${pass}.squashfs
+		fi
 
 		if [ -f config/$pass.catalog-in.yaml ]; then
 			echo "Expanding catalog entry template for $pass"

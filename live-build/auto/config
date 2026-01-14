@@ -663,10 +663,23 @@ if ! [ -e config/germinate-output/structure ]; then
                 -s $FLAVOUR.$SUITE $GERMINATE_ARG -a ${ARCH_VARIANT:-$ARCH})
 fi
 
+# ISO build configuration. These defaults are overridden per-project below.
+#
+# MAKE_ISO: Set to "yes" to generate an installer ISO at the end of the build.
+# This triggers isobuild to run in auto/build.
+MAKE_ISO=no
+# POOL_SEED_NAME: The germinate output file defining packages for the ISO's
+# package pool (repository). Different flavors use different seeds:
+# - "ship-live" for most desktop images
+# - "server-ship-live" for Ubuntu Server (includes server-specific packages)
+# - "" (empty) for images without a pool, like Ubuntu Core Installer
+POOL_SEED_NAME=ship-live
+
 # Common functionality for layered desktop images
 common_layered_desktop_image() {
 	touch config/universe-enabled
 	PASSES_TO_LAYERS="true"
+	MAKE_ISO=yes
 
 	if [ -n "$HAS_MINIMAL" ]; then
 		if [ -z "$MINIMAL_TASKS" ]; then
@@ -897,6 +910,7 @@ case $PROJECT in
 		add_task install minimal standard
 		add_task install kubuntu-desktop
 		LIVE_TASK='kubuntu-live'
+		MAKE_ISO=yes
 		add_chroot_hook remove-gnome-icon-cache
 		;;
 
@@ -923,6 +937,7 @@ case $PROJECT in
 	ubuntu-unity)
 		add_task install minimal standard ${PROJECT}-desktop
 		LIVE_TASK=${PROJECT}-live
+		MAKE_ISO=yes
 		;;
 
 	lubuntu)
@@ -997,6 +1012,8 @@ case $PROJECT in
 			live)
 				OPTS="${OPTS:+$OPTS }--bootstrap-flavour=minimal"
 				PASSES_TO_LAYERS=true
+				MAKE_ISO=yes
+				POOL_SEED_NAME=server-ship-live
 				add_task ubuntu-server-minimal server-minimal
 				add_package ubuntu-server-minimal lxd-installer
 				add_task ubuntu-server-minimal.ubuntu-server minimal standard server
@@ -1129,6 +1146,8 @@ case $PROJECT in
 	    fi
 	    OPTS="${OPTS:+$OPTS }--bootstrap-flavour=minimal"
 	    PASSES_TO_LAYERS=true
+	    MAKE_ISO=yes
+	    POOL_SEED_NAME=
 	    add_task base server-minimal server
 	    add_task base.live server-live
 	    add_package base.live linux-image-generic
@@ -1384,6 +1403,8 @@ echo "IMAGEFORMAT=\"$IMAGEFORMAT\"" >> config/chroot
 if [ -n "$PASSES" ]; then
 	echo "PASSES=\"$PASSES\"" >> config/common
 fi
+echo "MAKE_ISO=\"$MAKE_ISO\"" >> config/common
+echo "POOL_SEED_NAME=\"$POOL_SEED_NAME\"" >> config/common
 if [ -n "$NO_SQUASHFS_PASSES" ]; then
     echo "NO_SQUASHFS_PASSES=\"$NO_SQUASHFS_PASSES\"" >> config/common
 fi
@@ -1676,4 +1697,12 @@ cd /var/lib/preinstalled-pool/pool/
 apt-get -y download $PREINSTALL_POOL
 EOF
 	fi
+fi
+
+if [ "${MAKE_ISO}" = "yes" ]; then
+	# XXX should pass --official here.
+	/usr/share/livecd-rootfs/live-build/gen-iso-ids \
+		--project $PROJECT ${SUBPROJECT:+--subproject $SUBPROJECT} \
+		--arch $ARCH ${SUBARCH:+--subarch $SUBARCH} ${NOW+--serial $NOW} \
+		--output-dir config/iso-ids/
 fi

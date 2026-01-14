@@ -1444,3 +1444,10 @@ gpt_root_partition_uuid() {
 
     echo "${ROOTFS_PARTITION_TYPE}"
 }
+
+# Wrapper for the isobuild tool. Sets PYTHONPATH so the isobuilder module
+# is importable, and uses config/iso-dir as the standard working directory
+# for ISO metadata and intermediate files.
+isobuild () {
+    PYTHONPATH=/usr/share/livecd-rootfs/live-build/ /usr/share/livecd-rootfs/live-build/isobuild --workdir config/iso-dir "$@"
+}

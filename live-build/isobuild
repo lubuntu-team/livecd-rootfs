@@ -1,0 +1,221 @@
+#!/usr/bin/python3
+
+# Building an ISO requires knowing:
+#
+# * The architecture and series we are building for
+# * The address of the mirror to pull packages from the pool from and the
+#   components of that mirror to use
+# * The list of packages to include in the pool
+# * Where the squashfs files that contain the rootfs and other metadata layers
+#   are
+# * Where to put the final ISO
+# * All the bits of information that end up in .disk/info on the ISO and in the
+#   "volume ID" for the ISO
+#
+# It's not completely trivial to come up with a nice feeling interface between
+# livecd-rootfs and this tool. There are about 13 parameters that are needed to
+# build the ISO and having a tool take 13 arguments seems a bit overwhelming. In
+# addition some steps need to run before the layers are made into squashfs files
+# and some after. It felt nicer to have a tool with a few subcommands (7, in the
+# end) and taking arguments relevant to each step:
+#
+# $ isobuild --work-dir "" init --disk-id "" --series "" --arch ""
+#
+# Set up the work-dir for later steps. Create the skeleton file layout of the
+# ISO, populate .disk/info etc, create the gpg key referred to above. Store
+# series and arch somewhere that later steps can refer to.
+#
+# $ isobuild --work-dir "" setup-apt --chroot ""
+#
+# Set up aptfor use by later steps, using the configuration from the passed
+# chroot.
+#
+# $ isobuild --work-dir "" generate-pool --package-list-file ""
+#
+# Create the pool from the passed germinate output file.
+#
+# $ isobuild --work-dir "" generate-sources --mountpoint ""
+#
+# Generate an apt deb822 source for the pool, assuming it is mounted at the
+# passed mountpoint, and output it on stdout.
+#
+# $ isobuild --work-dir "" add-live-filesystem --artifact-prefix ""
+#
+# Copy the relevant artifacts to the casper directory (and extract the uuids
+# from the initrds)
+#
+# $ isobuild --work-dir "" make-bootable --project "" --capitalized-project ""
+#            --subarch ""
+#
+# Set up the bootloader etc so that the ISO can boot (for this clones debian-cd
+# and run the tools/boot/$series-$arch script but those should be folded into
+# isobuild fairly promptly IMO).
+#
+# $ isobuild --work-dir "" make-iso --vol-id "" --dest ""
+#
+# Generate the checksum file and run xorriso to build the final ISO.
+
+
+import pathlib
+import shlex
+
+import click
+
+from isobuilder.builder import ISOBuilder
+
+
+@click.group()
+@click.option(
+    "--workdir",
+    type=click.Path(file_okay=False, resolve_path=True, path_type=pathlib.Path),
+    required=True,
+    help="working directory",
+)
+@click.pass_context
+def main(ctxt, workdir):
+    ctxt.obj = ISOBuilder(workdir)
+    cwd = pathlib.Path().cwd()
+    if workdir.is_relative_to(cwd):
+        workdir = workdir.relative_to(cwd)
+    ctxt.obj.logger.log(f"isobuild starting, workdir: {workdir}")
+
+
+def subcommand(f):
+    """Decorator that converts a function into a Click subcommand with logging.
+
+    This decorator:
+    1. Converts function name from snake_case to kebab-case for the CLI
+    2. Wraps the function to log the subcommand name and all parameters
+    3. Registers it as a Click command under the main command group
+    4. Extracts the ISOBuilder instance from the context and passes it as first arg
+    """
+    name = f.__name__.replace("_", "-")
+
+    def wrapped(ctxt, **kw):
+        # Build a log message showing the subcommand and all its parameters.
+        # We use ctxt.params (Click's resolved parameters) rather than **kw
+        # because ctxt.params includes path resolution and type conversion.
+        # Paths are converted to relative form to keep logs readable and avoid
+        # exposing full filesystem paths in build artifacts.
+        msg = f"subcommand {name}"
+        cwd = pathlib.Path().cwd()
+        for k, v in sorted(ctxt.params.items()):
+            if isinstance(v, pathlib.Path):
+                if v.is_relative_to(cwd):
+                    v = v.relative_to(cwd)
+            v = shlex.quote(str(v))
+            msg += f" {k}={v}"
+        with ctxt.obj.logger.logged(msg):
+            f(ctxt.obj, **kw)
+
+    return main.command(name=name)(click.pass_context(wrapped))
+
+
+@click.option(
+    "--disk-info",
+    type=str,
+    required=True,
+    help="contents of .disk/info",
+)
+@click.option(
+    "--series",
+    type=str,
+    required=True,
+    help="series being built",
+)
+@click.option(
+    "--arch",
+    type=str,
+    required=True,
+    help="architecture being built",
+)
+@subcommand
+def init(builder, disk_info, series, arch):
+    builder.init(disk_info, series, arch)
+
+
+@click.option(
+    "--chroot",
+    type=click.Path(
+        file_okay=False, resolve_path=True, path_type=pathlib.Path, exists=True
+    ),
+    required=True,
+)
+@subcommand
+def setup_apt(builder, chroot: pathlib.Path):
+    builder.setup_apt(chroot)
+
+
+@click.pass_obj
+@click.option(
+    "--package-list-file",
+    type=click.Path(
+        dir_okay=False, exists=True, resolve_path=True, path_type=pathlib.Path
+    ),
+    required=True,
+)
+@subcommand
+def generate_pool(builder, package_list_file: pathlib.Path):
+    builder.generate_pool(package_list_file)
+
+
+@click.option(
+    "--mountpoint",
+    type=str,
+    required=True,
+)
+@subcommand
+def generate_sources(builder, mountpoint: str):
+    builder.generate_sources(mountpoint)
+
+
+@click.option(
+    "--artifact-prefix",
+    type=click.Path(dir_okay=False, resolve_path=True, path_type=pathlib.Path),
+    required=True,
+)
+@subcommand
+def add_live_filesystem(builder, artifact_prefix: pathlib.Path):
+    builder.add_live_filesystem(artifact_prefix)
+
+
+@click.option(
+    "--project",
+    type=str,
+    required=True,
+)
+@click.option("--capproject", type=str, required=True)
+@click.option(
+    "--subarch",
+    type=str,
+    default="",
+)
+@subcommand
+def make_bootable(builder, project: str, capproject: str | None, subarch: str):
+    # capproject is the "capitalized project name" used in GRUB menu entries,
+    # e.g. "Ubuntu" or "Kubuntu". It should come from gen-iso-ids (which uses
+    # project_to_capproject_map for proper formatting like "Ubuntu-MATE"), but
+    # we provide a simple .capitalize() fallback for cases where the caller
+    # doesn't have the pre-computed value.
+    if capproject is None:
+        capproject = project.capitalize()
+    builder.make_bootable(project, capproject, subarch)
+
+
+@click.option(
+    "--dest",
+    type=click.Path(dir_okay=False, resolve_path=True, path_type=pathlib.Path),
+    required=True,
+)
+@click.option(
+    "--volid",
+    type=str,
+    default=None,
+)
+@subcommand
+def make_iso(builder, dest: pathlib.Path, volid: str | None):
+    builder.make_iso(dest, volid)
+
+
+if __name__ == "__main__":
+    main()
