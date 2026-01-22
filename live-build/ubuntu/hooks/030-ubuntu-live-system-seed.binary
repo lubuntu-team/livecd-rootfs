@@ -155,16 +155,25 @@ else
     # We're currently using the dangerous model for the stable image because it
     # allows us to override snaps. But we don't want all snaps from edge like
     # the dangerous model has, we want most of them from stable excluding:
-    # * snapd (for TPM/FDE)
     # * snapd-desktop-integration (for TPM/FDE)
     # * firmware-updater (for TPM/FDE)
     # * desktop-security-center (for TPM/FDE)
-    snaps_from_dangerous=(snapd snapd-desktop-integration firmware-updater desktop-security-center)
-    for snap_arg in $(get_snaps_args_excluding "$stable_model" "${snaps_from_dangerous[@]}"); do
+    snaps_from_dangerous=(snapd-desktop-integration firmware-updater desktop-security-center)
+
+    # For these snaps, we ignore the model entirely.
+    snaps_from_beta=(snapd)
+    for snap in "${snaps_from_beta[@]}"; do
+        prepare_args+=("--snap=$snap=beta")
+    done
+
+    # snaps that we are special casing.
+    _exclude=("${snaps_from_dangerous[@]}" "${snaps_from_beta[@]}")
+
+    for snap_arg in $(get_snaps_args_excluding "$stable_model" "${_exclude[@]}"); do
         prepare_args+=("$snap_arg")
     done
 
-    for comp in $(get_components_excluding "$stable_model" "${snaps_from_dangerous[@]}"); do
+    for comp in $(get_components_excluding "$stable_model" "${_exclude[@]}"); do
         components+=("$comp")
     done
     for comp in $(get_components "$dangerous_model" "${snaps_from_dangerous[@]}"); do
