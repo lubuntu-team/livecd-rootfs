@@ -1,3 +1,10 @@
+livecd-rootfs (26.04.14) UNRELEASED; urgency=medium
+
+  * desktop: build stable image with snapd from beta. Snapd 2.74 has just been
+    uploaded to beta. Let's stop using the version declared in the dangerous model.
+
+ -- Olivier Gayot <olivier.gayot@canonical.com>  Thu, 22 Jan 2026 10:13:36 +0100
+
 livecd-rootfs (26.04.13) resolute; urgency=medium
 
   * Bootstrap and install variant packages if ARCH_VARIANT is set.
