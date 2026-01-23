@@ -580,7 +580,10 @@ if [ "${MAKE_ISO}" = "yes" ]; then
 	# the PREFIX, so "livecd.ubuntu-server.kernel-generic" becomes
 	# "for-iso.kernel-generic".
 	for thing in ${PREFIX}.kernel-* ${PREFIX}.initrd-*; do
-		ln $thing for-iso${thing#${PREFIX}}
+		for_iso_path=for-iso${thing#${PREFIX}}
+		if [ ! -f $for_iso_path ]; then
+			ln -v $thing $for_iso_path
+		fi
 	done
 	isobuild add-live-filesystem --artifact-prefix for-iso.
 	isobuild make-bootable --project "${PROJECT}" --capproject "$(cat config/iso-ids/capproject)" \

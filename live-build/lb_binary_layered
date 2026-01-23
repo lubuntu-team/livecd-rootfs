@@ -195,8 +195,6 @@ build_layered_squashfs () {
 			isobuild generate-sources --mountpoint=/cdrom > ${overlay_dir}/etc/apt/sources.list.d/cdrom.sources
 			create_squashfs "${overlay_dir}" ${PWD}/for-iso.${pass}.squashfs
 			rm ${overlay_dir}/etc/apt/sources.list.d/cdrom.sources
-		else
-			ln ${squashfs_f} ${PWD}/for-iso.${pass}.squashfs
 		fi
 
 		if [ -f config/$pass.catalog-in.yaml ]; then
@@ -241,3 +239,11 @@ if [ -n "$(ls livecd.${PROJECT_FULL}.*install.live.manifest.full 2>/dev/null)" ]
 fi
 
 chmod 644 *.squashfs *.manifest* *.size
+
+prefix=livecd.${PROJECT_FULL}
+for artifact in ${prefix}.*; do
+	for_iso_path=for-iso${artifact#${prefix}}
+	if [ ! -f $for_iso_path ]; then
+		ln -v $artifact $for_iso_path
+	fi
+done
