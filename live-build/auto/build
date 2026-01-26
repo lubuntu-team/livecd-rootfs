@@ -572,9 +572,11 @@ if [ "${MAKE_ISO}" = "yes" ]; then
 	# Link build artifacts with "for-iso." prefix for isobuild to consume.
 	# Layered builds create squashfs via lb_binary_layered (which already
 	# creates for-iso.*.squashfs files). Single-pass builds only have
-	# ${PREFIX}.squashfs, so we link it here.
+	# ${PREFIX}.squashfs, which does not contain cdrom.sources, so we
+	# create a for-iso.filesystem.squashfs that does.
 	if [ -z "$PASSES" ]; then
-		ln ${PREFIX}.squashfs for-iso.filesystem.squashfs
+		isobuild generate-sources --mountpoint=/cdrom > chroot/etc/apt/sources.list.d/cdrom.sources
+		create_squashfs chroot for-iso.filesystem.squashfs
 	fi
 	# Link kernel and initrd files. The ${thing#${PREFIX}} expansion strips
 	# the PREFIX, so "livecd.ubuntu-server.kernel-generic" becomes
