@@ -79,7 +79,7 @@ class Logger:
         if done_msg is not None:
             self.log(done_msg)
 
-    def msg_for_cmd(self, cmd, cwd=None) -> str:
+    def msg_for_cmd(self, cmd, limit_length=True, cwd=None) -> str:
         if cwd is None:
             _cwd = pathlib.Path().cwd()
         else:
@@ -92,15 +92,19 @@ class Logger:
                 arg = str(arg)
             fmted_cmd.append(shlex.quote(arg))
         fmted_cmd_str = " ".join(fmted_cmd)
-        if len(fmted_cmd_str) > MAX_CMD_DISPLAY_LENGTH:
+        if len(fmted_cmd_str) > MAX_CMD_DISPLAY_LENGTH and limit_length:
             fmted_cmd_str = fmted_cmd_str[:MAX_CMD_DISPLAY_LENGTH] + "..."
         msg = f"running `{fmted_cmd_str}`"
         if cwd is not None:
             msg += f" in {cwd}"
         return msg
 
-    def run(self, cmd: list[str | pathlib.Path], *args, check=True, **kw):
-        with self.logged(self.msg_for_cmd(cmd, kw.get("cwd"))):
+    def run(
+        self, cmd: list[str | pathlib.Path], *args, limit_length=True, check=True, **kw
+    ):
+        with self.logged(
+            self.msg_for_cmd(cmd, cwd=kw.get("cwd"), limit_length=limit_length)
+        ):
             return subprocess.run(cmd, *args, check=check, **kw)
 
 
@@ -362,4 +366,4 @@ class ISOBuilder:
             cmd += ["-V", volid]
         cmd += mkisofs_opts + [self.iso_root, "-o", dest]
         with self.logger.logged("running xorriso"):
-            self.logger.run(cmd, cwd=self.workdir, check=True)
+            self.logger.run(cmd, cwd=self.workdir, check=True, limit_length=False)
