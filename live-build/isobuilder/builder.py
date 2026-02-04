@@ -380,3 +380,7 @@ class ISOBuilder:
             cmd.extend(mkisofs_opts + [self.iso_root, "-o", dest])
         with self.logger.logged("running xorriso"):
             self.logger.run(cmd, cwd=self.workdir, check=True, limit_length=False)
+        if self.arch == "riscv64":
+            debian_cd_dir = self.workdir.joinpath("debian-cd")
+            add_riscv_gpt = debian_cd_dir.joinpath("tools/add_riscv_gpt")
+            self.logger.run([add_riscv_gpt, dest], cwd=self.workdir)
