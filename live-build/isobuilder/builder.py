@@ -359,11 +359,24 @@ class ISOBuilder:
         # xorriso with "-as mkisofs" runs in mkisofs compatibility mode.
         # -r enables Rock Ridge extensions for Unix metadata (permissions, symlinks).
         # -iso-level 3 (amd64 only) allows files >4GB which some amd64 ISOs need.
-        cmd: list[str | pathlib.Path] = ["xorriso", "-as", "mkisofs", "-r"]
-        if self.arch == "amd64":
-            cmd.extend(["-iso-level", "3"])
-        if volid:
-            cmd += ["-V", volid]
-        cmd += mkisofs_opts + [self.iso_root, "-o", dest]
+        cmd: list[str | pathlib.Path] = ["xorriso"]
+        if self.arch == "riscv64":
+            # For $reasons, xorriso is not run in mkisofs mode on riscv64 only.
+            cmd.extend(["-rockridge", "on", "-outdev", dest])
+            if volid:
+                cmd.extend(["-volid", volid])
+            cmd.extend(mkisofs_opts)
+            cmd.extend(["-map", self.iso_root])
+        else:
+            # xorriso with "-as mkisofs" runs in mkisofs compatibility mode on
+            # other architectures.  -r enables Rock Ridge extensions for Unix
+            # metadata (permissions, symlinks).  -iso-level 3 (amd64 only)
+            # allows files >4GB which some amd64 ISOs need.
+            cmd.extend(["-as", "mkisofs", "-r"])
+            if self.arch == "amd64":
+                cmd.extend(["-iso-level", "3"])
+            if volid:
+                cmd.extend(["-V", volid])
+            cmd.extend(mkisofs_opts + [self.iso_root, "-o", dest])
         with self.logger.logged("running xorriso"):
             self.logger.run(cmd, cwd=self.workdir, check=True, limit_length=False)
