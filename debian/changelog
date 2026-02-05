@@ -1,3 +1,9 @@
+livecd-rootfs (26.04.15) UNRELEASED; urgency=medium
+
+  * desktop: delay display manager starting until snapd seeding completes
+
+ -- Matthew Hagemann <matt.hagemann@canonical.com>  Thu, 05 Feb 2026 13:17:53 +0200
+
 livecd-rootfs (26.04.14) resolute; urgency=medium
 
   [ Olivier Gayot ]
