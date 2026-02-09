@@ -16,13 +16,9 @@ snaps:
     type: gadget
   -
     components:
-      nvidia-550-erd-ko:
+      nvidia-580-uda-ko:
         presence: optional
-      nvidia-550-erd-user:
-        presence: optional
-      nvidia-570-erd-ko:
-        presence: optional
-      nvidia-570-erd-user:
+      nvidia-580-uda-user:
         presence: optional
     default-channel: 26.04/stable
     id: pYVQrBcKmBa0mZ4CCN7ExT6jH8rY1hza
@@ -93,16 +89,16 @@ snaps:
     id: IrwRHakqtzhFRHJOOPxKVPU0Kk7Erhcu
     name: snapd-desktop-integration
     type: app
-timestamp: 2025-11-06T12:00:00.0Z
+timestamp: 2025-12-09T12:00:00.0Z
 sign-key-sha3-384: 9tydnLa6MTJ-jaQTFUXEwHl1yRx7ZS4K5cyFDhYDcPzhS7uyEkDxdUjg9g08BtNn
 
-AcLBXAQAAQoABgUCaSatwAAKCRDgT5vottzAElN8EAC81ZgmWYxnh9l2UrGl8I3WIa2yPrblQB4m
-2qdfj35umxfNtZdhBux74g6UpXttX5djcf2qfrK2VAk0tf3lolSprAfPeIoBxthl2Ig0CfWOD7Qa
-sJAiUZ2CVY0gX53tTxc+Lsaj2CCdmEVnlG5Lbzk6DDr6OYQ1jf+SyntSlaB4mvuy+YO89sA/E8X9
-xaYhZpS7NU+J5nfc9hB8xf/f7UvXVrcRmkX1t5Pra1T/eQ+3hgLzp+fLvFbwMRcEGqwE2KXTWwm1
-F191SI2UazuS4lWv0yJ40uljd26q53E8edKPmtPlmWEY0GwbofvcXKM3tw8gf9ZwZMlewjNYYHGu
-V1FsI+6GdULFPMoQptmEhQmZNOiAE706D+HVTgDvWfv/yw1fOmTUbFaT/dmUb8dSmndouRt2AF0c
-WivlBgo3fKjRZg/sPyZX3FwhggglmuCRiiYK9xu1b4wsplv090fAF3q33o9wLB+G6A4DE9QDzhfu
-7y5ABm/cG15nKDkanpbCFWwYEq7ANlzz3y6/KctQnFms3+qa5p5bdd+Q4mpqcJcNXMWFnb3b+lSp
-TITMdTf9afNKHFTbwBABoNVLDYelkNCYD99ukuSIS8MeiIHEXxUV9lNaEPTKoXgv3LETI8Wd43Qs
-Msb1UuoDShZo2gfDOlb8P0W7gxz79QbjMcSBBoqVew==
+AcLBXAQAAQoABgUCaYzP9QAKCRDgT5vottzAEus2D/4jJVutpoPmDrLjNQLn2KNf/f1L2zU8ESSe
+VpFjy+9Ff7AxXckALM4eEy/J5mc+UNhHQ/7Thp4XYy2NiH14n9Lv5kVqZCz8udiEfcfLy5gGveio
+oXyGX7J5x9sq3YXV1IHS84aqJS0si80TTLCRQXUN8oUZIVRkgFOGIVVneQkn1ppNs87kNgvBT1ow
+nwr9fVvZnt5bTprCxs4R5cEUlWTJMN4l96Eh530Q+wqCjFxbTs6FADUYielsFnBDl/Q1M0fozg4F
+Ct4gBbvFGWZhp8LXiCbJvTd3PAAV1HYAgtKDKZT0NQp8qaU5DpgTDiUzIjaAJP7feSU5AYDLuVSH
+V3zD8sosg1nmPvVtuSi2q5Z+/zd6gmG+vLn5d16whNqELDnX0O9Hxarc/3DD3ANZrrbXlq/PEJNB
+Lor5osHLN4utW7CUC5MIEQ5/Z/6cSuav6rQ+bBiAOzQSHRCbhfyCGSMMINX2CE3ePw3moi9gwXeh
+vKw1iItEOxywEKbeBNEvddnGsvmzoqf9Jg53/X0yrQQVZTHYFsQlTRk9ggajdZnPjJMTqlAqjXnP
+QCsgnprvln0akW4IfEzc+IgoF5eiShJd4IidkBbbdNXRRYlHfmOG7ZvR9upJwe1M73Zfu1nQFEvT
+fly59e2Vw8O50ljOVW3jT5fW36z8h1+ttxkKwVsQJg==
