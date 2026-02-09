@@ -148,31 +148,26 @@ if [ "$SUBPROJECT" = "dangerous" ]; then
         components+=("$comp")
     done
 else
-    # Normally we use the stable model here.  Use the dangerous one for now
-    # until we get snaps on stable 26.04 tracks and channels.
-    #model="${stable_model}"
-    model="${dangerous_model}"
-    # We're currently using the dangerous model for the stable image because it
-    # allows us to override snaps. But we don't want all snaps from edge like
-    # the dangerous model has, we want most of them from stable excluding:
-    # * snapd-desktop-integration (for TPM/FDE)
-    # * firmware-updater (for TPM/FDE)
-    # * desktop-security-center (for TPM/FDE)
-    snaps_from_dangerous=(snapd-desktop-integration firmware-updater desktop-security-center)
-
+    model="${stable_model}"
+    # If we need to override anything from the model, we need grade: dangerous.
+    # And if so, uncomment the below to use the dangerous model and set the
+    # snaps_from_dangerous and snaps_from_beta variables to still use snaps
+    # from the stable model.
+    #model="${dangerous_model}"
+    snaps_from_dangerous=()
     # For these snaps, we ignore the model entirely.
-    snaps_from_beta=(snapd)
+    snaps_from_beta=()
     for snap in "${snaps_from_beta[@]}"; do
         prepare_args+=("--snap=$snap=beta")
     done
-
     # snaps that we are special casing.
     _exclude=("${snaps_from_dangerous[@]}" "${snaps_from_beta[@]}")
 
-    for snap_arg in $(get_snaps_args_excluding "$stable_model" "${_exclude[@]}"); do
-        prepare_args+=("$snap_arg")
-    done
-
+    if [ "$model" = "$dangerous_model" ]; then
+        for snap_arg in $(get_snaps_args_excluding "$stable_model" "${_exclude[@]}"); do
+            prepare_args+=("$snap_arg")
+        done
+    fi
     for comp in $(get_components_excluding "$stable_model" "${_exclude[@]}"); do
         components+=("$comp")
     done
