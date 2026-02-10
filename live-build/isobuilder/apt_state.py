@@ -82,7 +82,7 @@ class AptStateManager:
         if params:
             yield PackageInfo(**params)
 
-    def download(self, rootdir: pathlib.Path, pkg_info: PackageInfo):
+    def download(self, rootdir: pathlib.Path, pkg_info: PackageInfo) -> None:
         """Download the package specified by `pkg_info` under `rootdir`.
 
         The package is saved to the same path under `rootdir` as it is
@@ -90,9 +90,17 @@ class AptStateManager:
         """
         target_dir = rootdir.joinpath(pkg_info.filename).parent
         target_dir.mkdir(parents=True, exist_ok=True)
+        self.download_direct(pkg_info.spec, target_dir)
+
+    def download_direct(self, spec: str, target: pathlib.Path) -> None:
+        """Download the package specified by spec to target directory.
+
+        The package is downloaded using apt-get download and saved directly
+        in the target directory.
+        """
         self.logger.run(
-            ["apt-get", "download", pkg_info.spec],
-            cwd=target_dir,
+            ["apt-get", "download", spec],
+            cwd=target,
             check=True,
             env=self._apt_env(),
         )
