@@ -1,4 +1,4 @@
-livecd-rootfs (26.04.15) UNRELEASED; urgency=medium
+livecd-rootfs (26.04.15) resolute; urgency=medium
 
   [ Matthew Hagemann ]
   * desktop: delay display manager starting until snapd seeding completes
@@ -6,7 +6,7 @@ livecd-rootfs (26.04.15) UNRELEASED; urgency=medium
   [ Michael Hudson-Doyle ]
   * Make an ISO in the livefs build when building an installer.
 
- -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Sat, 24 Jan 2026 07:39:45 +1300
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Wed, 11 Feb 2026 10:04:37 +1300
 
 livecd-rootfs (26.04.14) resolute; urgency=medium
 
