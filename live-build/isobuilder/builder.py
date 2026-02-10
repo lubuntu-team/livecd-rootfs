@@ -366,7 +366,7 @@ class ISOBuilder:
             if volid:
                 cmd.extend(["-volid", volid])
             cmd.extend(mkisofs_opts)
-            cmd.extend(["-map", self.iso_root])
+            cmd.extend(["-map", self.iso_root, "/"])
         else:
             # xorriso with "-as mkisofs" runs in mkisofs compatibility mode on
             # other architectures.  -r enables Rock Ridge extensions for Unix
