@@ -59,7 +59,7 @@ def make_disk_info(
     subarch: str,
     capproject: str,
     subproject: str,
-    iso_status: str,
+    build_type: str,
     serial: str,
 ) -> str:
     # os-release VERSION is _almost_ what goes into .disk/info...
@@ -82,7 +82,7 @@ def make_disk_info(
     if subarch:
         fullarch += "+" + subarch
 
-    return f"{capproject}{capsubproject} {version} - {iso_status} {fullarch} ({serial})"
+    return f"{capproject}{capsubproject} {version} - {build_type} {fullarch} ({serial})"
 
 
 def make_vol_id(os_release: dict[str, str], arch: str, capproject: str) -> str:
@@ -146,7 +146,7 @@ def make_vol_id(os_release: dict[str, str], arch: str, capproject: str) -> str:
     default=time.strftime("%Y%m%d"),
 )
 @click.option(
-    "--iso-status",
+    "--build-type",
     type=str,
     default="Daily",
 )
@@ -162,7 +162,7 @@ def main(
     arch: str,
     subarch: str,
     serial: str,
-    iso_status: str,
+    build_type: str,
     output_dir: pathlib.Path,
 ):
     output_dir.mkdir(exist_ok=True)
@@ -177,7 +177,7 @@ def main(
             subarch,
             capproject,
             subproject,
-            iso_status,
+            build_type,
             serial,
         )
         print(f"disk_info: {disk_info!r}")
