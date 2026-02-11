@@ -1,5 +1,9 @@
 #!/bin/sh
 
+# Create kernel/initrd artifacts for isobuilder to consume.
+# The standard MAKE_ISO flow in auto/build expects files named
+# ${PREFIX}.kernel-${flavour} and ${PREFIX}.initrd-${flavour}.
+
 set -eu
 
 case $ARCH in
@@ -10,68 +14,7 @@ case $ARCH in
         ;;
 esac
 
-. config/binary
+PREFIX="livecd.${PROJECT}"
 
-KERNEL=chroot/boot/vmlinuz
-INITRD=chroot/boot/initrd.img
-
-git clone https://git.launchpad.net/~ubuntu-cdimage/debian-cd/+git/ubuntu debian-cd
-export BASEDIR=$(readlink -f debian-cd) DIST=$LB_DISTRIBUTION
-
-cat > apt.conf <<EOF
-Dir "$(pwd)/chroot";
-EOF
-
-case $ARCH in
-    amd64)
-        mkdir -p "ubuntu-mini-iso/amd64/tree/casper"
-        cp "$KERNEL" ubuntu-mini-iso/amd64/tree/casper/filesystem.kernel-generic
-        cp "$INITRD" ubuntu-mini-iso/amd64/tree/casper/filesystem.initrd-generic
-        APT_CONFIG_amd64=$(pwd)/apt.conf $BASEDIR/tools/boot/$LB_DISTRIBUTION/boot-amd64 1 $(readlink -f ubuntu-mini-iso/amd64/tree)
-        # Overwrite the grub.cfg that debian-cd generates by default
-        cat > ubuntu-mini-iso/amd64/tree/boot/grub/grub.cfg <<EOF
-menuentry "Choose an Ubuntu version to install" {
-        set gfxpayload=keep
-        linux /casper/vmlinuz iso-chooser-menu ip=dhcp ---
-        initrd /casper/initrd
-}
-EOF
-        rm -f ubuntu-mini-iso/amd64/tree/boot/grub/loopback.cfg ubuntu-mini-iso/amd64/tree/boot/memtest*.bin
-        ;;
-esac
-
-mkdir -p ubuntu-mini-iso/$ARCH/tree/.disk
-
-touch ubuntu-mini-iso/$ARCH/tree/.disk/base_installable
-
-tmpdir=$(mktemp -d)
-unmkinitramfs $INITRD $tmpdir
-if [ -e $tmpdir/*/conf/uuid.conf ]; then
-    uuid_conf=$tmpdir/*/conf/uuid.conf
-elif [ -e "$tmpdir/conf/uuid.conf" ]; then
-    uuid_conf="$tmpdir/conf/uuid.conf"
-else
-    echo "uuid.conf not found"
-    exit 1
-fi
-cp $uuid_conf ubuntu-mini-iso/$ARCH/tree/.disk/casper-uuid-generic
-rm -fr $tmpdir
-
-cat > ubuntu-mini-iso/$ARCH/tree/.disk/cd_type <<EOF
-full_cd/single
-EOF
-
-version=$(distro-info --fullname --series=$LB_DISTRIBUTION \
-          | sed s'/^Ubuntu/ubuntu-mini-iso/')
-
-cat > ubuntu-mini-iso/$ARCH/tree/.disk/info <<EOF
-$version - $ARCH ($BUILDSTAMP)
-EOF
-
-dest="${PWD}/livecd.${PROJECT}.iso"
-
-cd ubuntu-mini-iso/$ARCH
-xorriso -as mkisofs $(cat 1.mkisofs_opts) tree -o $dest
-cd ../..
-
-rm -rf ubuntu-mini-iso
+cp chroot/boot/vmlinuz "${PREFIX}.kernel-generic"
+cp chroot/boot/initrd.img "${PREFIX}.initrd-generic"

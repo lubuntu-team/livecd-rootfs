@@ -86,13 +86,26 @@ class AMD64BootConfigurator(UEFIBootConfigurator):
 
     def generate_grub_config(self) -> None:
         """Generate grub.cfg and loopback.cfg for the boot tree."""
-        # Generate grub.cfg
-        kernel_params = default_kernel_params(self.project)
-
         boot_grub_dir = self.boot_tree.joinpath("boot", "grub")
         boot_grub_dir.mkdir(parents=True, exist_ok=True)
 
         grub_cfg = boot_grub_dir.joinpath("grub.cfg")
+
+        if self.project == "ubuntu-mini-iso":
+            self.write_grub_header(grub_cfg)
+            with grub_cfg.open("a") as f:
+                f.write(
+                    """menuentry "Choose an Ubuntu version to install" {
+    set gfxpayload=keep
+    linux    /casper/vmlinuz iso-chooser-menu ip=dhcp ---
+    initrd    /casper/initrd
+}
+"""
+                )
+            return
+
+        # Generate grub.cfg
+        kernel_params = default_kernel_params(self.project)
 
         # Write common GRUB header
         self.write_grub_header(grub_cfg)

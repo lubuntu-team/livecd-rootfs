@@ -1166,6 +1166,7 @@ case $PROJECT in
 		OPTS="${OPTS:+$OPTS }--linux-packages=none --initramfs=none"
 		KERNEL_FLAVOURS=none
 		BINARY_REMOVE_LINUX=false
+		MAKE_ISO=yes
 
 		add_package install mini-iso-tools linux-generic
 		case $ARCH in
