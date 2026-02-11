@@ -1700,7 +1700,7 @@ EOF
 fi
 
 if [ "${MAKE_ISO}" = "yes" ]; then
-	# XXX should pass --iso-status here.
+	# XXX should pass --build-type here.
 	/usr/share/livecd-rootfs/live-build/gen-iso-ids \
 		--project $PROJECT ${SUBPROJECT:+--subproject $SUBPROJECT} \
 		--arch $ARCH ${SUBARCH:+--subarch $SUBARCH} ${NOW+--serial $NOW} \
