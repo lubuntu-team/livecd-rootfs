@@ -7,6 +7,9 @@ from .uefi import UEFIBootConfigurator
 from .base import default_kernel_params
 
 
+CALAMARES_PROJECTS = ["kubuntu", "lubuntu"]
+
+
 class AMD64BootConfigurator(UEFIBootConfigurator):
     """Boot setup for AMD64/x86_64 architecture."""
 
@@ -133,7 +136,7 @@ class AMD64BootConfigurator(UEFIBootConfigurator):
                 )
 
         # Calamares-based projects get OEM mode
-        if self.project in ["lubuntu", "kubuntu"]:
+        if self.project in CALAMARES_PROJECTS:
             with grub_cfg.open("a") as f:
                 f.write(
                     f"""menuentry "OEM install (for manufacturers)" {{
