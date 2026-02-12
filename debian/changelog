@@ -1,4 +1,4 @@
-livecd-rootfs (26.04.17) UNRELEASED; urgency=medium
+livecd-rootfs (26.04.17) resolute; urgency=medium
 
   * desktop: build the stable ISO using the stable model - essentially
     reverting all the hacks.
@@ -7,7 +7,7 @@ livecd-rootfs (26.04.17) UNRELEASED; urgency=medium
     - no core26: for TPM/FDE recovery testing, please install the core26 snap
       from edge.
 
- -- Olivier Gayot <olivier.gayot@canonical.com>  Thu, 12 Feb 2026 10:20:52 +0100
+ -- Olivier Gayot <olivier.gayot@canonical.com>  Thu, 12 Feb 2026 10:25:15 +0100
 
 livecd-rootfs (26.04.16) resolute; urgency=medium
 
