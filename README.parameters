@@ -46,6 +46,8 @@ These variables can be set for both lb config and lb build:
 
  PROJECT       (mandatory, comes from "project" in the metadata)
  ARCH          (set to the abi tag of the distroarchseries being built for)
+ ARCH_VARIANT  (set to the isa tag of the distroarchseries being built for if it is
+                different from the abi tag)
  SUBPROJECT    (optional, comes from "subproject" in the metadata)
  SUBARCH       (optional, comes from "subarch" in the metadata)
  CHANNEL       (optional, comes from "subarch" in the metadata)
@@ -74,6 +76,8 @@ are some things set for lb config only? no idea):
                 "extra_ppas" is a list. EXTRA_PPAS is set to " ".join(extra_ppas))
  EXTRA_SNAPS   (optional, comes from "extra_snaps" in the metadata
                 "extra_snaps" is a list. EXTRA_SNAPS is set to " ".join(extra_snaps))
+ BUILD_TYPE    (optional, the "type" (i.e. Daily or Release) of ISO being built,
+                goes into .disk/info on the ISO, defaults to Daily)
 
 Here is an opinionated and slightly angry attempt to describe what
 each of these is for:
@@ -95,6 +99,14 @@ The architecture being built for. This is always the same as `dpkg
 --print-architecture` for us, we don't do any cross builds.
 
 It's kind of redundant but it's not really a problem that this exists.
+
+ARCH_VARIANT
+------------
+
+The "variant" being built for, i.e. the ISA tag of the
+distroarchseries. Only set if this is different from the ABI tag.
+
+This is definitely needed to be able to build images for variants.
 
 SUBPROJECT
 ----------
@@ -234,3 +246,18 @@ EXTRA_SNAPS
 -----------
 
 Extra snaps to include (but only for ubuntu-image based builds).
+
+BUILD_TYPE
+----------
+
+Before release, the .disk/info on an ISO looks like:
+
+    Ubuntu-Server 26.04 LTS "Resolute Raccoon" - Daily amd64 (20260210)
+
+after release it looks like:
+
+    Ubuntu-Server 26.04 LTS "Resolute Raccoon" - Release amd64 (20270210)
+
+We could do a livecd-rootfs upload to change this (it only changes
+once per cycle), but it's quicker and easier to manage this from the
+code that triggers the livefs builds.
