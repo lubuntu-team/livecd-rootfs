@@ -41,7 +41,7 @@ class AptStateManager:
         for path in "etc/apt", "var/lib/apt":
             tgt = self.apt_root.joinpath(path)
             tgt.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copytree(chroot.joinpath(path), tgt)
+            shutil.copytree(chroot.joinpath(path), tgt, ignore_dangling_symlinks=True)
         self.apt_conf_path.write_text(f'Dir "{self.apt_root}/"; \n')
         with self.logger.logged("updating apt indices"):
             self.logger.run(["apt-get", "update"], env=self._apt_env())
