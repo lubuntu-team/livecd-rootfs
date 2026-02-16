@@ -1,3 +1,11 @@
+livecd-rootfs (26.04.18) resolute; urgency=medium
+
+  [ Michael Hudson-Doyle ]
+  * document ARCH_VARIANT and BUILD_TYPE in README.parameters
+  * isobuilder: pass ignore_dangling_symlinks=True when copying apt config
+
+ -- Utkarsh Gupta <utkarsh@ubuntu.com>  Mon, 16 Feb 2026 16:14:03 +0530
+
 livecd-rootfs (26.04.17) resolute; urgency=medium
 
   * desktop: build the stable ISO using the stable model - essentially
