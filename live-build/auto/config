@@ -1397,6 +1397,8 @@ if [ -n "$PASSES" ] && [ -z "$LIVE_PASSES" ]; then
 	     "Either set \$LIVE_PASSES or add a pass ending with '.live'."
 fi
 
+echo "DEBOOTSTRAP_OPTIONS=\"--keyring=/usr/share/keyrings/ubuntu-archive-keyring.gpg\"" >> config/bootstrap
+
 echo "LB_CHROOT_HOOKS=\"$CHROOT_HOOKS\"" >> config/chroot
 echo "SUBPROJECT=\"${SUBPROJECT:-}\"" >> config/chroot
 echo "LB_DISTRIBUTION=\"$SUITE\"" >> config/chroot
