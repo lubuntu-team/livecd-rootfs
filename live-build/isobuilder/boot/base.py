@@ -42,7 +42,6 @@ class BaseBootConfigurator(ABC):
     def create_dirs(self, workdir):
         self.scratch = workdir.joinpath("boot-stuff")
         self.scratch.mkdir(exist_ok=True)
-        self.boot_tree = self.scratch.joinpath("cd-boot-tree")
 
     def download_and_extract_package(
         self, pkg_name: str, target_dir: pathlib.Path

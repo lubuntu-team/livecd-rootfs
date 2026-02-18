@@ -4,17 +4,17 @@ import pathlib
 import shutil
 
 from ..builder import Logger
-from .grub import copy_grub_common_files_to_boot_tree, GrubBootConfigurator
+from .grub import copy_grub_common_files, GrubBootConfigurator
 
 
-def copy_signed_shim_grub_to_boot_tree(
+def copy_signed_shim_grub(
     shim_pkg_dir: pathlib.Path,
     grub_pkg_dir: pathlib.Path,
     efi_suffix: str,
     grub_target: str,
-    boot_tree: pathlib.Path,
+    iso_root: pathlib.Path,
 ) -> None:
-    efi_boot_dir = boot_tree.joinpath("EFI", "boot")
+    efi_boot_dir = iso_root.joinpath("EFI", "boot")
     efi_boot_dir.mkdir(parents=True, exist_ok=True)
 
     shutil.copy(
@@ -38,7 +38,7 @@ def copy_signed_shim_grub_to_boot_tree(
         efi_boot_dir.joinpath(f"grub{efi_suffix}.efi"),
     )
 
-    grub_boot_dir = boot_tree.joinpath("boot", "grub", f"{grub_target}-efi")
+    grub_boot_dir = iso_root.joinpath("boot", "grub", f"{grub_target}-efi")
     grub_boot_dir.mkdir(parents=True, exist_ok=True)
 
     src_grub_dir = grub_pkg_dir.joinpath("usr", "lib", "grub", f"{grub_target}-efi")
@@ -49,10 +49,10 @@ def copy_signed_shim_grub_to_boot_tree(
 
 
 def create_eltorito_esp_image(
-    logger: Logger, boot_tree: pathlib.Path, target_file: pathlib.Path
+    logger: Logger, iso_root: pathlib.Path, target_file: pathlib.Path
 ) -> None:
     logger.log("creating El Torito ESP image")
-    efi_dir = boot_tree.joinpath("EFI")
+    efi_dir = iso_root.joinpath("EFI")
 
     # Calculate size: du -s --apparent-size --block-size=1024 + 1024
     result = logger.run(
@@ -106,20 +106,20 @@ class UEFIBootConfigurator(GrubBootConfigurator):
             self.download_and_extract_package(pkg, grub_pkg_dir)
 
         # Add common files for GRUB to tree
-        copy_grub_common_files_to_boot_tree(grub_pkg_dir, self.boot_tree)
+        copy_grub_common_files(grub_pkg_dir, self.iso_root)
 
         # Add EFI GRUB to tree
-        copy_signed_shim_grub_to_boot_tree(
+        copy_signed_shim_grub(
             shim_pkg_dir,
             grub_pkg_dir,
             self.efi_suffix,
             self.grub_target,
-            self.boot_tree,
+            self.iso_root,
         )
 
         # Create ESP image for El-Torito catalog and hybrid boot
         create_eltorito_esp_image(
-            self.logger, self.boot_tree, self.scratch.joinpath("cd-boot-efi.img")
+            self.logger, self.iso_root, self.scratch.joinpath("cd-boot-efi.img")
         )
 
     def write_uefi_menu_entries(self, grub_cfg: pathlib.Path) -> None:

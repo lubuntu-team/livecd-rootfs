@@ -59,9 +59,6 @@ class AMD64BootConfigurator(UEFIBootConfigurator):
         # ## Set up the mkisofs options for UEFI boot.
         opts.extend(self.get_uefi_mkisofs_opts())
 
-        # ## Add cd-boot-tree to the ISO
-        opts.append(str(self.boot_tree))
-
         return opts
 
     def extract_files(self) -> None:
@@ -75,7 +72,7 @@ class AMD64BootConfigurator(UEFIBootConfigurator):
                 grub_pc_pkg_dir = self.scratch.joinpath("grub-pc-pkg")
                 self.download_and_extract_package("grub-pc-bin", grub_pc_pkg_dir)
 
-                grub_boot_dir = self.boot_tree.joinpath("boot", "grub", "i386-pc")
+                grub_boot_dir = self.iso_root.joinpath("boot", "grub", "i386-pc")
                 grub_boot_dir.mkdir(parents=True, exist_ok=True)
 
                 src_grub_dir = grub_pc_pkg_dir.joinpath("usr", "lib", "grub", "i386-pc")
@@ -84,12 +81,15 @@ class AMD64BootConfigurator(UEFIBootConfigurator):
                 shutil.copy(src_grub_dir.joinpath("boot_hybrid.img"), self.scratch)
 
                 copy_grub_modules(
-                    src_grub_dir, grub_boot_dir, ["*.mod", "*.lst", "*.o"]
+                    grub_pc_pkg_dir,
+                    self.iso_root,
+                    "i386-pc",
+                    ["*.mod", "*.lst", "*.o"],
                 )
 
     def generate_grub_config(self) -> None:
         """Generate grub.cfg and loopback.cfg for the boot tree."""
-        boot_grub_dir = self.boot_tree.joinpath("boot", "grub")
+        boot_grub_dir = self.iso_root.joinpath("boot", "grub")
         boot_grub_dir.mkdir(parents=True, exist_ok=True)
 
         grub_cfg = boot_grub_dir.joinpath("grub.cfg")

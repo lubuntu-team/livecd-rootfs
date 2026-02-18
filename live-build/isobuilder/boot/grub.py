@@ -7,10 +7,8 @@ from abc import abstractmethod
 from .base import BaseBootConfigurator
 
 
-def copy_grub_common_files_to_boot_tree(
-    grub_pkg_dir: pathlib.Path, boot_tree: pathlib.Path
-) -> None:
-    fonts_dir = boot_tree.joinpath("boot", "grub", "fonts")
+def copy_grub_common_files(grub_pkg_dir: pathlib.Path, iso_root: pathlib.Path) -> None:
+    fonts_dir = iso_root.joinpath("boot", "grub", "fonts")
     fonts_dir.mkdir(parents=True, exist_ok=True)
 
     src = grub_pkg_dir.joinpath("usr", "share", "grub", "unicode.pf2")
@@ -19,9 +17,16 @@ def copy_grub_common_files_to_boot_tree(
 
 
 def copy_grub_modules(
-    src_dir: pathlib.Path, dest_dir: pathlib.Path, patterns: list[str]
+    grub_pkg_dir: pathlib.Path,
+    iso_root: pathlib.Path,
+    grub_target: str,
+    patterns: list[str],
 ) -> None:
     """Copy GRUB module files matching given patterns from src to dest."""
+    src_dir = grub_pkg_dir.joinpath("usr", "lib", "grub", grub_target)
+    dest_dir = iso_root.joinpath("boot", "grub", grub_target)
+    dest_dir.mkdir(parents=True, exist_ok=True)
+
     for pat in patterns:
         for file in src_dir.glob(pat):
             shutil.copy(file, dest_dir)

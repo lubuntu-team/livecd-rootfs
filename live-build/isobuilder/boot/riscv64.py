@@ -3,16 +3,16 @@
 import pathlib
 import shutil
 
-from .grub import GrubBootConfigurator, copy_grub_common_files_to_boot_tree
+from .grub import GrubBootConfigurator, copy_grub_common_files, copy_grub_modules
 
 
-def copy_unsigned_monolithic_grub_to_boot_tree(
+def copy_unsigned_monolithic_grub(
     grub_pkg_dir: pathlib.Path,
     efi_suffix: str,
     grub_target: str,
-    boot_tree: pathlib.Path,
+    iso_root: pathlib.Path,
 ) -> None:
-    efi_boot_dir = boot_tree.joinpath("EFI", "boot")
+    efi_boot_dir = iso_root.joinpath("EFI", "boot")
     efi_boot_dir.mkdir(parents=True, exist_ok=True)
 
     shutil.copy(
@@ -27,14 +27,7 @@ def copy_unsigned_monolithic_grub_to_boot_tree(
         efi_boot_dir.joinpath(f"boot{efi_suffix}.efi"),
     )
 
-    grub_boot_dir = boot_tree.joinpath("boot", "grub", f"{grub_target}-efi")
-    grub_boot_dir.mkdir(parents=True, exist_ok=True)
-
-    src_grub_dir = grub_pkg_dir.joinpath("usr", "lib", "grub", f"{grub_target}-efi")
-    for mod_file in src_grub_dir.glob("*.mod"):
-        shutil.copy(mod_file, grub_boot_dir)
-    for lst_file in src_grub_dir.glob("*.lst"):
-        shutil.copy(lst_file, grub_boot_dir)
+    copy_grub_modules(grub_pkg_dir, iso_root, f"{grub_target}-efi", ["*.mod", "*.lst"])
 
 
 class RISCV64BootConfigurator(GrubBootConfigurator):
@@ -86,11 +79,9 @@ class RISCV64BootConfigurator(GrubBootConfigurator):
         self.download_and_extract_package("u-boot-sifive", u_boot_dir)
 
         # Add GRUB to tree
-        copy_grub_common_files_to_boot_tree(grub_pkg_dir, self.boot_tree)
+        copy_grub_common_files(grub_pkg_dir, self.iso_root)
 
-        copy_unsigned_monolithic_grub_to_boot_tree(
-            grub_pkg_dir, "riscv64", "riscv64", self.boot_tree
-        )
+        copy_unsigned_monolithic_grub(grub_pkg_dir, "riscv64", "riscv64", self.iso_root)
 
         # Extract DTBs to tree
         self.logger.log("extracting device tree files")
@@ -113,22 +104,14 @@ class RISCV64BootConfigurator(GrubBootConfigurator):
         )
 
         # Copy DTBs if they exist
-        dtb_dir = self.boot_tree.joinpath("dtb")
+        dtb_dir = self.iso_root.joinpath("dtb")
         dtb_dir.mkdir(parents=True, exist_ok=True)
 
         firmware_dir = kernel_layer.joinpath("usr", "lib", "firmware")
-        device_tree_files = list(firmware_dir.glob("*/device-tree/*"))
 
-        if device_tree_files:
-            for dtb_file in device_tree_files:
-                if dtb_file.is_file():
-                    shutil.copy(dtb_file, dtb_dir)
-
-        # Clean up kernel layer
-        shutil.rmtree(kernel_layer)
-
-        # Copy tree contents to live-media rootfs
-        self.logger.run(["cp", "-aT", self.boot_tree, self.iso_root], check=True)
+        for dtb_file in firmware_dir.glob("*/device-tree/*"):
+            if dtb_file.is_file():
+                shutil.copy(dtb_file, dtb_dir)
 
         # Create ESP image with GRUB and dtbs
         efi_img = self.scratch.joinpath("efi.img")
@@ -137,7 +120,7 @@ class RISCV64BootConfigurator(GrubBootConfigurator):
         )
 
         # Add EFI files to ESP
-        efi_dir = self.boot_tree.joinpath("EFI")
+        efi_dir = self.iso_root.joinpath("EFI")
         self.logger.run(["mcopy", "-s", "-i", efi_img, efi_dir, "::/."], check=True)
 
         # Add DTBs to ESP

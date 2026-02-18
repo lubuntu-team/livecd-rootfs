@@ -4,7 +4,7 @@ import pathlib
 import shutil
 
 from .grub import (
-    copy_grub_common_files_to_boot_tree,
+    copy_grub_common_files,
     copy_grub_modules,
     GrubBootConfigurator,
 )
@@ -16,8 +16,7 @@ class PPC64ELBootConfigurator(GrubBootConfigurator):
 
     def mkisofs_opts(self) -> list[str | pathlib.Path]:
         """Return mkisofs options for PPC64EL."""
-        # Add cd-boot-tree to the ISO
-        return [self.boot_tree]
+        return []
 
     def extract_files(self) -> None:
         """Download and extract bootloader packages for PPC64EL."""
@@ -30,14 +29,11 @@ class PPC64ELBootConfigurator(GrubBootConfigurator):
         self.download_and_extract_package("grub-ieee1275-bin", grub_pkg_dir)
 
         # Add common files for GRUB to tree
-        copy_grub_common_files_to_boot_tree(grub_pkg_dir, self.boot_tree)
+        copy_grub_common_files(grub_pkg_dir, self.iso_root)
 
         # Add IEEE1275 ppc boot files
-        ppc_dir = self.boot_tree.joinpath("ppc")
-        ppc_dir.mkdir(parents=True, exist_ok=True)
-
-        grub_boot_dir = self.boot_tree.joinpath("boot", "grub", "powerpc-ieee1275")
-        grub_boot_dir.mkdir(parents=True, exist_ok=True)
+        ppc_dir = self.iso_root.joinpath("ppc")
+        ppc_dir.mkdir()
 
         src_grub_dir = grub_pkg_dir.joinpath("usr", "lib", "grub", "powerpc-ieee1275")
 
@@ -49,17 +45,19 @@ class PPC64ELBootConfigurator(GrubBootConfigurator):
         # Copy eltorito.elf to boot/grub as powerpc.elf
         shutil.copy(
             src_grub_dir.joinpath("eltorito.elf"),
-            self.boot_tree.joinpath("boot", "grub", "powerpc.elf"),
+            self.iso_root.joinpath("boot", "grub", "powerpc.elf"),
         )
 
         # Copy GRUB modules
-        copy_grub_modules(src_grub_dir, grub_boot_dir, ["*.mod", "*.lst"])
+        copy_grub_modules(
+            grub_pkg_dir, self.iso_root, "powerpc-ieee1275", ["*.mod", "*.lst"]
+        )
 
     def generate_grub_config(self) -> None:
         """Generate grub.cfg for PPC64EL."""
         kernel_params = default_kernel_params(self.project)
 
-        grub_cfg = self.boot_tree.joinpath("boot", "grub", "grub.cfg")
+        grub_cfg = self.iso_root.joinpath("boot", "grub", "grub.cfg")
 
         # Write common GRUB header
         self.write_grub_header(grub_cfg)
