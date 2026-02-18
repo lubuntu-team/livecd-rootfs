@@ -3,7 +3,11 @@
 import pathlib
 import shutil
 
-from .grub import GrubBootConfigurator
+from .grub import (
+    copy_grub_common_files_to_boot_tree,
+    copy_grub_modules,
+    GrubBootConfigurator,
+)
 from .base import default_kernel_params
 
 
@@ -19,12 +23,14 @@ class PPC64ELBootConfigurator(GrubBootConfigurator):
         """Download and extract bootloader packages for PPC64EL."""
         self.logger.log("extracting PPC64EL boot files")
 
+        grub_pkg_dir = self.scratch.joinpath("grub-pkg")
+
         # Download and extract bootloader packages
-        self.download_and_extract_package("grub2-common", self.grub_dir)
-        self.download_and_extract_package("grub-ieee1275-bin", self.grub_dir)
+        self.download_and_extract_package("grub2-common", grub_pkg_dir)
+        self.download_and_extract_package("grub-ieee1275-bin", grub_pkg_dir)
 
         # Add common files for GRUB to tree
-        self.setup_grub_common_files()
+        copy_grub_common_files_to_boot_tree(grub_pkg_dir, self.boot_tree)
 
         # Add IEEE1275 ppc boot files
         ppc_dir = self.boot_tree.joinpath("ppc")
@@ -33,7 +39,7 @@ class PPC64ELBootConfigurator(GrubBootConfigurator):
         grub_boot_dir = self.boot_tree.joinpath("boot", "grub", "powerpc-ieee1275")
         grub_boot_dir.mkdir(parents=True, exist_ok=True)
 
-        src_grub_dir = self.grub_dir.joinpath("usr", "lib", "grub", "powerpc-ieee1275")
+        src_grub_dir = grub_pkg_dir.joinpath("usr", "lib", "grub", "powerpc-ieee1275")
 
         # Copy bootinfo.txt to ppc directory
         shutil.copy(
@@ -47,13 +53,13 @@ class PPC64ELBootConfigurator(GrubBootConfigurator):
         )
 
         # Copy GRUB modules
-        self.copy_grub_modules(src_grub_dir, grub_boot_dir, ["*.mod", "*.lst"])
+        copy_grub_modules(src_grub_dir, grub_boot_dir, ["*.mod", "*.lst"])
 
     def generate_grub_config(self) -> None:
         """Generate grub.cfg for PPC64EL."""
         kernel_params = default_kernel_params(self.project)
 
-        grub_cfg = self.grub_dir.joinpath("grub.cfg")
+        grub_cfg = self.boot_tree.joinpath("boot", "grub", "grub.cfg")
 
         # Write common GRUB header
         self.write_grub_header(grub_cfg)

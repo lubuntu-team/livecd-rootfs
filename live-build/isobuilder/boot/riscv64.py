@@ -3,17 +3,20 @@
 import pathlib
 import shutil
 
-from .grub import GrubBootConfigurator
+from .grub import GrubBootConfigurator, copy_grub_common_files_to_boot_tree
 
 
 def copy_unsigned_monolithic_grub_to_boot_tree(
-    grub_dir: pathlib.Path, efi_suffix: str, grub_target: str, boot_tree: pathlib.Path
+    grub_pkg_dir: pathlib.Path,
+    efi_suffix: str,
+    grub_target: str,
+    boot_tree: pathlib.Path,
 ) -> None:
     efi_boot_dir = boot_tree.joinpath("EFI", "boot")
     efi_boot_dir.mkdir(parents=True, exist_ok=True)
 
     shutil.copy(
-        grub_dir.joinpath(
+        grub_pkg_dir.joinpath(
             "usr",
             "lib",
             "grub",
@@ -27,7 +30,7 @@ def copy_unsigned_monolithic_grub_to_boot_tree(
     grub_boot_dir = boot_tree.joinpath("boot", "grub", f"{grub_target}-efi")
     grub_boot_dir.mkdir(parents=True, exist_ok=True)
 
-    src_grub_dir = grub_dir.joinpath("usr", "lib", "grub", f"{grub_target}-efi")
+    src_grub_dir = grub_pkg_dir.joinpath("usr", "lib", "grub", f"{grub_target}-efi")
     for mod_file in src_grub_dir.glob("*.mod"):
         shutil.copy(mod_file, grub_boot_dir)
     for lst_file in src_grub_dir.glob("*.lst"):
@@ -74,16 +77,19 @@ class RISCV64BootConfigurator(GrubBootConfigurator):
         self.logger.log("extracting RISC-V64 boot files")
         u_boot_dir = self.scratch.joinpath("u-boot-sifive")
 
+        grub_pkg_dir = self.scratch.joinpath("grub-pkg")
+
         # Download and extract bootloader packages
-        self.download_and_extract_package("grub2-common", self.grub_dir)
-        self.download_and_extract_package("grub-efi-riscv64-bin", self.grub_dir)
-        self.download_and_extract_package("grub-efi-riscv64-unsigned", self.grub_dir)
+        self.download_and_extract_package("grub2-common", grub_pkg_dir)
+        self.download_and_extract_package("grub-efi-riscv64-bin", grub_pkg_dir)
+        self.download_and_extract_package("grub-efi-riscv64-unsigned", grub_pkg_dir)
         self.download_and_extract_package("u-boot-sifive", u_boot_dir)
 
         # Add GRUB to tree
-        self.setup_grub_common_files()
+        copy_grub_common_files_to_boot_tree(grub_pkg_dir, self.boot_tree)
+
         copy_unsigned_monolithic_grub_to_boot_tree(
-            self.grub_dir, "riscv64", "riscv64", self.boot_tree
+            grub_pkg_dir, "riscv64", "riscv64", self.boot_tree
         )
 
         # Extract DTBs to tree

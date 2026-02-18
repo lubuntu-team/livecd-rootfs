@@ -38,7 +38,7 @@ class ARM64BootConfigurator(UEFIBootConfigurator):
         """Generate grub.cfg for ARM64."""
         kernel_params = default_kernel_params(self.project)
 
-        grub_cfg = self.grub_dir.joinpath("grub.cfg")
+        grub_cfg = self.boot_tree.joinpath("boot", "grub", "grub.cfg")
 
         # Write common GRUB header
         self.write_grub_header(grub_cfg)

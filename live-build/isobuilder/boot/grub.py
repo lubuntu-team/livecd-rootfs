@@ -8,14 +8,23 @@ from .base import BaseBootConfigurator
 
 
 def copy_grub_common_files_to_boot_tree(
-    grub_dir: pathlib.Path, boot_tree: pathlib.Path
+    grub_pkg_dir: pathlib.Path, boot_tree: pathlib.Path
 ) -> None:
     fonts_dir = boot_tree.joinpath("boot", "grub", "fonts")
     fonts_dir.mkdir(parents=True, exist_ok=True)
 
-    src = grub_dir.joinpath("usr", "share", "grub", "unicode.pf2")
+    src = grub_pkg_dir.joinpath("usr", "share", "grub", "unicode.pf2")
     dst = fonts_dir.joinpath("unicode.pf2")
     shutil.copy(src, dst)
+
+
+def copy_grub_modules(
+    src_dir: pathlib.Path, dest_dir: pathlib.Path, patterns: list[str]
+) -> None:
+    """Copy GRUB module files matching given patterns from src to dest."""
+    for pat in patterns:
+        for file in src_dir.glob(pat):
+            shutil.copy(file, dest_dir)
 
 
 class GrubBootConfigurator(BaseBootConfigurator):
@@ -24,14 +33,6 @@ class GrubBootConfigurator(BaseBootConfigurator):
     Common GRUB functionality shared across AMD64, ARM64, PPC64EL, and RISC-V64.
     Subclasses must implement generate_grub_config().
     """
-
-    def create_dirs(self, workdir):
-        super().create_dirs(workdir)
-        self.grub_dir = self.boot_tree.joinpath("grub")
-
-    def setup_grub_common_files(self) -> None:
-        """Copy common GRUB files (fonts, etc.) to boot tree."""
-        copy_grub_common_files_to_boot_tree(self.grub_dir, self.boot_tree)
 
     def write_grub_header(
         self, grub_cfg: pathlib.Path, include_loadfont: bool = True

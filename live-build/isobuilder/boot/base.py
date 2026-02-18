@@ -1,7 +1,6 @@
 """Base classes and helper functions for boot configuration."""
 
 import pathlib
-import shutil
 import subprocess
 import tempfile
 from abc import ABC, abstractmethod
@@ -64,14 +63,6 @@ class BaseBootConfigurator(ABC):
             assert dpkg_proc.stdout is not None
             dpkg_proc.stdout.close()
             tar_proc.communicate()
-
-    def copy_grub_modules(
-        self, src_dir: pathlib.Path, dest_dir: pathlib.Path, extensions: list[str]
-    ) -> None:
-        """Copy GRUB module files matching given extensions from src to dest."""
-        for ext in extensions:
-            for file in src_dir.glob(ext):
-                shutil.copy(file, dest_dir)
 
     @abstractmethod
     def extract_files(self) -> None:

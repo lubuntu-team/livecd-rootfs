@@ -3,8 +3,9 @@
 import pathlib
 import shutil
 
-from .uefi import UEFIBootConfigurator
 from .base import default_kernel_params
+from .grub import copy_grub_modules
+from .uefi import UEFIBootConfigurator
 
 
 CALAMARES_PROJECTS = ["kubuntu", "lubuntu"]
@@ -51,7 +52,7 @@ class AMD64BootConfigurator(UEFIBootConfigurator):
         opts.extend(
             [
                 "--grub2-mbr",
-                self.grub_dir.joinpath("usr/lib/grub/i386-pc/boot_hybrid.img"),
+                self.scratch.joinpath("boot_hybrid.img"),
             ]
         )
 
@@ -71,16 +72,18 @@ class AMD64BootConfigurator(UEFIBootConfigurator):
 
             # AMD64-specific: Add BIOS/legacy boot files
             with self.logger.logged("adding BIOS/legacy boot files"):
-                self.download_and_extract_package("grub-pc-bin", self.grub_dir)
+                grub_pc_pkg_dir = self.scratch.joinpath("grub-pc-pkg")
+                self.download_and_extract_package("grub-pc-bin", grub_pc_pkg_dir)
 
                 grub_boot_dir = self.boot_tree.joinpath("boot", "grub", "i386-pc")
                 grub_boot_dir.mkdir(parents=True, exist_ok=True)
 
-                src_grub_dir = self.grub_dir.joinpath("usr", "lib", "grub", "i386-pc")
+                src_grub_dir = grub_pc_pkg_dir.joinpath("usr", "lib", "grub", "i386-pc")
 
                 shutil.copy(src_grub_dir.joinpath("eltorito.img"), grub_boot_dir)
+                shutil.copy(src_grub_dir.joinpath("boot_hybrid.img"), self.scratch)
 
-                self.copy_grub_modules(
+                copy_grub_modules(
                     src_grub_dir, grub_boot_dir, ["*.mod", "*.lst", "*.o"]
                 )
 
