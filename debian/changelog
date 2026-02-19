@@ -1,3 +1,10 @@
+livecd-rootfs (26.04.20) UNRELEASED; urgency=medium
+
+  * Fix some path confusion in the new isobuilder.boot package and refactor
+    grub config generation to be more string based.
+
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Thu, 19 Feb 2026 14:05:25 +1300
+
 livecd-rootfs (26.04.19) resolute; urgency=medium
 
   * Translate the debian-cd tools/boot/$series/boot-$arch scripts to Python
