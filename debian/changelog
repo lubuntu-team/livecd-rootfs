@@ -1,3 +1,10 @@
+livecd-rootfs (26.04.19ubuntu1) UNRELEASED; urgency=medium
+
+  * Bug-fix: Only use main archive keyring when building with debootstrap
+    so EOL release signatures can be verified after EOL.
+
+ -- Michael Raymond <michael.raymond@canonical.com>  Thu, 19 Feb 2026 14:38:37 -0500
+
 livecd-rootfs (26.04.19) resolute; urgency=medium
 
   * Translate the debian-cd tools/boot/$series/boot-$arch scripts to Python
