@@ -1,4 +1,4 @@
-livecd-rootfs (26.04.20) UNRELEASED; urgency=medium
+livecd-rootfs (26.04.20) resolute; urgency=medium
 
   [ Michael Raymond ]
   * Bug-fix: Only use main archive keyring when building with debootstrap
@@ -13,7 +13,7 @@ livecd-rootfs (26.04.20) UNRELEASED; urgency=medium
   * Fix some path confusion in the new isobuilder.boot package and refactor
     grub config generation to be more string based.
 
- -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Thu, 19 Feb 2026 19:55:26 +1300
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Fri, 20 Feb 2026 12:45:41 +1300
 
 livecd-rootfs (26.04.19) resolute; urgency=medium
 
