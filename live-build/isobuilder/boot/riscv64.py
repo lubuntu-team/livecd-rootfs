@@ -134,7 +134,7 @@ class RISCV64BootConfigurator(GrubBootConfigurator):
         result += f"""\
 menuentry "Try or Install {self.humanproject}" {{
     set gfxpayload=keep
-    linux /casper/vmlinux efi=debug sysctl.kernel.watchdog_thresh=60 ---
+    linux  /casper/vmlinux efi=debug sysctl.kernel.watchdog_thresh=60 ---
     initrd /casper/initrd
 }}
 """

@@ -54,9 +54,9 @@ if [ $? = 0 ]; then
 fi
 
 menuentry "Try or Install {self.humanproject}" {{
-\tset gfxpayload=keep
-\tlinux\t/casper/vmlinuz $cmdline {kernel_params} console=tty0
-\tinitrd\t/casper/initrd
+    set gfxpayload=keep
+    linux  /casper/vmlinuz $cmdline {kernel_params} console=tty0
+    initrd /casper/initrd
 }}
 """
 

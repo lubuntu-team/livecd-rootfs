@@ -63,7 +63,7 @@ class PPC64ELBootConfigurator(GrubBootConfigurator):
         result += f"""\
 menuentry "Try or Install {self.humanproject}" {{
     set gfxpayload=keep
-    linux /casper/vmlinux quiet {kernel_params}
+    linux  /casper/vmlinux quiet {kernel_params}
     initrd /casper/initrd
 }}
 """

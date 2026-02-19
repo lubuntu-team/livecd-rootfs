@@ -74,7 +74,7 @@ set menu_color_highlight=black/light-gray
         return f"""\
 menuentry "{self.humanproject} with the HWE kernel" {{
     set gfxpayload=keep
-    linux /casper/hwe-{kernel_name} {extra_params}{kernel_params}
+    linux  /casper/hwe-{kernel_name} {extra_params}{kernel_params}
     initrd /casper/hwe-initrd
 }}
 """

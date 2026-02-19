@@ -95,8 +95,8 @@ class AMD64BootConfigurator(UEFIBootConfigurator):
             result += """\
 menuentry "Choose an Ubuntu version to install" {
     set gfxpayload=keep
-    linux    /casper/vmlinuz iso-chooser-menu ip=dhcp ---
-    initrd    /casper/initrd
+    linux  /casper/vmlinuz iso-chooser-menu ip=dhcp ---
+    initrd /casper/initrd
 }
 """
             return result
@@ -107,8 +107,8 @@ menuentry "Choose an Ubuntu version to install" {
         result += f"""\
 menuentry "Try or Install {self.humanproject}" {{
     set gfxpayload=keep
-    linux    /casper/vmlinuz {kernel_params}
-    initrd    /casper/initrd
+    linux  /casper/vmlinuz {kernel_params}
+    initrd /casper/initrd
 }}
 """
 
@@ -117,8 +117,8 @@ menuentry "Try or Install {self.humanproject}" {{
             result += f"""\
 menuentry "{self.humanproject} (safe graphics)" {{
     set gfxpayload=keep
-    linux    /casper/vmlinuz nomodeset {kernel_params}
-    initrd    /casper/initrd
+    linux  /casper/vmlinuz nomodeset {kernel_params}
+    initrd /casper/initrd
 }}
 """
 
@@ -130,8 +130,8 @@ menuentry "{self.humanproject} (safe graphics)" {{
             result += f"""\
 menuentry "OEM install (for manufacturers)" {{
     set gfxpayload=keep
-    linux    /casper/vmlinuz {oem_kernel_params}
-    initrd    /casper/initrd
+    linux  /casper/vmlinuz {oem_kernel_params}
+    initrd /casper/initrd
 }}
 """
 
@@ -161,7 +161,7 @@ menuentry "{self.humanproject} with the HWE kernel" {{
         result += f"""\
 grub_platform
 if [ "$grub_platform" = "efi" ]; then
-{uefi_menu_entries}
+{uefi_menu_entries}\
 fi
 """
 

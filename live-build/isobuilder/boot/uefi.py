@@ -126,10 +126,10 @@ class UEFIBootConfigurator(GrubBootConfigurator):
         """Return UEFI firmware menu entries."""
         return """\
 menuentry 'Boot from next volume' {
-\texit 1
+    exit 1
 }
 menuentry 'UEFI Firmware Settings' {
-\tfwsetup
+    fwsetup
 }
 """
 
