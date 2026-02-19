@@ -2,7 +2,7 @@
 
 # create the system seed for TPM-backed FDE in the live layer of the installer.
 
-set -eux
+set -eu
 
 case ${PASS:-} in
     *.live)
@@ -13,8 +13,15 @@ case ${PASS:-} in
 esac
 
 . config/binary
+. config/common
 . config/functions
 
+set -x
+
+if ! echo $PASSES | grep --quiet enhanced-secureboot; then
+    # Only run this hook if there is going to be a layer that installs it...
+    exit 0
+fi
 
 # Naive conversion from YAML to JSON. This is needed because yq is in universe
 # (but jq is not).
