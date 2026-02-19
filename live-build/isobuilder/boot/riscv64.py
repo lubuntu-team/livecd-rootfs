@@ -20,14 +20,14 @@ def copy_unsigned_monolithic_grub(
             "usr",
             "lib",
             "grub",
-            f"{grub_target}-efi",
+            grub_target,
             "monolithic",
             f"gcd{efi_suffix}.efi",
         ),
         efi_boot_dir.joinpath(f"boot{efi_suffix}.efi"),
     )
 
-    copy_grub_modules(grub_pkg_dir, iso_root, f"{grub_target}-efi", ["*.mod", "*.lst"])
+    copy_grub_modules(grub_pkg_dir, iso_root, grub_target, ["*.mod", "*.lst"])
 
 
 class RISCV64BootConfigurator(GrubBootConfigurator):
@@ -81,7 +81,9 @@ class RISCV64BootConfigurator(GrubBootConfigurator):
         # Add GRUB to tree
         copy_grub_common_files(grub_pkg_dir, self.iso_root)
 
-        copy_unsigned_monolithic_grub(grub_pkg_dir, "riscv64", "riscv64", self.iso_root)
+        copy_unsigned_monolithic_grub(
+            grub_pkg_dir, "riscv64", "riscv64-efi", self.iso_root
+        )
 
         # Extract DTBs to tree
         self.logger.log("extracting device tree files")
