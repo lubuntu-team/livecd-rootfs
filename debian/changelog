@@ -7,10 +7,7 @@ livecd-rootfs (26.04.20) UNRELEASED; urgency=medium
   [ Allen Abraham ]
   * Make SBOM generation optional in create_manifest function.
 
- -- Michael Raymond <michael.raymond@canonical.com>  Thu, 19 Feb 2026 14:38:37 -0500
-
-livecd-rootfs (26.04.19ubuntu1) UNRELEASED; urgency=medium
-
+  [ Michael Hudson-Doyle ]
   * 030-ubuntu-live-system-seed.binary: do not run if there is no layer to
     install the system, in particular on arm64.
 
