@@ -1,4 +1,4 @@
-livecd-rootfs (26.04.19ubuntu1) UNRELEASED; urgency=medium
+livecd-rootfs (26.04.20) UNRELEASED; urgency=medium
 
   * Bug-fix: Only use main archive keyring when building with debootstrap
     so EOL release signatures can be verified after EOL.
