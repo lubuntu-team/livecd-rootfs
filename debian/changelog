@@ -9,6 +9,13 @@ livecd-rootfs (26.04.20) UNRELEASED; urgency=medium
 
  -- Michael Raymond <michael.raymond@canonical.com>  Thu, 19 Feb 2026 14:38:37 -0500
 
+livecd-rootfs (26.04.19ubuntu1) UNRELEASED; urgency=medium
+
+  * 030-ubuntu-live-system-seed.binary: do not run if there is no layer to
+    install the system, in particular on arm64.
+
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Thu, 19 Feb 2026 19:55:26 +1300
+
 livecd-rootfs (26.04.19) resolute; urgency=medium
 
   * Translate the debian-cd tools/boot/$series/boot-$arch scripts to Python
