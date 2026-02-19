@@ -17,6 +17,7 @@ def make_boot_configurator_for_arch(
     arch: str,
     logger: "Logger",
     apt_state: "AptStateManager",
+    workdir: pathlib.Path,
     iso_root: pathlib.Path,
 ) -> "BaseBootConfigurator":
     """Factory function to create boot configurator for a specific architecture."""
@@ -24,23 +25,23 @@ def make_boot_configurator_for_arch(
         case "amd64":
             from .amd64 import AMD64BootConfigurator
 
-            return AMD64BootConfigurator(logger, apt_state, iso_root)
+            return AMD64BootConfigurator(logger, apt_state, workdir, iso_root)
         case "arm64":
             from .arm64 import ARM64BootConfigurator
 
-            return ARM64BootConfigurator(logger, apt_state, iso_root)
+            return ARM64BootConfigurator(logger, apt_state, workdir, iso_root)
         case "ppc64el":
             from .ppc64el import PPC64ELBootConfigurator
 
-            return PPC64ELBootConfigurator(logger, apt_state, iso_root)
+            return PPC64ELBootConfigurator(logger, apt_state, workdir, iso_root)
         case "riscv64":
             from .riscv64 import RISCV64BootConfigurator
 
-            return RISCV64BootConfigurator(logger, apt_state, iso_root)
+            return RISCV64BootConfigurator(logger, apt_state, workdir, iso_root)
         case "s390x":
             from .s390x import S390XBootConfigurator
 
-            return S390XBootConfigurator(logger, apt_state, iso_root)
+            return S390XBootConfigurator(logger, apt_state, workdir, iso_root)
         case _:
             raise ValueError(f"Unsupported architecture: {arch}")
 

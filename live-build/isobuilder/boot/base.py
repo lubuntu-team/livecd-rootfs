@@ -33,15 +33,13 @@ class BaseBootConfigurator(ABC):
         self,
         logger: Logger,
         apt_state: AptStateManager,
+        workdir: pathlib.Path,
         iso_root: pathlib.Path,
     ) -> None:
         self.logger = logger
         self.apt_state = apt_state
-        self.iso_root = iso_root
-
-    def create_dirs(self, workdir):
         self.scratch = workdir.joinpath("boot-stuff")
-        self.scratch.mkdir(exist_ok=True)
+        self.iso_root = iso_root
 
     def download_and_extract_package(
         self, pkg_name: str, target_dir: pathlib.Path
@@ -85,7 +83,6 @@ class BaseBootConfigurator(ABC):
 
     def make_bootable(
         self,
-        workdir: pathlib.Path,
         project: str,
         capproject: str,
         subarch: str,
@@ -96,6 +93,6 @@ class BaseBootConfigurator(ABC):
         self.humanproject = capproject.replace("-", " ")
         self.subarch = subarch
         self.hwe = hwe
-        self.create_dirs(workdir)
+        self.scratch.mkdir(exist_ok=True)
         with self.logger.logged("configuring boot"):
             self.extract_files()

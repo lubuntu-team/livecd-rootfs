@@ -90,14 +90,13 @@ menuentry "{self.humanproject} with the HWE kernel" {{
 
     def make_bootable(
         self,
-        workdir: pathlib.Path,
         project: str,
         capproject: str,
         subarch: str,
         hwe: bool,
     ) -> None:
         """Make the ISO bootable by extracting files and generating GRUB config."""
-        super().make_bootable(workdir, project, capproject, subarch, hwe)
+        super().make_bootable(project, capproject, subarch, hwe)
         with self.logger.logged("generating grub config"):
             content = self.generate_grub_config()
             grub_dir = self.iso_root.joinpath("boot", "grub")
