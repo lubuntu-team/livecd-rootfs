@@ -44,6 +44,7 @@ create_manifest() {
     local base_default_sbom_name="ubuntu-cloud-image-$(grep "VERSION_ID" $chroot_root/etc/os-release | cut --delimiter "=" --field 2 | tr -d '"')-${ARCH}-$(date +%Y%m%dT%H:%M:%S)"
     local sbom_file_name=${3:-"${base_default_sbom_name}.spdx"}
     local sbom_document_name=${4:-"${base_default_sbom_name}"}
+    local should_include_sbom=${5:-"true"}
     local sbom_log=${sbom_document_name}.log
     echo "create_manifest chroot_root: ${chroot_root}"
     dpkg-query --show --admindir="${chroot_root}/var/lib/dpkg" > ${target_file}
@@ -54,22 +55,26 @@ create_manifest() {
         echo "create_manifest creating file listing."
         local target_filelist=${2%.manifest}.filelist
         (cd "${chroot_root}" && find -xdev) | sort > "${target_filelist}"
-        # only creating sboms for CPC project at this time
-        if [[ ! $(which cpc-sbom) ]]; then
-            # ensure the tool is installed
-            sudo snap install --classic --edge cpc-sbom
-        fi
-        # generate the SBOM
-        cpc-sbom --rootdir ${chroot_root} --ignore-copyright-parsing-errors --ignore-copyright-file-not-found-errors --document-name ${sbom_document_name} >"${sbom_file_name}" 2>"${sbom_log}"
-        SBOM_GENERATION_EXIT_CODE=$?
-        if [[ ${SBOM_GENERATION_EXIT_CODE} !=  "0" ]]; then
-        # check for failure and print log
-            echo "ERROR: SBOM generation failed. See ${sbom_log}"
-            cat "$sbom_log"
-            exit 1
+        if [ "$should_include_sbom" = "true" ]; then
+            # only creating sboms for CPC project at this time
+            if [[ ! $(which cpc-sbom) ]]; then
+                # ensure the tool is installed
+                sudo snap install --classic --edge cpc-sbom
+            fi
+            # generate the SBOM
+            cpc-sbom --rootdir ${chroot_root} --ignore-copyright-parsing-errors --ignore-copyright-file-not-found-errors --document-name ${sbom_document_name} >"${sbom_file_name}" 2>"${sbom_log}"
+            SBOM_GENERATION_EXIT_CODE=$?
+            if [[ ${SBOM_GENERATION_EXIT_CODE} !=  "0" ]]; then
+            # check for failure and print log
+                echo "ERROR: SBOM generation failed. See ${sbom_log}"
+                cat "$sbom_log"
+                exit 1
+            else
+                echo "SBOM generation succeeded. see ${sbom_log} for details"
+            fi
         else
-            echo "SBOM generation succeeded. see ${sbom_log} for details"
-        fi    
+            echo "SBOM generation skipped"
+        fi
     fi
     echo "create_manifest finished"
 }
