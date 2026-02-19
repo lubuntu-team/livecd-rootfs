@@ -87,102 +87,95 @@ class AMD64BootConfigurator(UEFIBootConfigurator):
                     ["*.mod", "*.lst", "*.o"],
                 )
 
-    def generate_grub_config(self) -> None:
-        """Generate grub.cfg and loopback.cfg for the boot tree."""
-        boot_grub_dir = self.iso_root.joinpath("boot", "grub")
-        boot_grub_dir.mkdir(parents=True, exist_ok=True)
-
-        grub_cfg = boot_grub_dir.joinpath("grub.cfg")
+    def generate_grub_config(self) -> str:
+        """Generate grub.cfg content for AMD64."""
+        result = self.grub_header()
 
         if self.project == "ubuntu-mini-iso":
-            self.write_grub_header(grub_cfg)
-            with grub_cfg.open("a") as f:
-                f.write(
-                    """menuentry "Choose an Ubuntu version to install" {
+            result += """\
+menuentry "Choose an Ubuntu version to install" {
     set gfxpayload=keep
     linux    /casper/vmlinuz iso-chooser-menu ip=dhcp ---
     initrd    /casper/initrd
 }
 """
-                )
-            return
+            return result
 
-        # Generate grub.cfg
         kernel_params = default_kernel_params(self.project)
 
-        # Write common GRUB header
-        self.write_grub_header(grub_cfg)
-
         # Main menu entry
-        with grub_cfg.open("a") as f:
-            f.write(
-                f"""menuentry "Try or Install {self.humanproject}" {{
+        result += f"""\
+menuentry "Try or Install {self.humanproject}" {{
     set gfxpayload=keep
     linux    /casper/vmlinuz {kernel_params}
     initrd    /casper/initrd
 }}
 """
-            )
 
         # All but server get safe-graphics mode
         if self.project != "ubuntu-server":
-            with grub_cfg.open("a") as f:
-                f.write(
-                    f"""menuentry "{self.humanproject} (safe graphics)" {{
+            result += f"""\
+menuentry "{self.humanproject} (safe graphics)" {{
     set gfxpayload=keep
     linux    /casper/vmlinuz nomodeset {kernel_params}
     initrd    /casper/initrd
 }}
 """
-                )
 
         # ubiquity based projects get OEM mode
         if "maybe-ubiquity" in kernel_params:
             oem_kernel_params = kernel_params.replace(
                 "maybe-ubiquity", "only-ubiquity oem-config/enable=true"
             )
-            with grub_cfg.open("a") as f:
-                f.write(
-                    f"""menuentry "OEM install (for manufacturers)" {{
+            result += f"""\
+menuentry "OEM install (for manufacturers)" {{
     set gfxpayload=keep
     linux    /casper/vmlinuz {oem_kernel_params}
     initrd    /casper/initrd
 }}
 """
-                )
 
         # Calamares-based projects get OEM mode
         if self.project in CALAMARES_PROJECTS:
-            with grub_cfg.open("a") as f:
-                f.write(
-                    f"""menuentry "OEM install (for manufacturers)" {{
+            result += f"""\
+menuentry "OEM install (for manufacturers)" {{
     set gfxpayload=keep
-    linux    /casper/vmlinuz {kernel_params} oem-config/enable=true
-    initrd    /casper/initrd
+    linux  /casper/vmlinuz {kernel_params} oem-config/enable=true
+    initrd /casper/initrd
 }}
 """
-                )
 
         # Currently only server is built with HWE, hence no safe-graphics/OEM
         if self.hwe:
-            with grub_cfg.open("a") as f:
-                f.write(
-                    f"""menuentry "{self.humanproject} with the HWE kernel" {{
+            result += f"""\
+menuentry "{self.humanproject} with the HWE kernel" {{
     set gfxpayload=keep
-    linux    /casper/hwe-vmlinuz {kernel_params}
-    initrd    /casper/hwe-initrd
+    linux  /casper/hwe-vmlinuz {kernel_params}
+    initrd /casper/hwe-initrd
 }}
 """
-                )
 
-        # Create the loopback config, based on the main config
-        with grub_cfg.open("r") as f:
-            content = f.read()
+        # UEFI Entries (wrapped in grub_platform check for dual BIOS/UEFI support)
+        uefi_menu_entries = self.uefi_menu_entries()
 
-        # sed: delete from line 1 to menu_color_highlight, delete from
-        # grub_platform to end and replace '---' with
-        # 'iso-scan/filename=${iso_path} ---' in lines with 'linux'
-        lines = content.split("\n")
+        result += f"""\
+grub_platform
+if [ "$grub_platform" = "efi" ]; then
+{uefi_menu_entries}
+fi
+"""
+
+        return result
+
+    @staticmethod
+    def generate_loopback_config(grub_content: str) -> str:
+        """Derive loopback.cfg from grub.cfg content.
+
+        Strips the header (up to menu_color_highlight) and the UEFI
+        trailer (from grub_platform to end), and adds iso-scan/filename
+        to linux lines.
+        """
+        lines = grub_content.split("\n")
         start_idx = 0
         for i, line in enumerate(lines):
             if "menu_color_highlight" in line:
@@ -205,16 +198,20 @@ class AMD64BootConfigurator(UEFIBootConfigurator):
             for line in loopback_lines
         ]
 
-        loopback_cfg = boot_grub_dir.joinpath("loopback.cfg")
-        with loopback_cfg.open("w") as f:
-            f.write("\n".join(loopback_lines))
+        return "\n".join(loopback_lines)
 
-        # UEFI Entries (wrapped in grub_platform check for dual BIOS/UEFI support)
-        with grub_cfg.open("a") as f:
-            f.write("grub_platform\n")
-            f.write('if [ "$grub_platform" = "efi" ]; then\n')
-
-        self.write_uefi_menu_entries(grub_cfg)
-
-        with grub_cfg.open("a") as f:
-            f.write("fi\n")
+    def make_bootable(
+        self,
+        workdir: pathlib.Path,
+        project: str,
+        capproject: str,
+        subarch: str,
+        hwe: bool,
+    ) -> None:
+        """Make the ISO bootable, including generating loopback.cfg."""
+        super().make_bootable(workdir, project, capproject, subarch, hwe)
+        grub_cfg = self.iso_root.joinpath("boot", "grub", "grub.cfg")
+        grub_content = grub_cfg.read_text()
+        self.iso_root.joinpath("boot", "grub", "loopback.cfg").write_text(
+            self.generate_loopback_config(grub_content)
+        )

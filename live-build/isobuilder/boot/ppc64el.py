@@ -53,27 +53,22 @@ class PPC64ELBootConfigurator(GrubBootConfigurator):
             grub_pkg_dir, self.iso_root, "powerpc-ieee1275", ["*.mod", "*.lst"]
         )
 
-    def generate_grub_config(self) -> None:
+    def generate_grub_config(self) -> str:
         """Generate grub.cfg for PPC64EL."""
         kernel_params = default_kernel_params(self.project)
 
-        grub_cfg = self.iso_root.joinpath("boot", "grub", "grub.cfg")
-
-        # Write common GRUB header
-        self.write_grub_header(grub_cfg)
+        result = self.grub_header()
 
         # Main menu entry
-        with grub_cfg.open("a") as f:
-            f.write(
-                f"""menuentry "Try or Install {self.humanproject}" {{
-\tset gfxpayload=keep
-\tlinux\t/casper/vmlinux quiet {kernel_params}
-\tinitrd\t/casper/initrd
+        result += f"""\
+menuentry "Try or Install {self.humanproject}" {{
+    set gfxpayload=keep
+    linux /casper/vmlinux quiet {kernel_params}
+    initrd /casper/initrd
 }}
 """
-            )
 
         # HWE kernel option if available
-        self.write_hwe_menu_entry(
-            grub_cfg, "vmlinux", kernel_params, extra_params="quiet "
-        )
+        result += self.hwe_menu_entry("vmlinux", kernel_params, extra_params="quiet ")
+
+        return result

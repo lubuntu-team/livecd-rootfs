@@ -122,18 +122,16 @@ class UEFIBootConfigurator(GrubBootConfigurator):
             self.logger, self.iso_root, self.scratch.joinpath("cd-boot-efi.img")
         )
 
-    def write_uefi_menu_entries(self, grub_cfg: pathlib.Path) -> None:
-        """Write UEFI firmware menu entries."""
-        with grub_cfg.open("a") as f:
-            f.write(
-                """menuentry 'Boot from next volume' {
+    def uefi_menu_entries(self) -> str:
+        """Return UEFI firmware menu entries."""
+        return """\
+menuentry 'Boot from next volume' {
 \texit 1
 }
 menuentry 'UEFI Firmware Settings' {
 \tfwsetup
 }
 """
-            )
 
     def get_uefi_mkisofs_opts(self) -> list[str | pathlib.Path]:
         """Return common UEFI mkisofs options."""

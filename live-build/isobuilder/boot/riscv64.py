@@ -126,34 +126,27 @@ class RISCV64BootConfigurator(GrubBootConfigurator):
         # Add DTBs to ESP
         self.logger.run(["mcopy", "-s", "-i", efi_img, dtb_dir, "::/."], check=True)
 
-    def generate_grub_config(self) -> None:
+    def generate_grub_config(self) -> str:
         """Generate grub.cfg for RISC-V64."""
-        grub_dir = self.iso_root.joinpath("boot", "grub")
-        grub_dir.mkdir(parents=True, exist_ok=True)
-
-        grub_cfg = grub_dir.joinpath("grub.cfg")
-
-        # Write GRUB header (without loadfont for RISC-V)
-        self.write_grub_header(grub_cfg, include_loadfont=False)
+        result = self.grub_header(include_loadfont=False)
 
         # Main menu entry
-        with grub_cfg.open("a") as f:
-            f.write(
-                f"""menuentry "Try or Install {self.humanproject}" {{
-\tset gfxpayload=keep
-\tlinux\t/casper/vmlinux efi=debug sysctl.kernel.watchdog_thresh=60 ---
-\tinitrd\t/casper/initrd
+        result += f"""\
+menuentry "Try or Install {self.humanproject}" {{
+    set gfxpayload=keep
+    linux /casper/vmlinux efi=debug sysctl.kernel.watchdog_thresh=60 ---
+    initrd /casper/initrd
 }}
 """
-            )
 
         # HWE kernel option if available
-        self.write_hwe_menu_entry(
-            grub_cfg,
+        result += self.hwe_menu_entry(
             "vmlinux",
             "---",
             extra_params="efi=debug sysctl.kernel.watchdog_thresh=60 ",
         )
+
+        return result
 
     def post_process_iso(self, iso_path: pathlib.Path) -> None:
         """Add GPT partitions with U-Boot for SiFive Unmatched board.

@@ -39,59 +39,52 @@ class GrubBootConfigurator(BaseBootConfigurator):
     Subclasses must implement generate_grub_config().
     """
 
-    def write_grub_header(
-        self, grub_cfg: pathlib.Path, include_loadfont: bool = True
-    ) -> None:
-        """Write common GRUB config header (timeout, colors).
+    def grub_header(self, include_loadfont: bool = True) -> str:
+        """Return common GRUB config header (timeout, colors).
 
         Args:
-            grub_cfg: Path to grub.cfg file
             include_loadfont: Whether to include 'loadfont unicode'
                               (not needed for RISC-V)
         """
-        with grub_cfg.open("a") as f:
-            f.write("set timeout=30\n\n")
-            if include_loadfont:
-                f.write("loadfont unicode\n\n")
-            f.write(
-                """set menu_color_normal=white/black
+        result = "set timeout=30\n\n"
+        if include_loadfont:
+            result += "loadfont unicode\n\n"
+        result += """\
+set menu_color_normal=white/black
 set menu_color_highlight=black/light-gray
 
 """
-            )
+        return result
 
-    def write_hwe_menu_entry(
+    def hwe_menu_entry(
         self,
-        grub_cfg: pathlib.Path,
         kernel_name: str,
         kernel_params: str,
         extra_params: str = "",
-    ) -> None:
-        """Write HWE kernel menu entry if HWE is enabled.
+    ) -> str:
+        """Return HWE kernel menu entry if HWE is enabled.
 
         Args:
-            grub_cfg: Path to grub.cfg file
             kernel_name: Kernel binary name (vmlinuz or vmlinux)
             kernel_params: Kernel parameters to append
             extra_params: Additional parameters (e.g., console=tty0, $cmdline)
         """
-        if self.hwe:
-            with grub_cfg.open("a") as f:
-                f.write(
-                    f"""menuentry "{self.humanproject} with the HWE kernel" {{
-\tset gfxpayload=keep
-\tlinux\t/casper/hwe-{kernel_name} {extra_params}{kernel_params}
-\tinitrd\t/casper/hwe-initrd
+        if not self.hwe:
+            return ""
+        return f"""\
+menuentry "{self.humanproject} with the HWE kernel" {{
+    set gfxpayload=keep
+    linux /casper/hwe-{kernel_name} {extra_params}{kernel_params}
+    initrd /casper/hwe-initrd
 }}
 """
-                )
 
     @abstractmethod
-    def generate_grub_config(self) -> None:
-        """Generate grub.cfg configuration file.
+    def generate_grub_config(self) -> str:
+        """Generate grub.cfg content.
 
-        Each GRUB-based architecture must implement this to create its
-        specific GRUB configuration.
+        Each GRUB-based architecture must implement this to return the
+        GRUB configuration.
         """
         ...
 
@@ -106,4 +99,7 @@ set menu_color_highlight=black/light-gray
         """Make the ISO bootable by extracting files and generating GRUB config."""
         super().make_bootable(workdir, project, capproject, subarch, hwe)
         with self.logger.logged("generating grub config"):
-            self.generate_grub_config()
+            content = self.generate_grub_config()
+            grub_dir = self.iso_root.joinpath("boot", "grub")
+            grub_dir.mkdir(parents=True, exist_ok=True)
+            grub_dir.joinpath("grub.cfg").write_text(content)
