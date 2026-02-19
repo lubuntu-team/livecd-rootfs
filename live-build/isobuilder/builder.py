@@ -298,10 +298,10 @@ class ISOBuilder:
             self.arch,
             self.logger,
             self.apt_state,
+            self.workdir,
             self.iso_root,
         )
         configurator.make_bootable(
-            self.workdir,
             project,
             capproject,
             subarch,
@@ -341,9 +341,9 @@ class ISOBuilder:
             self.arch,
             self.logger,
             self.apt_state,
+            self.workdir,
             self.iso_root,
         )
-        configurator.create_dirs(self.workdir)
         mkisofs_opts = configurator.mkisofs_opts()
         cmd: list[str | pathlib.Path] = ["xorriso"]
         if self.arch == "riscv64":

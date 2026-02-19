@@ -3,35 +3,31 @@
 import pathlib
 import shutil
 
-from .grub import GrubBootConfigurator
+from .grub import GrubBootConfigurator, copy_grub_common_files, copy_grub_modules
 
 
-def copy_unsigned_monolithic_grub_to_boot_tree(
-    grub_dir: pathlib.Path, efi_suffix: str, grub_target: str, boot_tree: pathlib.Path
+def copy_unsigned_monolithic_grub(
+    grub_pkg_dir: pathlib.Path,
+    efi_suffix: str,
+    grub_target: str,
+    iso_root: pathlib.Path,
 ) -> None:
-    efi_boot_dir = boot_tree.joinpath("EFI", "boot")
+    efi_boot_dir = iso_root.joinpath("EFI", "boot")
     efi_boot_dir.mkdir(parents=True, exist_ok=True)
 
     shutil.copy(
-        grub_dir.joinpath(
+        grub_pkg_dir.joinpath(
             "usr",
             "lib",
             "grub",
-            f"{grub_target}-efi",
+            grub_target,
             "monolithic",
             f"gcd{efi_suffix}.efi",
         ),
         efi_boot_dir.joinpath(f"boot{efi_suffix}.efi"),
     )
 
-    grub_boot_dir = boot_tree.joinpath("boot", "grub", f"{grub_target}-efi")
-    grub_boot_dir.mkdir(parents=True, exist_ok=True)
-
-    src_grub_dir = grub_dir.joinpath("usr", "lib", "grub", f"{grub_target}-efi")
-    for mod_file in src_grub_dir.glob("*.mod"):
-        shutil.copy(mod_file, grub_boot_dir)
-    for lst_file in src_grub_dir.glob("*.lst"):
-        shutil.copy(lst_file, grub_boot_dir)
+    copy_grub_modules(grub_pkg_dir, iso_root, grub_target, ["*.mod", "*.lst"])
 
 
 class RISCV64BootConfigurator(GrubBootConfigurator):
@@ -74,16 +70,19 @@ class RISCV64BootConfigurator(GrubBootConfigurator):
         self.logger.log("extracting RISC-V64 boot files")
         u_boot_dir = self.scratch.joinpath("u-boot-sifive")
 
+        grub_pkg_dir = self.scratch.joinpath("grub-pkg")
+
         # Download and extract bootloader packages
-        self.download_and_extract_package("grub2-common", self.grub_dir)
-        self.download_and_extract_package("grub-efi-riscv64-bin", self.grub_dir)
-        self.download_and_extract_package("grub-efi-riscv64-unsigned", self.grub_dir)
+        self.download_and_extract_package("grub2-common", grub_pkg_dir)
+        self.download_and_extract_package("grub-efi-riscv64-bin", grub_pkg_dir)
+        self.download_and_extract_package("grub-efi-riscv64-unsigned", grub_pkg_dir)
         self.download_and_extract_package("u-boot-sifive", u_boot_dir)
 
         # Add GRUB to tree
-        self.setup_grub_common_files()
-        copy_unsigned_monolithic_grub_to_boot_tree(
-            self.grub_dir, "riscv64", "riscv64", self.boot_tree
+        copy_grub_common_files(grub_pkg_dir, self.iso_root)
+
+        copy_unsigned_monolithic_grub(
+            grub_pkg_dir, "riscv64", "riscv64-efi", self.iso_root
         )
 
         # Extract DTBs to tree
@@ -107,22 +106,14 @@ class RISCV64BootConfigurator(GrubBootConfigurator):
         )
 
         # Copy DTBs if they exist
-        dtb_dir = self.boot_tree.joinpath("dtb")
+        dtb_dir = self.iso_root.joinpath("dtb")
         dtb_dir.mkdir(parents=True, exist_ok=True)
 
         firmware_dir = kernel_layer.joinpath("usr", "lib", "firmware")
-        device_tree_files = list(firmware_dir.glob("*/device-tree/*"))
 
-        if device_tree_files:
-            for dtb_file in device_tree_files:
-                if dtb_file.is_file():
-                    shutil.copy(dtb_file, dtb_dir)
-
-        # Clean up kernel layer
-        shutil.rmtree(kernel_layer)
-
-        # Copy tree contents to live-media rootfs
-        self.logger.run(["cp", "-aT", self.boot_tree, self.iso_root], check=True)
+        for dtb_file in firmware_dir.glob("*/device-tree/*"):
+            if dtb_file.is_file():
+                shutil.copy(dtb_file, dtb_dir)
 
         # Create ESP image with GRUB and dtbs
         efi_img = self.scratch.joinpath("efi.img")
@@ -131,40 +122,33 @@ class RISCV64BootConfigurator(GrubBootConfigurator):
         )
 
         # Add EFI files to ESP
-        efi_dir = self.boot_tree.joinpath("EFI")
+        efi_dir = self.iso_root.joinpath("EFI")
         self.logger.run(["mcopy", "-s", "-i", efi_img, efi_dir, "::/."], check=True)
 
         # Add DTBs to ESP
         self.logger.run(["mcopy", "-s", "-i", efi_img, dtb_dir, "::/."], check=True)
 
-    def generate_grub_config(self) -> None:
+    def generate_grub_config(self) -> str:
         """Generate grub.cfg for RISC-V64."""
-        grub_dir = self.iso_root.joinpath("boot", "grub")
-        grub_dir.mkdir(parents=True, exist_ok=True)
-
-        grub_cfg = grub_dir.joinpath("grub.cfg")
-
-        # Write GRUB header (without loadfont for RISC-V)
-        self.write_grub_header(grub_cfg, include_loadfont=False)
+        result = self.grub_header(include_loadfont=False)
 
         # Main menu entry
-        with grub_cfg.open("a") as f:
-            f.write(
-                f"""menuentry "Try or Install {self.humanproject}" {{
-\tset gfxpayload=keep
-\tlinux\t/casper/vmlinux efi=debug sysctl.kernel.watchdog_thresh=60 ---
-\tinitrd\t/casper/initrd
+        result += f"""\
+menuentry "Try or Install {self.humanproject}" {{
+    set gfxpayload=keep
+    linux  /casper/vmlinux efi=debug sysctl.kernel.watchdog_thresh=60 ---
+    initrd /casper/initrd
 }}
 """
-            )
 
         # HWE kernel option if available
-        self.write_hwe_menu_entry(
-            grub_cfg,
+        result += self.hwe_menu_entry(
             "vmlinux",
             "---",
             extra_params="efi=debug sysctl.kernel.watchdog_thresh=60 ",
         )
+
+        return result
 
     def post_process_iso(self, iso_path: pathlib.Path) -> None:
         """Add GPT partitions with U-Boot for SiFive Unmatched board.

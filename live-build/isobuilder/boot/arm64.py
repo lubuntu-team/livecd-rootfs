@@ -26,7 +26,6 @@ class ARM64BootConfigurator(UEFIBootConfigurator):
         opts.extend(self.get_uefi_mkisofs_opts())
         # ARM64-specific: partition cylinder alignment
         opts.extend(["-partition_cyl_align", "all"])
-        opts.append(self.boot_tree)
         return opts
 
     def extract_files(self) -> None:
@@ -34,19 +33,15 @@ class ARM64BootConfigurator(UEFIBootConfigurator):
         with self.logger.logged("extracting ARM64 boot files"):
             self.extract_uefi_files()
 
-    def generate_grub_config(self) -> None:
+    def generate_grub_config(self) -> str:
         """Generate grub.cfg for ARM64."""
         kernel_params = default_kernel_params(self.project)
 
-        grub_cfg = self.grub_dir.joinpath("grub.cfg")
-
-        # Write common GRUB header
-        self.write_grub_header(grub_cfg)
+        result = self.grub_header()
 
         # ARM64-specific: Snapdragon workarounds
-        with grub_cfg.open("a") as f:
-            f.write(
-                """set cmdline=
+        result += f"""\
+set cmdline=
 smbios --type 4 --get-string 5 --set proc_version
 regexp "Snapdragon.*" "$proc_version"
 if [ $? = 0 ]; then
@@ -59,16 +54,14 @@ if [ $? = 0 ]; then
 fi
 
 menuentry "Try or Install {self.humanproject}" {{
-\tset gfxpayload=keep
-\tlinux\t/casper/vmlinuz $cmdline {kernel_params} console=tty0
-\tinitrd\t/casper/initrd
+    set gfxpayload=keep
+    linux  /casper/vmlinuz $cmdline {kernel_params} console=tty0
+    initrd /casper/initrd
 }}
 """
-            )
 
         # HWE kernel option if available
-        self.write_hwe_menu_entry(
-            grub_cfg,
+        result += self.hwe_menu_entry(
             "vmlinuz",
             f"{kernel_params} console=tty0",
             extra_params="$cmdline ",
@@ -78,4 +71,6 @@ menuentry "Try or Install {self.humanproject}" {{
         # but it's not actually set anywhere in the grub.cfg, so we omit it here
 
         # UEFI Entries (ARM64 is UEFI-only, no grub_platform check needed)
-        self.write_uefi_menu_entries(grub_cfg)
+        result += self.uefi_menu_entries()
+
+        return result

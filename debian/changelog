@@ -10,6 +10,8 @@ livecd-rootfs (26.04.20) UNRELEASED; urgency=medium
   [ Michael Hudson-Doyle ]
   * 030-ubuntu-live-system-seed.binary: do not run if there is no layer to
     install the system, in particular on arm64.
+  * Fix some path confusion in the new isobuilder.boot package and refactor
+    grub config generation to be more string based.
 
  -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Thu, 19 Feb 2026 19:55:26 +1300
 
