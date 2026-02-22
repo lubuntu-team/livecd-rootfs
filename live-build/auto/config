@@ -390,7 +390,7 @@ if [ -z "${IMAGEFORMAT:-}" ]; then
 					;;
 			esac
 			;;
-		ubuntu-server:live|ubuntu-mini-iso:|ubuntu-core-installer:*)
+		ubuntu-server:live|ubuntu-mini-iso:|ubuntu-test-iso:|ubuntu-core-installer:*)
 			IMAGEFORMAT=plain
 			;;
 	esac
@@ -426,7 +426,7 @@ case $IMAGEFORMAT in
 			ubuntu-server:live|ubuntu-core-installer:*)
 				touch config/universe-enabled
 				;;
-			ubuntu-mini-iso:)
+			ubuntu-mini-iso:|ubuntu-test-iso:)
 				fs=none
 				;;
 			*)
@@ -636,7 +636,7 @@ case $PROJECT in
 esac
 
 case $PROJECT in
-	ubuntu-mini-iso)
+	ubuntu-mini-iso|ubuntu-test-iso)
 		COMPONENTS='main'
 		;;
 	edubuntu|ubuntu-budgie|ubuntucinnamon|ubuntukylin)
@@ -653,15 +653,24 @@ case $SUBPROJECT in
 		;;
 esac
 
-if ! [ -e config/germinate-output/structure ]; then
-        echo "Running germinate..."
-        if [ -n "$COMPONENTS" ]; then
-		GERMINATE_ARG="-c $(echo $COMPONENTS | sed -e's/ \+/,/g')"
-	fi
-        (cd config/germinate-output && germinate --no-rdepends --no-installer \
-                -S $SEEDMIRROR -m $MIRROR -d $SUITE,$SUITE-updates \
-                -s $FLAVOUR.$SUITE $GERMINATE_ARG -a ${ARCH_VARIANT:-$ARCH})
-fi
+case $PROJECT in
+	ubuntu-test-iso)
+		# ubuntu-test-iso uses only add_package (not add_task) and has no
+		# pool, so germinate output is never needed.
+		touch config/germinate-output/structure
+		;;
+	*)
+		if ! [ -e config/germinate-output/structure ]; then
+			echo "Running germinate..."
+			if [ -n "$COMPONENTS" ]; then
+				GERMINATE_ARG="-c $(echo $COMPONENTS | sed -e's/ \+/,/g')"
+			fi
+			(cd config/germinate-output && germinate --no-rdepends --no-installer \
+				-S $SEEDMIRROR -m $MIRROR -d $SUITE,$SUITE-updates \
+				-s $FLAVOUR.$SUITE $GERMINATE_ARG -a ${ARCH_VARIANT:-$ARCH})
+		fi
+		;;
+esac
 
 # ISO build configuration. These defaults are overridden per-project below.
 #
@@ -674,6 +683,9 @@ MAKE_ISO=no
 # - "server-ship-live" for Ubuntu Server (includes server-specific packages)
 # - "" (empty) for images without a pool, like Ubuntu Core Installer
 POOL_SEED_NAME=ship-live
+# SQUASHFS_COMP: compression algorithm for squashfs images. lz4 is ~10x
+# faster than xz and useful for test builds that don't need small images.
+SQUASHFS_COMP=xz
 
 # Common functionality for layered desktop images
 common_layered_desktop_image() {
@@ -1179,6 +1191,24 @@ case $PROJECT in
 		esac
 		;;
 
+	ubuntu-test-iso)
+		OPTS="${OPTS:+$OPTS }--bootstrap-flavour=minimal"
+		OPTS="${OPTS:+$OPTS }--linux-packages=none --initramfs=none"
+		KERNEL_FLAVOURS=none
+		BINARY_REMOVE_LINUX=false
+		MAKE_ISO=yes
+		POOL_SEED_NAME=
+		SQUASHFS_COMP=lz4
+		PASSES_TO_LAYERS=true
+		add_package base casper
+		add_package base.generic linux-virtual
+		LIVE_PASSES="base.generic"
+		case $ARCH in
+			amd64) ;;
+			*) echo "ubuntu-test-iso only supports amd64"; exit 1 ;;
+		esac
+		;;
+
 	ubuntu-base|ubuntu-oci)
 		OPTS="${OPTS:+$OPTS }--bootstrap-flavour=minimal"
 		;;
@@ -1408,6 +1438,7 @@ if [ -n "$PASSES" ]; then
 fi
 echo "MAKE_ISO=\"$MAKE_ISO\"" >> config/common
 echo "POOL_SEED_NAME=\"$POOL_SEED_NAME\"" >> config/common
+echo "SQUASHFS_COMP=\"$SQUASHFS_COMP\"" >> config/common
 if [ -n "$NO_SQUASHFS_PASSES" ]; then
     echo "NO_SQUASHFS_PASSES=\"$NO_SQUASHFS_PASSES\"" >> config/common
 fi
@@ -1443,7 +1474,7 @@ rm -fv /etc/ssl/private/ssl-cert-snakeoil.key \
 EOF
 
 case $PROJECT in
-  ubuntu-cpc|ubuntu-core|ubuntu-base|ubuntu-oci|ubuntu-wsl|ubuntu-mini-iso)
+  ubuntu-cpc|ubuntu-core|ubuntu-base|ubuntu-oci|ubuntu-wsl|ubuntu-mini-iso|ubuntu-test-iso)
     # ubuntu-cpc gets this added in 025-create-groups.chroot, and we do
     # not want this group in projects that are effectively just chroots
     ;;
@@ -1531,7 +1562,7 @@ fi
 
 case $PROJECT:${SUBPROJECT:-} in
 	ubuntu-cpc:*|ubuntu-server:live|ubuntu:desktop-preinstalled| \
-		ubuntu-wsl:*|ubuntu-mini-iso:*|ubuntu:|ubuntu:dangerous|ubuntu-oem:*| \
+		ubuntu-wsl:*|ubuntu-mini-iso:*|ubuntu-test-iso:*|ubuntu:|ubuntu:dangerous|ubuntu-oem:*| \
 		ubuntustudio:*|edubuntu:*|ubuntu-budgie:*|ubuntucinnamon:*|xubuntu:*| \
 	        ubuntukylin:*|ubuntu-mate:*|ubuntu-core-installer:*|lubuntu:*)
 		# Ensure that most things e.g. includes.chroot are copied as is

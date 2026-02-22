@@ -1,0 +1,15 @@
+#!/bin/sh
+# Copy kernel/initrd artifacts for isobuilder to consume.
+# The MAKE_ISO flow in auto/build expects ${PREFIX}.kernel-* and
+# ${PREFIX}.initrd-* files. With --linux-packages=none live-build won't
+# create them, so we do it here (mirroring ubuntu-mini-iso's approach).
+# This hook runs for every pass; exit early when the kernel isn't present.
+
+set -eu
+
+[ -e chroot/boot/vmlinuz ] || exit 0
+[ -e chroot/boot/initrd.img ] || exit 0
+
+PREFIX="livecd.${PROJECT}"
+cp chroot/boot/vmlinuz  "${PREFIX}.kernel-generic"
+cp chroot/boot/initrd.img "${PREFIX}.initrd-generic"
