@@ -375,7 +375,7 @@ EOF
 		(cd chroot && find usr/share/doc -maxdepth 1 -type d | xargs du -s | sort -nr)
 		echo END docdirs
 
-		/usr/share/livecd-rootfs/minimize-manual chroot
+		${LIVECD_ROOTFS_ROOT}/minimize-manual chroot
 
 		clean_debian_chroot
 	fi

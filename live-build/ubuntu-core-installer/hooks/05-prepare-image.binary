@@ -11,6 +11,7 @@ case ${PASS:-} in
 esac
 
 . config/binary
+. config/common
 . config/functions
 
 case ${SUBPROJECT} in
@@ -56,4 +57,4 @@ PROJECT_FULL=$PROJECT${SUBARCH:+-$SUBARCH}
 usc_opts="--output livecd.${PROJECT_FULL}.install-sources.yaml \
           --template config/edge.catalog-in.yaml \
           --size 0"
-/usr/share/livecd-rootfs/update-source-catalog source $usc_opts
+${LIVECD_ROOTFS_ROOT}/update-source-catalog source $usc_opts

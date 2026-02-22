@@ -7,10 +7,12 @@
 
 set -e
 
+. config/common
+
 chroot_directory=$1
 
-auto_packages=$(/usr/share/livecd-rootfs/auto-markable-pkgs $chroot_directory)
+auto_packages=$(${LIVECD_ROOTFS_ROOT}/auto-markable-pkgs $chroot_directory)
 if [ -n "$auto_packages" ]; then
 	chroot $chroot_directory apt-mark auto $auto_packages
 fi
-[ -z "$(/usr/share/livecd-rootfs/auto-markable-pkgs $chroot_directory 2> /dev/null)" ]
+[ -z "$(${LIVECD_ROOTFS_ROOT}/auto-markable-pkgs $chroot_directory 2> /dev/null)" ]

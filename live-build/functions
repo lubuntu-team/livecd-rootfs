@@ -188,8 +188,8 @@ setup_mountpoint() {
     mount sysfs-live -t sysfs "$mountpoint/sys"
     mount securityfs -t securityfs "$mountpoint/sys/kernel/security"
     # Provide more up to date apparmor features, matching target kernel
-    mount -o bind /usr/share/livecd-rootfs/live-build/apparmor/generic "$mountpoint/sys/kernel/security/apparmor/features/"
-    mount -o bind /usr/share/livecd-rootfs/live-build/seccomp/generic.actions_avail "$mountpoint/proc/sys/kernel/seccomp/actions_avail"
+    mount -o bind ${LIVECD_ROOTFS_ROOT}/live-build/apparmor/generic "$mountpoint/sys/kernel/security/apparmor/features/"
+    mount -o bind ${LIVECD_ROOTFS_ROOT}/live-build/seccomp/generic.actions_avail "$mountpoint/proc/sys/kernel/seccomp/actions_avail"
     # cgroup2 mount for LP: 1944004
     mount -t cgroup2 none "$mountpoint/sys/fs/cgroup"
     mount -t tmpfs none "$mountpoint/tmp"
@@ -860,7 +860,7 @@ snap_validate_seed() {
     fi
     if [ ${boot_filename} != undefined ]; then  # we have a known boot file so we can proceed with checking for features to mount
         kern_major_min=$(readlink --canonicalize --no-newline ${CHROOT_ROOT}/boot/${boot_filename} | grep  --extended-regexp --only-matching --max-count 1 '[0-9]+\.[0-9]+')
-        if [ -d /usr/share/livecd-rootfs/live-build/apparmor/${kern_major_min} ]; then
+        if [ -d ${LIVECD_ROOTFS_ROOT}/live-build/apparmor/${kern_major_min} ]; then
             # if an Ubuntu version has different kernel apparmor features between LTS and HWE kernels
             # a snap pre-seeding issue can occur, where the incorrect apparmor features are reported
             # basic copy of a directory structure overriding the "generic" feature set
@@ -868,7 +868,7 @@ snap_validate_seed() {
 
             # Bind kernel apparmor directory to feature directory for snap preseeding
             umount "${CHROOT_ROOT}/sys/kernel/security/apparmor/features/"
-            mount --bind /usr/share/livecd-rootfs/live-build/apparmor/${kern_major_min} "${CHROOT_ROOT}/sys/kernel/security/apparmor/features/"
+            mount --bind ${LIVECD_ROOTFS_ROOT}/live-build/apparmor/${kern_major_min} "${CHROOT_ROOT}/sys/kernel/security/apparmor/features/"
         fi
     fi
 
@@ -894,7 +894,7 @@ snap_validate_seed() {
     # mount generic apparmor feature again (cleanup)
     if [ -d /build/config/hooks.d/extra/apparmor/${kern_major_min} ]; then
         umount "${CHROOT_ROOT}/sys/kernel/security/apparmor/features/"
-        mount -o bind /usr/share/livecd-rootfs/live-build/apparmor/generic "${CHROOT_ROOT}/sys/kernel/security/apparmor/features/"
+        mount -o bind ${LIVECD_ROOTFS_ROOT}/live-build/apparmor/generic "${CHROOT_ROOT}/sys/kernel/security/apparmor/features/"
     fi
 
 }
@@ -1254,7 +1254,7 @@ setup_cidata() {
     local mountpoint=$(mktemp -d)
     mkfs.vfat -F 32 -n CIDATA ${cidata_dev}
     mount ${cidata_dev} ${mountpoint}
-    cp /usr/share/livecd-rootfs/live-build/cidata/* ${mountpoint}
+    cp ${LIVECD_ROOTFS_ROOT}/live-build/cidata/* ${mountpoint}
     cat >>${mountpoint}/meta-data.sample <<END
 #instance-id: iid-$(openssl rand -hex 8)
 
@@ -1454,5 +1454,5 @@ gpt_root_partition_uuid() {
 # is importable, and uses config/iso-dir as the standard working directory
 # for ISO metadata and intermediate files.
 isobuild () {
-    PYTHONPATH=/usr/share/livecd-rootfs/live-build/ /usr/share/livecd-rootfs/live-build/isobuild --workdir config/iso-dir "$@"
+    PYTHONPATH=${LIVECD_ROOTFS_ROOT}/live-build/ ${LIVECD_ROOTFS_ROOT}/live-build/isobuild --workdir config/iso-dir "$@"
 }
