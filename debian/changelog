@@ -1,3 +1,13 @@
+livecd-rootfs (26.04.24) UNRELEASED; urgency=medium
+
+  * Various quality of life improvements for hacking on livecd-rootfs:
+    - Add a "ubuntu-test-iso" project that builds a not very useful ISO in 2-5 minutes.
+    - Add a build-livefs script that takes care of copying the auto scripts and
+      invoking lb clean/config/build with the right environment.
+    - Add a build-livefs-lxd script to run the above script in a lxd vm.
+
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Mon, 23 Feb 2026 15:02:42 +1300
+
 livecd-rootfs (26.04.23) UNRELEASED; urgency=medium
 
   [ Tobias Heider ]
