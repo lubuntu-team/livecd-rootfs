@@ -1,3 +1,11 @@
+livecd-rootfs (26.04.22) UNRELEASED; urgency=medium
+
+  * Fix two more problems with livefs-built ISOs:
+    - Generate the for-iso squashfs in the right place for Kubuntu.
+    - Fix confusion about the kernel path on the ISO on riscv64.
+
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Tue, 24 Feb 2026 12:54:10 +1300
+
 livecd-rootfs (26.04.21) resolute; urgency=medium
 
   [ Dan Bungert ]
