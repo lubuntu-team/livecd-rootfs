@@ -266,6 +266,7 @@ install_grub() {
             ;;
         riscv64)
             if [ -n "${SUBARCH:-}" ]; then
+                setup_cinocloud mountpoint
                 # Per-device images
                 local my_d=$(dirname $(readlink -f ${0}))
                 echo "Adjusting GRUB defaults for ${ARCH}"
@@ -299,6 +300,14 @@ install_grub() {
                         # Package nezha-boot0 is not needed anymore.
                         loader1="${loop_device}p13"
                         dd if=mountpoint/usr/lib/u-boot/${SUBARCH}/u-boot-sunxi-with-spl.bin of=$loader1
+			# Due to the memory size we cannot update large packages
+			# like the kernel without swap.
+			cat >> mountpoint/var/lib/cloud/seed/nocloud-net/user-data << EOF
+swap:
+    filename: /swapfile
+    size: 1G
+    maxsize: 1G
+EOF
                         ;;
                     "pic64gx")
                         cp ${my_d}/riscv64/grub/90_watchdog-thresh.cfg mountpoint/etc/default/grub.d/
@@ -376,7 +385,6 @@ EOF
                 setup_cidata "${cidata_dev}"
                 # Provide stock nocloud datasource
                 # Allow interactive login without a cloud datasource.
-                setup_cinocloud mountpoint
             else
                 # Other images e.g. cloud images
                 chroot mountpoint apt-get install -qqy u-boot-menu grub-efi-riscv64
