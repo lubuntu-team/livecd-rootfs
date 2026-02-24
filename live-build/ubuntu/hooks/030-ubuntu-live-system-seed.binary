@@ -133,8 +133,25 @@ get_components()
 
 # env SNAPPY_STORE_NO_CDN=1 snap known --remote model series=16 brand-id=canonical model=ubuntu-classic-2410-amd64 > config/classic-model.model
 #
-dangerous_model=/usr/share/livecd-rootfs/live-build/${PROJECT}/ubuntu-classic-amd64-dangerous.model
-stable_model=/usr/share/livecd-rootfs/live-build/${PROJECT}/ubuntu-classic-amd64.model
+
+# We used to have the models included in livecd-rootfs itself, but now we pull
+# them from the Launchpad git mirror.
+canonical_models_tree=$(mktemp -d)
+git clone --depth 1 https://git.launchpad.net/canonical-models -- "${canonical_models_tree}"
+
+cleanup_repo()
+{
+    rm -rf -- "${canonical_models_tree}"
+}
+
+trap cleanup_repo EXIT
+
+echo 'Checked out canonical-models revision' "$(git -C "${canonical_models_tree}" rev-parse HEAD)"
+
+model_version=$(release_ver | sed 's/\.//')
+
+dangerous_model="${canonical_models_tree}"/ubuntu-classic-"${model_version}"-amd64-dangerous.model
+stable_model="${canonical_models_tree}"/ubuntu-classic-"${model_version}"-amd64.model
 
 prepare_args=()
 

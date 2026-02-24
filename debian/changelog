@@ -1,3 +1,12 @@
+livecd-rootfs (26.04.22) UNRELEASED; urgency=medium
+
+  * Pull the model from Launchpad's lp:canonical-models
+    repo, instead of having it uploaded as part of livecd-rootfs. This
+    indirection makes it possible to update the models without requiring a new
+    upload of livecd-rootfs every time.
+
+ -- Olivier Gayot <olivier.gayot@canonical.com>  Tue, 24 Feb 2026 16:22:51 +0100
+
 livecd-rootfs (26.04.21) resolute; urgency=medium
 
   [ Dan Bungert ]
