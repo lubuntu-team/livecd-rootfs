@@ -278,19 +278,18 @@ class ISOBuilder:
                 for path in artifact_dir.glob(f"{filename_prefix}*.{ext}"):
                     newname = path.name[len(filename_prefix) :]
                     link(path, newname)
-            for suffix, prefix in (
-                ("-generic", ""),
-                ("-generic-hwe", "hwe-"),
-            ):
-                if artifact_dir.joinpath(f"{filename_prefix}kernel{suffix}").exists():
-                    link(
-                        artifact_dir.joinpath(f"{filename_prefix}kernel{suffix}"),
-                        f"{prefix}{kernel_name}",
-                    )
-                    link(
-                        artifact_dir.joinpath(f"{filename_prefix}initrd{suffix}"),
-                        f"{prefix}initrd",
-                    )
+
+            for kernel_path in artifact_dir.glob(f"{filename_prefix}kernel*"):
+                suffix = kernel_path.name[len(filename_prefix) + len("kernel") :]
+                prefix = "hwe-" if suffix.endswith("-hwe") else ""
+                link(
+                    artifact_dir.joinpath(f"{filename_prefix}kernel{suffix}"),
+                    f"{prefix}{kernel_name}",
+                )
+                link(
+                    artifact_dir.joinpath(f"{filename_prefix}initrd{suffix}"),
+                    f"{prefix}initrd",
+                )
         self._extract_casper_uuids()
 
     def make_bootable(self, project: str, capproject: str, subarch: str):
