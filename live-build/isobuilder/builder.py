@@ -268,7 +268,7 @@ class ISOBuilder:
             target.hardlink_to(src)
 
         kernel_name = "vmlinuz"
-        if self.arch == "ppc64el":
+        if self.arch in ("ppc64el", "riscv64"):
             kernel_name = "vmlinux"
 
         with self.logger.logged(

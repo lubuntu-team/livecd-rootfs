@@ -576,7 +576,7 @@ if [ "${MAKE_ISO}" = "yes" ]; then
 	# create a for-iso.filesystem.squashfs that does.
 	if [ -z "$PASSES" ]; then
 		isobuild generate-sources --mountpoint=/cdrom > chroot/etc/apt/sources.list.d/cdrom.sources
-		create_squashfs chroot for-iso.filesystem.squashfs
+		create_squashfs chroot ${PWD}/for-iso.filesystem.squashfs
 	fi
 	# Link kernel and initrd files. The ${thing#${PREFIX}} expansion strips
 	# the PREFIX, so "livecd.ubuntu-server.kernel-generic" becomes
