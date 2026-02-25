@@ -1,4 +1,4 @@
-livecd-rootfs (26.04.21) UNRELEASED; urgency=medium
+livecd-rootfs (26.04.21) resolute; urgency=medium
 
   [ Dan Bungert ]
   * Update new signed models to ship latest nvidia drivers for ubuntu hybrid.
