@@ -108,10 +108,10 @@ class AptStateManager:
     def in_release_path(self) -> pathlib.Path:
         """Return the path to the InRelease file.
 
-        This assumes exactly one InRelease file matches the pattern.
-        Will raise ValueError if there are 0 or multiple matches.
+        This ignores all but the first path.
+        Will raise Error if there isn't at least one match.
         """
         [path] = self.apt_root.joinpath("var/lib/apt/lists").glob(
-            f"*_dists_{self.series}_InRelease"
+            f"*ubuntu.com*_dists_{self.series}_InRelease"
         )
         return path
