@@ -1,4 +1,4 @@
-livecd-rootfs (26.04.22) UNRELEASED; urgency=medium
+livecd-rootfs (26.04.22) resolute; urgency=medium
 
   [ Oliver Gayot ]
   * Pull the model from Launchpad's lp:canonical-models
@@ -14,7 +14,7 @@ livecd-rootfs (26.04.22) UNRELEASED; urgency=medium
   [ Tobias Heider ]
   * Fix pool generation when using extra_ppas.
 
- -- Olivier Gayot <olivier.gayot@canonical.com>  Tue, 24 Feb 2026 16:22:51 +0100
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Thu, 26 Feb 2026 10:56:42 +1300
 
 livecd-rootfs (26.04.21) resolute; urgency=medium
 
