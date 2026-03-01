@@ -1195,16 +1195,14 @@ case $PROJECT in
 
 	ubuntu-test-iso)
 		OPTS="${OPTS:+$OPTS }--bootstrap-flavour=minimal"
-		OPTS="${OPTS:+$OPTS }--linux-packages=none --initramfs=none"
-		KERNEL_FLAVOURS=none
+		KERNEL_FLAVOURS=virtual
 		BINARY_REMOVE_LINUX=false
 		MAKE_ISO=yes
 		POOL_SEED_NAME=
 		SQUASHFS_COMP=lz4
 		PASSES_TO_LAYERS=true
-		add_package base casper
-		add_package base.generic linux-virtual
-		LIVE_PASSES="base.generic"
+		add_package base linux-$KERNEL_FLAVOURS
+		add_package base.live casper
 		case $ARCH in
 			amd64) ;;
 			*) echo "ubuntu-test-iso only supports amd64"; exit 1 ;;
