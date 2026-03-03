@@ -6,3 +6,4 @@ depends qcow2
 depends vmdk
 depends vagrant
 depends wsl
+depends imagecraft-image

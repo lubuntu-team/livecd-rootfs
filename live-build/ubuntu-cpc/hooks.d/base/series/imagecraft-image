@@ -1,0 +1,5 @@
+base/imagecraft-image.binary
+
+provides livecd.ubuntu-cpc.imagecraft.img
+provides livecd.ubuntu-cpc.imagecraft.manifest
+provides livecd.ubuntu-cpc.imagecraft.filelist

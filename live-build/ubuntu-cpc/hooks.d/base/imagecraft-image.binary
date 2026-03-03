@@ -1,0 +1,86 @@
+#!/bin/bash -eux
+
+. config/functions
+
+ARCH="${ARCH:-}"
+SUBPROJECT="${SUBPROJECT:-}"
+
+# We want to start off imagecraft builds with just amd64 support right now
+case $ARCH in
+	amd64)
+		;;
+	*)
+	  echo "$ARCH builds for imagecraft is currently not implemented."
+		exit 0
+		;;
+esac
+
+case ${SUBPROJECT} in
+  minimized)
+    ;;
+  *)
+    echo "$SUBPROJECT builds for imagecraft is currently not implemented"
+    exit 0
+    ;;
+esac
+
+_src_d=$(dirname $(readlink -f ${0}))
+
+snap install imagecraft --classic --channel latest/edge
+apt install -y qemu-utils parted locales
+
+locale-gen C.UTF-8
+export LANG=C.UTF-8
+export LC_ALL=C.UTF-8
+
+cp -r "$_src_d"/imagecraft-configs/* .
+
+CRAFT_BUILD_ENVIRONMENT=host imagecraft --verbosity debug pack
+
+mount_image_partitions() {
+  mount_image "${disk_image}" "$ROOT_PARTITION"
+
+  # Making sure that the loop device is ready
+  partprobe "${loop_device}"
+  udevadm settle
+  ls -l "${loop_device}"*
+
+  mkdir -p "$mountpoint"
+  
+  mount_partition "${rootfs_dev_mapper}" "$mountpoint"
+  mount "${loop_device}p3" "$mountpoint/boot"
+  mount "${loop_device}p2" "$mountpoint/boot/efi"
+}
+
+install_grub_on_image() {
+  divert_grub "$mountpoint"
+  chroot "$mountpoint" grub-install --target=i386-pc "${loop_device}"
+  chroot "$mountpoint" update-grub
+  undivert_grub "$mountpoint"
+
+  echo "GRUB installed successfully."
+}
+
+unmount_image_partitions() {
+  umount "$mountpoint/boot/efi"
+  umount "$mountpoint/boot"
+
+  umount_partition "$mountpoint"
+  rmdir "$mountpoint"
+}
+
+disk_image="pc.img"
+ROOT_PARTITION=4
+mountpoint="mountpoint"
+
+mount_image_partitions
+
+install_grub_on_image
+create_manifest  "$mountpoint/" "$PWD/livecd.ubuntu-cpc.imagecraft.manifest" "$PWD/livecd.ubuntu-cpc.imagecraft.spdx"  "cloud-image-$ARCH-$(date +%Y%m%dT%H:%M:%S)" "false"
+
+unmount_image_partitions
+
+clean_loops
+trap - EXIT
+
+qemu-img convert -f raw -O qcow2 "${disk_image}" livecd.ubuntu-cpc.imagecraft.img
