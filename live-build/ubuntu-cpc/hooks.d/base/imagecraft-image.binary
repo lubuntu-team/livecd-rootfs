@@ -7,19 +7,19 @@ SUBPROJECT="${SUBPROJECT:-}"
 
 # We want to start off imagecraft builds with just amd64 support right now
 case $ARCH in
-	amd64)
-		;;
-	*)
-	  echo "$ARCH builds for imagecraft is currently not implemented."
-		exit 0
-		;;
+  amd64)
+    ;;
+  *)
+    echo "imagecraft build is currently not implemented for ARCH=${ARCH:-unset}."
+    exit 0
+    ;;
 esac
 
 case ${SUBPROJECT} in
   minimized)
     ;;
   *)
-    echo "$SUBPROJECT builds for imagecraft is currently not implemented"
+    echo "imagecraft build is currently not implemented for SUBPROJECT=${SUBPROJECT:-unset}."
     exit 0
     ;;
 esac
@@ -27,29 +27,24 @@ esac
 _src_d=$(dirname $(readlink -f ${0}))
 
 snap install imagecraft --classic --channel latest/edge
-apt install -y qemu-utils parted locales
-
-locale-gen C.UTF-8
-export LANG=C.UTF-8
-export LC_ALL=C.UTF-8
 
 cp -r "$_src_d"/imagecraft-configs/* .
 
 CRAFT_BUILD_ENVIRONMENT=host imagecraft --verbosity debug pack
 
+# We are using this function instead of mount_disk_image from functions
+# because imagecraft doesn't currently support XBOOTLDR's GUID and
+# mount_disk_image has an explicit check for the XBOOTLDR GUID
+# TODO: Use mount_disk_image once imagecraft supports XBOOTLDR's GUID
 mount_image_partitions() {
   mount_image "${disk_image}" "$ROOT_PARTITION"
 
   # Making sure that the loop device is ready
   partprobe "${loop_device}"
   udevadm settle
-  ls -l "${loop_device}"*
-
-  mkdir -p "$mountpoint"
-  
   mount_partition "${rootfs_dev_mapper}" "$mountpoint"
-  mount "${loop_device}p3" "$mountpoint/boot"
-  mount "${loop_device}p2" "$mountpoint/boot/efi"
+  mount "${loop_device}p13" "$mountpoint/boot"
+  mount "${loop_device}p15" "$mountpoint/boot/efi"
 }
 
 install_grub_on_image() {
@@ -58,7 +53,7 @@ install_grub_on_image() {
   chroot "$mountpoint" update-grub
   undivert_grub "$mountpoint"
 
-  echo "GRUB installed successfully."
+  echo "GRUB for BIOS boot installed successfully."
 }
 
 unmount_image_partitions() {
@@ -70,8 +65,8 @@ unmount_image_partitions() {
 }
 
 disk_image="pc.img"
-ROOT_PARTITION=4
-mountpoint="mountpoint"
+ROOT_PARTITION=1
+mountpoint=$(mktemp -d)
 
 mount_image_partitions
 

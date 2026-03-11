@@ -18,6 +18,7 @@ volumes:
         role: system-boot
         filesystem: vfat
         size: 4M
+        partition-number: 14
       # 2. EFI System Partition
       - name: efi
         type: C12A7328-F81F-11D2-BA4B-00A0C93EC93B
@@ -25,13 +26,15 @@ volumes:
         filesystem-label: UEFI
         role: system-boot
         size: 106M
+        partition-number: 15
       # 3. Linux Extended Boot
       - name: boot
         type: 0FC63DAF-8483-4772-8E79-3D69D8477DE4
         filesystem: ext4
         filesystem-label: BOOT
         role: system-data
-        size: 913M
+        size: 1G
+        partition-number: 13
       # 4. Root Filesystem
       - name: rootfs
         type: 0FC63DAF-8483-4772-8E79-3D69D8477DE4
@@ -39,6 +42,7 @@ volumes:
         filesystem-label: cloudimg-rootfs
         role: system-data
         size: 3G
+        partition-number: 1
 
 filesystems:
   default:
