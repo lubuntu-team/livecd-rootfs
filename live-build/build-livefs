@@ -1,0 +1,218 @@
+#!/usr/bin/python3
+
+import configparser
+import os
+import pathlib
+import platform
+import subprocess
+
+import click
+
+
+_CONFIG_FILE = pathlib.Path.home() / ".config" / "livecd-rootfs" / "build-livefs.conf"
+
+
+def _read_config() -> dict[str, str]:
+    """Read default values from the user config file if it exists.
+
+    The config file uses INI format with a [defaults] section, e.g.:
+
+        [defaults]
+        http-proxy = http://squid.internal:3128/
+        mirror = http://ftpmaster.internal/ubuntu/
+    """
+    cp = configparser.ConfigParser()
+    cp.read(_CONFIG_FILE)
+    return dict(cp["defaults"]) if "defaults" in cp else {}
+
+
+_MACHINE_TO_ARCH = {
+    "x86_64": "amd64",
+    "aarch64": "arm64",
+    "ppc64le": "ppc64el",
+    "s390x": "s390x",
+    "riscv64": "riscv64",
+    "armv7l": "armhf",
+}
+
+
+def _default_arch():
+    machine = platform.machine()
+    try:
+        return _MACHINE_TO_ARCH[machine]
+    except KeyError:
+        raise click.UsageError(
+            f"Cannot determine default arch for machine {machine!r}; use --arch"
+        )
+
+
+@click.command()
+@click.option(
+    "--work-dir",
+    default=".",
+    type=click.Path(file_okay=False, path_type=pathlib.Path),
+    help="Working directory for the build (default: current directory)",
+)
+@click.option("--project", required=True, help="Project name (e.g. ubuntu, ubuntu-cpc)")
+@click.option("--suite", required=True, help="Ubuntu suite/series (e.g. noble)")
+@click.option("--arch", default=None, help="Target architecture (default: host arch)")
+@click.option("--arch-variant", default=None, help="Architecture variant")
+@click.option("--subproject", default=None, help="Subproject")
+@click.option("--subarch", default=None, help="Sub-architecture")
+@click.option("--channel", default=None, help="Channel")
+@click.option(
+    "--image-target",
+    "image_targets",
+    multiple=True,
+    help="Image target (may be repeated)",
+)
+@click.option("--repo-snapshot-stamp", default=None, help="Repository snapshot stamp")
+@click.option(
+    "--snapshot-service-timestamp", default=None, help="Snapshot service timestamp"
+)
+@click.option("--cohort-key", default=None, help="Cohort key")
+@click.option("--datestamp", default=None, help="Datestamp (sets NOW)")
+@click.option("--image-format", default=None, help="Image format (sets IMAGEFORMAT)")
+@click.option(
+    "--proposed",
+    is_flag=True,
+    default=False,
+    help="Enable proposed pocket (sets PROPOSED=1)",
+)
+@click.option(
+    "--extra-ppa", "extra_ppas", multiple=True, help="Extra PPA (may be repeated)"
+)
+@click.option(
+    "--extra-snap", "extra_snaps", multiple=True, help="Extra snap (may be repeated)"
+)
+@click.option("--build-type", default=None, help="Build type")
+@click.option(
+    "--http-proxy",
+    default=None,
+    help="HTTP proxy (sets http_proxy, HTTP_PROXY, LB_APT_HTTP_PROXY)",
+)
+@click.option(
+    "--mirror",
+    default=None,
+    help="Ubuntu archive mirror URL (sets MIRROR)",
+)
+@click.option(
+    "--debug", is_flag=True, default=False, help="Enable debug mode (set -x in lb scripts)"
+)
+def main(
+    work_dir,
+    project,
+    suite,
+    arch,
+    arch_variant,
+    subproject,
+    subarch,
+    channel,
+    image_targets,
+    repo_snapshot_stamp,
+    snapshot_service_timestamp,
+    cohort_key,
+    datestamp,
+    image_format,
+    proposed,
+    extra_ppas,
+    extra_snaps,
+    build_type,
+    http_proxy,
+    mirror,
+    debug,
+):
+    cfg = _read_config()
+    if http_proxy is None:
+        http_proxy = cfg.get("http-proxy")
+    if mirror is None:
+        mirror = cfg.get("mirror")
+
+    if arch is None:
+        arch = _default_arch()
+
+    # Locate auto/ scripts relative to this script, following symlinks.
+    # Works for: git checkout, installed deb, and /usr/bin/build-livefs symlink.
+    live_build_dir = pathlib.Path(__file__).resolve().parent
+    auto_source = live_build_dir / "auto"
+
+    # base_env is passed to both lb config and lb build
+    base_env = {
+        "PROJECT": project,
+        "ARCH": arch,
+        "LIVECD_ROOTFS_ROOT": str(live_build_dir.parent),
+    }
+    if arch_variant is not None:
+        base_env["ARCH_VARIANT"] = arch_variant
+    if subproject is not None:
+        base_env["SUBPROJECT"] = subproject
+    if subarch is not None:
+        base_env["SUBARCH"] = subarch
+    if channel is not None:
+        base_env["CHANNEL"] = channel
+    if image_targets:
+        base_env["IMAGE_TARGETS"] = " ".join(image_targets)
+    if repo_snapshot_stamp is not None:
+        base_env["REPO_SNAPSHOT_STAMP"] = repo_snapshot_stamp
+    if snapshot_service_timestamp is not None:
+        base_env["SNAPSHOT_SERVICE_TIMESTAMP"] = snapshot_service_timestamp
+    if cohort_key is not None:
+        base_env["COHORT_KEY"] = cohort_key
+    if http_proxy is not None:
+        base_env["http_proxy"] = http_proxy
+        base_env["HTTP_PROXY"] = http_proxy
+        base_env["LB_APT_HTTP_PROXY"] = http_proxy
+
+    # config_env adds lb-config-only vars on top of base_env
+    config_env = {
+        **base_env,
+        "SUITE": suite,
+    }
+    if datestamp is not None:
+        config_env["NOW"] = datestamp
+    if image_format is not None:
+        config_env["IMAGEFORMAT"] = image_format
+    if proposed:
+        config_env["PROPOSED"] = "1"
+    if extra_ppas:
+        config_env["EXTRA_PPAS"] = " ".join(extra_ppas)
+    if extra_snaps:
+        config_env["EXTRA_SNAPS"] = " ".join(extra_snaps)
+    if build_type is not None:
+        config_env["BUILD_TYPE"] = build_type
+    if mirror is not None:
+        config_env["MIRROR"] = mirror
+
+    work_dir = work_dir.resolve()
+    work_dir.mkdir(parents=True, exist_ok=True)
+
+    # Create/replace auto/ symlinks
+    auto_dir = work_dir / "auto"
+    auto_dir.mkdir(exist_ok=True)
+    for script in ("config", "build", "clean"):
+        link = auto_dir / script
+        if link.is_symlink() or link.exists():
+            link.unlink()
+        link.symlink_to(auto_source / script)
+
+    # Write debug.sh if requested
+    if debug:
+        debug_dir = work_dir / "local" / "functions"
+        debug_dir.mkdir(parents=True, exist_ok=True)
+        (debug_dir / "debug.sh").write_text("set -x\n")
+
+    def run(cmd, env_extra):
+        env = os.environ.copy()
+        env.update(env_extra)
+        if os.getuid() != 0:
+            env_args = [f"{k}={v}" for k, v in env_extra.items()]
+            cmd = ["sudo", "env"] + env_args + cmd
+        subprocess.run(cmd, cwd=work_dir, env=env, check=True)
+
+    run(["lb", "clean", "--purge"], base_env)
+    run(["lb", "config"], config_env)
+    run(["lb", "build"], base_env)
+
+
+if __name__ == "__main__":
+    main()

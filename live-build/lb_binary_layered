@@ -180,7 +180,7 @@ build_layered_squashfs () {
 			# Operate on the upperdir directly, so that we are only
 			# modifying mtime on files that are actually changed in
 			# this layer. LP: #2107332
-			/usr/share/livecd-rootfs/sync-mtime chroot "$overlay_dir"
+			${LIVECD_ROOTFS_ROOT}/sync-mtime chroot "$overlay_dir"
 		fi
 
 		create_squashfs "${overlay_dir}" ${squashfs_f}
@@ -206,7 +206,7 @@ build_layered_squashfs () {
 			if [ -f config/seeded-languages ]; then
 				usc_opts="$usc_opts --langs $(cat config/seeded-languages)"
 			fi
-			/usr/share/livecd-rootfs/update-source-catalog source $usc_opts
+			${LIVECD_ROOTFS_ROOT}/update-source-catalog source $usc_opts
 		else
 			echo "No catalog entry template for $pass"
 		fi
@@ -227,7 +227,7 @@ done
 
 if [ -n "$DEFAULT_KERNEL" -a -f livecd.${PROJECT_FULL}.install-sources.yaml ]; then
 	write_kernel_yaml "$DEFAULT_KERNEL" "$BRIDGE_KERNEL_REASONS"
-	/usr/share/livecd-rootfs/update-source-catalog merge \
+	${LIVECD_ROOTFS_ROOT}/update-source-catalog merge \
 		--output livecd.${PROJECT_FULL}.install-sources.yaml \
 		--template config/kernel.yaml
 fi

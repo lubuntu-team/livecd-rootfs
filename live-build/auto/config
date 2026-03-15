@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+LIVECD_ROOTFS_ROOT=${LIVECD_ROOTFS_ROOT:-/usr/share/livecd-rootfs}
+
 case $ARCH:$SUBARCH in
 	amd64:|amd64:generic|amd64:intel-iot|\
 	arm64:|arm64:generic|arm64:raspi|arm64:snapdragon|arm64:nvidia|\
@@ -47,12 +49,12 @@ if [ -z "$MIRROR" ]; then
 fi
 
 mkdir -p config
-cp -af /usr/share/livecd-rootfs/live-build/functions config/functions
-cp -af /usr/share/livecd-rootfs/live-build/lb_*_layered config/
-cp -af /usr/share/livecd-rootfs/live-build/snap-seed-parse.py config/snap-seed-parse
-cp -af /usr/share/livecd-rootfs/live-build/snap-seed-missing-providers.py config/snap-seed-missing-providers
-cp -af /usr/share/livecd-rootfs/live-build/expand-task config/expand-task
-cp -af /usr/share/livecd-rootfs/live-build/squashfs-exclude-files config/
+cp -af ${LIVECD_ROOTFS_ROOT}/live-build/functions config/functions
+cp -af ${LIVECD_ROOTFS_ROOT}/live-build/lb_*_layered config/
+cp -af ${LIVECD_ROOTFS_ROOT}/live-build/snap-seed-parse.py config/snap-seed-parse
+cp -af ${LIVECD_ROOTFS_ROOT}/live-build/snap-seed-missing-providers.py config/snap-seed-missing-providers
+cp -af ${LIVECD_ROOTFS_ROOT}/live-build/expand-task config/expand-task
+cp -af ${LIVECD_ROOTFS_ROOT}/live-build/squashfs-exclude-files config/
 
 mkdir -p config/package-lists
 
@@ -390,7 +392,7 @@ if [ -z "${IMAGEFORMAT:-}" ]; then
 					;;
 			esac
 			;;
-		ubuntu-server:live|ubuntu-mini-iso:|ubuntu-core-installer:*)
+		ubuntu-server:live|ubuntu-mini-iso:|ubuntu-test-iso:|ubuntu-core-installer:*)
 			IMAGEFORMAT=plain
 			;;
 	esac
@@ -426,7 +428,7 @@ case $IMAGEFORMAT in
 			ubuntu-server:live|ubuntu-core-installer:*)
 				touch config/universe-enabled
 				;;
-			ubuntu-mini-iso:)
+			ubuntu-mini-iso:|ubuntu-test-iso:)
 				fs=none
 				;;
 			*)
@@ -636,7 +638,7 @@ case $PROJECT in
 esac
 
 case $PROJECT in
-	ubuntu-mini-iso)
+	ubuntu-mini-iso|ubuntu-test-iso)
 		COMPONENTS='main'
 		;;
 	edubuntu|ubuntu-budgie|ubuntucinnamon|ubuntukylin)
@@ -653,15 +655,24 @@ case $SUBPROJECT in
 		;;
 esac
 
-if ! [ -e config/germinate-output/structure ]; then
-        echo "Running germinate..."
-        if [ -n "$COMPONENTS" ]; then
-		GERMINATE_ARG="-c $(echo $COMPONENTS | sed -e's/ \+/,/g')"
-	fi
-        (cd config/germinate-output && germinate --no-rdepends --no-installer \
-                -S $SEEDMIRROR -m $MIRROR -d $SUITE,$SUITE-updates \
-                -s $FLAVOUR.$SUITE $GERMINATE_ARG -a ${ARCH_VARIANT:-$ARCH})
-fi
+case $PROJECT in
+	ubuntu-test-iso)
+		# ubuntu-test-iso uses only add_package (not add_task) and has no
+		# pool, so germinate output is never needed.
+		touch config/germinate-output/structure
+		;;
+	*)
+		if ! [ -e config/germinate-output/structure ]; then
+			echo "Running germinate..."
+			if [ -n "$COMPONENTS" ]; then
+				GERMINATE_ARG="-c $(echo $COMPONENTS | sed -e's/ \+/,/g')"
+			fi
+			(cd config/germinate-output && germinate --no-rdepends --no-installer \
+				-S $SEEDMIRROR -m $MIRROR -d $SUITE,$SUITE-updates \
+				-s $FLAVOUR.$SUITE $GERMINATE_ARG -a ${ARCH_VARIANT:-$ARCH})
+		fi
+		;;
+esac
 
 # ISO build configuration. These defaults are overridden per-project below.
 #
@@ -674,6 +685,9 @@ MAKE_ISO=no
 # - "server-ship-live" for Ubuntu Server (includes server-specific packages)
 # - "" (empty) for images without a pool, like Ubuntu Core Installer
 POOL_SEED_NAME=ship-live
+# SQUASHFS_COMP: compression algorithm for squashfs images. lz4 is ~10x
+# faster than xz and useful for test builds that don't need small images.
+SQUASHFS_COMP=xz
 
 # Common functionality for layered desktop images
 common_layered_desktop_image() {
@@ -804,7 +818,7 @@ do_layered_desktop_image() {
 	DEFAULT_KERNEL="linux-$KERNEL_FLAVOURS"
 
 	if [ "$LOCALE_SUPPORT" != none ]; then
-		/usr/share/livecd-rootfs/checkout-translations-branch \
+		${LIVECD_ROOTFS_ROOT}/checkout-translations-branch \
 			https://git.launchpad.net/subiquity po \
 			config/catalog-translations
 	fi
@@ -1124,7 +1138,7 @@ case $PROJECT in
 				NO_SQUASHFS_PASSES=ubuntu-server-minimal.ubuntu-server.installer.$flavor.netboot
 
 				DEFAULT_KERNEL="$kernel_metapkg"
-				/usr/share/livecd-rootfs/checkout-translations-branch \
+				${LIVECD_ROOTFS_ROOT}/checkout-translations-branch \
 					https://git.launchpad.net/subiquity po config/catalog-translations
 				;;
 			*)
@@ -1142,7 +1156,7 @@ case $PROJECT in
 	    # created in ubuntu-core-installer/hooks/05-prepare-image.binary, which
 	    # subiquity knows how to install.
 	    if [ ${SUBPROJECT} == "desktop" ]; then
-		cp /usr/share/livecd-rootfs/live-build/${PROJECT}/ubuntu-core-desktop-24-amd64.model-assertion config/
+		cp ${LIVECD_ROOTFS_ROOT}/live-build/${PROJECT}/ubuntu-core-desktop-24-amd64.model-assertion config/
 	    fi
 	    OPTS="${OPTS:+$OPTS }--bootstrap-flavour=minimal"
 	    PASSES_TO_LAYERS=true
@@ -1156,7 +1170,7 @@ case $PROJECT in
 	    USE_BRIDGE_KERNEL=false
 	    DEFAULT_KERNEL="snap:pc-kernel"
 
-	    /usr/share/livecd-rootfs/checkout-translations-branch \
+	    ${LIVECD_ROOTFS_ROOT}/checkout-translations-branch \
 		https://git.launchpad.net/subiquity po config/catalog-translations
 	    ;;
 
@@ -1176,6 +1190,22 @@ case $PROJECT in
 				echo "unexpected architecture for $PROJECT: '$ARCH'"
 				exit 1
 				;;
+		esac
+		;;
+
+	ubuntu-test-iso)
+		OPTS="${OPTS:+$OPTS }--bootstrap-flavour=minimal"
+		KERNEL_FLAVOURS=virtual
+		BINARY_REMOVE_LINUX=false
+		MAKE_ISO=yes
+		POOL_SEED_NAME=
+		SQUASHFS_COMP=lz4
+		PASSES_TO_LAYERS=true
+		add_package base linux-$KERNEL_FLAVOURS
+		add_package base.live casper
+		case $ARCH in
+			amd64) ;;
+			*) echo "ubuntu-test-iso only supports amd64"; exit 1 ;;
 		esac
 		;;
 
@@ -1278,7 +1308,7 @@ case $SUBPROJECT in
 		# and a variety of things fail without it.
 		add_package install tzdata
 
-		cp -af /usr/share/livecd-rootfs/live-build/make-lxd-metadata.py config/make-lxd-metadata
+		cp -af ${LIVECD_ROOTFS_ROOT}/live-build/make-lxd-metadata.py config/make-lxd-metadata
 		;;
 esac
 
@@ -1403,11 +1433,13 @@ echo "LB_CHROOT_HOOKS=\"$CHROOT_HOOKS\"" >> config/chroot
 echo "SUBPROJECT=\"${SUBPROJECT:-}\"" >> config/chroot
 echo "LB_DISTRIBUTION=\"$SUITE\"" >> config/chroot
 echo "IMAGEFORMAT=\"$IMAGEFORMAT\"" >> config/chroot
+echo "LIVECD_ROOTFS_ROOT=\"$LIVECD_ROOTFS_ROOT\"" >> config/common
 if [ -n "$PASSES" ]; then
 	echo "PASSES=\"$PASSES\"" >> config/common
 fi
 echo "MAKE_ISO=\"$MAKE_ISO\"" >> config/common
 echo "POOL_SEED_NAME=\"$POOL_SEED_NAME\"" >> config/common
+echo "SQUASHFS_COMP=\"$SQUASHFS_COMP\"" >> config/common
 if [ -n "$NO_SQUASHFS_PASSES" ]; then
     echo "NO_SQUASHFS_PASSES=\"$NO_SQUASHFS_PASSES\"" >> config/common
 fi
@@ -1443,7 +1475,7 @@ rm -fv /etc/ssl/private/ssl-cert-snakeoil.key \
 EOF
 
 case $PROJECT in
-  ubuntu-cpc|ubuntu-core|ubuntu-base|ubuntu-oci|ubuntu-wsl|ubuntu-mini-iso)
+  ubuntu-cpc|ubuntu-core|ubuntu-base|ubuntu-oci|ubuntu-wsl|ubuntu-mini-iso|ubuntu-test-iso)
     # ubuntu-cpc gets this added in 025-create-groups.chroot, and we do
     # not want this group in projects that are effectively just chroots
     ;;
@@ -1531,11 +1563,11 @@ fi
 
 case $PROJECT:${SUBPROJECT:-} in
 	ubuntu-cpc:*|ubuntu-server:live|ubuntu:desktop-preinstalled| \
-		ubuntu-wsl:*|ubuntu-mini-iso:*|ubuntu:|ubuntu:dangerous|ubuntu-oem:*| \
+		ubuntu-wsl:*|ubuntu-mini-iso:*|ubuntu-test-iso:*|ubuntu:|ubuntu:dangerous|ubuntu-oem:*| \
 		ubuntustudio:*|edubuntu:*|ubuntu-budgie:*|ubuntucinnamon:*|xubuntu:*| \
 	        ubuntukylin:*|ubuntu-mate:*|ubuntu-core-installer:*|lubuntu:*)
 		# Ensure that most things e.g. includes.chroot are copied as is
-		for entry in /usr/share/livecd-rootfs/live-build/${PROJECT}/*; do
+		for entry in ${LIVECD_ROOTFS_ROOT}/live-build/${PROJECT}/*; do
 			case $entry in
 				*hooks*)
 					# But hooks are shared across the projects with symlinks
@@ -1570,11 +1602,11 @@ esac
 case $PROJECT in
 	ubuntu-oem|ubuntustudio|edubuntu|ubuntu-budgie|ubuntucinnamon| \
 	xubuntu|ubuntukylin|ubuntu-mate|lubuntu)
-		cp -af /usr/share/livecd-rootfs/live-build/ubuntu/includes.chroot \
+		cp -af ${LIVECD_ROOTFS_ROOT}/live-build/ubuntu/includes.chroot \
 			config/includes.chroot
 
 		LIVE_LAYER=${LIVE_PREFIX}live
-		cp -af /usr/share/livecd-rootfs/live-build/ubuntu/includes.chroot.minimal.standard.live \
+		cp -af ${LIVECD_ROOTFS_ROOT}/live-build/ubuntu/includes.chroot.minimal.standard.live \
 			config/includes.chroot.$LIVE_LAYER
 
 		if [ $PROJECT != ubuntu-oem ]; then
@@ -1590,7 +1622,7 @@ esac
 
 case $SUBPROJECT in
 	buildd)
-		cp -af /usr/share/livecd-rootfs/live-build/buildd/* config/
+		cp -af ${LIVECD_ROOTFS_ROOT}/live-build/buildd/* config/
 		;;
 esac
 
@@ -1614,7 +1646,7 @@ if [ "$EXTRA_PPAS" ]; then
 			extra_ppa=${extra_ppa%:*}
 			;;
 		esac
-		extra_ppa_fingerprint="$(/usr/share/livecd-rootfs/get-ppa-fingerprint "$extra_ppa")"
+		extra_ppa_fingerprint="$(${LIVECD_ROOTFS_ROOT}/get-ppa-fingerprint "$extra_ppa")"
 
 		cat >> config/archives/extra-ppas.list.chroot <<EOF
 deb https://ppa.launchpadcontent.net/$extra_ppa/ubuntu @DISTRIBUTION@ main
@@ -1704,8 +1736,19 @@ fi
 
 if [ "${MAKE_ISO}" = "yes" ]; then
 	# XXX should pass --build-type here.
-	/usr/share/livecd-rootfs/live-build/gen-iso-ids \
+	${LIVECD_ROOTFS_ROOT}/live-build/gen-iso-ids \
 		--project $PROJECT ${SUBPROJECT:+--subproject $SUBPROJECT} \
 		--arch $ARCH ${SUBARCH:+--subarch $SUBARCH} ${NOW+--serial $NOW} \
 		--output-dir config/iso-ids/
+fi
+
+if [ -n "$http_proxy" ]; then
+    mkdir -p /etc/systemd/system/snapd.service.d/
+    cat > /etc/systemd/system/snapd.service.d/snap_proxy.conf <<EOF
+[Service]
+Environment="HTTP_PROXY=${http_proxy}"
+Environment="HTTPS_PROXY=${http_proxy}"
+EOF
+    systemctl daemon-reload
+    systemctl restart snapd.service
 fi

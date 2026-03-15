@@ -42,6 +42,7 @@ project_to_capproject_map = {
     "ubuntu-core-installer": "Ubuntu-Core-Installer",
     "ubuntu-mate": "Ubuntu-MATE",
     "ubuntu-mini-iso": "Ubuntu-Mini-ISO",
+    "ubuntu-test-iso": "Ubuntu-Test-ISO",
     "ubuntu-oem": "Ubuntu OEM",
     "ubuntu-server": "Ubuntu-Server",
     "ubuntu-unity": "Ubuntu-Unity",

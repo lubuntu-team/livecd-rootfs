@@ -237,7 +237,7 @@ create_chroot_pass () {
 	lb chroot_interactive ${*}
 
 	# Misc ubuntu cleanup and post-layer configuration
-	/usr/share/livecd-rootfs/minimize-manual chroot
+	${LIVECD_ROOTFS_ROOT}/minimize-manual chroot
 	clean_debian_chroot
 
 	Chroot chroot "dpkg-query -W" > chroot.packages.${pass}
