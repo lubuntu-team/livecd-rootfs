@@ -1,4 +1,4 @@
-livecd-rootfs (26.04.24) UNRELEASED; urgency=medium
+livecd-rootfs (26.04.24) resolute; urgency=medium
 
   [ Allen Abraham ]
   * Added a hook to produce a working minimal Ubuntu image using imagecraft
@@ -10,7 +10,7 @@ livecd-rootfs (26.04.24) UNRELEASED; urgency=medium
       invoking lb clean/config/build with the right environment.
     - Add a build-livefs-lxd script to run the above script in a lxd vm.
 
- -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Mon, 23 Feb 2026 15:02:42 +1300
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Mon, 16 Mar 2026 11:05:13 +1300
 
 livecd-rootfs (26.04.23) resolute; urgency=medium
 
