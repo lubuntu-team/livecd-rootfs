@@ -49,7 +49,9 @@ if [ -z "$MIRROR" ]; then
 fi
 
 mkdir -p config
-cp -af ${LIVECD_ROOTFS_ROOT}/live-build/functions config/functions
+echo "LIVECD_ROOTFS_ROOT=\"$LIVECD_ROOTFS_ROOT\"" > config/functions
+chmod --reference=${LIVECD_ROOTFS_ROOT}/live-build/functions config/functions
+cat ${LIVECD_ROOTFS_ROOT}/live-build/functions >> config/functions
 cp -af ${LIVECD_ROOTFS_ROOT}/live-build/lb_*_layered config/
 cp -af ${LIVECD_ROOTFS_ROOT}/live-build/snap-seed-parse.py config/snap-seed-parse
 cp -af ${LIVECD_ROOTFS_ROOT}/live-build/snap-seed-missing-providers.py config/snap-seed-missing-providers
