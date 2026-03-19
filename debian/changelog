@@ -1,9 +1,9 @@
-livecd-rootfs (26.04.25) UNRELEASED; urgency=medium
+livecd-rootfs (26.04.25) resolute; urgency=medium
 
   * bake LIVECD_ROOTFS_ROOT into config/functions, fixing some build failures
     (for at least ubuntu and some ubuntu-cpc configurations).
 
- -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Fri, 20 Mar 2026 06:46:14 +1300
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Fri, 20 Mar 2026 06:47:44 +1300
 
 livecd-rootfs (26.04.24) resolute; urgency=medium
 
