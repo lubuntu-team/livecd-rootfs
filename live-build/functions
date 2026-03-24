@@ -1456,3 +1456,17 @@ gpt_root_partition_uuid() {
 isobuild () {
     PYTHONPATH=${LIVECD_ROOTFS_ROOT}/live-build/ ${LIVECD_ROOTFS_ROOT}/live-build/isobuild --workdir config/iso-dir "$@"
 }
+
+CASPER_DIR=config/iso-dir/iso-root/casper
+
+# Install kernel+initrd into the ISO casper directory.
+# Usage: iso_install_kernel <flavor> <kernel-path> <initrd-path>
+iso_install_kernel() {
+    local flavor=$1 kernel=$2 initrd=$3
+    local kernel_name=vmlinuz
+    case $ARCH in ppc64el) kernel_name=vmlinux ;; esac
+    local prefix=""
+    case $flavor in *-hwe) prefix="hwe-" ;; esac
+    cp "$kernel" "$CASPER_DIR/${prefix}${kernel_name}"
+    cp "$initrd" "$CASPER_DIR/${prefix}initrd"
+}

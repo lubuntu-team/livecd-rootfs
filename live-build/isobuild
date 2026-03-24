@@ -39,10 +39,9 @@
 # Generate an apt deb822 source for the pool, assuming it is mounted at the
 # passed mountpoint, and output it on stdout.
 #
-# $ isobuild --work-dir "" add-live-filesystem --artifact-prefix ""
+# $ isobuild --work-dir "" extract-casper-uuids
 #
-# Copy the relevant artifacts to the casper directory (and extract the uuids
-# from the initrds)
+# Extract casper UUID files from the initrds in the casper directory.
 #
 # $ isobuild --work-dir "" make-bootable --project "" --capitalized-project ""
 #            --subarch ""
@@ -169,14 +168,9 @@ def generate_sources(builder, mountpoint: str):
     builder.generate_sources(mountpoint)
 
 
-@click.option(
-    "--artifact-prefix",
-    type=click.Path(dir_okay=False, resolve_path=True, path_type=pathlib.Path),
-    required=True,
-)
 @subcommand
-def add_live_filesystem(builder, artifact_prefix: pathlib.Path):
-    builder.add_live_filesystem(artifact_prefix)
+def extract_casper_uuids(builder):
+    builder.extract_casper_uuids()
 
 
 @click.option(

@@ -61,7 +61,7 @@ build_layered_squashfs () {
 
 	# Building squashfs filesystem & manifest
 	local overlay_dir="overlay.${pass}"
-	base="${PWD}/livecd.${PROJECT_FULL}.${pass}"
+	base="${PWD}/${CASPER_DIR}/${pass}"
 	squashfs_f="${base}.squashfs"
 
 	# We have already treated that pass
@@ -116,31 +116,12 @@ build_layered_squashfs () {
 		create_manifest "chroot" "${squashfs_f_manifest}.full"
 
 		# Delta manifest
-		diff -NU0 ${PWD}/livecd.${PROJECT_FULL}.$(get_parent_pass $pass).manifest.full ${squashfs_f_manifest}.full|grep -v ^@ > $squashfs_f_manifest || true
+		diff -NU0 ${PWD}/${CASPER_DIR}/$(get_parent_pass $pass).manifest.full ${squashfs_f_manifest}.full|grep -v ^@ > $squashfs_f_manifest || true
 		echo "Delta manifest:"
 		cat $squashfs_f_manifest
 
 		squashfs_f_size="${base}.size"
 		du -B 1 -s "overlay.${pass}/" | cut -f1 > "${squashfs_f_size}"
-
-		# We take first live pass for "global" ISO properties (used by installers and checkers):
-		# Prepare initrd + kernel
-		# Main manifest and size files
-		prefix="livecd.$PROJECT_FULL"
-		if [ ! -e "${prefix}.manifest" ] && $(is_live_layer "$pass"); then
-			totalsize=$(cat ${squashfs_f_size})
-			curpass="$pass"
-			while :; do
-				curpass=$(get_parent_pass $curpass)
-				# We climbed up the tree to the root layer, we are done
-				[ -z "$curpass" ] && break
-
-				totalsize=$(expr $totalsize + $(cat "${PWD}/livecd.${PROJECT_FULL}.${curpass}.size"))
-			done
-			echo ${totalsize} > "${prefix}.size"
-
-			cp "${squashfs_f_manifest}.full" "${prefix}.manifest"
-		fi
 
 		if [ -n "$lowerdirs" ]; then
 			# Although the current chroot was created as an overlay over
@@ -183,23 +164,17 @@ build_layered_squashfs () {
 			${LIVECD_ROOTFS_ROOT}/sync-mtime chroot "$overlay_dir"
 		fi
 
-		create_squashfs "${overlay_dir}" ${squashfs_f}
-		# Create a "for-iso" variant of the squashfs for ISO builds. For
-		# the root layer (the base system) when building with a pool, we
-		# need to include cdrom.sources so casper can access the ISO's
-		# package repository. This requires regenerating the squashfs with
-		# that file included, then removing it (so it doesn't pollute the
-		# regular squashfs). Non-root layers (desktop environment, etc.)
-		# and builds without pools can just hardlink to the regular squashfs.
+		# For the root layer when building with a pool, include
+		# cdrom.sources so casper can access the ISO's package repository.
 		if [ -n "${POOL_SEED_NAME}" ] && $(is_root_layer $pass); then
 			isobuild generate-sources --mountpoint=/cdrom > ${overlay_dir}/etc/apt/sources.list.d/cdrom.sources
-			create_squashfs "${overlay_dir}" ${PWD}/for-iso.${pass}.squashfs
-			rm ${overlay_dir}/etc/apt/sources.list.d/cdrom.sources
 		fi
+		create_squashfs "${overlay_dir}" ${squashfs_f}
+		rm -f ${overlay_dir}/etc/apt/sources.list.d/cdrom.sources
 
 		if [ -f config/$pass.catalog-in.yaml ]; then
 			echo "Expanding catalog entry template for $pass"
-			usc_opts="--output livecd.${PROJECT_FULL}.install-sources.yaml \
+			usc_opts="--output ${CASPER_DIR}/install-sources.yaml \
 				--template config/$pass.catalog-in.yaml \
 				--size $(du -B 1 -s chroot/ | cut -f1) --squashfs ${pass}.squashfs \
 				--translations config/catalog-translations"
@@ -225,25 +200,11 @@ do
 	build_layered_squashfs "${_PASS}" ${*}
 done
 
-if [ -n "$DEFAULT_KERNEL" -a -f livecd.${PROJECT_FULL}.install-sources.yaml ]; then
+if [ -n "$DEFAULT_KERNEL" -a -f ${CASPER_DIR}/install-sources.yaml ]; then
 	write_kernel_yaml "$DEFAULT_KERNEL" "$BRIDGE_KERNEL_REASONS"
 	${LIVECD_ROOTFS_ROOT}/update-source-catalog merge \
-		--output livecd.${PROJECT_FULL}.install-sources.yaml \
+		--output ${CASPER_DIR}/install-sources.yaml \
 		--template config/kernel.yaml
 fi
 
-# Ubiquity-compatible removal manifest for ISO not using a layered-aware installer
-if [ -n "$(ls livecd.${PROJECT_FULL}.*install.live.manifest.full 2>/dev/null)" ] && \
-   [ -n "$(ls livecd.${PROJECT_FULL}.*install.manifest.full 2>/dev/null)" ]; then
-	echo "$(diff livecd.${PROJECT_FULL}.*install.live.manifest.full livecd.${PROJECT_FULL}.*install.manifest.full | awk '/^< / { print $2 }')" > livecd.${PROJECT_FULL}-manifest-remove
-fi
-
-chmod 644 *.squashfs *.manifest* *.size
-
-prefix=livecd.${PROJECT_FULL}
-for artifact in ${prefix}.*; do
-	for_iso_path=for-iso${artifact#${prefix}}
-	if [ ! -f $for_iso_path ]; then
-		ln -v $artifact $for_iso_path
-	fi
-done
+chmod 644 ${CASPER_DIR}/*.squashfs ${CASPER_DIR}/*.manifest* ${CASPER_DIR}/*.size

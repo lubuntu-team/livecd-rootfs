@@ -424,144 +424,149 @@ case $LB_INITRAMFS in
 		;;
 esac
 
-for OUTPUT in ext2 ext3 ext4 manifest manifest-remove size squashfs; do
-	[ -e "binary/$INITFS/filesystem.$OUTPUT" ] || continue
-	ln "binary/$INITFS/filesystem.$OUTPUT" "$PREFIX.$OUTPUT"
-	chmod 644 "$PREFIX.$OUTPUT"
-done
+# For MAKE_ISO=yes builds, artifacts (squashfs, kernel, initrd, manifests) are
+# placed directly into the ISO tree by lb_binary_layered and binary hooks.
+# Only create livecd.* intermediate artifacts for non-ISO builds.
+if [ "${MAKE_ISO}" != "yes" ]; then
+	for OUTPUT in ext2 ext3 ext4 manifest manifest-remove size squashfs; do
+		[ -e "binary/$INITFS/filesystem.$OUTPUT" ] || continue
+		ln "binary/$INITFS/filesystem.$OUTPUT" "$PREFIX.$OUTPUT"
+		chmod 644 "$PREFIX.$OUTPUT"
+	done
 
-# we don't need a manifest-remove for a layered-aware installer
-# here we have a list of all new-installer flavors
-case $PROJECT in
-	ubuntu|ubuntu-budgie|lubuntu)
-		rm -f livecd.${PROJECT}-manifest-remove
-		rm -f config/manifest-minimal-remove
-		;;
-esac
-
-if [ -e config/manifest-minimal-remove ]; then
-        cp config/manifest-minimal-remove  "$PREFIX.manifest-minimal-remove"
-fi
-
-if [ -e "binary/$INITFS/filesystem.dir" ]; then
-	(cd "binary/$INITFS/filesystem.dir/" && tar -c --sort=name --xattrs *) | \
-		gzip -9 --rsyncable > "$PREFIX.rootfs.tar.gz"
-	chmod 644 "$PREFIX.rootfs.tar.gz"
-elif [ -e binary-tar.tar.gz ]; then
-	cp -a binary-tar.tar.gz "$PREFIX.rootfs.tar.gz"
-fi
-
-# '--initramfs none' produces different manifest names.
-if [ -e "binary/$INITFS/filesystem.packages" ]; then
-	ln "binary/$INITFS/filesystem.packages" "$PREFIX.manifest"
-	chmod 644 "$PREFIX.manifest"
-fi
-
-# If a .filelist is present, use it as the filelist for the image by
-# symlinking with expected name and updating permissions
-if [ -e "binary/$INITFS/filesystem.filelist" ]; then
-	ln "binary/$INITFS/filesystem.filelist" "$PREFIX.filelist"
-	chmod 644 "$PREFIX.filelist"
-fi
-
-if [ -e "binary/$INITFS/filesystem.packages-remove" ]; then
-	# Not a typo, empty manifest-remove has a single LF in it. :/
-	if [ $(cat binary/$INITFS/filesystem.packages-remove | wc -c) -gt 1 ]; then
-		ln "binary/$INITFS/filesystem.packages-remove" "$PREFIX.manifest-remove"
-		chmod 644 "$PREFIX.manifest-remove"
-	fi
-fi
-
-# Since snaps are now Ubuntu first-class citizen, so always try fetching the
-# list of seeded snaps into the manifest.  In case of layered images we skip
-# this step, as we assume they're doing it on their own at some earlier stage.
-if [ -z "$PASSES" ] && [ -e "$PREFIX.manifest" ]; then
-	./config/snap-seed-parse "chroot/" "$PREFIX.manifest"
-fi
-
-for FLAVOUR in $LB_LINUX_FLAVOURS; do
-	if [ -z "$LB_LINUX_FLAVOURS" ] || [ "$LB_LINUX_FLAVOURS" = "none" ]; then
-		continue
-	fi
-	case $FLAVOUR in
-		allwinner|virtual|generic-hwe-*)
-			FLAVOUR="generic"
-			;;
-		oem-*)
-			FLAVOUR="oem"
-			;;
-		image-intel)
-			FLAVOUR="intel"
-			;;
-		intel-iotg*)
-			FLAVOUR="intel-iotg"
-			;;
-		lowlatency-hwe-*)
-			FLAVOUR="lowlatency"
-			;;
-		nvidia-hwe-*)
-			FLAVOUR="nvidia"
+	# we don't need a manifest-remove for a layered-aware installer
+	# here we have a list of all new-installer flavors
+	case $PROJECT in
+		ubuntu|ubuntu-budgie|lubuntu)
+			rm -f livecd.${PROJECT}-manifest-remove
+			rm -f config/manifest-minimal-remove
 			;;
 	esac
-	KVERS="$( (cd "binary/$INITFS"; ls vmlinu?-* 2>/dev/null || true) | (fgrep -v .efi || true) | sed -n "s/^vmlinu.-\\([^-]*-[^-]*-$FLAVOUR\\)$/\\1/p" )"
-	if [ -z "$KVERS" ]; then
-		if [ -e "binary/$INITFS/vmlinuz" ]; then
-			# already renamed by ubuntu-defaults-image
-			break
+
+	if [ -e config/manifest-minimal-remove ]; then
+		cp config/manifest-minimal-remove  "$PREFIX.manifest-minimal-remove"
+	fi
+
+	if [ -e "binary/$INITFS/filesystem.dir" ]; then
+		(cd "binary/$INITFS/filesystem.dir/" && tar -c --sort=name --xattrs *) | \
+			gzip -9 --rsyncable > "$PREFIX.rootfs.tar.gz"
+		chmod 644 "$PREFIX.rootfs.tar.gz"
+	elif [ -e binary-tar.tar.gz ]; then
+		cp -a binary-tar.tar.gz "$PREFIX.rootfs.tar.gz"
+	fi
+
+	# '--initramfs none' produces different manifest names.
+	if [ -e "binary/$INITFS/filesystem.packages" ]; then
+		ln "binary/$INITFS/filesystem.packages" "$PREFIX.manifest"
+		chmod 644 "$PREFIX.manifest"
+	fi
+
+	# If a .filelist is present, use it as the filelist for the image by
+	# symlinking with expected name and updating permissions
+	if [ -e "binary/$INITFS/filesystem.filelist" ]; then
+		ln "binary/$INITFS/filesystem.filelist" "$PREFIX.filelist"
+		chmod 644 "$PREFIX.filelist"
+	fi
+
+	if [ -e "binary/$INITFS/filesystem.packages-remove" ]; then
+		# Not a typo, empty manifest-remove has a single LF in it. :/
+		if [ $(cat binary/$INITFS/filesystem.packages-remove | wc -c) -gt 1 ]; then
+			ln "binary/$INITFS/filesystem.packages-remove" "$PREFIX.manifest-remove"
+			chmod 644 "$PREFIX.manifest-remove"
 		fi
-		echo "No kernel output for $FLAVOUR!" >&2
-		exit 1
 	fi
-	NUMKVERS="$(set -- $KVERS; echo $#)"
-	if [ "$NUMKVERS" -gt 1 ]; then
-		echo "Cannot handle more than one kernel for $FLAVOUR ($KVERS)!" >&2
-		exit 1
-	fi
-	ln "binary/$INITFS/"vmlinu?-"$KVERS" "$PREFIX.kernel-$FLAVOUR"
-	if [ -e "binary/$INITFS/"vmlinu?-"$KVERS.efi.signed" ]; then
-		ln "binary/$INITFS/"vmlinu?-"$KVERS.efi.signed" "$PREFIX.kernel-$FLAVOUR.efi.signed"
-		chmod 644 "$PREFIX.kernel-$FLAVOUR.efi.signed"
-	fi
-	chmod 644 "$PREFIX.kernel-$FLAVOUR"
-	if [ -e "binary/$INITFS/initrd.img-$KVERS" ]; then
-		ln "binary/$INITFS/initrd.img-$KVERS" "$PREFIX.initrd-$FLAVOUR"
-		chmod 644 "$PREFIX.initrd-$FLAVOUR"
-	fi
-done
 
-NUMFLAVOURS="$(set -- $LB_LINUX_FLAVOURS; echo $#)"
-if [ "$NUMFLAVOURS" = 1 ] && [ "$LB_LINUX_FLAVOURS" != "none" ]; then
-	# only one kernel flavour
-	if [ -f "binary/$INITFS/vmlinuz" ] && ! [ -h "binary/$INITFS/vmlinuz" ]; then
-		ln "binary/$INITFS/vmlinuz" "$PREFIX.kernel"
-		chmod 644 "$PREFIX.kernel"
-	else
-		ln -sf "$PREFIX.kernel-$LB_LINUX_FLAVOURS" "$PREFIX.kernel"
+	# Since snaps are now Ubuntu first-class citizen, so always try fetching the
+	# list of seeded snaps into the manifest.  In case of layered images we skip
+	# this step, as we assume they're doing it on their own at some earlier stage.
+	if [ -z "$PASSES" ] && [ -e "$PREFIX.manifest" ]; then
+		./config/snap-seed-parse "chroot/" "$PREFIX.manifest"
 	fi
-	if [ -f "binary/$INITFS/initrd.lz" ] && ! [ -h "binary/$INITFS/initrd.lz" ]; then
-		ln "binary/$INITFS/initrd.lz" "$PREFIX.initrd"
-		chmod 644 "$PREFIX.initrd"
-	else
-		ln -sf "$PREFIX.initrd-$LB_LINUX_FLAVOURS" "$PREFIX.initrd"
+
+	for FLAVOUR in $LB_LINUX_FLAVOURS; do
+		if [ -z "$LB_LINUX_FLAVOURS" ] || [ "$LB_LINUX_FLAVOURS" = "none" ]; then
+			continue
+		fi
+		case $FLAVOUR in
+			allwinner|virtual|generic-hwe-*)
+				FLAVOUR="generic"
+				;;
+			oem-*)
+				FLAVOUR="oem"
+				;;
+			image-intel)
+				FLAVOUR="intel"
+				;;
+			intel-iotg*)
+				FLAVOUR="intel-iotg"
+				;;
+			lowlatency-hwe-*)
+				FLAVOUR="lowlatency"
+				;;
+			nvidia-hwe-*)
+				FLAVOUR="nvidia"
+				;;
+		esac
+		KVERS="$( (cd "binary/$INITFS"; ls vmlinu?-* 2>/dev/null || true) | (fgrep -v .efi || true) | sed -n "s/^vmlinu.-\\([^-]*-[^-]*-$FLAVOUR\\)$/\\1/p" )"
+		if [ -z "$KVERS" ]; then
+			if [ -e "binary/$INITFS/vmlinuz" ]; then
+				# already renamed by ubuntu-defaults-image
+				break
+			fi
+			echo "No kernel output for $FLAVOUR!" >&2
+			exit 1
+		fi
+		NUMKVERS="$(set -- $KVERS; echo $#)"
+		if [ "$NUMKVERS" -gt 1 ]; then
+			echo "Cannot handle more than one kernel for $FLAVOUR ($KVERS)!" >&2
+			exit 1
+		fi
+		ln "binary/$INITFS/"vmlinu?-"$KVERS" "$PREFIX.kernel-$FLAVOUR"
+		if [ -e "binary/$INITFS/"vmlinu?-"$KVERS.efi.signed" ]; then
+			ln "binary/$INITFS/"vmlinu?-"$KVERS.efi.signed" "$PREFIX.kernel-$FLAVOUR.efi.signed"
+			chmod 644 "$PREFIX.kernel-$FLAVOUR.efi.signed"
+		fi
+		chmod 644 "$PREFIX.kernel-$FLAVOUR"
+		if [ -e "binary/$INITFS/initrd.img-$KVERS" ]; then
+			ln "binary/$INITFS/initrd.img-$KVERS" "$PREFIX.initrd-$FLAVOUR"
+			chmod 644 "$PREFIX.initrd-$FLAVOUR"
+		fi
+	done
+
+	NUMFLAVOURS="$(set -- $LB_LINUX_FLAVOURS; echo $#)"
+	if [ "$NUMFLAVOURS" = 1 ] && [ "$LB_LINUX_FLAVOURS" != "none" ]; then
+		# only one kernel flavour
+		if [ -f "binary/$INITFS/vmlinuz" ] && ! [ -h "binary/$INITFS/vmlinuz" ]; then
+			ln "binary/$INITFS/vmlinuz" "$PREFIX.kernel"
+			chmod 644 "$PREFIX.kernel"
+		else
+			ln -sf "$PREFIX.kernel-$LB_LINUX_FLAVOURS" "$PREFIX.kernel"
+		fi
+		if [ -f "binary/$INITFS/initrd.lz" ] && ! [ -h "binary/$INITFS/initrd.lz" ]; then
+			ln "binary/$INITFS/initrd.lz" "$PREFIX.initrd"
+			chmod 644 "$PREFIX.initrd"
+		else
+			ln -sf "$PREFIX.initrd-$LB_LINUX_FLAVOURS" "$PREFIX.initrd"
+		fi
 	fi
+
+	case $SUBARCH in
+		raspi)
+			# copy the kernel and initrd to a predictable directory for
+			# ubuntu-image consumption.  In some cases, like in pi2/3
+			# u-boot, the bootloader needs to contain the kernel and initrd,
+			# so during rootfs build we copy it over to a directory that
+			# ubuntu-image looks for and shoves into the bootloader
+			# partition.
+			UBOOT_BOOT="image/boot/uboot"
+
+			mkdir -p $UBOOT_BOOT
+
+			cp $PREFIX.initrd $UBOOT_BOOT/initrd.img || true
+			cp $PREFIX.kernel $UBOOT_BOOT/vmlinuz || true
+			;;
+	esac
 fi
-
-case $SUBARCH in
-	raspi)
-		# copy the kernel and initrd to a predictable directory for
-		# ubuntu-image consumption.  In some cases, like in pi2/3
-		# u-boot, the bootloader needs to contain the kernel and initrd,
-		# so during rootfs build we copy it over to a directory that
-		# ubuntu-image looks for and shoves into the bootloader
-		# partition.
-		UBOOT_BOOT="image/boot/uboot"
-
-		mkdir -p $UBOOT_BOOT
-
-		cp $PREFIX.initrd $UBOOT_BOOT/initrd.img || true
-		cp $PREFIX.kernel $UBOOT_BOOT/vmlinuz || true
-		;;
-esac
 
 case $PROJECT in
     ubuntu-cpc)
@@ -569,25 +574,14 @@ case $PROJECT in
 esac
 
 if [ "${MAKE_ISO}" = "yes" ]; then
-	# Link build artifacts with "for-iso." prefix for isobuild to consume.
-	# Layered builds create squashfs via lb_binary_layered (which already
-	# creates for-iso.*.squashfs files). Single-pass builds only have
-	# ${PREFIX}.squashfs, which does not contain cdrom.sources, so we
-	# create a for-iso.filesystem.squashfs that does.
+	# For non-layered builds, create squashfs with cdrom.sources directly
+	# in casper/. Layered builds already handle this in lb_binary_layered.
 	if [ -z "$PASSES" ]; then
 		isobuild generate-sources --mountpoint=/cdrom > chroot/etc/apt/sources.list.d/cdrom.sources
-		create_squashfs chroot ${PWD}/for-iso.filesystem.squashfs
+		create_squashfs chroot ${CASPER_DIR}/filesystem.squashfs
+		rm chroot/etc/apt/sources.list.d/cdrom.sources
 	fi
-	# Link kernel and initrd files. The ${thing#${PREFIX}} expansion strips
-	# the PREFIX, so "livecd.ubuntu-server.kernel-generic" becomes
-	# "for-iso.kernel-generic".
-	for thing in ${PREFIX}.kernel-* ${PREFIX}.initrd-*; do
-		for_iso_path=for-iso${thing#${PREFIX}}
-		if [ ! -f $for_iso_path ]; then
-			ln -v $thing $for_iso_path
-		fi
-	done
-	isobuild add-live-filesystem --artifact-prefix for-iso.
+	isobuild extract-casper-uuids
 	isobuild make-bootable --project "${PROJECT}" --capproject "$(cat config/iso-ids/capproject)" \
 		${SUBARCH:+--subarch "${SUBARCH}"}
 	isobuild make-iso --volid "$(cat config/iso-ids/vol-id)" --dest ${PREFIX}.iso

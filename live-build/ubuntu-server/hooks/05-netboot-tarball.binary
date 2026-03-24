@@ -29,8 +29,14 @@ flavor=${flavor##*.}
 
 PROJECT=$PROJECT${SUBARCH:+-$SUBARCH}
 
-KERNEL=${PWD}/livecd.${PROJECT}.kernel-$flavor
-INITRD=${PWD}/livecd.${PROJECT}.initrd-$flavor
+# Read kernel/initrd from the ISO casper directory where iso_install_kernel
+# placed them.
+kernel_name=vmlinuz
+case $ARCH in ppc64el) kernel_name=vmlinux ;; esac
+casper_prefix=""
+case $flavor in *-hwe) casper_prefix="hwe-" ;; esac
+KERNEL=${CASPER_DIR}/${casper_prefix}${kernel_name}
+INITRD=${CASPER_DIR}/${casper_prefix}initrd
 
 mkdir -p tarball/$ARCH
 

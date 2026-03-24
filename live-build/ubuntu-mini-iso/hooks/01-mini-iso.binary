@@ -1,8 +1,6 @@
 #!/bin/sh
 
-# Create kernel/initrd artifacts for isobuilder to consume.
-# The standard MAKE_ISO flow in auto/build expects files named
-# ${PREFIX}.kernel-${flavour} and ${PREFIX}.initrd-${flavour}.
+# Install kernel/initrd directly into the ISO casper directory.
 
 set -eu
 
@@ -14,7 +12,4 @@ case $ARCH in
         ;;
 esac
 
-PREFIX="livecd.${PROJECT}"
-
-cp chroot/boot/vmlinuz "${PREFIX}.kernel-generic"
-cp chroot/boot/initrd.img "${PREFIX}.initrd-generic"
+iso_install_kernel generic chroot/boot/vmlinuz chroot/boot/initrd.img

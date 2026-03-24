@@ -13,9 +13,5 @@ case $PASS in
         ;;
 esac
 
-PROJECT=$PROJECT${SUBARCH:+-$SUBARCH}
-
-# Fish out generated kernel image and initrd
-mv chroot/boot/initrd.img-* ${PWD}/livecd.${PROJECT}.initrd-$flavor
-mv chroot/boot/vmlinu?-* ${PWD}/livecd.${PROJECT}.kernel-$flavor
-chmod a+r ${PWD}/livecd.${PROJECT}.initrd-$flavor ${PWD}/livecd.${PROJECT}.kernel-$flavor
+# Install kernel and initrd directly into the ISO casper directory
+iso_install_kernel "$flavor" chroot/boot/vmlinu?-* chroot/boot/initrd.img-*

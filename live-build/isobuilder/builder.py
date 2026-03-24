@@ -218,7 +218,7 @@ class ISOBuilder:
             )
         )
 
-    def _extract_casper_uuids(self):
+    def extract_casper_uuids(self):
         # Extract UUID files from initrd images for casper (the live boot system).
         # Each initrd contains a conf/uuid.conf with a unique identifier that
         # casper uses at boot time to locate the correct root filesystem. These
@@ -254,43 +254,6 @@ class ISOBuilder:
                     raise Exception(f"unexpected initrd name {initrd.name}")
                 uuid_conf.rename(dot_disk.joinpath(f"casper-uuid-{suffix}"))
                 shutil.rmtree(initrddir)
-
-    def add_live_filesystem(self, artifact_prefix: pathlib.Path):
-        casper_dir = self.iso_root.joinpath("casper")
-        artifact_dir = artifact_prefix.parent
-        filename_prefix = artifact_prefix.name
-
-        def link(src: pathlib.Path, target_name: str):
-            target = casper_dir.joinpath(target_name)
-            self.logger.log(
-                f"creating link from $ISOROOT/casper/{target_name} to $src/{src.name}"
-            )
-            target.hardlink_to(src)
-
-        kernel_name = "vmlinuz"
-        if self.arch in ("ppc64el", "riscv64"):
-            kernel_name = "vmlinux"
-
-        with self.logger.logged(
-            f"linking artifacts from {casper_dir} to {artifact_dir}"
-        ):
-            for ext in "squashfs", "squashfs.gpg", "size", "manifest", "yaml":
-                for path in artifact_dir.glob(f"{filename_prefix}*.{ext}"):
-                    newname = path.name[len(filename_prefix) :]
-                    link(path, newname)
-
-            for kernel_path in artifact_dir.glob(f"{filename_prefix}kernel*"):
-                suffix = kernel_path.name[len(filename_prefix) + len("kernel") :]
-                prefix = "hwe-" if suffix.endswith("-hwe") else ""
-                link(
-                    artifact_dir.joinpath(f"{filename_prefix}kernel{suffix}"),
-                    f"{prefix}{kernel_name}",
-                )
-                link(
-                    artifact_dir.joinpath(f"{filename_prefix}initrd{suffix}"),
-                    f"{prefix}initrd",
-                )
-        self._extract_casper_uuids()
 
     def make_bootable(self, project: str, capproject: str, subarch: str):
         configurator = make_boot_configurator_for_arch(
