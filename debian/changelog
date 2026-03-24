@@ -1,3 +1,11 @@
+livecd-rootfs (26.04.27) UNRELEASED; urgency=medium
+
+  * Only publish the ISOs, not the other bits, now that we are publishing the
+    ISOs on cdimage.
+  * Fix mini iso to not contain a pool or squashfs.
+
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Thu, 02 Apr 2026 12:32:40 +1300
+
 livecd-rootfs (26.04.26) resolute; urgency=medium
 
   * Ensure snapd tracks stable and not edge anymore.
