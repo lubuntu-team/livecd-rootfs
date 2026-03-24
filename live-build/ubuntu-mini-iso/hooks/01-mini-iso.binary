@@ -4,6 +4,8 @@
 
 set -eu
 
+. config/functions
+
 case $ARCH in
     amd64)
         ;;

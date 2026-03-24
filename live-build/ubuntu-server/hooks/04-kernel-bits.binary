@@ -1,6 +1,8 @@
 #!/bin/bash -eux
 # vi: ts=4 noexpandtab
 
+. config/functions
+
 case $PASS in
     ubuntu-server-minimal.ubuntu-server.installer.*.*)
         exit 0
