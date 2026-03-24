@@ -91,6 +91,20 @@ build_layered_squashfs () {
 
 	# Copy initrd and vmlinuz outside of chroot and remove them from the layer squashfs
 	if $(is_live_layer "$pass"); then
+		# For *.live passes (desktop builds), the kernel flavor comes from
+		# LB_LINUX_FLAVOURS.  For other live passes (server installer passes
+		# like "...installer.generic-hwe"), the flavor is encoded as the
+		# final dot-separated component of the pass name.
+		case "$pass" in
+			*.live)
+				for flavor in $LB_LINUX_FLAVOURS; do
+					iso_install_kernel "$flavor" chroot/boot/vmlinu?-* chroot/boot/initrd.img-*
+				done
+				;;
+			*)
+				iso_install_kernel "${pass##*.}" chroot/boot/vmlinu?-* chroot/boot/initrd.img-*
+				;;
+		esac
 		lb binary_linux-image ${*}
 		rm -f chroot/boot/initrd.img-* chroot/boot/vmlinu{x,z}-*
 	fi
