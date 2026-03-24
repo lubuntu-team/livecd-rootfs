@@ -580,6 +580,9 @@ if [ "${MAKE_ISO}" = "yes" ]; then
 		isobuild generate-sources --mountpoint=/cdrom > chroot/etc/apt/sources.list.d/cdrom.sources
 		create_squashfs chroot ${CASPER_DIR}/filesystem.squashfs
 		rm chroot/etc/apt/sources.list.d/cdrom.sources
+		for flavor in $LB_LINUX_FLAVOURS; do
+			iso_install_kernel "$flavor" binary/${INITFS}/vmlinu?-* binary/${INITFS}/initrd.img-*
+		done
 	fi
 	isobuild extract-casper-uuids
 	isobuild make-bootable --project "${PROJECT}" --capproject "$(cat config/iso-ids/capproject)" \
