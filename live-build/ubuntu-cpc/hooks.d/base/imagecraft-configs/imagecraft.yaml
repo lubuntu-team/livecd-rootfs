@@ -29,7 +29,7 @@ volumes:
         partition-number: 15
       # 3. Linux Extended Boot
       - name: boot
-        type: 0FC63DAF-8483-4772-8E79-3D69D8477DE4
+        type: BC13C2FF-59E6-4262-A352-B275FD6F7172
         filesystem: ext4
         filesystem-label: BOOT
         role: system-data
@@ -37,7 +37,7 @@ volumes:
         partition-number: 13
       # 4. Root Filesystem
       - name: rootfs
-        type: 0FC63DAF-8483-4772-8E79-3D69D8477DE4
+        type: 4F68BCE3-E8CD-4DB1-96E7-FBCAF984B709
         filesystem: ext4
         filesystem-label: cloudimg-rootfs
         role: system-data
@@ -59,46 +59,85 @@ parts:
     build-packages: ["mmdebstrap"]
     override-build: |
       mmdebstrap --arch $CRAFT_ARCH_BUILD_FOR \
-       --mode=sudo \
-       --format=dir \
-       --variant=minbase \
-       --include=apt \
-       resolute \
-       $CRAFT_PART_INSTALL/ \
-       http://archive.ubuntu.com/ubuntu/
+        --mode=sudo \
+        --format=dir \
+        --variant=minbase \
+        --include=apt \
+        --dpkgopt='path-exclude=/usr/share/man/*' \
+        --dpkgopt='path-exclude=/usr/share/locale/*/LC_MESSAGES/*.mo' \
+        --dpkgopt='path-exclude=/usr/share/doc/*' \
+        --dpkgopt='path-include=/usr/share/doc/*/copyright' \
+        --dpkgopt='path-include=/usr/share/doc/*/changelog.*' \
+        $LB_DISTRIBUTION \
+        $CRAFT_PART_INSTALL/ \
+        $LB_PARENT_MIRROR_BINARY
+
+      cat > $CRAFT_PART_INSTALL/etc/apt/sources.list << EOF
+      # Ubuntu sources have moved to the /etc/apt/sources.list.d/ubuntu.sources
+      # file, which uses the deb822 format. Use deb822-formatted .sources files
+      # to manage package sources in the /etc/apt/sources.list.d/ directory.
+      # See the sources.list(5) manual page for details.
+      EOF
+
+      mkdir -p $CRAFT_PART_INSTALL/etc/apt/sources.list.d
+      cat > $CRAFT_PART_INSTALL/etc/apt/sources.list.d/ubuntu.sources << EOF
+      Types: deb
+      URIs: $LB_PARENT_MIRROR_BINARY
+      Suites: $LB_DISTRIBUTION $LB_DISTRIBUTION-updates $LB_DISTRIBUTION-backports
+      Components: main
+      Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+
+      Types: deb
+      URIs: $LB_PARENT_MIRROR_BINARY_SECURITY
+      Suites: $LB_DISTRIBUTION-security
+      Components: main
+      Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+      EOF
+
       rm -r $CRAFT_PART_INSTALL/dev/*
       mkdir $CRAFT_PART_INSTALL/boot/efi
+
     organize:
       '*': (overlay)/
 
   packages:
     plugin: nil
+    build-environment:
+      - DEBIAN_FRONTEND: noninteractive
     overlay-packages:
-      - ubuntu-server-minimal
       - grub2-common
       - grub-pc
       - shim-signed
-      - linux-image-generic
+      - linux-image-virtual
+      - ubuntu-cloud-minimal
+      - bsdutils
+      - login
+      - fuse3
     overlay-script: |
-      rm $CRAFT_OVERLAY/etc/cloud/cloud.cfg.d/90_dpkg.cfg
-
-  snaps:
-    plugin: nil
-    after: [packages]
-    overlay-script: |
-      env SNAPPY_STORE_NO_CDN=1 snap prepare-image --classic \
-        --arch=amd64 --snap snapd --snap core24 "" $CRAFT_OVERLAY
+      # Populate dpkg's available database.
+      chroot $CRAFT_OVERLAY sh -ec 'apt-cache dumpavail | dpkg --merge-avail'
+      # Drop transient runtime state created by package installation.
+      chroot $CRAFT_OVERLAY rm -rf /run/* /var/run/*
+      chroot $CRAFT_OVERLAY rm -f /var/lib/dpkg/statoverride-old
+      # Enable systemd-networkd
+      chroot $CRAFT_OVERLAY systemctl enable systemd-networkd
+      chroot $CRAFT_OVERLAY systemctl enable systemd-networkd-wait-online
 
   fstab:
     plugin: nil
-    after: [snaps]
+    after: [packages]
     overlay-script: |
       cat << EOF > $CRAFT_OVERLAY/etc/fstab
-      LABEL=cloudimg-rootfs  /          ext4    discard,errors=remount-ro  0  1
-      LABEL=BOOT             /boot      ext4    defaults                   0  2
-      LABEL=UEFI             /boot/efi  vfat    umask=0077                 0  1
+      LABEL=cloudimg-rootfs  /          ext4    discard,commit=30,errors=remount-ro  0  1
+      LABEL=BOOT             /boot      ext4    defaults                             0  2
+      LABEL=UEFI             /boot/efi  vfat    umask=0077                           0  1
       EOF
 
   cloud-init:
     plugin: dump
     source: cloud-init/
+    permissions:
+      - path: etc/update-motd.d/60-unminimize
+        mode: "755"
+      - path: usr/bin/man
+        mode: "755"
