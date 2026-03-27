@@ -1,3 +1,11 @@
+livecd-rootfs (26.04.26) resolute; urgency=medium
+
+  * Ensure snapd tracks stable and not edge anymore.
+    We did remove it from multiple places, but this one was left and as a
+    consequence, the latest iso was still having snapd edge.
+
+ -- Didier Roche-Tolomelli <didrocks@ubuntu.com>  Fri, 27 Mar 2026 15:31:21 +0100
+
 livecd-rootfs (26.04.25) resolute; urgency=medium
 
   * bake LIVECD_ROOTFS_ROOT into config/functions, fixing some build failures
