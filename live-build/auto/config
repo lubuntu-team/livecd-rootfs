@@ -1567,7 +1567,8 @@ case $PROJECT:${SUBPROJECT:-} in
 	ubuntu-cpc:*|ubuntu-server:live|ubuntu:desktop-preinstalled| \
 		ubuntu-wsl:*|ubuntu-mini-iso:*|ubuntu-test-iso:*|ubuntu:|ubuntu:dangerous|ubuntu-oem:*| \
 		ubuntustudio:*|edubuntu:*|ubuntu-budgie:*|ubuntucinnamon:*|xubuntu:*| \
-	        ubuntukylin:*|ubuntu-mate:*|ubuntu-core-installer:*|lubuntu:*)
+		ubuntukylin:*|ubuntu-mate:*|ubuntu-core-installer:*|lubuntu:*|kubuntu:*| \
+		ubuntu-unity:*)
 		# Ensure that most things e.g. includes.chroot are copied as is
 		for entry in ${LIVECD_ROOTFS_ROOT}/live-build/${PROJECT}/*; do
 			case $entry in

@@ -1,5 +1,11 @@
+#! /bin/sh
+
+set -eu
+
+cat <<EOF > /etc/sysctl.d/20-apparmor.conf
 # AppArmor restrictions of unprivileged user namespaces
 
 # Disables AppArmor user namespace restrictions on the live ISO.
 kernel.apparmor_restrict_unprivileged_userns = 0
 kernel.apparmor_restrict_unprivileged_unconfined = 1
+EOF
