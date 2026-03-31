@@ -580,7 +580,7 @@ if [ "${MAKE_ISO}" = "yes" ]; then
 		if [ -n "${POOL_SEED_NAME}" ]; then
 			isobuild generate-sources --mountpoint=/cdrom > chroot/etc/apt/sources.list.d/cdrom.sources
 		fi
-		create_squashfs chroot ${CASPER_DIR}/filesystem.squashfs
+		create_squashfs chroot ${PWD}/${CASPER_DIR}/filesystem.squashfs
 		rm chroot/etc/apt/sources.list.d/cdrom.sources
 		for flavor in $LB_LINUX_FLAVOURS; do
 			iso_install_kernel "$flavor" binary/${INITFS}/vmlinu?-* binary/${INITFS}/initrd.img-*
