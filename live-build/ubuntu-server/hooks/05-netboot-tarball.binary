@@ -21,6 +21,8 @@ case $PASS in
         ;;
 esac
 
+. config/functions
+
 set -eux
 
 # Extract the flavor from the pass name
