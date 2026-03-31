@@ -1183,6 +1183,7 @@ case $PROJECT in
 		KERNEL_FLAVOURS=none
 		BINARY_REMOVE_LINUX=false
 		MAKE_ISO=yes
+		POOL_SEED_NAME=
 
 		add_package install mini-iso-tools linux-generic
 		case $ARCH in
