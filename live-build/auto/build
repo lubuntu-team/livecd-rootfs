@@ -576,8 +576,10 @@ esac
 if [ "${MAKE_ISO}" = "yes" ]; then
 	# For non-layered builds, create squashfs with cdrom.sources directly
 	# in casper/. Layered builds already handle this in lb_binary_layered.
-	if [ -z "$PASSES" ]; then
-		isobuild generate-sources --mountpoint=/cdrom > chroot/etc/apt/sources.list.d/cdrom.sources
+	if [ -z "$PASSES" ] && [ "$PROJECT" != "ubuntu-mini-iso" ]; then
+		if [ -n "${POOL_SEED_NAME}" ]; then
+			isobuild generate-sources --mountpoint=/cdrom > chroot/etc/apt/sources.list.d/cdrom.sources
+		fi
 		create_squashfs chroot ${CASPER_DIR}/filesystem.squashfs
 		rm chroot/etc/apt/sources.list.d/cdrom.sources
 		for flavor in $LB_LINUX_FLAVOURS; do
