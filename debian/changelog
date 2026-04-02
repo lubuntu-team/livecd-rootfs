@@ -1,8 +1,12 @@
 livecd-rootfs (26.04.27) UNRELEASED; urgency=medium
 
+  [ Michael Hudson-Doyle ]
   * Only publish the ISOs, not the other bits, now that we are publishing the
     ISOs on cdimage.
   * Fix mini iso to not contain a pool or squashfs.
+
+  [ Ryan Hill ]
+  * add 7.0 kernel apparmor features preseeds
 
  -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Thu, 02 Apr 2026 12:32:40 +1300
 
