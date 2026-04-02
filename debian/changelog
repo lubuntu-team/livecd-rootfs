@@ -1,4 +1,4 @@
-livecd-rootfs (26.04.27) UNRELEASED; urgency=medium
+livecd-rootfs (26.04.27) resolute; urgency=medium
 
   [ Michael Hudson-Doyle ]
   * Only publish the ISOs, not the other bits, now that we are publishing the
@@ -8,7 +8,7 @@ livecd-rootfs (26.04.27) UNRELEASED; urgency=medium
   [ Ryan Hill ]
   * add 7.0 kernel apparmor features preseeds
 
- -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Thu, 02 Apr 2026 12:32:40 +1300
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Thu, 02 Apr 2026 15:59:29 +1300
 
 livecd-rootfs (26.04.26) resolute; urgency=medium
 
