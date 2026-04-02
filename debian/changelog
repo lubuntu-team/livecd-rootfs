@@ -1,3 +1,9 @@
+livecd-rootfs (24.04.96) noble; urgency=medium
+
+  * Remove now unused sb binary hook (LP: #2147086)
+
+ -- Didier Roche-Tolomelli <didrocks@ubuntu.com>  Thu, 02 Apr 2026 07:50:41 +0200
+
 livecd-rootfs (24.04.95) noble; urgency=medium
 
   * Create swap file on RISC-V LicheeRV and Nezha preinstalled images
