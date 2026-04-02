@@ -424,11 +424,12 @@ case $LB_INITRAMFS in
 		;;
 esac
 
-# For MAKE_ISO=yes builds, artifacts (squashfs, kernel, initrd, manifests) are
+# For MAKE_ISO=yes builds, most artifacts (squashfs, kernel, initrd) are
 # placed directly into the ISO tree by lb_binary_layered and binary hooks.
-# Only create livecd.* intermediate artifacts for non-ISO builds.
+# Only create livecd.* intermediate artifacts for non-ISO builds; the manifest
+# is created unconditionally below.
 if [ "${MAKE_ISO}" != "yes" ]; then
-	for OUTPUT in ext2 ext3 ext4 manifest manifest-remove size squashfs; do
+	for OUTPUT in ext2 ext3 ext4 manifest-remove size squashfs; do
 		[ -e "binary/$INITFS/filesystem.$OUTPUT" ] || continue
 		ln "binary/$INITFS/filesystem.$OUTPUT" "$PREFIX.$OUTPUT"
 		chmod 644 "$PREFIX.$OUTPUT"
@@ -455,12 +456,6 @@ if [ "${MAKE_ISO}" != "yes" ]; then
 		cp -a binary-tar.tar.gz "$PREFIX.rootfs.tar.gz"
 	fi
 
-	# '--initramfs none' produces different manifest names.
-	if [ -e "binary/$INITFS/filesystem.packages" ]; then
-		ln "binary/$INITFS/filesystem.packages" "$PREFIX.manifest"
-		chmod 644 "$PREFIX.manifest"
-	fi
-
 	# If a .filelist is present, use it as the filelist for the image by
 	# symlinking with expected name and updating permissions
 	if [ -e "binary/$INITFS/filesystem.filelist" ]; then
@@ -474,13 +469,6 @@ if [ "${MAKE_ISO}" != "yes" ]; then
 			ln "binary/$INITFS/filesystem.packages-remove" "$PREFIX.manifest-remove"
 			chmod 644 "$PREFIX.manifest-remove"
 		fi
-	fi
-
-	# Since snaps are now Ubuntu first-class citizen, so always try fetching the
-	# list of seeded snaps into the manifest.  In case of layered images we skip
-	# this step, as we assume they're doing it on their own at some earlier stage.
-	if [ -z "$PASSES" ] && [ -e "$PREFIX.manifest" ]; then
-		./config/snap-seed-parse "chroot/" "$PREFIX.manifest"
 	fi
 
 	for FLAVOUR in $LB_LINUX_FLAVOURS; do
@@ -566,6 +554,23 @@ if [ "${MAKE_ISO}" != "yes" ]; then
 			cp $PREFIX.kernel $UBOOT_BOOT/vmlinuz || true
 			;;
 	esac
+fi
+
+# Create manifest unconditionally (needed for both ISO and non-ISO builds).
+if [ -e "binary/$INITFS/filesystem.manifest" ]; then
+	ln "binary/$INITFS/filesystem.manifest" "$PREFIX.manifest"
+	chmod 644 "$PREFIX.manifest"
+fi
+# '--initramfs none' produces different manifest names.
+if [ -e "binary/$INITFS/filesystem.packages" ]; then
+	ln "binary/$INITFS/filesystem.packages" "$PREFIX.manifest"
+	chmod 644 "$PREFIX.manifest"
+fi
+# Since snaps are now Ubuntu first-class citizen, so always try fetching the
+# list of seeded snaps into the manifest.  In case of layered images we skip
+# this step, as we assume they're doing it on their own at some earlier stage.
+if [ -z "$PASSES" ] && [ -e "$PREFIX.manifest" ]; then
+	./config/snap-seed-parse "chroot/" "$PREFIX.manifest"
 fi
 
 case $PROJECT in
