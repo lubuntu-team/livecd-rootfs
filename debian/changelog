@@ -1,3 +1,10 @@
+livecd-rootfs (26.04.30) resolute; urgency=medium
+
+  * Exclude boot/grub/i386-pc/eltorito.img from md5sum.txt, as it is expected
+    to change in xorriso output.  (LP: #2147162)
+
+ -- Dan Bungert <daniel.bungert@canonical.com>  Fri, 03 Apr 2026 18:21:58 -0600
+
 livecd-rootfs (26.04.29) resolute; urgency=medium
 
   * Make sure to produce a manifest for all images (LP: #2147522)
