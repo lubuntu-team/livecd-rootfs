@@ -273,11 +273,14 @@ class ISOBuilder:
     def checksum(self):
         # Generate md5sum.txt for ISO integrity verification.
         # - Symlinks are excluded because their targets are already checksummed
+        # - eltorito.img is excluded because xorriso will modify it in output ISO
         # - Files are sorted for deterministic, reproducible output across builds
         # - Paths use "./" prefix and we run md5sum from iso_root so the output
         #   matches what users get when they verify with "md5sum -c" from the ISO
         all_files = []
+        exclusions = ["eltorito.img"]
         for dirpath, dirnames, filenames in self.iso_root.walk():
+            filenames = [fn for fn in filenames if fn not in exclusions]
             filepaths = [dirpath.joinpath(filename) for filename in filenames]
             all_files.extend(
                 "./" + str(filepath.relative_to(self.iso_root))
