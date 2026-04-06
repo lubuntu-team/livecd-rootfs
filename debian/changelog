@@ -1,3 +1,14 @@
+livecd-rootfs (26.04.33) resolute; urgency=medium
+
+  [ Matthew Stepan ]
+  * Hyper-V: Migrate .pkla files to .rules files following the removal of the
+    polkit-pkla package from the archive.
+  * Hyper-V: Add dracut `hostonly=no` config to fix image boot hanging while 
+    trying to find the rootfs.
+  * Hyper-V: Fix sed to correctly set GDM `InitialSetupEnable=false`.
+
+ -- Matthew Stepan <matthew.stepan@canonical.com>  Thu, 16 Apr 2026 12:50:31 -0600
+
 livecd-rootfs (26.04.32) resolute; urgency=medium
 
   [ Alfonso Sanchez-Beato ]

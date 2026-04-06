@@ -44,9 +44,13 @@ trap cleanup_hyperv EXIT
 # use it if they want.
 touch "${scratch_d}/etc/cloud/cloud-init.disabled"
 
+mkdir -p "${scratch_d}/etc/dracut.conf.d"
+cat > "${scratch_d}/etc/dracut.conf.d/hyperv.conf" << EOF
+hostonly=no
+EOF
 
 chroot "${scratch_d}" apt-get update -y
-chroot "${scratch_d}" apt-get -y install xrdp linux-azure linux-tools-azure linux-cloud-tools-azure polkitd-pkla oem-config-gtk language-pack-en-base oem-config-slideshow-ubuntu
+chroot "${scratch_d}" apt-get -y install xrdp linux-azure linux-tools-azure linux-cloud-tools-azure oem-config-gtk language-pack-en-base oem-config-slideshow-ubuntu
 
 cat > ${scratch_d}/etc/modules-load.d/hyperv.conf << EOF
 ${IMAGE_STR}
@@ -99,23 +103,30 @@ blacklist vmw_vsock_vmci_transport
 EOF
 
 # Configure the policy xrdp session
-cat > ${scratch_d}/etc/polkit-1/localauthority/50-local.d/45-allow-colord.pkla << EOF
-${IMAGE_STR}
-[Allow Colord all Users]
-Identity=unix-user:*
-Action=org.freedesktop.color-manager.create-device;org.freedesktop.color-manager.create-profile;org.freedesktop.color-manager.delete-device;org.freedesktop.color-manager.delete-profile;org.freedesktop.color-manager.modify-device;org.freedesktop.color-manager.modify-profile
-ResultAny=no
-ResultInactive=no
-ResultActive=yes
+cat > ${scratch_d}/etc/polkit-1/rules.d/45-allow-colord.rules << EOF
+// ${IMAGE_STR}
+// Allow Colord all Users
+polkit.addRule(function(action, subject) {
+    if ((action.id == "org.freedesktop.color-manager.create-device" ||
+         action.id == "org.freedesktop.color-manager.create-profile" ||
+         action.id == "org.freedesktop.color-manager.delete-device" ||
+         action.id == "org.freedesktop.color-manager.delete-profile" ||
+         action.id == "org.freedesktop.color-manager.modify-device" ||
+         action.id == "org.freedesktop.color-manager.modify-profile") &&
+        subject.active) {
+        return polkit.Result.YES;
+    }
+});
 EOF
 
-cat >${scratch_d}/etc/polkit-1/localauthority/50-local.d/46-allow-update-repo.pkla <<EOF
-[Allow Package Management all Users]
-Identity=unix-user:*
-Action=org.freedesktop.packagekit.system-sources-refresh
-ResultAny=yes
-ResultInactive=yes
-ResultActive=yes
+cat >${scratch_d}/etc/polkit-1/rules.d/46-allow-update-repo.rules <<EOF
+// ${IMAGE_STR}
+// Allow Package Management all Users
+polkit.addRule(function(action, subject) {
+    if (action.id == "org.freedesktop.packagekit.system-sources-refresh") {
+        return polkit.Result.YES;
+    }
+});
 EOF
 
 sed -i${CHANGED_FILE_SUFFIX} -e 's|After=|ConditionPathExists=!/var/lib/oem-config/run\nAfter=|g' "${scratch_d}/lib/systemd/system/xrdp.service"
@@ -123,7 +134,7 @@ sed -i${CHANGED_FILE_SUFFIX} -e 's|After=|ConditionPathExists=!/var/lib/oem-conf
 # End xrdp customisation
 
 # Don't run gnome-initial-setup from gdm
-sed -i${CHANGED_FILE_SUFFIX} "s|#WaylandEnable=false|#WaylandEnable=false\nInitialSetupEnable=false|" "${scratch_d}/etc/gdm3/custom.conf"
+sed -i${CHANGED_FILE_SUFFIX} "s|\[daemon\]|[daemon]\nInitialSetupEnable=false|" "${scratch_d}/etc/gdm3/custom.conf"
 chroot "${scratch_d}" /usr/sbin/useradd -d /home/oem -m -N -u 29999 oem
 chroot "${scratch_d}" /usr/sbin/oem-config-prepare --quiet
 touch "${scratch_d}/var/lib/oem-config/run"
