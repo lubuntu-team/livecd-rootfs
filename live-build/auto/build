@@ -559,13 +559,16 @@ fi
 # Create manifest unconditionally (needed for both ISO and non-ISO builds).
 if [ -e "binary/$INITFS/filesystem.manifest" ]; then
 	ln "binary/$INITFS/filesystem.manifest" "$PREFIX.manifest"
-	chmod 644 "$PREFIX.manifest"
-fi
-# '--initramfs none' produces different manifest names.
-if [ -e "binary/$INITFS/filesystem.packages" ]; then
+elif [ -e "binary/$INITFS/filesystem.packages" ]; then
+	# '--initramfs none' produces different manifest names.
 	ln "binary/$INITFS/filesystem.packages" "$PREFIX.manifest"
-	chmod 644 "$PREFIX.manifest"
+elif [ -n "$PASSES" ]; then
+	# For layered images, keep the manifest of the last pass
+	for _PASS in $PASSES; do
+		ln -f "${CASPER_DIR}/$_PASS.manifest.full" "$PREFIX.manifest"
+	done
 fi
+chmod 644 "$PREFIX.manifest"
 # Since snaps are now Ubuntu first-class citizen, so always try fetching the
 # list of seeded snaps into the manifest.  In case of layered images we skip
 # this step, as we assume they're doing it on their own at some earlier stage.

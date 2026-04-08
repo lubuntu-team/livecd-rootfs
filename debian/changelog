@@ -1,3 +1,9 @@
+livecd-rootfs (26.04.29) UNRELEASED; urgency=medium
+
+  * Make sure to produce a manifest for all images (LP: #2147522)
+
+ -- Florent 'Skia' Jacquet <skia@ubuntu.com>  Wed, 08 Apr 2026 14:00:47 +0200
+
 livecd-rootfs (26.04.28) resolute; urgency=medium
 
   * Switch arm64 mirror from ports to archive. (LP: #2147101)
