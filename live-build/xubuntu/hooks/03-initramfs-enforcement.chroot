@@ -1,0 +1,34 @@
+#!/bin/bash -ex
+# vi: ts=4 noexpandtab
+
+# In a kernel layer, we need a freshly updated initrd (to ensure it
+# has been casperized with an appropriate config). A binary hook will
+# pull this out to be a separate build artifact to eventually end up
+# in /casper on the generated ISO.
+
+# In all lower layers, having an initrd just wastes space, as curtin
+# will always call update-initramfs after the layer has been copied to
+# the target system.
+
+# The netboot "layers" are not made into squashfses so there's no need
+# to do anything in those.
+
+case $PASS in
+    minimal.standard.live)
+        ;;
+    *)
+        rm -f /boot/initrd.img-*
+        exit 0
+        ;;
+esac
+
+
+cat <<EOF > /etc/initramfs-tools/conf.d/casperize.conf
+export CASPER_GENERATE_UUID=1
+EOF
+cat <<EOF > /etc/initramfs-tools/conf.d/default-layer.conf
+LAYERFS_PATH=${PASS}.squashfs
+EOF
+# As this hook has deleted the initrds from lower layers we need to
+# pass -c -k all to update-initramfs here (-u will do nothing)
+update-initramfs -c -k all
