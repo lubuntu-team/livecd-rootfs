@@ -1,3 +1,11 @@
+livecd-rootfs (26.04.31) resolute; urgency=medium
+
+  [ Ryan Hill ]
+  * Add additional 7.0 kernel apparmor features for
+    successful image preseeding. 
+
+ -- Chloé 'kajiya' Smith <chloe.smith@canonical.com>  Mon, 13 Apr 2026 15:45:19 +0100
+
 livecd-rootfs (26.04.30) resolute; urgency=medium
 
   [ Florent 'Skia' Jacquet]
