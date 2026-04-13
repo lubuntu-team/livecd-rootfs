@@ -562,9 +562,9 @@ if [ -e "binary/$INITFS/filesystem.manifest" ]; then
 elif [ -e "binary/$INITFS/filesystem.packages" ]; then
 	# '--initramfs none' produces different manifest names.
 	ln "binary/$INITFS/filesystem.packages" "$PREFIX.manifest"
-elif [ -n "$PASSES" ]; then
-	# For layered images, keep the manifest of the last pass
-	for _PASS in $PASSES; do
+elif [ -n "$LIVE_PASSES" ]; then
+	# For layered images, keep the manifest of the last (only?) live pass
+	for _PASS in $LIVE_PASSES; do
 		ln -f "${CASPER_DIR}/$_PASS.manifest.full" "$PREFIX.manifest"
 	done
 fi
