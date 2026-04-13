@@ -1,9 +1,13 @@
 livecd-rootfs (26.04.30) resolute; urgency=medium
 
+  [ Florent 'Skia' Jacquet]
+  * Pick a better manifest by using the live pass for layered images (LP: #2147921)
+
+  [ Dan Bungert ]
   * Exclude boot/grub/i386-pc/eltorito.img from md5sum.txt, as it is expected
     to change in xorriso output.  (LP: #2147162)
 
- -- Dan Bungert <daniel.bungert@canonical.com>  Fri, 03 Apr 2026 18:21:58 -0600
+ -- Florent 'Skia' Jacquet <skia@ubuntu.com>  Mon, 13 Apr 2026 15:16:01 +0200
 
 livecd-rootfs (26.04.29) resolute; urgency=medium
 
