@@ -491,31 +491,23 @@ case $IMAGEFORMAT in
 				*) ;;
 			esac
 
-			# Ubuntu Core 24
+			# Ubuntu Core 26
 			# For now we stick to updating this by hand, but a more tasteful solution
 			# will follow
-			CORE_MAJOR=24
+			CORE_MAJOR=26
 
-			# Currently uc24 assertions do not support global channel overrides,
-			# instead we have per-channel models
+			# For UC26+ we build only images using stable channels,
+			# for either signed or dangerous grade.
 			case $CHANNEL in
 				stable)
 					MODEL="ubuntu-core-${CORE_MAJOR}-${MODEL#pc-}"
 					;;
-				candidate|beta|edge|dangerous)
-					MODEL="ubuntu-core-${CORE_MAJOR}-${MODEL#pc-}-${CHANNEL}"
-					;;
-				dangerous-*)
-					# That being said, the dangerous grade *does*
-					# support channel overrides, so we can use the
-					# dangerous model assertion and override the channel
-					# freely.
+				dangerous-stable)
 					MODEL="ubuntu-core-${CORE_MAJOR}-${MODEL#pc-}-dangerous"
 					CHANNEL=${CHANNEL#dangerous-}
-					UBUNTU_IMAGE_ARGS="$UBUNTU_IMAGE_ARGS -c $CHANNEL"
 					;;
 				*)
-					echo "Unknown CHANNEL ${CHANNEL} specification for ${SUITE}"
+					echo "Unsupported CHANNEL ${CHANNEL} specification for ${SUITE}"
 					exit 1
 					;;
 			esac
@@ -525,7 +517,7 @@ case $IMAGEFORMAT in
 					EXTRA_SNAPS="$EXTRA_SNAPS core bluez alsa-utils"
 					;;
 				*)
-					# For all Ubuntu Core 24 reference images, add console-conf
+					# For all Ubuntu Core reference images, add console-conf
 					EXTRA_SNAPS="$EXTRA_SNAPS console-conf"
 					;;
 			esac

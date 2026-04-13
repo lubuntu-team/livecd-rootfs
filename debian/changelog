@@ -1,3 +1,9 @@
+livecd-rootfs (26.04.32) reoluste; urgency=medium
+
+  * Add support for building Ubuntu Core 26 images.
+
+ -- Alfonso Sanchez-Beato <alfonso.sanchez-beato@canonical.com>  Mon, 13 Apr 2026 13:20:42 -0400
+
 livecd-rootfs (26.04.31) resolute; urgency=medium
 
   [ Ryan Hill ]
