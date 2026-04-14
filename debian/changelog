@@ -1,3 +1,9 @@
+livecd-rootfs (26.04.32) UNRELEASED; urgency=medium
+
+  * Update SEEDMIRROR to point to the new infra
+
+ -- Florent 'Skia' Jacquet <skia@ubuntu.com>  Tue, 14 Apr 2026 12:56:52 +0200
+
 livecd-rootfs (26.04.31) resolute; urgency=medium
 
   [ Ryan Hill ]
