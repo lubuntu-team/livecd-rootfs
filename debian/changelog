@@ -1,6 +1,10 @@
 livecd-rootfs (26.04.32) UNRELEASED; urgency=medium
 
+  [ Florent 'Skia' Jacquet ]
   * Update SEEDMIRROR to point to the new infra
+
+  [ Alfonso Sanchez-Beato ]
+  * Add support for building Ubuntu Core 26 images.
 
  -- Florent 'Skia' Jacquet <skia@ubuntu.com>  Tue, 14 Apr 2026 12:56:52 +0200
 
