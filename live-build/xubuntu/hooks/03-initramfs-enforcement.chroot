@@ -13,8 +13,8 @@
 # The netboot "layers" are not made into squashfses so there's no need
 # to do anything in those.
 
-. config/common
-. config/functions
+. /root/config/common
+. /root/config/functions
 
 set -x
 
