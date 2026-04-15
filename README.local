@@ -1,0 +1,106 @@
+# Running livecd-rootfs builds locally
+
+`livecd-rootfs` is notoriously known to be... difficult?
+One question that often comes back is "how do I run that locally?".
+Brace yourself, here is a short guide to help you through this.
+
+## Where to run?
+
+While you could do that directly on your host machine, likely your development
+laptop, that would mean installing all the needed dependencies, and running
+livecd-rootfs as root (because of some `mount` steps, `chroot`, etc...).
+Not ideal.
+What you more likely want, and is documented here, is to run that in a LXD VM
+instead.
+
+## Prerequisites
+
+You need to have LXD installed and configured: https://canonical.com/lxd/install
+A clone of this repository, that will be used directly in the VM so that
+you can iterate and test changes easily before submitting them:
+```
+git clone https://git.launchpad.net/livecd-rootfs
+```
+
+## Build images
+
+All the magic is done by the `./live-build/build-livefs-lxd` script. It will
+basically perform the following actions for you:
+  * Launch (or re-start) a LXD VM on the `series` you're targetting.
+  * Install in there `livecd-rootfs` from the archive, to make sure all
+    dependencies are here and ready to use.
+  * Mount the `livecd-rootfs` sources in `/srv/livecd-rootfs`.
+  * Run `./live-build/build-livefs` with all the additional arguments you give.
+    That's what will build the ISO for you, take a lot of time, and bring your
+    machine down.
+
+Depending on what you want to work on, the iteration time can be quite long.
+Fortunately `livecd-rootfs` provides many different projects to work with,
+providing various experiences in terms of load, space, bandwidth and running
+time.
+
+Very fast and lightweight "fake" ISO:
+```
+❯ ./live-build/build-livefs-lxd --suite resolute --arch amd64 --project ubuntu-test-iso
+```
+
+Ubuntu Desktop, the main flagship, and probably most complex ISO:
+```
+❯ ./live-build/build-livefs-lxd --suite resolute --arch amd64 --project ubuntu
+```
+
+Ubuntu Server Live, lighter ISO:
+```
+❯ ./live-build/build-livefs-lxd --suite resolute --arch amd64 --project ubuntu-server --subproject live
+```
+
+Xubuntu Minimal, lighter desktop ISO:
+```
+❯ ./live-build/build-livefs-lxd --suite resolute --arch amd64 --project xubuntu --subproject minimal
+```
+
+## Fetching the image
+
+Obviously, the image has been built inside the LXD VM, so you then need to extract it. Examples:
+```
+❯ lxc file pull livefs-builder-resolute/root/livecd.ubuntu-test-iso.iso my_ubuntu-test-iso.iso
+❯ lxc file pull livefs-builder-resolute/root/livecd.ubuntu.iso my_ubuntu.iso
+❯ lxc file pull livefs-builder-resolute/root/livecd.ubuntu-server.iso my_ubuntu-server.iso
+❯ lxc file pull livefs-builder-resolute/root/livecd.xubuntu.iso my_xubuntu.iso
+```
+
+The fetched ISO should normally boot and work just fine. For example with QEMU:
+```
+❯ kvm -m 3G -smp 2 -cdrom ./my_xubuntu.iso
+```
+
+## Clean up
+
+This will leave you with a running VM eating some precious 8GB from your host.
+You can stop and/or delete that VM with these:
+```
+❯ lxc stop livefs-builder-resolute
+❯ lxc delete livefs-builder-resolute
+```
+
+## Speeding things up with `apt-cacher-ng`
+
+All the previous steps work just fine, but when iterating, it's often very
+useful to cache all the package downloads, which can speed things up a lot,
+particularly if you don't live in one of Canonical's datacenters.
+
+Basically, on your host:
+```
+❯ sudo apt install apt-cacher-ng
+❯ cat ~/.config/livecd-rootfs/build-livefs.conf
+[defaults]
+mirror =  http://192.168.0.42:3142/archive.ubuntu.com/ubuntu
+```
+
+`~/.config/livecd-rootfs/build-livefs.conf` is indeed stored on your host, but
+will be copied automatically at the right place if it exists.
+
+There, `192.168.0.42` is your local network IP, reachable from the LXD VM, on
+which `apt-cacher-ng` is listening.
+Other `apt` caching solutions might be working, but are untested.
+
