@@ -6,6 +6,11 @@ livecd-rootfs (26.04.32) UNRELEASED; urgency=medium
   [ Alfonso Sanchez-Beato ]
   * Add support for building Ubuntu Core 26 images.
 
+  [ Michael Hudson-Doyle & Simon Poirier ]
+  * Add a hook 03-initramfs-enforcement.chroot to many ISO builds to ensure
+    that the live layer gets an initramfs built with casper and
+    initramfs-tools. (LP: #2146567)
+
  -- Florent 'Skia' Jacquet <skia@ubuntu.com>  Tue, 14 Apr 2026 12:56:52 +0200
 
 livecd-rootfs (26.04.31) resolute; urgency=medium
