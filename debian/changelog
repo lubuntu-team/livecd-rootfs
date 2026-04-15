@@ -2,6 +2,8 @@ livecd-rootfs (26.04.32) UNRELEASED; urgency=medium
 
   [ Alfonso Sanchez-Beato ]
   * Add support for building Ubuntu Core 26 images.
+  [ Valentin Haudiquet ]
+  * Make sure kernel is 'vmlinux' on riscv64, and not 'vmlinuz' 
 
  -- Florent 'Skia' Jacquet <skia@ubuntu.com>  Tue, 14 Apr 2026 12:56:52 +0200
 
