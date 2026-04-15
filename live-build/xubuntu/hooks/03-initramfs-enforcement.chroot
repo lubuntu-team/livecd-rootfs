@@ -1,4 +1,4 @@
-#!/bin/bash -ex
+#!/bin/bash -e
 # vi: ts=4 noexpandtab
 
 # In a kernel layer, we need a freshly updated initrd (to ensure it
@@ -13,15 +13,15 @@
 # The netboot "layers" are not made into squashfses so there's no need
 # to do anything in those.
 
-case $PASS in
-    minimal.standard.live)
-        ;;
-    *)
-        rm -f /boot/initrd.img-*
-        exit 0
-        ;;
-esac
+. config/common
+. config/functions
 
+set -x
+
+if ! is_live_layer "${PASS}"; then
+	rm -f /boot/initrd.img-*
+	exit 0
+fi
 
 cat <<EOF > /etc/initramfs-tools/conf.d/casperize.conf
 export CASPER_GENERATE_UUID=1
