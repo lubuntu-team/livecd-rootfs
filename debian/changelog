@@ -11,6 +11,10 @@ livecd-rootfs (26.04.32) UNRELEASED; urgency=medium
     that the live layer gets an initramfs built with casper and
     initramfs-tools. (LP: #2146567)
 
+  [ Aaron Rainbolt ]
+  * Disable Apparmor restrictions in the live environment for Kubuntu and
+    Ubuntu Unity. (LP: #2146196, #2146369)
+
  -- Florent 'Skia' Jacquet <skia@ubuntu.com>  Tue, 14 Apr 2026 12:56:52 +0200
 
 livecd-rootfs (26.04.31) resolute; urgency=medium
