@@ -3,6 +3,9 @@ livecd-rootfs (26.04.32) UNRELEASED; urgency=medium
   [ Alfonso Sanchez-Beato ]
   * Add support for building Ubuntu Core 26 images.
 
+  [ Valentin Haudiquet ]
+  * Make sure kernel is 'vmlinux' on riscv64, and not 'vmlinuz'
+
   [ Michael Hudson-Doyle & Simon Poirier ]
   * Add a hook 03-initramfs-enforcement.chroot to many ISO builds to ensure
     that the live layer gets an initramfs built with casper and
