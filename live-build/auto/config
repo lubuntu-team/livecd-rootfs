@@ -1731,9 +1731,12 @@ EOF
 fi
 
 if [ "${MAKE_ISO}" = "yes" ]; then
-	# XXX should pass --build-type here.
+	# XXX --build-type should be passed via build args once
+	# https://code.launchpad.net/~mwhudson/launchpad-buildd/+git/launchpad-buildd/+merge/497089
+	# is merged.
 	${LIVECD_ROOTFS_ROOT}/live-build/gen-iso-ids \
 		--project $PROJECT ${SUBPROJECT:+--subproject $SUBPROJECT} \
+		--build-type Release \
 		--arch $ARCH ${SUBARCH:+--subarch $SUBARCH} ${NOW+--serial $NOW} \
 		--output-dir config/iso-ids/
 fi
