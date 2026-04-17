@@ -1,5 +1,9 @@
 livecd-rootfs (26.04.33) UNRELEASED; urgency=medium
 
+  [ Michael Hudson-Doyle ]
+  * Do not run 03-initramfs-enforcement.chroot for kubuntu, which is not a
+    layered build.
+
   [ Denis Lalaj ]
   * feat(buildd): Set dracut as the default initrd generator
 
