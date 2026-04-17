@@ -1,8 +1,8 @@
-livecd-rootfs (26.04.34) UNRELEASED; urgency=medium
+livecd-rootfs (26.04.34) resolute; urgency=medium
 
   * Set build type to Release for final ISO builds.
 
- -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Sat, 18 Apr 2026 08:07:16 +1200
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Sat, 18 Apr 2026 08:21:53 +1200
 
 livecd-rootfs (26.04.33) resolute; urgency=medium
 
