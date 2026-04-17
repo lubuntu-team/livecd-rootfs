@@ -1,5 +1,12 @@
 livecd-rootfs (26.04.33) UNRELEASED; urgency=medium
 
+  [ Matthew Stepan ]
+  * Hyper-V: Migrate .pkla files to .rules files following the removal of the
+    polkit-pkla package from the archive.
+  * Hyper-V: Add dracut `hostonly=no` config to fix image boot hanging while 
+    trying to find the rootfs.
+  * Hyper-V: Fix sed to correctly set GDM `InitialSetupEnable=false`.
+
   [ Michael Hudson-Doyle ]
   * Do not run 03-initramfs-enforcement.chroot for kubuntu, which is not a
     layered build.
