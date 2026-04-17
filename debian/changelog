@@ -1,4 +1,4 @@
-livecd-rootfs (26.04.33) UNRELEASED; urgency=medium
+livecd-rootfs (26.04.33) resolute; urgency=medium
 
   [ Matthew Stepan ]
   * Hyper-V: Migrate .pkla files to .rules files following the removal of the
@@ -14,7 +14,7 @@ livecd-rootfs (26.04.33) UNRELEASED; urgency=medium
   [ Denis Lalaj ]
   * feat(buildd): Set dracut as the default initrd generator
 
- -- Florent 'Skia' Jacquet <skia@ubuntu.com>  Fri, 17 Apr 2026 11:59:55 +0200
+ -- Florent 'Skia' Jacquet <skia@ubuntu.com>  Fri, 17 Apr 2026 12:22:45 +0200
 
 livecd-rootfs (26.04.32) resolute; urgency=medium
 
