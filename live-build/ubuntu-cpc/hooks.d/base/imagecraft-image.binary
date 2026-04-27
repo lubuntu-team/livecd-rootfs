@@ -82,8 +82,6 @@ install_grub_on_image() {
   track_initramfs_boot_fallback "$mountpoint"
   chroot "$mountpoint" update-grub
   
-  # For the error: [FAILED] Failed to start grub2-common.service
-  # chroot "$mountpoint" grub-editenv /boot/grub/grubenv create
   replace_grub_root_with_label "$mountpoint"
   undivert_grub "$mountpoint"
 
@@ -98,36 +96,6 @@ unmount_image_partitions() {
 
   umount_partition "$mountpoint"
   rmdir "$mountpoint"
-}
-
-cleanup_image_state() {
-  local root="$1"
-
-  rm -f "$root"/etc/ssh/ssh_host_*key*
-
-  rm -f "$root"/boot/initrd.img
-  rm -f "$root"/boot/initrd.img.old
-
-  rm "$root"/etc/passwd-                 || echo "No spare passwd file to cleanup"
-  rm "$root"/etc/shadow-                 || echo "No spare shadow file to cleanup"
-  rm "$root"/etc/gshadow-                || echo "No spare gshadow file to cleanup"
-  rm "$root"/etc/group-                  || echo "No spare group file to cleanup"
-  rm "$root"/etc/apt/conf.d/00secure     || echo "No apt cache to cleanup"
-  rm -rf "$root"/var/log/private
-
-  # truncate machine-id for first-boot detection
-  truncate -s 0 "$root"/etc/machine-id
-  rm -f "$root"/var/lib/dbus/machine-id
-
-  # Updating resolv.conf.tmp because
-  # teardown_mountpoint (called by umount_partition) will overwrite
-  # etc/resolv.conf with resolv.conf.tmp, undoing any fix made there.
-  rm -f resolv.conf.tmp
-  ln -sf ../run/systemd/resolve/stub-resolv.conf resolv.conf.tmp
-
-  # Trimming transient package state.
-  chroot "$mountpoint" apt-get autoremove --purge --assume-yes
-  chroot "$mountpoint" apt-get -y clean
 }
 
 disk_image="pc.img"
@@ -146,7 +114,12 @@ build_name: minimal
 serial: ${BUILDSTAMP}
 EOF
 
-cleanup_image_state "$mountpoint"
+# Updating resolv.conf.tmp because
+# teardown_mountpoint (called by umount_partition) will overwrite
+# etc/resolv.conf with resolv.conf.tmp, undoing any fix made there.
+rm -f resolv.conf.tmp
+ln -sf ../run/systemd/resolve/stub-resolv.conf resolv.conf.tmp
+
 create_manifest  "$mountpoint/" "$PWD/livecd.ubuntu-cpc.imagecraft.manifest" "$PWD/livecd.ubuntu-cpc.imagecraft.spdx"  "cloud-image-$ARCH-$(date +%Y%m%dT%H:%M:%S)" "false"
 
 unmount_image_partitions

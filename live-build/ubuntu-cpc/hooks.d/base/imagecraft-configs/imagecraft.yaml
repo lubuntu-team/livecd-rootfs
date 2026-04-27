@@ -81,16 +81,37 @@ parts:
 
       mkdir -p $CRAFT_PART_INSTALL/etc/apt/sources.list.d
       cat > $CRAFT_PART_INSTALL/etc/apt/sources.list.d/ubuntu.sources << EOF
+      # See http://help.ubuntu.com/community/UpgradeNotes for how to upgrade to
+      # newer versions of the distribution.
+
+      ## Ubuntu distribution repository
+      ##
+      ## The following settings can be adjusted to configure which packages to use from Ubuntu.
+      ## Mirror your choices (except for URIs and Suites) in the security section below to
+      ## ensure timely security updates.
+      ##
+      ## Types: Append deb-src to enable the fetching of source package.
+      ## URIs: A URL to the repository (you may add multiple URLs)
+      ## Suites: The following additional suites can be configured
+      ##   <name>-updates   - Major bug fix updates produced after the final release of the
+      ##                      distribution.
+      ##   <name>-backports - software from this repository may not have been tested as
+      ##                      extensively as that contained in the main release, although it includes
+      ##                      newer versions of some applications which may provide useful features.
+
+      ## See the sources.list(5) manual page for further settings.
       Types: deb
       URIs: $LB_PARENT_MIRROR_BINARY
       Suites: $LB_DISTRIBUTION $LB_DISTRIBUTION-updates $LB_DISTRIBUTION-backports
-      Components: main
+      Components: main universe restricted multiverse
       Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
 
+      ## Ubuntu security updates. Aside from URIs and Suites,
+      ## this should mirror your choices in the previous section.
       Types: deb
       URIs: $LB_PARENT_MIRROR_BINARY_SECURITY
       Suites: $LB_DISTRIBUTION-security
-      Components: main
+      Components: main universe restricted multiverse
       Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
       EOF
 
@@ -114,6 +135,8 @@ parts:
       - login
       - fuse3
     overlay-script: |
+      # Remove etc/hosts to avoid stage collision with cloud-init part
+      rm -f $CRAFT_OVERLAY/etc/hosts
       # Populate dpkg's available database.
       chroot $CRAFT_OVERLAY sh -ec 'apt-cache dumpavail | dpkg --merge-avail'
       # Drop transient runtime state created by package installation.
@@ -122,6 +145,48 @@ parts:
       # Enable systemd-networkd
       chroot $CRAFT_OVERLAY systemctl enable systemd-networkd
       chroot $CRAFT_OVERLAY systemctl enable systemd-networkd-wait-online
+
+      chroot $CRAFT_OVERLAY addgroup --system --quiet admin
+      chroot $CRAFT_OVERLAY addgroup --system --quiet netdev
+
+      chroot $CRAFT_OVERLAY dpkg-divert --quiet --add --divert /usr/bin/man.REAL --rename /usr/bin/man
+
+      # Set console-setup codeset to Uni2
+      echo "console-setup console-setup/codesetcode string Uni2" | \
+          chroot $CRAFT_OVERLAY debconf-set-selections
+      echo "console-setup console-setup/codeset47 string . Combined - Latin; Slavic Cyrillic; Greek" | \
+          chroot $CRAFT_OVERLAY debconf-set-selections
+      chroot $CRAFT_OVERLAY sed -i -e 's,^CODESET.*,CODESET="Uni2",g' \
+            -e 's,^FONTFACE.*,FONTFACE="Fixed",g' \
+                /etc/default/console-setup
+      
+      # Set grub cloud-style installation for non-interactive grub updates LP: #2054103
+      echo "grub-pc grub-efi/cloud_style_installation boolean true" | \
+          chroot $CRAFT_OVERLAY debconf-set-selections
+      echo "grub-pc grub-pc/cloud_style_installation boolean true" | \
+          chroot $CRAFT_OVERLAY debconf-set-selections
+      chroot $CRAFT_OVERLAY dpkg-reconfigure --frontend=noninteractive console-setup
+
+      # Remove SSH host keys; they will be regenerated on first boot
+      rm -f $CRAFT_OVERLAY/etc/ssh/ssh_host_*key*
+      # Remove initrd images (minimized image boots without initramfs)
+      rm -f $CRAFT_OVERLAY/boot/initrd.img
+      rm -f $CRAFT_OVERLAY/boot/initrd.img.old
+      # Remove spare user database backup files
+      rm -f $CRAFT_OVERLAY/etc/passwd-
+      rm -f $CRAFT_OVERLAY/etc/shadow-
+      rm -f $CRAFT_OVERLAY/etc/gshadow-
+      rm -f $CRAFT_OVERLAY/etc/group-
+      # Remove apt secure config
+      rm -f $CRAFT_OVERLAY/etc/apt/conf.d/00secure
+      # Remove private log directory
+      rm -rf $CRAFT_OVERLAY/var/log/private
+      # Truncate machine-id for first-boot detection
+      truncate -s 0 $CRAFT_OVERLAY/etc/machine-id
+      rm -f $CRAFT_OVERLAY/var/lib/dbus/machine-id
+      # Trimming transient package state.
+      chroot $CRAFT_OVERLAY apt-get autoremove --purge --assume-yes
+      chroot $CRAFT_OVERLAY apt-get -y clean
 
   fstab:
     plugin: nil
