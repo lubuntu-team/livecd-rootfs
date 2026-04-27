@@ -1467,6 +1467,6 @@ iso_install_kernel() {
     case $ARCH in ppc64el|riscv64) kernel_name=vmlinux ;; esac
     local prefix=""
     case $flavor in *-hwe) prefix="hwe-" ;; esac
-    cp "$kernel" "$CASPER_DIR/${prefix}${kernel_name}"
-    cp "$initrd" "$CASPER_DIR/${prefix}initrd"
+    install -m 0644 "$kernel" "$CASPER_DIR/${prefix}${kernel_name}"
+    install -m 0644 "$initrd" "$CASPER_DIR/${prefix}initrd"
 }
