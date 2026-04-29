@@ -14,6 +14,7 @@ livecd-rootfs (26.10.2) UNRELEASED; urgency=medium
 
   [ Valentin Haudiquet ]
   * Move kernels from hwe-24.04 to hwe-26.04
+  * riscv64: set kernel flavour to generic instead of hwe for desktop
 
  -- Dan Bungert <daniel.bungert@canonical.com>  Thu, 07 May 2026 10:51:27 +0200
 

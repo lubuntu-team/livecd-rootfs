@@ -857,6 +857,15 @@ case $PROJECT in
 				KERNEL_FLAVOURS='generic-hwe-26.04'
 				NEEDS_DRACUT=yes
 
+				case $ARCH in
+					riscv64)
+						# There is currently no hwe kernel on riscv64
+						# The generic kernel of riscv64 behaves similarly to the hwe kernels
+						# on other architectures (continuously backported)
+						KERNEL_FLAVOURS="generic"
+						;;
+				esac
+
 				case $SUBARCH in
 					nvidia)
 						KERNEL_FLAVOURS="nvidia-hwe-26.04"
