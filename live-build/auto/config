@@ -661,8 +661,13 @@ case $PROJECT in
 			if [ -n "$COMPONENTS" ]; then
 				GERMINATE_ARG="-c $(echo $COMPONENTS | sed -e's/ \+/,/g')"
 			fi
+			GERMINATE_PPA_ARGS=""
+			for extra_ppa in $EXTRA_PPAS; do
+				ppa=${extra_ppa%:*}
+				GERMINATE_PPA_ARGS="$GERMINATE_PPA_ARGS -m https://ppa.launchpadcontent.net/$ppa/ubuntu"
+			done
 			(cd config/germinate-output && germinate --no-rdepends --no-installer \
-				-S $SEEDMIRROR -m $MIRROR -d $SUITE,$SUITE-updates \
+				-S $SEEDMIRROR -m $MIRROR $GERMINATE_PPA_ARGS -d $SUITE,$SUITE-updates \
 				-s $FLAVOUR.$SUITE $GERMINATE_ARG -a ${ARCH_VARIANT:-$ARCH})
 		fi
 		;;
