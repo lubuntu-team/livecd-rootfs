@@ -117,6 +117,14 @@ class ISOBuilder:
         self._config: dict | None = None
         self._gpg_key = self._apt_state = None
 
+        self.checksum_exclusions = [
+            # eltorito.img is excluded, xorriso will modify it in output ISO.
+            "eltorito.img",
+            # grub.cfg is critical enough that if it's broken we're not making
+            # it to run casper-md5check.  Also an item modified by end users.
+            "grub.cfg",
+        ]
+
     # UTILITY STUFF
 
     def _read_config(self):
@@ -273,14 +281,15 @@ class ISOBuilder:
     def checksum(self):
         # Generate md5sum.txt for ISO integrity verification.
         # - Symlinks are excluded because their targets are already checksummed
-        # - eltorito.img is excluded because xorriso will modify it in output ISO
         # - Files are sorted for deterministic, reproducible output across builds
         # - Paths use "./" prefix and we run md5sum from iso_root so the output
         #   matches what users get when they verify with "md5sum -c" from the ISO
         all_files = []
-        exclusions = ["eltorito.img"]
         for dirpath, dirnames, filenames in self.iso_root.walk():
-            filenames = [fn for fn in filenames if fn not in exclusions]
+            filenames = [
+                fn for fn in filenames
+                if fn not in self.checksum_exclusions
+            ]
             filepaths = [dirpath.joinpath(filename) for filename in filenames]
             all_files.extend(
                 "./" + str(filepath.relative_to(self.iso_root))
