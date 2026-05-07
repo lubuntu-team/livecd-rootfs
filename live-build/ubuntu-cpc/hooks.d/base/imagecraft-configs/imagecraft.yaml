@@ -41,7 +41,7 @@ volumes:
         filesystem: ext4
         filesystem-label: cloudimg-rootfs
         role: system-data
-        size: 3G
+        size: 2449M
         partition-number: 1
 
 filesystems:
@@ -70,50 +70,15 @@ parts:
         --dpkgopt='path-include=/usr/share/doc/*/changelog.*' \
         $LB_DISTRIBUTION \
         $CRAFT_PART_INSTALL/ \
-        $LB_PARENT_MIRROR_BINARY
+        $LB_PARENT_MIRROR_CHROOT
 
-      cat > $CRAFT_PART_INSTALL/etc/apt/sources.list << EOF
-      # Ubuntu sources have moved to the /etc/apt/sources.list.d/ubuntu.sources
-      # file, which uses the deb822 format. Use deb822-formatted .sources files
-      # to manage package sources in the /etc/apt/sources.list.d/ directory.
-      # See the sources.list(5) manual page for details.
-      EOF
-
-      mkdir -p $CRAFT_PART_INSTALL/etc/apt/sources.list.d
-      cat > $CRAFT_PART_INSTALL/etc/apt/sources.list.d/ubuntu.sources << EOF
-      # See http://help.ubuntu.com/community/UpgradeNotes for how to upgrade to
-      # newer versions of the distribution.
-
-      ## Ubuntu distribution repository
-      ##
-      ## The following settings can be adjusted to configure which packages to use from Ubuntu.
-      ## Mirror your choices (except for URIs and Suites) in the security section below to
-      ## ensure timely security updates.
-      ##
-      ## Types: Append deb-src to enable the fetching of source package.
-      ## URIs: A URL to the repository (you may add multiple URLs)
-      ## Suites: The following additional suites can be configured
-      ##   <name>-updates   - Major bug fix updates produced after the final release of the
-      ##                      distribution.
-      ##   <name>-backports - software from this repository may not have been tested as
-      ##                      extensively as that contained in the main release, although it includes
-      ##                      newer versions of some applications which may provide useful features.
-
-      ## See the sources.list(5) manual page for further settings.
-      Types: deb
-      URIs: $LB_PARENT_MIRROR_BINARY
-      Suites: $LB_DISTRIBUTION $LB_DISTRIBUTION-updates $LB_DISTRIBUTION-backports
-      Components: main universe restricted multiverse
-      Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
-
-      ## Ubuntu security updates. Aside from URIs and Suites,
-      ## this should mirror your choices in the previous section.
-      Types: deb
-      URIs: $LB_PARENT_MIRROR_BINARY_SECURITY
-      Suites: $LB_DISTRIBUTION-security
-      Components: main universe restricted multiverse
-      Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
-      EOF
+      # Write apt sources into the new rootfs before overlay-packages runs,
+      # so later package installation resolves against the build-time chroot mirror.
+      sh "$CRAFT_PROJECT_DIR/update-ubuntu-sources.sh" \
+        "$CRAFT_PART_INSTALL" \
+        "$LB_DISTRIBUTION" \
+        "$LB_PARENT_MIRROR_CHROOT" \
+        "$LB_PARENT_MIRROR_CHROOT"
 
       rm -r $CRAFT_PART_INSTALL/dev/*
       mkdir $CRAFT_PART_INSTALL/boot/efi
@@ -178,7 +143,7 @@ parts:
       rm -f $CRAFT_OVERLAY/etc/gshadow-
       rm -f $CRAFT_OVERLAY/etc/group-
       # Remove apt secure config
-      rm -f $CRAFT_OVERLAY/etc/apt/conf.d/00secure
+      # rm -f $CRAFT_OVERLAY/etc/apt/conf.d/00secure
       # Remove private log directory
       rm -rf $CRAFT_OVERLAY/var/log/private
       # Truncate machine-id for first-boot detection
@@ -187,6 +152,14 @@ parts:
       # Trimming transient package state.
       chroot $CRAFT_OVERLAY apt-get autoremove --purge --assume-yes
       chroot $CRAFT_OVERLAY apt-get -y clean
+
+      # Replace the temporary build-time sources with the final apt sources
+      # that the shipped image should use for archive and security updates.
+      sh "$CRAFT_PROJECT_DIR/update-ubuntu-sources.sh" \
+        "$CRAFT_OVERLAY" \
+        "$LB_DISTRIBUTION" \
+        "$LB_PARENT_MIRROR_BINARY" \
+        "$LB_PARENT_MIRROR_BINARY_SECURITY"
 
   fstab:
     plugin: nil

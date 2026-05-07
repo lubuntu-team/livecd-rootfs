@@ -36,6 +36,7 @@ snap install imagecraft --classic --channel latest/edge
 
 cp -r "$_src_d"/imagecraft-configs/* .
 
+LB_PARENT_MIRROR_CHROOT="${LB_PARENT_MIRROR_CHROOT:-$LB_PARENT_MIRROR_BINARY}" \
 LB_PARENT_MIRROR_BINARY="${LB_PARENT_MIRROR_BINARY}" \
 LB_PARENT_MIRROR_BINARY_SECURITY="${LB_PARENT_MIRROR_BINARY_SECURITY}" \
 LB_DISTRIBUTION="${LB_DISTRIBUTION}" \
@@ -127,4 +128,4 @@ unmount_image_partitions
 clean_loops
 trap - EXIT
 
-qemu-img convert -f raw -O qcow2 "${disk_image}" livecd.ubuntu-cpc.imagecraft.img
+qemu-img convert -c -f raw -O qcow2 "${disk_image}" livecd.ubuntu-cpc.imagecraft.img
