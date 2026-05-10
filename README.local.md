@@ -12,7 +12,7 @@ two scripts in `live-build/` that are intended for local use:
   almost always want.
 
 For what each parameter (PROJECT, SUITE, SUBPROJECT, ...) actually means, see
-[README.parameters](README.parameters). This document only covers the
+[README.parameters](README.parameters.md). This document only covers the
 mechanics of driving the local scripts.
 
 ## Quickstart with `build-livefs-lxd`
@@ -30,7 +30,7 @@ a clone of this repository. `build-livefs-lxd`:
 
 Examples:
 
-```
+```console
 # Very fast and lightweight "fake" ISO
 ❯ ./live-build/build-livefs-lxd --suite resolute --project ubuntu-test-iso
 
@@ -45,7 +45,7 @@ Examples:
 ```
 
 Every flag accepted by `build-livefs` other than `--suite` is forwarded
-through; see [README.parameters](README.parameters) for the full list.
+through; see [README.parameters](README.parameters.md) for the full list.
 `--arch` defaults to the host architecture.
 
 ## Fetching artifacts out of the VM
@@ -54,7 +54,7 @@ The build runs in `/build` inside the VM (matching `launchpad-buildd`'s
 layout). Pass `--output DIR` to have `build-livefs-lxd` copy every
 `livecd.*` file from `/build` into `DIR` after the build:
 
-```
+```console
 ❯ ./live-build/build-livefs-lxd --suite resolute --project ubuntu-test-iso \
     --output ./out
 ❯ ls ./out
@@ -63,7 +63,7 @@ livecd.ubuntu-test-iso.iso  ...
 
 If you'd rather do it by hand:
 
-```
+```console
 ❯ lxc file pull livefs-builder-resolute/build/livecd.ubuntu-test-iso.iso ./
 ```
 
@@ -72,7 +72,7 @@ if you want to keep multiple VMs around simultaneously.
 
 To boot the resulting ISO:
 
-```
+```console
 ❯ kvm -m 3G -smp 2 -cdrom ./out/livecd.ubuntu-test-iso.iso
 ```
 
@@ -81,7 +81,7 @@ To boot the resulting ISO:
 The VM keeps running between invocations (so subsequent builds can reuse the
 installed packages and any apt cache). When you're done:
 
-```
+```console
 ❯ lxc stop livefs-builder-resolute
 ❯ lxc delete livefs-builder-resolute
 ```
@@ -92,7 +92,7 @@ Iteration time is dominated by package downloads. Running `apt-cacher-ng` on
 the host and pointing the build at it speeds things up dramatically,
 especially if you're not in one of Canonical's datacenters.
 
-```
+```console
 ❯ sudo apt install apt-cacher-ng
 ```
 
@@ -116,7 +116,7 @@ needs to run as root (or via `sudo`, which it will arrange itself if needed)
 because the build does `mount` and `chroot`, and it will install
 `livecd-rootfs`'s dependencies on whatever system it runs on.
 
-```
+```console
 ❯ mkdir build && cd build
 ❯ /path/to/livecd-rootfs/live-build/build-livefs --suite resolute --project ubuntu-test-iso
 ```
