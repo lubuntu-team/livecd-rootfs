@@ -13,6 +13,14 @@ launchpad-buildd so the set of potential parameters is limited by the
 set of environment variables launchpad-build can set in response to
 the build request.
 
+This document describes those parameters: what each one means, how it
+gets from a Launchpad build request into the live-build environment,
+and how to set it when invoking `build-livefs` (or `build-livefs-lxd`,
+which forwards extra arguments through to `build-livefs` inside an LXD
+VM). For the local-build workflow itself -- prerequisites, fetching
+artifacts, apt caching, and features that only exist in the local
+path -- see README.local.
+
 The process from build request to environment live-build is run is a
 little convoluted. The build request takes:
 
@@ -80,10 +88,20 @@ are some things set for lb config only? no idea):
                 goes into .disk/info on the ISO, defaults to Daily)
 
 Here is an opinionated and slightly angry attempt to describe what
-each of these is for:
+each of these is for. Each entry also lists the `build-livefs` flag
+that sets the corresponding variable.
+
+Finally, if you pass a true value for "debug" in the build metadata,
+launchpad-build (or build-livefs, as appropriate) writes a
+`local/functions/debug.sh` containing `set -x`, which causes
+live-build's auto scripts to print every command they run. This can be
+useful to understand what exactly has happened when something has gone
+wrong.
 
 PROJECT
 -------
+
+Set with build-livefs: --project (required)
 
 This is the big one, the main variable that defines what is being
 built. It can be ubuntu, ubuntu-server, xubuntu, ubuntu-mini-iso, that
@@ -95,6 +113,8 @@ It's unarguable that we need a parameter like this.
 ARCH
 ----
 
+Set with build-livefs: --arch (defaults to the host architecture)
+
 The architecture being built for. This is always the same as `dpkg
 --print-architecture` for us, we don't do any cross builds.
 
@@ -103,6 +123,8 @@ It's kind of redundant but it's not really a problem that this exists.
 ARCH_VARIANT
 ------------
 
+Set with build-livefs: --arch-variant
+
 The "variant" being built for, i.e. the ISA tag of the
 distroarchseries. Only set if this is different from the ABI tag.
 
@@ -110,6 +132,8 @@ This is definitely needed to be able to build images for variants.
 
 SUBPROJECT
 ----------
+
+Set with build-livefs: --subproject
 
 This is used for some builds to build a different sort of build of the
 project. It can be set to:
@@ -132,6 +156,8 @@ particularly egregious.
 SUBARCH
 -------
 
+Set with build-livefs: --subarch
+
 This identifies the target machine more specifically than ARCH,
 e.g. "tegra-jetson" or "licheerv". Used mostly but not exclusively for
 preinstalled builds.
@@ -141,11 +167,16 @@ We probably do need something like this.
 CHANNEL
 -------
 
+Set with build-livefs: --channel
+
 Influences which channel snaps included in the build are taken from
 (via a few different mechanisms).
 
 IMAGE_TARGETS
 -------------
+
+Set with build-livefs: --image-target (may be repeated; the values are
+joined with spaces into IMAGE_TARGETS)
 
 Passed for CPC (and ubuntu-oem, for some reason) builds to
 `config/hooks.d/make-hooks` which uses it to select which binary hooks
@@ -156,16 +187,22 @@ It is probably reasonable that this exists.
 REPO_SNAPSHOT_STAMP
 -------------------
 
+Set with build-livefs: --repo-snapshot-stamp
+
 Currently unused.
 
 SNAPSHOT_SERVICE_TIMESTAMP
 --------------------------
+
+Set with build-livefs: --snapshot-service-timestamp
 
 Also currently unused, and unclear how it differs from
 REPO_SNAPSHOT_STAMP.
 
 COHORT_KEY
 ----------
+
+Set with build-livefs: --cohort-key
 
 Used to make sure that different builds run at the same time don't get
 different versions of snaps due to phasing differences.
@@ -175,10 +212,17 @@ This is a totally valid thing to need to supply.
 http_proxy / HTTP_PROXY / LB_APT_HTTP_PROXY
 -------------------------------------------
 
-Nothing complex here!
+Set with build-livefs: --http-proxy (or set "http-proxy" in the
+[defaults] section of ~/.config/livecd-rootfs/build-livefs.conf; see
+README.local)
+
+Nothing complex here! Note that there is no way to set this through a
+Launchpad build request -- it is only reachable via the local path.
 
 SUITE
 -----
+
+Set with build-livefs: --suite (required)
 
 This is the series being built (e.g. noble, questing). It is misnamed
 really -- a suite is usually a combination of a series and a pocket
@@ -191,12 +235,16 @@ build needs to know!
 NOW
 ---
 
+Set with build-livefs: --datestamp
+
 The serial for the build, e.g. 20250519 or 20240418.4.
 
 It is a totally reasonable parameter.
 
 IMAGEFORMAT
 -----------
+
+Set with build-livefs: --image-format
 
 This is one of the more incoherently handled parameters. In rough
 outline it is the filesystem of the image we produce.
@@ -223,6 +271,8 @@ This place is not a place of honor.
 PROPOSED
 --------
 
+Set with build-livefs: --proposed (flag, no value)
+
 Should packages from proposed by included?
 
 This is not really as useful as it used to be for a bunch of reasons
@@ -230,6 +280,9 @@ but it conceptually makes sense.
 
 EXTRA_PPAS
 ----------
+
+Set with build-livefs: --extra-ppa (may be repeated; the values are
+joined with spaces into EXTRA_PPAS)
 
 Extra archives to get packages from.
 
@@ -245,10 +298,15 @@ for development.
 EXTRA_SNAPS
 -----------
 
+Set with build-livefs: --extra-snap (may be repeated; the values are
+joined with spaces into EXTRA_SNAPS)
+
 Extra snaps to include (but only for ubuntu-image based builds).
 
 BUILD_TYPE
 ----------
+
+Set with build-livefs: --build-type
 
 Before release, the .disk/info on an ISO looks like:
 

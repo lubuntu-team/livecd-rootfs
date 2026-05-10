@@ -1,83 +1,86 @@
 # Running livecd-rootfs builds locally
 
-`livecd-rootfs` is notoriously known to be... difficult?
-One question that often comes back is "how do I run that locally?".
-Brace yourself, here is a short guide to help you through this.
+`livecd-rootfs` is notoriously known to be... difficult? One question that
+often comes back is "how do I run that locally?". This document covers the
+two scripts in `live-build/` that are intended for local use:
 
-## Where to run?
+- `build-livefs` runs an `lb config` / `lb build` cycle in the current working
+  directory. It needs root (it uses `sudo` if you don't run it as root) and
+  installs all of `livecd-rootfs`'s dependencies on the host machine.
+- `build-livefs-lxd` is a wrapper that does the same thing inside a freshly
+  launched LXD VM, so you don't have to touch your host. This is the one you
+  almost always want.
 
-While you could do that directly on your host machine, likely your development
-laptop, that would mean installing all the needed dependencies, and running
-livecd-rootfs as root (because of some `mount` steps, `chroot`, etc...).
-Not ideal.
-What you more likely want, and is documented here, is to run that in a LXD VM
-instead.
+For what each parameter (PROJECT, SUITE, SUBPROJECT, ...) actually means, see
+[README.parameters](README.parameters). This document only covers the
+mechanics of driving the local scripts.
 
-## Prerequisites
+## Quickstart with `build-livefs-lxd`
 
-You need to have LXD installed and configured: https://canonical.com/lxd/install
-A clone of this repository, that will be used directly in the VM so that
-you can iterate and test changes easily before submitting them:
+You need LXD installed and configured (https://canonical.com/lxd/install) and
+a clone of this repository. `build-livefs-lxd`:
+
+  * launches (or restarts) an LXD VM for the series you're targeting,
+  * installs `livecd-rootfs` from the archive inside it (so all the build
+    dependencies are present),
+  * mounts your local checkout at `/srv/livecd-rootfs` inside the VM (so you
+    can iterate on the code without rebuilding the VM),
+  * runs `/srv/livecd-rootfs/live-build/build-livefs` inside `/build`, passing
+    along any extra arguments you give.
+
+Examples:
+
 ```
-git clone https://git.launchpad.net/livecd-rootfs
-```
+# Very fast and lightweight "fake" ISO
+❯ ./live-build/build-livefs-lxd --suite resolute --project ubuntu-test-iso
 
-## Build images
+# Ubuntu Desktop -- the flagship, and probably the most complex ISO
+❯ ./live-build/build-livefs-lxd --suite resolute --project ubuntu
 
-All the magic is done by the `./live-build/build-livefs-lxd` script. It will
-basically perform the following actions for you:
-  * Launch (or re-start) a LXD VM on the `series` you're targetting.
-  * Install in there `livecd-rootfs` from the archive, to make sure all
-    dependencies are here and ready to use.
-  * Mount the `livecd-rootfs` sources in `/srv/livecd-rootfs`.
-  * Run `./live-build/build-livefs` with all the additional arguments you give.
-    That's what will build the ISO for you, take a lot of time, and bring your
-    machine down.
+# Ubuntu Server Live (lighter ISO)
+❯ ./live-build/build-livefs-lxd --suite resolute --project ubuntu-server --subproject live
 
-Depending on what you want to work on, the iteration time can be quite long.
-Fortunately `livecd-rootfs` provides many different projects to work with,
-providing various experiences in terms of load, space, bandwidth and running
-time.
-
-Very fast and lightweight "fake" ISO:
-```
-❯ ./live-build/build-livefs-lxd --suite resolute --arch amd64 --project ubuntu-test-iso
-```
-
-Ubuntu Desktop, the main flagship, and probably most complex ISO:
-```
-❯ ./live-build/build-livefs-lxd --suite resolute --arch amd64 --project ubuntu
+# Xubuntu Minimal (lighter desktop ISO)
+❯ ./live-build/build-livefs-lxd --suite resolute --project xubuntu --subproject minimal
 ```
 
-Ubuntu Server Live, lighter ISO:
+Every flag accepted by `build-livefs` other than `--suite` is forwarded
+through; see [README.parameters](README.parameters) for the full list.
+`--arch` defaults to the host architecture.
+
+## Fetching artifacts out of the VM
+
+The build runs in `/build` inside the VM (matching `launchpad-buildd`'s
+layout). Pass `--output DIR` to have `build-livefs-lxd` copy every
+`livecd.*` file from `/build` into `DIR` after the build:
+
 ```
-❯ ./live-build/build-livefs-lxd --suite resolute --arch amd64 --project ubuntu-server --subproject live
+❯ ./live-build/build-livefs-lxd --suite resolute --project ubuntu-test-iso \
+    --output ./out
+❯ ls ./out
+livecd.ubuntu-test-iso.iso  ...
 ```
 
-Xubuntu Minimal, lighter desktop ISO:
+If you'd rather do it by hand:
+
 ```
-❯ ./live-build/build-livefs-lxd --suite resolute --arch amd64 --project xubuntu --subproject minimal
+❯ lxc file pull livefs-builder-resolute/build/livecd.ubuntu-test-iso.iso ./
 ```
 
-## Fetching the image
+The VM is named `livefs-builder-{suite}` by default; override with `--vm-name`
+if you want to keep multiple VMs around simultaneously.
 
-Obviously, the image has been built inside the LXD VM, so you then need to extract it. Examples:
-```
-❯ lxc file pull livefs-builder-resolute/root/livecd.ubuntu-test-iso.iso my_ubuntu-test-iso.iso
-❯ lxc file pull livefs-builder-resolute/root/livecd.ubuntu.iso my_ubuntu.iso
-❯ lxc file pull livefs-builder-resolute/root/livecd.ubuntu-server.iso my_ubuntu-server.iso
-❯ lxc file pull livefs-builder-resolute/root/livecd.xubuntu.iso my_xubuntu.iso
-```
+To boot the resulting ISO:
 
-The fetched ISO should normally boot and work just fine. For example with QEMU:
 ```
-❯ kvm -m 3G -smp 2 -cdrom ./my_xubuntu.iso
+❯ kvm -m 3G -smp 2 -cdrom ./out/livecd.ubuntu-test-iso.iso
 ```
 
-## Clean up
+## Cleaning up
 
-This will leave you with a running VM eating some precious 8GB from your host.
-You can stop and/or delete that VM with these:
+The VM keeps running between invocations (so subsequent builds can reuse the
+installed packages and any apt cache). When you're done:
+
 ```
 ❯ lxc stop livefs-builder-resolute
 ❯ lxc delete livefs-builder-resolute
@@ -85,22 +88,73 @@ You can stop and/or delete that VM with these:
 
 ## Speeding things up with `apt-cacher-ng`
 
-All the previous steps work just fine, but when iterating, it's often very
-useful to cache all the package downloads, which can speed things up a lot,
-particularly if you don't live in one of Canonical's datacenters.
+Iteration time is dominated by package downloads. Running `apt-cacher-ng` on
+the host and pointing the build at it speeds things up dramatically,
+especially if you're not in one of Canonical's datacenters.
 
-Basically, on your host:
 ```
 ❯ sudo apt install apt-cacher-ng
-❯ cat ~/.config/livecd-rootfs/build-livefs.conf
-[defaults]
-mirror =  http://192.168.0.42:3142/archive.ubuntu.com/ubuntu
 ```
 
-`~/.config/livecd-rootfs/build-livefs.conf` is indeed stored on your host, but
-will be copied automatically at the right place if it exists.
+Configure the build to use it via `~/.config/livecd-rootfs/build-livefs.conf`
+on the host (it's pushed into the VM automatically):
 
-There, `192.168.0.42` is your local network IP, reachable from the LXD VM, on
-which `apt-cacher-ng` is listening.
-Other `apt` caching solutions might be working, but are untested.
+```ini
+[defaults]
+mirror = http://192.168.0.42:3142/archive.ubuntu.com/ubuntu
+```
 
+`192.168.0.42` is your host's IP on a network the LXD VM can reach. You can
+also point this at squid running in a container of its own, or probably several
+other ways of running a caching HTTP proxy.
+
+## Running `build-livefs` directly (without LXD)
+
+You can run `build-livefs` on the host if you really want to -- e.g. you're
+already inside a disposable VM, or you're debugging the wrapper itself. It
+needs to run as root (or via `sudo`, which it will arrange itself if needed)
+because the build does `mount` and `chroot`, and it will install
+`livecd-rootfs`'s dependencies on whatever system it runs on.
+
+```
+❯ mkdir build && cd build
+❯ /path/to/livecd-rootfs/live-build/build-livefs --suite resolute --project ubuntu-test-iso
+```
+
+`--work-dir DIR` lets you point at a build directory other than the current
+one.
+
+## Features only available in the local path
+
+A few `build-livefs` flags have no equivalent in the Launchpad build request
+path:
+
+- `--mirror URL` sets the `MIRROR` environment variable, overriding the
+  archive URL the build would otherwise pick. Without it, the build
+  auto-detects: it uses `http://ftpmaster.internal/ubuntu/` if reachable,
+  otherwise `http://archive.ubuntu.com/ubuntu/` (or `ports.ubuntu.com` for
+  non-x86 architectures). Set this to point at an `apt-cacher-ng` instance
+  (see above) or a local mirror.
+- `--http-proxy URL` sets `http_proxy`, `HTTP_PROXY`, and `LB_APT_HTTP_PROXY`
+  for the build. `launchpad-buildd` has code that can set these but no way
+  to trigger it from a build request, so in practice the local path is the
+  only way to do it. `build-livefs-lxd` also accepts `--http-proxy` and uses
+  it to configure apt inside the VM via cloud-init when the VM is first
+  launched.
+- `--work-dir DIR` lets `build-livefs` operate in a directory other than the
+  current one.
+
+## Config file defaults
+
+`~/.config/livecd-rootfs/build-livefs.conf` is read by both `build-livefs`
+and `build-livefs-lxd`. It uses INI format with a `[defaults]` section:
+
+```ini
+[defaults]
+http-proxy = http://squid.internal:3128/
+mirror = http://ftpmaster.internal/ubuntu/
+```
+
+Any value here is used when the corresponding command-line flag is not
+passed. `build-livefs-lxd` pushes this file into the VM before running the
+build, so the same defaults apply there.
