@@ -1,3 +1,9 @@
+livecd-rootfs (26.04.35) resolute; urgency=medium
+
+  * Change DTB handling for isobuild (riscv64), pre-extracting DTBs
+
+ -- Valentin Haudiquet <valentin.haudiquet@canonical.com>  Mon, 22 Jun 2026 11:20:47 +0200
+
 livecd-rootfs (26.04.34) resolute; urgency=medium
 
   * Set build type to Release for final ISO builds.

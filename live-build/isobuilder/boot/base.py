@@ -87,12 +87,14 @@ class BaseBootConfigurator(ABC):
         capproject: str,
         subarch: str,
         hwe: bool,
+        dtb_dir: pathlib.Path | None = None,
     ) -> None:
         """Make the ISO bootable by extracting bootloader files."""
         self.project = project
         self.humanproject = capproject.replace("-", " ")
         self.subarch = subarch
         self.hwe = hwe
+        self.dtb_dir = dtb_dir
         self.scratch.mkdir(exist_ok=True)
         with self.logger.logged("configuring boot"):
             self.extract_files()

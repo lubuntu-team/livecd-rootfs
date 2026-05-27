@@ -85,35 +85,20 @@ class RISCV64BootConfigurator(GrubBootConfigurator):
             grub_pkg_dir, "riscv64", "riscv64-efi", self.iso_root
         )
 
-        # Extract DTBs to tree
-        self.logger.log("extracting device tree files")
-        kernel_layer = self.scratch.joinpath("kernel-layer")
-        squashfs_path = self.iso_root.joinpath(
-            "casper", "ubuntu-server-minimal.squashfs"
-        )
-
-        # Extract device tree firmware from squashfs
-        self.logger.run(
-            [
-                "unsquashfs",
-                "-no-xattrs",
-                "-d",
-                kernel_layer,
-                squashfs_path,
-                "usr/lib/firmware",
-            ],
-            check=True,
-        )
-
-        # Copy DTBs if they exist
+        # Copy DTBs from the pre-extracted directory passed via --dtb-dir
+        self.logger.log("copying device tree files")
         dtb_dir = self.iso_root.joinpath("dtb")
-        dtb_dir.mkdir(parents=True, exist_ok=True)
 
-        firmware_dir = kernel_layer.joinpath("usr", "lib", "firmware")
-
-        for dtb_file in firmware_dir.glob("*/device-tree/*"):
-            if dtb_file.is_file():
-                shutil.copy(dtb_file, dtb_dir)
+        if self.dtb_dir is not None and self.dtb_dir.exists():
+            dtb_dir.mkdir(parents=True, exist_ok=True)
+            for dtb_file in self.dtb_dir.glob("**/*"):
+                if dtb_file.is_file():
+                    rel_path = dtb_file.relative_to(self.dtb_dir)
+                    target = dtb_dir.joinpath(rel_path)
+                    target.parent.mkdir(parents=True, exist_ok=True)
+                    shutil.copy(dtb_file, target)
+        else:
+            self.logger.log("no DTB directory provided, skipping DTB copy")
 
         # Create ESP image with GRUB and dtbs
         efi_img = self.scratch.joinpath("efi.img")
@@ -125,8 +110,9 @@ class RISCV64BootConfigurator(GrubBootConfigurator):
         efi_dir = self.iso_root.joinpath("EFI")
         self.logger.run(["mcopy", "-s", "-i", efi_img, efi_dir, "::/."], check=True)
 
-        # Add DTBs to ESP
-        self.logger.run(["mcopy", "-s", "-i", efi_img, dtb_dir, "::/."], check=True)
+        # Add DTBs to ESP (only if the dtb directory was created)
+        if dtb_dir.exists():
+            self.logger.run(["mcopy", "-s", "-i", efi_img, dtb_dir, "::/."], check=True)
 
     def generate_grub_config(self) -> str:
         """Generate grub.cfg for RISC-V64."""
