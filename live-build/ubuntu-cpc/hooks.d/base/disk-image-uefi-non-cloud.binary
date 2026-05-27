@@ -179,16 +179,13 @@ install_grub() {
             rm -rf mountpoint/etc/default/grub.d/*
             cp ${my_d}/riscv64/grub/10_cmdline.cfg mountpoint/etc/default/grub.d/
             echo "Copying device trees"
-            kver=$(ls mountpoint/lib/modules | sort -V | tail -n 1)
-            dtb_src_dirs=(
-                "mountpoint/usr/lib/linux-image-$kver"
-                "mountpoint/lib/firmware/$kver/device-tree"
-            )
             dtb_tgt_dir="mountpoint/boot/efi/dtb/"
             mkdir -p "$dtb_tgt_dir"
-            for src_dir in "${dtb_src_dirs[@]}"; do
-                [ -d "$src_dir" ] && cp -r -v "$src_dir"/* "$dtb_tgt_dir" || echo "Skipping missing: $src_dir"
-            done
+            # DTBs are read from the build chroot/overlay rather than
+            # mountpoint because mountpoint is populated directly from
+            # chroot and the kernel package content is identical between
+            # the two at this point in the build.
+            extract_dtbs "$dtb_tgt_dir" || true
             chroot mountpoint bash -c 'FK_FORCE=yes apt-get install -qqy grub-efi-riscv64 flash-kernel'
             efi_target=riscv64-efi
             # Provide end-user modifyable CIDATA

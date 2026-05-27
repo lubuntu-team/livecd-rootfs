@@ -1470,3 +1470,51 @@ iso_install_kernel() {
     install -m 0644 "$kernel" "$CASPER_DIR/${prefix}${kernel_name}"
     install -m 0644 "$initrd" "$CASPER_DIR/${prefix}initrd"
 }
+
+# Copy DTB files from a rootfs directory into a target directory.
+# Checks the primary location (usr/lib/linux-image-<kver>/) and the
+# fallback location (usr/lib/firmware/<kver>/device-tree/).
+# Usage: _copy_dtbs_from_rootfs <rootfs_dir> <target_dir>
+# Returns 1 if no kernel version was found in the rootfs.
+_copy_dtbs_from_rootfs() {
+    local rootfs_dir="$1"
+    local target_dir="$2"
+    local kver
+    kver=$(ls "$rootfs_dir/lib/modules" 2>/dev/null | sort -V | tail -n 1)
+    [ -n "$kver" ] || return 1
+    if [ -d "$rootfs_dir/usr/lib/linux-image-$kver" ]; then
+        cp -r "$rootfs_dir/usr/lib/linux-image-$kver/"* "$target_dir/" 2>/dev/null || true
+    fi
+    if [ -d "$rootfs_dir/usr/lib/firmware/$kver/device-tree" ]; then
+        cp -r "$rootfs_dir/usr/lib/firmware/$kver/device-tree/"* "$target_dir/" 2>/dev/null || true
+    fi
+}
+
+# Extract DTB files from the build rootfs into a target directory.
+# Handles both layered builds (overlay.<pass> dirs) and single-pass
+# builds (chroot/). Stops as soon as DTBs are found.
+# Usage: extract_dtbs <target_dir>
+# Returns 1 if no DTB files were found.
+extract_dtbs() {
+    local target_dir="$1"
+    if [ -n "${PASSES:-}" ]; then
+        for pass in $PASSES; do
+            local overlay_dir="overlay.$pass"
+            if [ -d "$overlay_dir/lib/modules" ]; then
+                _copy_dtbs_from_rootfs "$overlay_dir" "$target_dir"
+                if [ -n "$(ls -A "$target_dir" 2>/dev/null)" ]; then
+                    break
+                fi
+            fi
+        done
+    else
+        if [ -d "chroot/lib/modules" ]; then
+            _copy_dtbs_from_rootfs "chroot" "$target_dir"
+        fi
+    fi
+    if [ -z "$(ls -A "$target_dir" 2>/dev/null)" ]; then
+        echo "WARNING: No DTB files found for riscv64" >&2
+        return 1
+    fi
+    echo "Extracted DTB files to $target_dir/"
+}

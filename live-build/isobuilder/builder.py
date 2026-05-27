@@ -263,7 +263,13 @@ class ISOBuilder:
                 uuid_conf.rename(dot_disk.joinpath(f"casper-uuid-{suffix}"))
                 shutil.rmtree(initrddir)
 
-    def make_bootable(self, project: str, capproject: str, subarch: str):
+    def make_bootable(
+        self,
+        project: str,
+        capproject: str,
+        subarch: str,
+        dtb_dir: pathlib.Path | None = None,
+    ):
         configurator = make_boot_configurator_for_arch(
             self.arch,
             self.logger,
@@ -276,6 +282,7 @@ class ISOBuilder:
             capproject,
             subarch,
             self.iso_root.joinpath("casper/hwe-initrd").exists(),
+            dtb_dir,
         )
 
     def checksum(self):
@@ -286,10 +293,7 @@ class ISOBuilder:
         #   matches what users get when they verify with "md5sum -c" from the ISO
         all_files = []
         for dirpath, dirnames, filenames in self.iso_root.walk():
-            filenames = [
-                fn for fn in filenames
-                if fn not in self.checksum_exclusions
-            ]
+            filenames = [fn for fn in filenames if fn not in self.checksum_exclusions]
             filepaths = [dirpath.joinpath(filename) for filename in filenames]
             all_files.extend(
                 "./" + str(filepath.relative_to(self.iso_root))
