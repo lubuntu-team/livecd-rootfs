@@ -11,6 +11,8 @@ livecd-rootfs (26.10.2) UNRELEASED; urgency=medium
     out of the build VM.
   * Update documentation on parameters and local operation to cross-reference
     each other a bit more.
+  * Pass BUILD_TYPE through to gen-iso-ids so the configured build type (e.g.
+    Daily or Release) is reflected in the ISO's .disk/info again.
 
  -- Dan Bungert <daniel.bungert@canonical.com>  Thu, 07 May 2026 10:51:27 +0200
 
