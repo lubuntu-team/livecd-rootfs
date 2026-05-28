@@ -97,6 +97,11 @@ def _default_arch():
     help="Ubuntu archive mirror URL (sets MIRROR)",
 )
 @click.option(
+    "--seedmirror",
+    default=None,
+    help="Seed mirror URL (sets SEEDMIRROR)",
+)
+@click.option(
     "--debug", is_flag=True, default=False, help="Enable debug mode (set -x in lb scripts)"
 )
 def main(
@@ -120,6 +125,7 @@ def main(
     build_type,
     http_proxy,
     mirror,
+    seedmirror,
     debug,
 ):
     cfg = _read_config()
@@ -127,6 +133,8 @@ def main(
         http_proxy = cfg.get("http-proxy")
     if mirror is None:
         mirror = cfg.get("mirror")
+    if seedmirror is None:
+        seedmirror = cfg.get("seedmirror")
 
     if arch is None:
         arch = _default_arch()
@@ -182,6 +190,8 @@ def main(
         config_env["BUILD_TYPE"] = build_type
     if mirror is not None:
         config_env["MIRROR"] = mirror
+    if seedmirror is not None:
+        config_env["SEEDMIRROR"] = seedmirror
 
     work_dir = work_dir.resolve()
     work_dir.mkdir(parents=True, exist_ok=True)

@@ -32,18 +32,18 @@ fi
 
 echo "Building on $(hostname --fqdn)"
 
-SEEDMIRROR=https://ubuntu-archive-team.ubuntu.com/seeds/
-if [ -z "$MIRROR" ]; then
+if [ -z "$MIRROR" ] || [ -z "$SEEDMIRROR" ]; then
 	case $(hostname --fqdn) in
 		*.ubuntu.com|*.buildd|*.ppa|*.scalingstack)
-			MIRROR=http://ftpmaster.internal/ubuntu/
-			SEEDMIRROR=http://archive-team.internal/seeds/
+			: ${MIRROR:=http://ftpmaster.internal/ubuntu/}
+			: ${SEEDMIRROR:=http://archive-team.internal/seeds/}
 			;;
 		*)
 			case $ARCH in
-				i386|amd64|arm64)	MIRROR=http://archive.ubuntu.com/ubuntu/ ;;
-				*)			MIRROR=http://ports.ubuntu.com/ubuntu-ports/ ;;
+				i386|amd64|arm64)	: ${MIRROR:=http://archive.ubuntu.com/ubuntu/} ;;
+				*)			: ${MIRROR:=http://ports.ubuntu.com/ubuntu-ports/} ;;
 			esac
+			: ${SEEDMIRROR:=https://ubuntu-archive-team.ubuntu.com/seeds/}
 			;;
 	esac
 fi
