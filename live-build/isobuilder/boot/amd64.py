@@ -7,7 +7,6 @@ from .base import default_kernel_params
 from .grub import copy_grub_modules
 from .uefi import UEFIBootConfigurator
 
-
 CALAMARES_PROJECTS = ["kubuntu", "lubuntu"]
 
 

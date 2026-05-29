@@ -20,7 +20,6 @@ import time
 
 import click
 
-
 # Be careful about the values here. They end up in .disk/info, which is read by
 # casper to create the live session user, so if there is a space in the
 # capproject things go a bit wonky.
