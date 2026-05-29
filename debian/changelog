@@ -1,3 +1,18 @@
+livecd-rootfs (24.04.97) noble; urgency=medium
+
+  * Build ubuntu-server with multipath-tools-boot installed, so that the
+    multipath stack ends up present in the initramfs.
+    The LVM stack is already present in the initramfs of the installer. And
+    since kinetic, the /dev/mapper entries for LVM devices are created during
+    the initramfs phase. This is a problem when we have LVM on top of a
+    multipath disk because LVM ends up creating /dev/mapper entries out of
+    /dev/sdX (or /dev/sdXpY) devices, not out of /dev/mapper/mpatha as it
+    should. Adding the multipath stack in the initramfs gives multipath a
+    chance to take ownership of /dev/sdX (or /dev/sdXpY) devices before LVM
+    does (LP: #2080474).
+
+ -- Olivier Gayot <olivier.gayot@canonical.com>  Fri, 29 May 2026 17:35:44 +0200
+
 livecd-rootfs (24.04.96) noble; urgency=medium
 
   * Remove now unused sb binary hook (LP: #2147086)
