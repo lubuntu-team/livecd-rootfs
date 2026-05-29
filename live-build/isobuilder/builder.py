@@ -55,9 +55,7 @@ Suites: {series}
 Components: {" ".join(components)}
 Check-Date: no
 Signed-By:
-""" + "\n".join(
-        quoted_key
-    )
+""" + "\n".join(quoted_key)
 
 
 class Logger:
@@ -286,10 +284,7 @@ class ISOBuilder:
         #   matches what users get when they verify with "md5sum -c" from the ISO
         all_files = []
         for dirpath, dirnames, filenames in self.iso_root.walk():
-            filenames = [
-                fn for fn in filenames
-                if fn not in self.checksum_exclusions
-            ]
+            filenames = [fn for fn in filenames if fn not in self.checksum_exclusions]
             filepaths = [dirpath.joinpath(filename) for filename in filenames]
             all_files.extend(
                 "./" + str(filepath.relative_to(self.iso_root))

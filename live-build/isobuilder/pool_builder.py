@@ -4,7 +4,6 @@ import tempfile
 
 from isobuilder.apt_state import AptStateManager, PackageInfo
 
-
 generate_template = """
 Dir::ArchiveDir "{root}";
 Dir::CacheDir "{scratch}/apt-ftparchive-db";

@@ -6,7 +6,6 @@ import struct
 
 from .base import BaseBootConfigurator
 
-
 README_dot_boot = """\
 About the S/390 installation CD
 ===============================
