@@ -261,7 +261,13 @@ class ISOBuilder:
                 uuid_conf.rename(dot_disk.joinpath(f"casper-uuid-{suffix}"))
                 shutil.rmtree(initrddir)
 
-    def make_bootable(self, project: str, capproject: str, subarch: str):
+    def make_bootable(
+        self,
+        project: str,
+        capproject: str,
+        subarch: str,
+        dtb_dir: pathlib.Path | None = None,
+    ):
         configurator = make_boot_configurator_for_arch(
             self.arch,
             self.logger,
@@ -274,6 +280,7 @@ class ISOBuilder:
             capproject,
             subarch,
             self.iso_root.joinpath("casper/hwe-initrd").exists(),
+            dtb_dir,
         )
 
     def checksum(self):

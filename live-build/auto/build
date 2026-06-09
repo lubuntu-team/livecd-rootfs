@@ -582,6 +582,14 @@ case $PROJECT in
 esac
 
 if [ "${MAKE_ISO}" = "yes" ]; then
+	# Extract DTBs before running isobuild make-bootable
+	DTB_DIR=""
+	if [ "$ARCH" = "riscv64" ]; then
+		DTB_DIR="config/iso-dir/dtbs"
+		rm -rf "$DTB_DIR"
+		mkdir -p "$DTB_DIR"
+		extract_dtbs "$DTB_DIR" || { rmdir "$DTB_DIR" 2>/dev/null || true; DTB_DIR=""; }
+	fi
 	# For non-layered builds, create squashfs with cdrom.sources directly
 	# in casper/. Layered builds already handle this in lb_binary_layered.
 	if [ -z "$PASSES" ] && [ "$PROJECT" != "ubuntu-mini-iso" ]; then
@@ -595,7 +603,9 @@ if [ "${MAKE_ISO}" = "yes" ]; then
 		done
 	fi
 	isobuild extract-casper-uuids
+
 	isobuild make-bootable --project "${PROJECT}" --capproject "$(cat config/iso-ids/capproject)" \
-		${SUBARCH:+--subarch "${SUBARCH}"}
+		${SUBARCH:+--subarch "${SUBARCH}"} \
+		${DTB_DIR:+--dtb-dir "${DTB_DIR}"}
 	isobuild make-iso --volid "$(cat config/iso-ids/vol-id)" --dest ${PREFIX}.iso
 fi

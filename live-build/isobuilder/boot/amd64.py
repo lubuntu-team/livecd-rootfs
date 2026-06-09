@@ -205,9 +205,10 @@ fi
         capproject: str,
         subarch: str,
         hwe: bool,
+        dtb_dir: pathlib.Path | None = None,
     ) -> None:
         """Make the ISO bootable, including generating loopback.cfg."""
-        super().make_bootable(project, capproject, subarch, hwe)
+        super().make_bootable(project, capproject, subarch, hwe, dtb_dir)
         grub_cfg = self.iso_root.joinpath("boot", "grub", "grub.cfg")
         grub_content = grub_cfg.read_text()
         self.iso_root.joinpath("boot", "grub", "loopback.cfg").write_text(

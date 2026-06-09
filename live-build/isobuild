@@ -174,6 +174,12 @@ def extract_casper_uuids(builder):
 
 
 @click.option(
+    "--dtb-dir",
+    type=click.Path(file_okay=False, resolve_path=True, path_type=pathlib.Path),
+    default=None,
+    help="directory containing pre-extracted DTB files (riscv64)",
+)
+@click.option(
     "--project",
     type=str,
     required=True,
@@ -185,7 +191,13 @@ def extract_casper_uuids(builder):
     default="",
 )
 @subcommand
-def make_bootable(builder, project: str, capproject: str | None, subarch: str):
+def make_bootable(
+    builder,
+    project: str,
+    capproject: str | None,
+    subarch: str,
+    dtb_dir: pathlib.Path | None,
+):
     # capproject is the "capitalized project name" used in GRUB menu entries,
     # e.g. "Ubuntu" or "Kubuntu". It should come from gen-iso-ids (which uses
     # project_to_capproject_map for proper formatting like "Ubuntu-MATE"), but
@@ -193,7 +205,7 @@ def make_bootable(builder, project: str, capproject: str | None, subarch: str):
     # doesn't have the pre-computed value.
     if capproject is None:
         capproject = project.capitalize()
-    builder.make_bootable(project, capproject, subarch)
+    builder.make_bootable(project, capproject, subarch, dtb_dir)
 
 
 @click.option(

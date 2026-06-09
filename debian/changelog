@@ -22,6 +22,9 @@ livecd-rootfs (26.10.2) UNRELEASED; urgency=medium
     removed in 26.04.27 and creating the install-sources.yaml directly into
     the iso directory (the installer still fails for unclear reasons).
 
+  [ Valentin Haudiquet ]
+  * Change DTB handling for isobuild (riscv64), pre-extracting DTBs
+
  -- Dan Bungert <daniel.bungert@canonical.com>  Thu, 07 May 2026 10:51:27 +0200
 
 livecd-rootfs (26.10.1) stonking; urgency=medium
