@@ -859,12 +859,21 @@ case $PROJECT in
 				MINIMAL_IS_DEFAULT=yes
 				HAS_DEFAULT_LANGUAGES=yes
 				LANGUAGE_BASE=desktop
-				KERNEL_FLAVOURS='generic-hwe-24.04'
+				KERNEL_FLAVOURS='generic-hwe-26.04'
 				NEEDS_DRACUT=yes
+
+				case $ARCH in
+					riscv64)
+						# There is currently no hwe kernel on riscv64
+						# The generic kernel of riscv64 behaves similarly to the hwe kernels
+						# on other architectures (continuously backported)
+						KERNEL_FLAVOURS="generic"
+						;;
+				esac
 
 				case $SUBARCH in
 					nvidia)
-						KERNEL_FLAVOURS="nvidia-hwe-24.04"
+						KERNEL_FLAVOURS="nvidia-hwe-26.04"
 						;;
 					*)
 						# nothing to do here.
@@ -914,7 +923,7 @@ case $PROJECT in
 		STANDARD_DESC="Ubuntu Desktop for OEM preinstallation."
 		HAS_DEFAULT_LANGUAGES=yes
 		#KERNEL_FLAVOURS='oem-24.04'
-		KERNEL_FLAVOURS='generic-hwe-24.04'
+		KERNEL_FLAVOURS='generic-hwe-26.04'
 		LOCALE_SUPPORT=none
 		do_layered_desktop_image
 		;;
@@ -995,7 +1004,7 @@ case $PROJECT in
 		MINIMAL_DESC="A minimal but usable $UCFLAVOUR Desktop."
 		HAS_DEFAULT_LANGUAGES=yes
 		LANGUAGE_BASE=desktop
-		KERNEL_FLAVOURS='generic-hwe-24.04'
+		KERNEL_FLAVOURS='generic-hwe-26.04'
 		do_layered_desktop_image
 		;;
 
