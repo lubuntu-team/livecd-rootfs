@@ -1,6 +1,8 @@
 livecd-rootfs (26.04.35) resolute; urgency=medium
 
   * Change DTB handling for isobuild (riscv64), pre-extracting DTBs
+  * riscv64: set kernel flavour to generic instead of 
+    hwe for desktop (LP: #2157784)
 
  -- Valentin Haudiquet <valentin.haudiquet@canonical.com>  Mon, 22 Jun 2026 11:20:47 +0200
 
