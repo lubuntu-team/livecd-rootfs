@@ -1275,9 +1275,11 @@ EOF
     cat <<EOF >$mountpoint/var/lib/cloud/seed/nocloud-net/user-data
 #cloud-config
 chpasswd:
-    expire: True
-    list:
-        - ubuntu:ubuntu
+    expire: true
+    users:
+      - name: ubuntu
+        password: ubuntu
+        type: text
 ssh_pwauth: True
 EOF
     cat <<EOF >$mountpoint/var/lib/cloud/seed/nocloud-net/network-config

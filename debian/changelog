@@ -1,3 +1,9 @@
+livecd-rootfs (26.04.35) UNRELEASED; urgency=medium
+
+  * fix: update nocloud password data format (LP: #2149891)
+
+ -- Valentin Haudiquet <valentin.haudiquet@canonical.com>  Thu, 25 Jun 2026 13:17:33 +0200
+
 livecd-rootfs (26.04.34) resolute; urgency=medium
 
   * Set build type to Release for final ISO builds.
