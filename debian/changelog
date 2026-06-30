@@ -1,18 +1,16 @@
-livecd-rootfs (26.04.36) UNRELEASED; urgency=medium
-
-  * Install kernel and initrd into the casper directory with mode 0644 so that
-    the netboot tarball does not ship a kernel readable only by root. (LP: #2150431)
-
- -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Tue, 30 Jun 2026 00:00:00 +1200
-
 livecd-rootfs (26.04.35) resolute; urgency=medium
 
+  [ Valentin Haudiquet ]
   * Change DTB handling for isobuild (riscv64), pre-extracting DTBs
   * riscv64: set kernel flavour to generic instead of 
     hwe for desktop (LP: #2157784)
   * fix: update nocloud password data format (LP: #2149891)
 
- -- Valentin Haudiquet <valentin.haudiquet@canonical.com>  Mon, 29 Jun 2026 16:01:36 +1200
+  [ Michael Hudson-Doyle ]
+  * Install kernel and initrd into the casper directory with mode 0644 so that
+    the netboot tarball does not ship a kernel readable only by root. (LP: #2150431)
+
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Tue, 30 Jun 2026 00:00:00 +1200
 
 livecd-rootfs (26.04.34) resolute; urgency=medium
 
