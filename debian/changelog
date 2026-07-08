@@ -1,3 +1,9 @@
+livecd-rootfs (26.10.5) stonking; urgency=medium
+
+  * riscv64: don't use earlycon=sbi (LP: #2160092)
+
+ -- Heinrich Schuchardt <heinrich.schuchardt@canonical.com>  Wed, 08 Jul 2026 16:30:42 +0200
+
 livecd-rootfs (26.10.4) stonking; urgency=medium
 
   * Work around a rust-coreutils `mv` bug that fails with EEXIST when
