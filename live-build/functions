@@ -217,7 +217,18 @@ teardown_mountpoint() {
         umount $submount
     done
     recover_sourceslist "${mountpoint}"
+    # Remove the destination before restoring the backups
+    # This works around bug #10010 in rust-coreutils' `mv` implementation
+    # (https://github.com/uutils/coreutils/issues/10010)
+
+    # When `mv` falls back to a copy&unlink (like when the backup file and the
+    # mountpoint are on different filesystems for example) and the source is a
+    # symlink, it calls symlink(2) on the destination *without* removing it
+    # first, which then fails with EEXIST if the destination already exists
+    # (which it does indeed here since `setup_mountpoint` replaced these files)
+    rm -f "$mountpoint/etc/resolv.conf"
     mv resolv.conf.tmp "$mountpoint/etc/resolv.conf"
+    rm -f "$mountpoint/etc/nsswitch.conf"
     mv nsswitch.conf.tmp "$mountpoint/etc/nsswitch.conf"
 }
 
