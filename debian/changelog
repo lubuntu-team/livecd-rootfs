@@ -1,8 +1,12 @@
 livecd-rootfs (24.04.98) noble; urgency=medium
 
+  [ Chloé 'kajiya' Smith ]
   * Add 7.0 kernel apparmor features for noble (LP: #2161121)
 
- -- Chloé 'kajiya' Smith <chloe.smith@canonical.com>  Fri, 17 Jul 2026 18:58:41 +0100
+  [ Heinrich Schuchardt ]
+  * riscv64: don't use earlycon=sbi (LP: #2160092)
+
+ -- Florent 'Skia' Jacquet <skia@ubuntu.com>  Wed, 22 Jul 2026 16:29:29 +0200
 
 livecd-rootfs (24.04.97) noble; urgency=medium
 
