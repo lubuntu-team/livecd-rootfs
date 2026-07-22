@@ -1,5 +1,8 @@
 livecd-rootfs (26.04.35) resolute; urgency=medium
 
+  [ Heinrich Schuchardt ]
+  * riscv64: don't use earlycon=sbi (LP: #2160092)
+
   [ Valentin Haudiquet ]
   * Change DTB handling for isobuild (riscv64), pre-extracting DTBs
   * riscv64: set kernel flavour to generic instead of 
@@ -10,7 +13,7 @@ livecd-rootfs (26.04.35) resolute; urgency=medium
   * Install kernel and initrd into the casper directory with mode 0644 so that
     the netboot tarball does not ship a kernel readable only by root. (LP: #2150431)
 
- -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Tue, 30 Jun 2026 00:00:00 +1200
+ -- Florent 'Skia' Jacquet <skia@ubuntu.com>  Wed, 22 Jul 2026 14:42:22 +0200
 
 livecd-rootfs (26.04.34) resolute; urgency=medium
 
