@@ -1,3 +1,9 @@
+livecd-rootfs (24.04.98) noble; urgency=medium
+
+  * Add 7.0 kernel apparmor features for noble (LP: #2161121)
+
+ -- Chloé 'kajiya' Smith <chloe.smith@canonical.com>  Fri, 17 Jul 2026 18:58:41 +0100
+
 livecd-rootfs (24.04.97) noble; urgency=medium
 
   * Build ubuntu-server with multipath-tools-boot installed, so that the
