@@ -392,6 +392,20 @@ EOF
 			;;
 	esac
 
+	# e2fsprogs >= 1.47 enables the `orphan_file` and `metadata_csum_seed` ext4
+	# features by default. When the binary stage creates the rootfs image
+	# (and for bootable buildd images, the disk images) with `mkfs.ext4` and
+	# then loop-mounts it, the kernel running on the `buildds` rejects such a
+	# new filesystem with `mount() failed: Structure needs cleaning (EUCLEAN)`,
+	# breaking the build. Drop these features from the build environment's
+	# `mke2fs.conf` so that every `ext4` image created during the build stays
+	# mountable. This mirrors the workaround already used for the canary live environment
+	# (LP: #2025339)
+
+	if [ "${SUBPROJECT:-}" = buildd ] && [ -e /etc/mke2fs.conf ]; then
+	  sed -i -e 's/,orphan_file//g' -e 's/,metadata_csum_seed//g' /etc/mke2fs.conf
+	fi
+
 	if [ -n "${PASSES}" ]; then
 		PATH="config/:$PATH" lb binary_layered "$@"
 	else
