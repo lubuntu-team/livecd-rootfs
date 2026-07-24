@@ -1,3 +1,14 @@
+livecd-rootfs (26.10.6) stonking; urgency=medium
+
+  * Disable the `orphan_file` and `metadata_csum_seed` `ext4`
+    features when creating filesystem images during the binary stage.
+    `e2fsprogs` >= 1.47 enables these by default, but the kernel used
+    on the buildds refuses to `loop-mount` such freshly-created filesystems
+    (`mount() failed: Structure needs cleaning`/`EUCLEAN`), which broke the
+    buildd chroot and image builds
+
+ -- Chloé 'kajiya' Smith <chloe.smith@canonical.com>  Fri, 24 Jul 2026 16:03:35 +0100
+
 livecd-rootfs (26.10.5) stonking; urgency=medium
 
   * riscv64: don't use earlycon=sbi (LP: #2160092)
