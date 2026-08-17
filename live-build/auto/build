@@ -402,8 +402,9 @@ EOF
 	# mountable. This mirrors the workaround already used for the canary live environment
 	# (LP: #2025339)
 
-	if [ "${SUBPROJECT:-}" = buildd ] && [ -e /etc/mke2fs.conf ]; then
-	  sed -i -e 's/,orphan_file//g' -e 's/,metadata_csum_seed//g' /etc/mke2fs.conf
+	if [ "${SUBPROJECT:-}" = buildd ] || [ "${SUBPROJECT:-}" = wsl ] && [ -e /etc/mke2fs.conf ]; then
+	  sed -i -e 's/orphan_file//g' -e 's/metadata_csum_seed//g' /etc/mke2fs.conf
+    sed -i -e 's/,,/,/g' /etc/mke2fs.conf
 	fi
 
 	if [ -n "${PASSES}" ]; then
