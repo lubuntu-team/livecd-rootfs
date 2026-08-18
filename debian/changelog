@@ -1,3 +1,11 @@
+livecd-rootfs (24.04.99) noble; urgency=medium
+
+  * Also add the missing "tags" notify class to the noble 7.0 kernel apparmor
+    features. Was missed before probably due to an oversight as it's not a new
+    feature but rather a change to the existing one. (LP: #2161121)
+
+ -- Chloé 'kajiya' Smith <chloe.smith@canonical.com>  Tue, 11 Aug 2026 15:50:00 +0100
+
 livecd-rootfs (24.04.98) noble; urgency=medium
 
   [ Chloé 'kajiya' Smith ]
