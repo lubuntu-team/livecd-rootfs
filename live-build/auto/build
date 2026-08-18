@@ -403,8 +403,8 @@ EOF
 	# (LP: #2025339)
 
 	if [ "${SUBPROJECT:-}" = buildd ] || [ "${SUBPROJECT:-}" = wsl ] && [ -e /etc/mke2fs.conf ]; then
-	  sed -i -e 's/orphan_file//g' -e 's/metadata_csum_seed//g' /etc/mke2fs.conf
-    sed -i -e 's/,,/,/g' /etc/mke2fs.conf
+		sed -i -e 's/orphan_file//g' -e 's/metadata_csum_seed//g' /etc/mke2fs.conf
+		sed -i -e 's/,,/,/g' /etc/mke2fs.conf
 	fi
 
 	if [ -n "${PASSES}" ]; then
