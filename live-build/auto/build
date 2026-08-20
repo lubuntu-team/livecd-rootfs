@@ -156,9 +156,15 @@ path-include=/usr/share/doc/*/copyright
 # ... and Debian changelogs for native & non-native packages
 path-include=/usr/share/doc/*/changelog.*
 EOF
+		# Mount /proc in chroot before reinstalling packages as they might need
+		# it (e.g., passwd>=1:4.19.3-2ubuntu1 uses systemd-tmpfiles in its
+		# postinst script, which needs /proc)
+		setup_mountpoint chroot
 
 		# Remove docs installed by bootstrap
 		Chroot chroot dpkg-query -f '${binary:Package}\n' -W | Chroot chroot xargs -L1 apt-get install --reinstall
+
+		teardown_mountpoint chroot
 
 
 		# inform users about the unminimize script
