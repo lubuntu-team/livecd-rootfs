@@ -1,3 +1,9 @@
+livecd-rootfs (26.10.8) stonking; urgency=medium
+
+  * busybox-initramfs isn't a thing anymore (LP: #2166021)
+
+ -- Florent 'Skia' Jacquet <skia@ubuntu.com>  Tue, 01 Sep 2026 15:20:06 +0200
+
 livecd-rootfs (26.10.7) stonking; urgency=medium
 
   * Mount /proc during package reinstall, which is needed for running some of
