@@ -1,3 +1,9 @@
+livecd-rootfs (26.10.9) stonking; urgency=medium
+
+  * Temporarily switch to edge channel for ubuntu-image (LP #2166769)
+
+ -- Oliver Reiche <oliver.reiche@canonical.com>  Tue, 08 Sep 2026 13:19:06 +0200
+
 livecd-rootfs (26.10.8) stonking; urgency=medium
 
   * busybox-initramfs isn't a thing anymore (LP: #2166021)

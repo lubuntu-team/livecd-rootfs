@@ -24,7 +24,10 @@ if [ "${IMAGEFORMAT:-}" = "ubuntu-image" ]; then
 	# Use ubuntu-image instead (or as part) of live-build
 
 	export SNAPPY_STORE_NO_CDN=1
-	LB_UBUNTU_IMAGE_CHANNEL="${LB_UBUNTU_IMAGE_CHANNEL:-stable}"
+	# Temporarily use the edge channel, because we need version >=3.10.10, which
+	# includes https://github.com/canonical/ubuntu-image/pull/299 to fix the
+	# Stonking builds (fails due to missing gpgv).
+	LB_UBUNTU_IMAGE_CHANNEL="${LB_UBUNTU_IMAGE_CHANNEL:-edge}"
 	snap install \
             --classic --channel="$LB_UBUNTU_IMAGE_CHANNEL" ubuntu-image
 
