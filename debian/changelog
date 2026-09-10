@@ -1,3 +1,11 @@
+livecd-rootfs (26.10.10) UNRELEASED; urgency=medium
+
+  [ Allen Abraham ]
+  * Minimize difference between imagecraft generated image and our current
+    standard minimal Ubuntu cloud image.
+
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Fri, 11 Sep 2026 11:41:03 +1200
+
 livecd-rootfs (26.10.9) stonking; urgency=medium
 
   * Temporarily switch to edge channel for ubuntu-image (LP #2166769)
