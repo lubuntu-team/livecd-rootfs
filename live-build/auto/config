@@ -1308,6 +1308,9 @@ case $SUBPROJECT in
 		add_package install gpg-agent
 		add_package install fakeroot
 		add_package install build-essential
+		# Brought in by ubuntu-cloud-minimal in regular lxd image
+		# builds, needed for network device configuration.
+		add_package install udev
 		# Needed for LXD-based builds.
 		add_package install init
 		# Needed for bootable buildd systems which don't get injected
