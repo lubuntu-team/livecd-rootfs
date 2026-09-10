@@ -1,3 +1,13 @@
+livecd-rootfs (26.04.37) UNRELEASED; urgency=medium
+
+  * The binary hook that installs udev for buildd builds  now fails (because
+    the hook does not mount /proc). But using a binary hook to install a
+    package that ends up in every artifact is obtuse; so just add udev to the
+    list of packages in auto/config and delete the hook (and the redundant
+    installation of udev in 52-linux-virtual-image.binary). (LP: #2165422)
+
+ -- Allen Abraham <allen.abraham@canonical.com>  Tue, 22 Sep 2026 10:17:10 -0400
+
 livecd-rootfs (26.04.36) resolute; urgency=medium
 
   * Update SEEDMIRROR default to use static-reports.u.c instead of
