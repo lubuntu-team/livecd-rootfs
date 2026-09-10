@@ -1,6 +1,12 @@
 #!/bin/bash -eux
 
+IMAGE_STR="# CLOUD_IMG: This file was created/modified by the Cloud Image build process"
+FS_LABEL="cloudimg-rootfs"
+
 . config/functions
+. config/binary
+
+. config/bootstrap
 
 ARCH="${ARCH:-}"
 SUBPROJECT="${SUBPROJECT:-}"
@@ -30,6 +36,10 @@ snap install imagecraft --classic --channel latest/edge
 
 cp -r "$_src_d"/imagecraft-configs/* .
 
+LB_PARENT_MIRROR_CHROOT="${LB_PARENT_MIRROR_CHROOT:-$LB_PARENT_MIRROR_BINARY}" \
+LB_PARENT_MIRROR_BINARY="${LB_PARENT_MIRROR_BINARY}" \
+LB_PARENT_MIRROR_BINARY_SECURITY="${LB_PARENT_MIRROR_BINARY_SECURITY}" \
+LB_DISTRIBUTION="${LB_DISTRIBUTION}" \
 CRAFT_BUILD_ENVIRONMENT=host imagecraft --verbosity debug pack
 
 # We are using this function instead of mount_disk_image from functions
@@ -48,12 +58,37 @@ mount_image_partitions() {
 }
 
 install_grub_on_image() {
-  divert_grub "$mountpoint"
+  echo "(hd0) ${loop_device}" > "$mountpoint/tmp/device.map"
+  mkdir -p "$mountpoint/etc/default/grub.d"
+  efi_boot_dir="/boot/efi/EFI/BOOT"
+  chroot "$mountpoint" mkdir -p "${efi_boot_dir}"
+
+  # UEFI GRUB install (primary boot method)
+  chroot "$mountpoint" grub-install "${loop_device}" \
+    --boot-directory=/boot \
+    --efi-directory=/boot/efi \
+    --target=x86_64-efi \
+    --uefi-secure-boot \
+    --no-nvram
+
+  # BIOS GRUB install (fallback boot method)
   chroot "$mountpoint" grub-install --target=i386-pc "${loop_device}"
+
+  # Use initrdless boot for minimal images
+  if [ "${SUBPROJECT:-}" = "minimized" ]; then
+    force_boot_without_initramfs "$mountpoint"
+  fi
+
+  divert_grub "$mountpoint"
+  track_initramfs_boot_fallback "$mountpoint"
   chroot "$mountpoint" update-grub
+  
+  replace_grub_root_with_label "$mountpoint"
   undivert_grub "$mountpoint"
 
-  echo "GRUB for BIOS boot installed successfully."
+  rm "$mountpoint/tmp/device.map"
+
+  echo "GRUB installed successfully."
 }
 
 unmount_image_partitions() {
@@ -70,7 +105,22 @@ mountpoint=$(mktemp -d)
 
 mount_image_partitions
 
+snap_prepare "$mountpoint"
 install_grub_on_image
+
+# Creating a build.info for cloud-init
+mkdir -p "$mountpoint/etc/cloud"
+cat > "$mountpoint/etc/cloud/build.info" << EOF
+build_name: minimal
+serial: ${BUILDSTAMP}
+EOF
+
+# Updating resolv.conf.tmp because
+# teardown_mountpoint (called by umount_partition) will overwrite
+# etc/resolv.conf with resolv.conf.tmp, undoing any fix made there.
+rm -f resolv.conf.tmp
+ln -sf ../run/systemd/resolve/stub-resolv.conf resolv.conf.tmp
+
 create_manifest  "$mountpoint/" "$PWD/livecd.ubuntu-cpc.imagecraft.manifest" "$PWD/livecd.ubuntu-cpc.imagecraft.spdx"  "cloud-image-$ARCH-$(date +%Y%m%dT%H:%M:%S)" "false"
 
 unmount_image_partitions
@@ -78,4 +128,4 @@ unmount_image_partitions
 clean_loops
 trap - EXIT
 
-qemu-img convert -f raw -O qcow2 "${disk_image}" livecd.ubuntu-cpc.imagecraft.img
+qemu-img convert -c -f raw -O qcow2 "${disk_image}" livecd.ubuntu-cpc.imagecraft.img

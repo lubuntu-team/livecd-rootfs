@@ -29,7 +29,7 @@ volumes:
         partition-number: 15
       # 3. Linux Extended Boot
       - name: boot
-        type: 0FC63DAF-8483-4772-8E79-3D69D8477DE4
+        type: BC13C2FF-59E6-4262-A352-B275FD6F7172
         filesystem: ext4
         filesystem-label: BOOT
         role: system-data
@@ -37,11 +37,11 @@ volumes:
         partition-number: 13
       # 4. Root Filesystem
       - name: rootfs
-        type: 0FC63DAF-8483-4772-8E79-3D69D8477DE4
+        type: 4F68BCE3-E8CD-4DB1-96E7-FBCAF984B709
         filesystem: ext4
         filesystem-label: cloudimg-rootfs
         role: system-data
-        size: 3G
+        size: 2449M
         partition-number: 1
 
 filesystems:
@@ -59,46 +59,123 @@ parts:
     build-packages: ["mmdebstrap"]
     override-build: |
       mmdebstrap --arch $CRAFT_ARCH_BUILD_FOR \
-       --mode=sudo \
-       --format=dir \
-       --variant=minbase \
-       --include=apt \
-       resolute \
-       $CRAFT_PART_INSTALL/ \
-       http://archive.ubuntu.com/ubuntu/
+        --mode=sudo \
+        --format=dir \
+        --variant=minbase \
+        --include=apt \
+        --dpkgopt='path-exclude=/usr/share/man/*' \
+        --dpkgopt='path-exclude=/usr/share/locale/*/LC_MESSAGES/*.mo' \
+        --dpkgopt='path-exclude=/usr/share/doc/*' \
+        --dpkgopt='path-include=/usr/share/doc/*/copyright' \
+        --dpkgopt='path-include=/usr/share/doc/*/changelog.*' \
+        $LB_DISTRIBUTION \
+        $CRAFT_PART_INSTALL/ \
+        $LB_PARENT_MIRROR_CHROOT
+
+      # Write apt sources into the new rootfs before overlay-packages runs,
+      # so later package installation resolves against the build-time chroot mirror.
+      sh "$CRAFT_PROJECT_DIR/update-ubuntu-sources.sh" \
+        "$CRAFT_PART_INSTALL" \
+        "$LB_DISTRIBUTION" \
+        "$LB_PARENT_MIRROR_CHROOT" \
+        "$LB_PARENT_MIRROR_CHROOT"
+
       rm -r $CRAFT_PART_INSTALL/dev/*
       mkdir $CRAFT_PART_INSTALL/boot/efi
+
     organize:
       '*': (overlay)/
 
   packages:
     plugin: nil
+    build-environment:
+      - DEBIAN_FRONTEND: noninteractive
     overlay-packages:
-      - ubuntu-server-minimal
       - grub2-common
       - grub-pc
       - shim-signed
-      - linux-image-generic
+      - linux-image-virtual
+      - ubuntu-cloud-minimal
+      - bsdutils
+      - login
+      - fuse3
     overlay-script: |
-      rm $CRAFT_OVERLAY/etc/cloud/cloud.cfg.d/90_dpkg.cfg
+      # Remove etc/hosts to avoid stage collision with cloud-init part
+      rm -f $CRAFT_OVERLAY/etc/hosts
+      # Populate dpkg's available database.
+      chroot $CRAFT_OVERLAY sh -ec 'apt-cache dumpavail | dpkg --merge-avail'
+      # Drop transient runtime state created by package installation.
+      chroot $CRAFT_OVERLAY rm -rf /run/* /var/run/*
+      chroot $CRAFT_OVERLAY rm -f /var/lib/dpkg/statoverride-old
+      # Enable systemd-networkd
+      chroot $CRAFT_OVERLAY systemctl enable systemd-networkd
+      chroot $CRAFT_OVERLAY systemctl enable systemd-networkd-wait-online
 
-  snaps:
-    plugin: nil
-    after: [packages]
-    overlay-script: |
-      env SNAPPY_STORE_NO_CDN=1 snap prepare-image --classic \
-        --arch=amd64 --snap snapd --snap core24 "" $CRAFT_OVERLAY
+      chroot $CRAFT_OVERLAY addgroup --system --quiet admin
+      chroot $CRAFT_OVERLAY addgroup --system --quiet netdev
+
+      chroot $CRAFT_OVERLAY dpkg-divert --quiet --add --divert /usr/bin/man.REAL --rename /usr/bin/man
+
+      # Set console-setup codeset to Uni2
+      echo "console-setup console-setup/codesetcode string Uni2" | \
+          chroot $CRAFT_OVERLAY debconf-set-selections
+      echo "console-setup console-setup/codeset47 string . Combined - Latin; Slavic Cyrillic; Greek" | \
+          chroot $CRAFT_OVERLAY debconf-set-selections
+      chroot $CRAFT_OVERLAY sed -i -e 's,^CODESET.*,CODESET="Uni2",g' \
+            -e 's,^FONTFACE.*,FONTFACE="Fixed",g' \
+                /etc/default/console-setup
+      
+      # Set grub cloud-style installation for non-interactive grub updates LP: #2054103
+      echo "grub-pc grub-efi/cloud_style_installation boolean true" | \
+          chroot $CRAFT_OVERLAY debconf-set-selections
+      echo "grub-pc grub-pc/cloud_style_installation boolean true" | \
+          chroot $CRAFT_OVERLAY debconf-set-selections
+      chroot $CRAFT_OVERLAY dpkg-reconfigure --frontend=noninteractive console-setup
+
+      # Remove SSH host keys; they will be regenerated on first boot
+      rm -f $CRAFT_OVERLAY/etc/ssh/ssh_host_*key*
+      # Remove initrd images (minimized image boots without initramfs)
+      rm -f $CRAFT_OVERLAY/boot/initrd.img
+      rm -f $CRAFT_OVERLAY/boot/initrd.img.old
+      # Remove spare user database backup files
+      rm -f $CRAFT_OVERLAY/etc/passwd-
+      rm -f $CRAFT_OVERLAY/etc/shadow-
+      rm -f $CRAFT_OVERLAY/etc/gshadow-
+      rm -f $CRAFT_OVERLAY/etc/group-
+      # Remove apt secure config
+      # rm -f $CRAFT_OVERLAY/etc/apt/conf.d/00secure
+      # Remove private log directory
+      rm -rf $CRAFT_OVERLAY/var/log/private
+      # Truncate machine-id for first-boot detection
+      truncate -s 0 $CRAFT_OVERLAY/etc/machine-id
+      rm -f $CRAFT_OVERLAY/var/lib/dbus/machine-id
+      # Trimming transient package state.
+      chroot $CRAFT_OVERLAY apt-get autoremove --purge --assume-yes
+      chroot $CRAFT_OVERLAY apt-get -y clean
+
+      # Replace the temporary build-time sources with the final apt sources
+      # that the shipped image should use for archive and security updates.
+      sh "$CRAFT_PROJECT_DIR/update-ubuntu-sources.sh" \
+        "$CRAFT_OVERLAY" \
+        "$LB_DISTRIBUTION" \
+        "$LB_PARENT_MIRROR_BINARY" \
+        "$LB_PARENT_MIRROR_BINARY_SECURITY"
 
   fstab:
     plugin: nil
-    after: [snaps]
+    after: [packages]
     overlay-script: |
       cat << EOF > $CRAFT_OVERLAY/etc/fstab
-      LABEL=cloudimg-rootfs  /          ext4    discard,errors=remount-ro  0  1
-      LABEL=BOOT             /boot      ext4    defaults                   0  2
-      LABEL=UEFI             /boot/efi  vfat    umask=0077                 0  1
+      LABEL=cloudimg-rootfs  /          ext4    discard,commit=30,errors=remount-ro  0  1
+      LABEL=BOOT             /boot      ext4    defaults                             0  2
+      LABEL=UEFI             /boot/efi  vfat    umask=0077                           0  1
       EOF
 
   cloud-init:
     plugin: dump
     source: cloud-init/
+    permissions:
+      - path: etc/update-motd.d/60-unminimize
+        mode: "755"
+      - path: usr/bin/man
+        mode: "755"
