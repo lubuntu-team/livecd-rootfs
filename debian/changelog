@@ -1,4 +1,4 @@
-livecd-rootfs (26.10.10) UNRELEASED; urgency=medium
+livecd-rootfs (26.10.10) stonking; urgency=medium
 
   [ Allen Abraham ]
   * Minimize difference between imagecraft generated image and our current
@@ -11,7 +11,7 @@ livecd-rootfs (26.10.10) UNRELEASED; urgency=medium
     list of packages in auto/config and delete the hook (and the redundant
     installation of udev in 52-linux-virtual-image.binary). (LP: #2165421)
 
- -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Fri, 11 Sep 2026 11:41:03 +1200
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Sat, 12 Sep 2026 00:02:18 +1200
 
 livecd-rootfs (26.10.9) stonking; urgency=medium
 
