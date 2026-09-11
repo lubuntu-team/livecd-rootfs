@@ -4,6 +4,13 @@ livecd-rootfs (26.10.10) UNRELEASED; urgency=medium
   * Minimize difference between imagecraft generated image and our current
     standard minimal Ubuntu cloud image.
 
+  [ Michael Hudson-Doyle ]
+  * The binary hook that installs udev for buildd builds now fails (because
+    the hook does not mount /proc). But using a binary hook to install a
+    package that ends up in every artifact is obtuse; so just add udev to the
+    list of packages in auto/config and delete the hook (and the redundant
+    installation of udev in 52-linux-virtual-image.binary). (LP: #2165421)
+
  -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Fri, 11 Sep 2026 11:41:03 +1200
 
 livecd-rootfs (26.10.9) stonking; urgency=medium
