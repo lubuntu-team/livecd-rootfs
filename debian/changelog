@@ -1,3 +1,10 @@
+livecd-rootfs (24.04.100) noble; urgency=medium
+
+  * stop constructing enhanced-secure-boot layers to match the dropped sb
+    binary hook (LP: #2167127)
+
+ -- Dan Bungert <daniel.bungert@canonical.com>  Fri, 11 Sep 2026 10:16:28 -0600
+
 livecd-rootfs (24.04.99) noble; urgency=medium
 
   * Also add the missing "tags" notify class to the noble 7.0 kernel apparmor

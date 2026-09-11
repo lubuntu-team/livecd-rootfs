@@ -810,36 +810,6 @@ case $PROJECT in
 				LANGUAGE_BASE=desktop
 				KERNEL_FLAVOURS='generic-hwe-24.04'
 				do_layered_desktop_image
-
-				# Enchanced secureboot stuff
-				case "$ARCH" in
-				    amd64)
-					# the enhanced-secureboot layer, contains all packages for the enhanced secureboot install
-					add_package minimal.enhanced-secureboot cryptsetup boot-managed-by-snapd
-					add_package minimal.standard.enhanced-secureboot cryptsetup boot-managed-by-snapd
-					derive_language_layers minimal.enhanced-secureboot desktop-minimal desktop-default-languages "$seeded_langs"
-					derive_language_layers minimal.standard.enhanced-secureboot desktop desktop-default-languages "$seeded_langs"
-					cat <<-EOF > config/minimal.enhanced-secureboot.catalog-in.yaml
-						id: ubuntu-desktop-minimal
-						variations:
-						  minimal:
-						    path: minimal.squashfs
-						  minimal-enhanced-secureboot:
-						    path: minimal.enhanced-secureboot.squashfs
-						    snapd_system_label: enhanced-secureboot-desktop
-					EOF
-					cat <<-EOF > config/minimal.standard.enhanced-secureboot.catalog-in.yaml
-						id: ubuntu-desktop
-						variations:
-						  standard:
-						    path: minimal.standard.squashfs
-						  enhanced-secureboot:
-						    path: minimal.standard.enhanced-secureboot.squashfs
-						    snapd_system_label: enhanced-secureboot-desktop
-					EOF
-					;;
-				esac
-
 				;;
 		esac
 		;;
