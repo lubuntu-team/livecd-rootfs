@@ -1,3 +1,12 @@
+livecd-rootfs (26.10.13) stonking; urgency=medium
+
+  * Add a `live-build/apparmor/7.2` feature tree (grabbed
+    from a running 7.2 kernel) so snap preseeding reports
+    the correct apparmor feature set instead of falling
+    back to the old tree (LP: #2167455)
+
+ -- Chloé Smith <kajiya@ubuntu.com>  Wed, 16 Sep 2026 13:48:41 +0100
+
 livecd-rootfs (26.10.12) stonking; urgency=medium
 
   * Since Stonking (26.10) is moving away from dbus/dbus-daemon in favor of
