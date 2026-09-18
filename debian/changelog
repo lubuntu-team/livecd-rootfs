@@ -1,3 +1,10 @@
+livecd-rootfs (24.04.101) noble; urgency=medium
+
+  * Update SEEDMIRROR default to use static-reports.u.c instead of
+    archive-team.internal or ubuntu-archive-team.u.c. (LP: #2167508)
+
+ -- Finn Rayk Gartner <finn.gartner@canonical.com>  Wed, 16 Sep 2026 17:15:46 +0200
+
 livecd-rootfs (24.04.100) noble; urgency=medium
 
   * stop constructing enhanced-secure-boot layers to match the dropped sb
