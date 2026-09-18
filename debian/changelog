@@ -1,3 +1,10 @@
+livecd-rootfs (26.04.36) resolute; urgency=medium
+
+  * Update SEEDMIRROR default to use static-reports.u.c instead of
+    archive-team.internal or ubuntu-archive-team.u.c. (LP: #2167508)
+
+ -- Finn Rayk Gartner <finn.gartner@canonical.com>  Wed, 16 Sep 2026 17:12:11 +0200
+
 livecd-rootfs (26.04.35) resolute; urgency=medium
 
   [ Heinrich Schuchardt ]
