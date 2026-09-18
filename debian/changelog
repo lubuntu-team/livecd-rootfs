@@ -1,9 +1,13 @@
 livecd-rootfs (26.10.11) stonking; urgency=medium
 
+  [ Florent 'Skia' Jacquet ]
+  * Revert "Temporarily switch to edge channel for ubuntu-image" (LP: #2166769)
+
+  [ Finn Rayk Gartner ]
   * Update SEEDMIRROR default to use static-reports.u.c instead of
     archive-team.internal or ubuntu-archive-team.u.c. (LP: #2167508)
 
- -- Finn Rayk Gartner <finn.gartner@canonical.com>  Wed, 16 Sep 2026 03:45:19 +0200
+ -- Finn Rayk Gartner <finn.gartner@canonical.com>  Fri, 18 Sep 2026 11:53:53 +0200
 
 livecd-rootfs (26.10.10) stonking; urgency=medium
 
