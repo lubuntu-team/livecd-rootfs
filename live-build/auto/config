@@ -5,17 +5,17 @@ rm -rf config
 
 echo "Building on $(hostname --fqdn)"
 
-SEEDMIRROR=http://people.canonical.com/~ubuntu-archive/seeds/
+SEEDMIRROR=https://static-reports.ubuntu.com/seeds/
 if [ -z "$MIRROR" ]; then
 	case $(hostname --fqdn) in
 		*.ubuntu.com)		MIRROR=http://ftpmaster.internal/ubuntu/
-					SEEDMIRROR=http://archive-team.internal/seeds/
+					SEEDMIRROR=https://static-reports.ubuntu.com/seeds/
 					;;
 		*.buildd)		MIRROR=http://ftpmaster.internal/ubuntu/
-					SEEDMIRROR=http://archive-team.internal/seeds/
+					SEEDMIRROR=https://static-reports.ubuntu.com/seeds/
 					;;
 		*.ppa|*.scalingstack)	MIRROR=http://ftpmaster.internal/ubuntu/
-					SEEDMIRROR=http://archive-team.internal/seeds/
+					SEEDMIRROR=https://static-reports.ubuntu.com/seeds/
 					;;
 		*)	case $ARCH in
 				i386|amd64)	MIRROR=http://archive.ubuntu.com/ubuntu/ ;;

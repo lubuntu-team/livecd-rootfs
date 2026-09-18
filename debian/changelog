@@ -1,3 +1,10 @@
+livecd-rootfs (2.765.58) jammy; urgency=medium
+
+  * Update SEEDMIRROR default to use static-reports.u.c instead of
+    archive-team.internal or ubuntu-archive-team.u.c. (LP: #2167508)
+
+ -- Finn Rayk Gartner <finn.gartner@canonical.com>  Wed, 16 Sep 2026 17:19:58 +0200
+
 livecd-rootfs (2.765.57) jammy; urgency=medium
 
   * Cherry-pick fix for autopkgtests from ubuntu/master: (LP: #2124984)
