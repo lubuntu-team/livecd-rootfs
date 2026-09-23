@@ -1,3 +1,9 @@
+livecd-rootfs (26.10.14) stonking; urgency=medium
+
+  * Revert SEEDMIRROR url back to ubuntu-archive-team.u.c (LP: #2168361)
+
+ -- Andreas Hasenack <andreas.hasenack@canonical.com>  Wed, 23 Sep 2026 18:04:21 -0300
+
 livecd-rootfs (26.10.13) stonking; urgency=medium
 
   * Add a `live-build/apparmor/7.2` feature tree (grabbed
