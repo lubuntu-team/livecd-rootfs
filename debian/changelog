@@ -1,3 +1,21 @@
+livecd-rootfs (26.10.20) tenacious; urgency=medium
+
+  [ livecd-rootfs git-seeds work ]
+  * Fetch seeds directly from the git seed repositories on
+    git.launchpad.net via germinate --vcs=git instead of via the
+    ubuntu-archive-team.ubuntu.com / static-reports.ubuntu.com seed
+    mirrors (LP: #2167508). The mirrors are only cron-updated git
+    checkouts of the same repositories (canonical/
+    ubuntu-static-reports-operator, update-seeds), so this removes a
+    moving piece of infrastructure between the seeds and the image
+    builds that can break.
+  * SEEDMIRROR is dropped in favour of SEEDGIT, a comma-separated list
+    of git base URLs (default: the ubuntu-core-dev repositories for the
+    platform seeds included by every flavour, plus the flavour's owning
+    team).
+
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Thu, 12 Nov 2026 15:02:42 +0100
+
 livecd-rootfs (26.10.19) stonking; urgency=medium
 
   [ Valentin Haudiquet ]

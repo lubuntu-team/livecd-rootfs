@@ -32,18 +32,16 @@ fi
 
 echo "Building on $(hostname --fqdn)"
 
-if [ -z "$MIRROR" ] || [ -z "$SEEDMIRROR" ]; then
+if [ -z "$MIRROR" ]; then
 	case $(hostname --fqdn) in
 		*.ubuntu.com|*.buildd|*.ppa|*.scalingstack)
 			: ${MIRROR:=http://ftpmaster.internal/ubuntu/}
-			: ${SEEDMIRROR:=http://archive-team.internal/seeds/}
 			;;
 		*)
 			case $ARCH in
 				i386|amd64|arm64)	: ${MIRROR:=http://archive.ubuntu.com/ubuntu/} ;;
 				*)			: ${MIRROR:=http://ports.ubuntu.com/ubuntu-ports/} ;;
 			esac
-			: ${SEEDMIRROR:=https://ubuntu-archive-team.ubuntu.com/seeds/}
 			;;
 	esac
 fi
@@ -595,41 +593,59 @@ if [ "${SUBPROJECT:-}" = minimized ]; then
 fi
 
 mkdir -p config/germinate-output
+# SEED_TEAM is the Launchpad team owning this flavour's seed repository;
+# see https://git.launchpad.net/~<team>/ubuntu-seeds/+git/<flavour>
 case $PROJECT in
         edubuntu*)
                 FLAVOUR=edubuntu
+                SEED_TEAM=edubuntu-dev
                 ;;
         kubuntu*)
                 FLAVOUR=kubuntu
+                SEED_TEAM=kubuntu-dev
                 ;;
         xubuntu*)
                 FLAVOUR=xubuntu
+                SEED_TEAM=xubuntu-dev
                 ;;
         ubuntu-mate*)
                 FLAVOUR=ubuntu-mate
+                SEED_TEAM=ubuntu-mate-dev
                 ;;
         ubuntu-unity*)
                 FLAVOUR=ubuntu-unity
+                SEED_TEAM=unity7maintainers
                 ;;
         lubuntu*)
                 FLAVOUR=lubuntu
+                SEED_TEAM=lubuntu-dev
                 ;;
         ubuntu-budgie*)
                 FLAVOUR=ubuntu-budgie
+                SEED_TEAM=ubuntubudgie-dev
                 ;;
         ubuntukylin*)
                 FLAVOUR=ubuntukylin
+                SEED_TEAM=ubuntukylin-members
                 ;;
         ubuntustudio*)
                 FLAVOUR=ubuntustudio
+                SEED_TEAM=ubuntustudio-dev
                 ;;
         ubuntucinnamon*)
                 FLAVOUR=ubuntucinnamon
+                SEED_TEAM=ubuntucinnamon-dev
                 ;;
         *)
                 FLAVOUR=ubuntu
+                SEED_TEAM=ubuntu-core-dev
                 ;;
 esac
+
+# Seeds are fetched directly from the owning team's git repository (plus
+# ubuntu-core-dev for the shared platform repository included by every
+# flavour's STRUCTURE) instead of via a seed mirror.
+: ${SEEDGIT:=https://git.launchpad.net/~ubuntu-core-dev/ubuntu-seeds/+git/,https://git.launchpad.net/~${SEED_TEAM}/ubuntu-seeds/+git/}
 
 case $PROJECT in
 	ubuntu-mini-iso|ubuntu-test-iso)
@@ -667,7 +683,7 @@ case $PROJECT in
 				GERMINATE_PPA_ARGS="$GERMINATE_PPA_ARGS -m https://ppa.launchpadcontent.net/$ppa/ubuntu"
 			done
 			(cd config/germinate-output && germinate --no-rdepends --no-installer \
-				-S $SEEDMIRROR -m $MIRROR $GERMINATE_PPA_ARGS -d $SUITE,$SUITE-updates \
+				--vcs=git -S $SEEDGIT -m $MIRROR $GERMINATE_PPA_ARGS -d $SUITE,$SUITE-updates \
 				-s $FLAVOUR.$SUITE $GERMINATE_ARG -a ${ARCH_VARIANT:-$ARCH})
 		fi
 		;;
