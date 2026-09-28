@@ -1,3 +1,10 @@
+livecd-rootfs (26.10.14ubuntu1) stonking; urgency=medium
+
+  * Remove the obsolete  busybox-initramfs  dependency from the Buildd image hook.
+  This package is no longer needed since we've moved to dracut
+
+ -- Allen Abraham <allen.abraham@canonical.com>  Mon, 28 Sep 2026 12:57:58 -0400
+
 livecd-rootfs (26.10.14) stonking; urgency=medium
 
   * Revert SEEDMIRROR url back to ubuntu-archive-team.u.c (LP: #2168361)
