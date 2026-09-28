@@ -462,13 +462,8 @@ if [ "${MAKE_ISO}" != "yes" ]; then
 	case $PROJECT in
 		ubuntu|ubuntu-budgie|lubuntu)
 			rm -f livecd.${PROJECT}-manifest-remove
-			rm -f config/manifest-minimal-remove
 			;;
 	esac
-
-	if [ -e config/manifest-minimal-remove ]; then
-		cp config/manifest-minimal-remove  "$PREFIX.manifest-minimal-remove"
-	fi
 
 	if [ -e "binary/$INITFS/filesystem.dir" ]; then
 		(cd "binary/$INITFS/filesystem.dir/" && tar -c --sort=name --xattrs *) | \
