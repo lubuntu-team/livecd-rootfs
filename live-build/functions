@@ -19,7 +19,7 @@ clean_loops() {
         # still be processing the device.
         udevadm settle
         sync
-        losetup -v -d "${loop_device}"
+        losetup -d "${loop_device}"
         unset backing_img
     fi
 
@@ -90,7 +90,7 @@ mount_image() {
     backing_img="$1"
     local rootpart="$2"
 
-    loop_device=$(losetup --show -f -P -v ${backing_img})
+    loop_device=$(losetup --show -f -P ${backing_img})
 
     if [ ! -b ${loop_device} ]; then
         echo "unable to find loop device for ${backing_img}"

@@ -1,3 +1,10 @@
+livecd-rootfs (26.10.14ubuntu1) stonking; urgency=medium
+
+  * Remove -v from the losetup calls becuase util-linux 2.42 has removed this
+    option.
+
+ -- Allen Abraham <allen.abraham@canonical.com>  Mon, 28 Sep 2026 14:05:58 -0400
+
 livecd-rootfs (26.10.14) stonking; urgency=medium
 
   * Revert SEEDMIRROR url back to ubuntu-archive-team.u.c (LP: #2168361)
