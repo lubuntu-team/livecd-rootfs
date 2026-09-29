@@ -1,9 +1,9 @@
-livecd-rootfs (26.10.14ubuntu1) stonking; urgency=medium
+livecd-rootfs (26.10.15) stonking; urgency=medium
 
-  * Remove -v from the losetup calls becuase util-linux 2.42 has removed this
-    option.
+  * Remove -v from the losetup calls because util-linux 2.42 has removed this
+    option (LP: #2168794).
   * Remove the obsolete  busybox-initramfs  dependency from the Buildd image hook.
-  This package is no longer needed since we've moved to dracut
+    This package has been dropped from Ubuntu (LP: #2157328)
 
  -- Allen Abraham <allen.abraham@canonical.com>  Mon, 28 Sep 2026 14:05:58 -0400
 
