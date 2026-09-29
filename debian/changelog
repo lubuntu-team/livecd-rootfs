@@ -1,3 +1,10 @@
+livecd-rootfs (26.10.17) stonking; urgency=medium
+
+  * Add the new 7.3 kernel apparmor feature tree
+    (LP: #2168878)
+
+ -- Chloé Smith <kajiya@ubuntu.com>  Mon, 28 Sep 2026 16:21:32 +0100
+
 livecd-rootfs (26.10.16) stonking; urgency=medium
 
   * ubuntu-cpc: bump arm64 generic non-cloud image to 4.5G.
