@@ -25,6 +25,10 @@ if [ -n "${SUBARCH:-}" ]; then
 fi
 fi
 
+if [ "$ARCH" = "arm64" ] && [ "${SUBARCH:-}" = "generic" ]; then
+    IMAGE_SIZE=4831838208 # bump to 4.5G (4608*1024**2); shim/grub install fails with "No space left" with 3.5G
+fi
+
 if [ "$ARCH" = "riscv64" ]; then
     IMAGE_SIZE=4831838208 # bump to 4.5G (4608*1024**2); initrd creation fails with "No space left" with 3.5G
 fi
