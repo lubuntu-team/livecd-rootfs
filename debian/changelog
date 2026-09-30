@@ -1,3 +1,9 @@
+livecd-rootfs (26.10.16) stonking; urgency=medium
+
+  * ubuntu-cpc: bump arm64 generic non-cloud image to 4.5G.
+
+ -- Utkarsh Gupta <utkarsh@ubuntu.com>  Thu, 01 Oct 2026 00:53:18 +0530
+
 livecd-rootfs (26.10.15) stonking; urgency=medium
 
   * Remove -v from the losetup calls because util-linux 2.42 has removed this
