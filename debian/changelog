@@ -1,3 +1,10 @@
+livecd-rootfs (26.10.17) stonking; urgency=medium
+
+  * ubuntu: use ARCH_VARIANT for the ISO's .disk/info and volume ID
+    (LP: #2169089).
+
+ -- Amr Elsheshtawy <amr.elsheshtawy@canonical.com>  Thu, 01 Oct 2026 03:17:59 +0300
+
 livecd-rootfs (26.10.16) stonking; urgency=medium
 
   * ubuntu-cpc: bump arm64 generic non-cloud image to 4.5G.
