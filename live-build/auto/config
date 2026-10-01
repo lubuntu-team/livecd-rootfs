@@ -1750,7 +1750,7 @@ fi
 if [ "${MAKE_ISO}" = "yes" ]; then
 	${LIVECD_ROOTFS_ROOT}/live-build/gen-iso-ids \
 		--project $PROJECT ${SUBPROJECT:+--subproject $SUBPROJECT} \
-		--arch $ARCH ${SUBARCH:+--subarch $SUBARCH} ${NOW+--serial $NOW} \
+		--arch ${ARCH_VARIANT:-$ARCH} ${SUBARCH:+--subarch $SUBARCH} ${NOW+--serial $NOW} \
 		${BUILD_TYPE:+--build-type $BUILD_TYPE} \
 		--output-dir config/iso-ids/
 fi
