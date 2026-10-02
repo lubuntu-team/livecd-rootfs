@@ -1,16 +1,11 @@
-livecd-rootfs (26.10.18) stonking; urgency=medium
-
-  * Increase CPC's base disk-image-uefi.binary size to
-    4.5G for arm64 builds (LP: #2169315)
-
- -- Chloé Smith <kajiya@ubuntu.com>  Fri, 02 Oct 2026 17:20:47 +0100
-
 livecd-rootfs (26.10.17) stonking; urgency=medium
 
   * Add the new 7.3 kernel apparmor feature tree
     (LP: #2168878)
+  * Increase CPC's base disk-image-uefi.binary size to
+    4.5G for arm64 builds (LP: #2169315)
 
- -- Chloé Smith <kajiya@ubuntu.com>  Mon, 28 Sep 2026 16:21:32 +0100
+ -- Chloé Smith <kajiya@ubuntu.com>  Fri, 02 Oct 2026 17:20:47 +0100
 
 livecd-rootfs (26.10.16) stonking; urgency=medium
 
