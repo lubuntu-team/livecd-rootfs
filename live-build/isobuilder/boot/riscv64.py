@@ -118,22 +118,29 @@ class RISCV64BootConfigurator(GrubBootConfigurator):
         """Generate grub.cfg for RISC-V64."""
         result = self.grub_header(include_loadfont=False)
 
-        params = ["efi=debug", "sysctl.kernel.watchdog_thresh=60"]
+        # Live kernel parameters: only present in the live image
+        live_params = ["efi=debug", "sysctl.kernel.watchdog_thresh=60"]
+
+        # Installed kernel parameters: copied from install environment to installed one
+        installed_params = []
         if self.project != "ubuntu-server":
-            params += ["quiet", "splash", "plymouth.ignore-serial-consoles"]
-        kernel_params = " ".join(params)
+            installed_params += ["quiet", "splash", "plymouth.ignore-serial-consoles"]
+
+        # Join kernel parameter list, using '---' token which separates live
+        # and installed kernel parameters (cf. LP: #1402042)
+        kernel_params = " ".join(live_params) + " --- " + " ".join(installed_params)
 
         # Main menu entry
         result += f"""\
 menuentry "Try or Install {self.humanproject}" {{
     set gfxpayload=keep
-    linux  /casper/vmlinux {kernel_params} ---
+    linux  /casper/vmlinux {kernel_params}
     initrd /casper/initrd
 }}
 """
 
         # HWE kernel option if available
-        result += self.hwe_menu_entry("vmlinux", f"{kernel_params} ---")
+        result += self.hwe_menu_entry("vmlinux", kernel_params)
 
         return result
 
