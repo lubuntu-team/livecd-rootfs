@@ -1,3 +1,10 @@
+livecd-rootfs (26.10.18) stonking; urgency=medium
+
+  * riscv64: append "quiet splash plymouth.ignore-serial-consoles"
+    to non-server isos kernel command-line (LP: #2168989)
+
+ -- Valentin Haudiquet <valentin.haudiquet@canonical.com>  Mon, 05 Oct 2026 13:20:03 +0200
+
 livecd-rootfs (26.10.17) stonking; urgency=medium
 
   * Add the new 7.3 kernel apparmor feature tree
