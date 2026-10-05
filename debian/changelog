@@ -1,4 +1,4 @@
-livecd-rootfs (26.10.19) stonking; urgency=medium
+livecd-rootfs (26.10.19) UNRELEASED; urgency=medium
 
   [ Valentin Haudiquet ]
   * riscv64: carry quiet/splash/plymouth kernel params 
@@ -10,6 +10,10 @@ livecd-rootfs (26.10.19) stonking; urgency=medium
     "*_<arch>.deb", so the "*_amd64v3.deb" files in the pool matched no index
     and were silently dropped, breaking offline UEFI installs on the amd64v3
     ISO (LP: #2169183).
+
+  [ Amr Elsheshtawy ]
+  * ubuntu: use ARCH_VARIANT for the ISO's .disk/info and volume ID
+    (LP: #2169089).
 
  -- Valentin Haudiquet <valentin.haudiquet@canonical.com>  Mon, 05 Oct 2026 18:17:18 +0200
 
