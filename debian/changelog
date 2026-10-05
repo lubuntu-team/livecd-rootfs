@@ -1,4 +1,4 @@
-livecd-rootfs (26.10.19) UNRELEASED; urgency=medium
+livecd-rootfs (26.10.19) stonking; urgency=medium
 
   [ Valentin Haudiquet ]
   * riscv64: carry quiet/splash/plymouth kernel params 
@@ -15,7 +15,7 @@ livecd-rootfs (26.10.19) UNRELEASED; urgency=medium
   * ubuntu: use ARCH_VARIANT for the ISO's .disk/info and volume ID
     (LP: #2169089).
 
- -- Valentin Haudiquet <valentin.haudiquet@canonical.com>  Mon, 05 Oct 2026 18:17:18 +0200
+ -- Dan Bungert <daniel.bungert@canonical.com>  Mon, 05 Oct 2026 16:47:37 -0600
 
 livecd-rootfs (26.10.18) stonking; urgency=medium
 
