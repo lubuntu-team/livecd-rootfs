@@ -1,4 +1,4 @@
-livecd-rootfs (26.04.37) UNRELEASED; urgency=medium
+livecd-rootfs (26.04.37) resolute; urgency=medium
 
   [ Allen Abraham ]
   * The binary hook that installs udev for buildd builds  now fails (because
@@ -10,7 +10,7 @@ livecd-rootfs (26.04.37) UNRELEASED; urgency=medium
   [ Michael Hudson-Doyle ]
   * Revert SEEDMIRROR default back to archive-team machines. 
 
- -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Tue, 06 Oct 2026 09:28:30 +1300
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Tue, 06 Oct 2026 09:29:47 +1300
 
 livecd-rootfs (26.04.36) resolute; urgency=medium
 
