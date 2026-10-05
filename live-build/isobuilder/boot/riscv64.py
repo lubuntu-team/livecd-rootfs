@@ -118,21 +118,22 @@ class RISCV64BootConfigurator(GrubBootConfigurator):
         """Generate grub.cfg for RISC-V64."""
         result = self.grub_header(include_loadfont=False)
 
+        params = ["efi=debug", "sysctl.kernel.watchdog_thresh=60"]
+        if self.project != "ubuntu-server":
+            params += ["quiet", "splash", "plymouth.ignore-serial-consoles"]
+        kernel_params = " ".join(params)
+
         # Main menu entry
         result += f"""\
 menuentry "Try or Install {self.humanproject}" {{
     set gfxpayload=keep
-    linux  /casper/vmlinux efi=debug sysctl.kernel.watchdog_thresh=60 ---
+    linux  /casper/vmlinux {kernel_params} ---
     initrd /casper/initrd
 }}
 """
 
         # HWE kernel option if available
-        result += self.hwe_menu_entry(
-            "vmlinux",
-            "---",
-            extra_params="efi=debug sysctl.kernel.watchdog_thresh=60 ",
-        )
+        result += self.hwe_menu_entry("vmlinux", f"{kernel_params} ---")
 
         return result
 
