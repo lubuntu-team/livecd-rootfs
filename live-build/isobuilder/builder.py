@@ -144,6 +144,10 @@ class ISOBuilder:
         return self.config["arch"]
 
     @property
+    def arch_variant(self) -> str | None:
+        return self.config.get("arch_variant")
+
+    @property
     def series(self):
         if self._config is None:
             self._read_config()
@@ -167,7 +171,13 @@ class ISOBuilder:
 
     # COMMANDS
 
-    def init(self, disk_info: str, series: str, arch: str):
+    def init(
+        self,
+        disk_info: str,
+        series: str,
+        arch: str,
+        arch_variant: str | None = None,
+    ):
         self.logger.log("creating directories")
         self.workdir.mkdir(exist_ok=True)
         self.iso_root.mkdir()
@@ -176,6 +186,8 @@ class ISOBuilder:
 
         self.logger.log("saving config")
         self._config = {"arch": arch, "series": series}
+        if arch_variant is not None:
+            self._config["arch_variant"] = arch_variant
         self.save_config()
 
         self.logger.log("populating .disk")
@@ -202,6 +214,7 @@ class ISOBuilder:
             series=self.series,
             rootdir=self.iso_root,
             apt_state=self.apt_state,
+            arch_variant=self.arch_variant,
         )
         pkgs = package_list_packages(package_list_file)
         # XXX include 32-bit deps of 32-bit packages if needed here

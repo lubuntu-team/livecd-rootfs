@@ -1,3 +1,13 @@
+livecd-rootfs (26.10.18) UNRELEASED; urgency=medium
+
+  * isobuilder: generate a binary-<variant> index on architecture-variant
+    builds.  apt-ftparchive picks a deb's index by globbing its filename for
+    "*_<arch>.deb", so the "*_amd64v3.deb" files in the pool matched no index
+    and were silently dropped, breaking offline UEFI installs on the amd64v3
+    ISO (LP: #2169183).
+
+ -- Michael Hudson-Doyle <michael.hudson@canonical.com>  Mon, 05 Oct 2026 03:40:00 +0000
+
 livecd-rootfs (26.10.17) stonking; urgency=medium
 
   * Add the new 7.3 kernel apparmor feature tree

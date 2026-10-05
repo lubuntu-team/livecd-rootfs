@@ -215,7 +215,9 @@ EOF
 		undivert_grub chroot
 	fi
 	if [ "${MAKE_ISO}" = yes ]; then
-		isobuild init --disk-info "$(cat config/iso-ids/disk-info)" --series "${LB_DISTRIBUTION}" --arch "${ARCH}"
+		isobuild init --disk-info "$(cat config/iso-ids/disk-info)" \
+			--series "${LB_DISTRIBUTION}" --arch "${ARCH}" \
+			${ARCH_VARIANT:+--arch-variant "${ARCH_VARIANT}"}
 		# Determine which chroot directory has the apt configuration to use.
 		# Layered builds (PASSES set) create overlay directories named
 		# "overlay.base", "overlay.live", etc. - we use the first one (base).

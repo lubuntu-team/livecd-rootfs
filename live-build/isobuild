@@ -128,9 +128,16 @@ def subcommand(f):
     required=True,
     help="architecture being built",
 )
+@click.option(
+    "--arch-variant",
+    "arch_variant",
+    type=str,
+    default=None,
+    help="architecture variant being built (e.g. amd64v3), if any",
+)
 @subcommand
-def init(builder, disk_info, series, arch):
-    builder.init(disk_info, series, arch)
+def init(builder, disk_info, series, arch, arch_variant):
+    builder.init(disk_info, series, arch, arch_variant)
 
 
 @click.option(

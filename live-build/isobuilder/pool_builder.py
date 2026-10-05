@@ -21,14 +21,36 @@ Tree "dists/{series}" {{
 class PoolBuilder:
 
     def __init__(
-        self, logger, series: str, apt_state: AptStateManager, rootdir: pathlib.Path
+        self,
+        logger,
+        series: str,
+        apt_state: AptStateManager,
+        rootdir: pathlib.Path,
+        arch_variant: str | None = None,
     ):
         self.logger = logger
         self.series = series
         self.apt_state = apt_state
         self.rootdir = rootdir
+        self.arch_variant = arch_variant
         self.arches: set[str] = set()
         self._present_components: set[str] = set()
+
+    @property
+    def _index_arches(self) -> set[str]:
+        """The architectures to generate a binary-<arch> index for.
+
+        `self.arches` is what apt reports for the packages we downloaded, so
+        on a variant build it holds the *base* architecture (amd64) - the
+        variant is recorded in a separate Architecture-Variant field, not in
+        Architecture. But apt-ftparchive picks a deb's index by globbing its
+        filename for "*_<arch>.deb", and `apt-get download` names a variant
+        build "*_amd64v3.deb", so without a binary-amd64v3 to glob into those
+        debs match no index at all and are silently dropped (LP: #2169183).
+        """
+        if self.arch_variant is None:
+            return self.arches
+        return self.arches | {self.arch_variant}
 
     def add_packages(self, pkglist: list[PackageInfo]):
         for pkg_info in pkglist:
@@ -45,7 +67,7 @@ class PoolBuilder:
                         if not self.rootdir.joinpath("pool", component).is_dir():
                             continue
                         self._present_components.add(component)
-                        for arch in self.arches:
+                        for arch in self._index_arches:
                             self.rootdir.joinpath(
                                 "dists", self.series, component, f"binary-{arch}"
                             ).mkdir(parents=True)
@@ -64,7 +86,7 @@ class PoolBuilder:
                     generate_path = scratchdir.joinpath("generate-binary")
                     generate_path.write_text(
                         generate_template.format(
-                            arches=" ".join(self.arches),
+                            arches=" ".join(sorted(self._index_arches)),
                             series=self.series,
                             root=self.rootdir.resolve(),
                             scratch=scratchdir.resolve(),
@@ -140,6 +162,15 @@ class PoolBuilder:
             skipping = False
             for line in mirror_release_lines:
                 if line.startswith("Architectures:"):
+                    # Deliberately self.arches and not self._index_arches: the
+                    # variant must stay *out* of this field. Naming it here
+                    # would declare it a standalone variant, and apt then
+                    # treats binary-<variant> as supplanting binary-<base> and
+                    # stops reading the base index entirely - so every package
+                    # with no variant build (shim-signed, say) would go
+                    # missing. Left undeclared it is a partial variant, and apt
+                    # reads both indexes and merges them, which is what we
+                    # want. See apt's test-architecture-variants.
                     line = "Architectures: " + " ".join(sorted(self.arches))
                 elif line.startswith("Components:"):
                     line = "Components: " + " ".join(sorted(self._present_components))
