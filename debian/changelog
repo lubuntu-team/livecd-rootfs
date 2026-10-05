@@ -1,12 +1,16 @@
 livecd-rootfs (26.04.37) UNRELEASED; urgency=medium
 
+  [ Allen Abraham ]
   * The binary hook that installs udev for buildd builds  now fails (because
     the hook does not mount /proc). But using a binary hook to install a
     package that ends up in every artifact is obtuse; so just add udev to the
     list of packages in auto/config and delete the hook (and the redundant
     installation of udev in 52-linux-virtual-image.binary). (LP: #2165422)
 
- -- Allen Abraham <allen.abraham@canonical.com>  Tue, 22 Sep 2026 10:17:10 -0400
+  [ Michael Hudson-Doyle ]
+  * Revert SEEDMIRROR default back to archive-team machines. 
+
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Tue, 06 Oct 2026 09:28:30 +1300
 
 livecd-rootfs (26.04.36) resolute; urgency=medium
 
