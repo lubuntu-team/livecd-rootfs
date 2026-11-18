@@ -1,6 +1,5 @@
-livecd-rootfs (26.10.20) tenacious; urgency=medium
+livecd-rootfs (27.04.1) tenacious; urgency=medium
 
-  [ livecd-rootfs git-seeds work ]
   * Fetch seeds directly from the git seed repositories on
     git.launchpad.net via germinate --vcs=git instead of via the
     ubuntu-archive-team.ubuntu.com / static-reports.ubuntu.com seed
@@ -14,7 +13,7 @@ livecd-rootfs (26.10.20) tenacious; urgency=medium
     platform seeds included by every flavour, plus the flavour's owning
     team).
 
- -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Thu, 12 Nov 2026 15:02:42 +0100
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Wed, 18 Nov 2026 15:57:27 +0100
 
 livecd-rootfs (26.10.19) stonking; urgency=medium
 
