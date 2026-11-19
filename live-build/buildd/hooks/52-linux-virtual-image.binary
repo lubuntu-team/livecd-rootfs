@@ -76,6 +76,12 @@ env DEBIAN_FRONTEND=noninteractive chroot "$mount_d" apt-get \
 
 create_manifest $mount_d "livecd.$PROJECT.disk-linux-virtual.manifest"
 
+# The `dist-upgrade` a few lines above might update systemd, which in turn
+# writes a machine-id to this file. We need to clear it so that each instance 
+# gets its own machine-id on boot.
+truncate -s 0 "$mount_d/etc/machine-id"
+rm -f "$mount_d/var/lib/dbus/machine-id"
+
 # unmount disk image to prevent corruption
 # and remove it so the trap doesn't try to unmount it again
 umount_disk_image $mount_d
