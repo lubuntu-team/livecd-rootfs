@@ -1,3 +1,11 @@
+livecd-rootfs (27.04.2) UNRELEASED; urgency=medium
+
+  [ Allen Abraham ]
+  * live-build/buildd/hooks/52-linux-virtual-image.binary: clear
+    machine-id to ensure unique instance IDs on boot after dist-upgrade
+
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Thu, 26 Nov 2026 10:57:40 +1300
+
 livecd-rootfs (27.04.1) tenacious; urgency=medium
 
   * Fetch seeds directly from the git seed repositories on
